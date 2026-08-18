@@ -1,8 +1,11 @@
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '../../.env') });
+require('dotenv').config();
+
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
-const path = require('path');
 const db = require('./config/db');
 const errorHandler = require('./middleware/error');
 
