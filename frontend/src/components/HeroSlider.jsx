@@ -42,7 +42,7 @@ export default function HeroSlider({ slides }) {
         height: '80vh',
         minHeight: '600px',
         overflow: 'hidden',
-        backgroundColor: '#0F172A',
+        backgroundColor: '#000A42',
         fontFamily: 'var(--font-secondary)'
       }}
       onMouseEnter={() => setIsPaused(true)}
@@ -96,7 +96,7 @@ export default function HeroSlider({ slides }) {
                 left: 0,
                 width: '100%',
                 height: '100%',
-                background: 'linear-gradient(to right, rgba(15, 23, 42, 0.92) 0%, rgba(15, 23, 42, 0.75) 45%, rgba(15, 23, 42, 0.25) 100%)',
+                background: 'linear-gradient(to right, rgba(0, 10, 66, 0.92) 0%, rgba(0, 10, 66, 0.75) 45%, rgba(0, 10, 66, 0.25) 100%)',
                 zIndex: 1
               }}
             />

@@ -106,7 +106,7 @@ export default function BlogDetail() {
             overflow: 'hidden',
             maxHeight: '450px',
             height: '400px',
-            backgroundColor: '#0F172A',
+            backgroundColor: '#000A42',
             marginBottom: '3rem',
             boxShadow: 'var(--shadow-md)'
           }}>

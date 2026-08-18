@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, BookOpen } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { getNavigation } from '../services/api';
 
 export default function Header() {
@@ -10,12 +10,10 @@ export default function Header() {
   const location = useLocation();
 
   useEffect(() => {
-    // Fetch menu options
     getNavigation().then(setNavItems);
 
-    // Scroll listener
     const handleScroll = () => {
-      if (window.scrollY > 50) {
+      if (window.scrollY > 30) {
         setIsScrolled(true);
       } else {
         setIsScrolled(false);
@@ -25,7 +23,6 @@ export default function Header() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Close mobile navigation drawer on page redirects
   useEffect(() => {
     setIsMobileMenuOpen(false);
   }, [location]);
@@ -36,30 +33,29 @@ export default function Header() {
         position: 'sticky',
         top: 0,
         zIndex: 1000,
-        backgroundColor: isScrolled ? 'rgba(15, 23, 42, 0.95)' : 'var(--color-navy)',
-        backdropFilter: isScrolled ? 'blur(8px)' : 'none',
-        color: 'var(--color-white)',
-        padding: isScrolled ? '0.75rem 2rem' : '1.25rem 2rem',
+        backgroundColor: '#FFFFFF',
+        boxShadow: isScrolled ? '0 4px 20px rgba(1, 37, 92, 0.08)' : '0 2px 10px rgba(1, 37, 92, 0.04)',
+        borderBottom: '1px solid var(--color-border)',
+        color: 'var(--color-navy)',
+        padding: isScrolled ? '0.75rem 2rem' : '1.15rem 2rem',
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        borderBottom: isScrolled ? '1px solid rgba(226, 232, 240, 0.1)' : 'none',
         transition: 'all var(--transition-normal)',
         fontFamily: 'var(--font-secondary)'
       }}>
-        {/* Logo Wordmark */}
-        <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-          <div style={{ padding: '0.4rem', backgroundColor: 'var(--color-gold)', borderRadius: 'var(--radius-sm)', color: '#FFFFFF', display: 'flex' }}>
-            <BookOpen size={20} />
-          </div>
-          <span style={{ 
-            fontWeight: 700, 
-            fontSize: '1.25rem', 
-            letterSpacing: '0.5px', 
-            fontFamily: 'var(--font-primary)' 
-          }}>
-            ZUVIO
-          </span>
+        {/* Official Logo */}
+        <Link to="/" style={{ display: 'flex', alignItems: 'center', height: '42px' }}>
+          <img 
+            src="/assets/images/logo.png" 
+            alt="Zuvio Global School Logo" 
+            style={{ 
+              height: '100%', 
+              width: 'auto', 
+              objectFit: 'contain',
+              display: 'block'
+            }} 
+          />
         </Link>
 
         {/* Desktop Links */}
@@ -72,18 +68,17 @@ export default function Header() {
                 to={item.url}
                 style={{
                   fontSize: '0.9rem',
-                  fontWeight: 500,
-                  color: isActive ? 'var(--color-gold)' : 'var(--color-white)',
-                  opacity: isActive ? 1 : 0.85,
+                  fontWeight: 600,
+                  color: isActive ? 'var(--color-gold)' : 'var(--color-navy)',
                   transition: 'all var(--transition-fast)',
                   borderBottom: isActive ? '2px solid var(--color-gold)' : '2px solid transparent',
-                  paddingBottom: '4px'
+                  paddingBottom: '6px'
                 }}
                 onMouseEnter={(e) => {
-                  if (!isActive) e.target.style.opacity = '1';
+                  if (!isActive) e.target.style.color = 'var(--color-teal)';
                 }}
                 onMouseLeave={(e) => {
-                  if (!isActive) e.target.style.opacity = '0.85';
+                  if (!isActive) e.target.style.color = 'var(--color-navy)';
                 }}
               >
                 {item.label}
@@ -91,7 +86,27 @@ export default function Header() {
             );
           })}
           
-          <Link to="/contact" className="btn btn-primary" style={{ padding: '0.5rem 1.25rem', fontSize: '0.85rem' }}>
+          <Link 
+            to="/contact" 
+            className="btn" 
+            style={{ 
+              padding: '0.6rem 1.4rem', 
+              fontSize: '0.85rem',
+              fontWeight: 600,
+              backgroundColor: 'var(--color-navy)',
+              color: '#FFFFFF',
+              border: '1.5px solid var(--color-navy)',
+              transition: 'all 0.2s ease'
+            }}
+            onMouseEnter={(e) => {
+              e.target.style.backgroundColor = 'var(--color-gold)';
+              e.target.style.borderColor = 'var(--color-gold)';
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.backgroundColor = 'var(--color-navy)';
+              e.target.style.borderColor = 'var(--color-navy)';
+            }}
+          >
             Enquire Now
           </Link>
         </nav>
@@ -103,7 +118,7 @@ export default function Header() {
             display: 'none',
             background: 'none',
             border: 'none',
-            color: 'var(--color-white)',
+            color: 'var(--color-navy)',
             cursor: 'pointer'
           }}
           className="mobile-trigger"
@@ -117,11 +132,12 @@ export default function Header() {
       {isMobileMenuOpen && (
         <div style={{
           position: 'fixed',
-          top: '60px',
+          top: '64px',
           left: 0,
           right: 0,
           bottom: 0,
-          backgroundColor: 'var(--color-navy)',
+          backgroundColor: '#FFFFFF',
+          borderTop: '1px solid var(--color-border)',
           zIndex: 999,
           padding: '2rem',
           display: 'flex',
@@ -135,16 +151,27 @@ export default function Header() {
               to={item.url}
               style={{
                 fontSize: '1.1rem',
-                fontWeight: 500,
-                color: location.pathname === item.url ? 'var(--color-gold)' : 'var(--color-white)',
-                borderBottom: '1px solid rgba(255,255,255,0.08)',
+                fontWeight: 600,
+                color: location.pathname === item.url ? 'var(--color-gold)' : 'var(--color-navy)',
+                borderBottom: '1px solid var(--color-border)',
                 paddingBottom: '0.75rem'
               }}
             >
               {item.label}
             </Link>
           ))}
-          <Link to="/contact" className="btn btn-primary" style={{ padding: '0.8rem', textAlign: 'center', marginTop: '1rem' }}>
+          <Link 
+            to="/contact" 
+            className="btn" 
+            style={{ 
+              padding: '0.8rem', 
+              textAlign: 'center', 
+              marginTop: '1rem',
+              backgroundColor: 'var(--color-navy)',
+              color: '#FFFFFF',
+              fontWeight: 600
+            }}
+          >
             Enquire Now
           </Link>
         </div>

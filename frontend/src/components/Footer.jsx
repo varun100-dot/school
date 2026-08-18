@@ -29,13 +29,8 @@ export default function Footer() {
         
         {/* Column 1: School Identity */}
         <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '1.5rem' }}>
-            <div style={{ padding: '0.4rem', backgroundColor: 'var(--color-gold)', borderRadius: 'var(--radius-sm)', display: 'flex' }}>
-              <BookOpen size={20} />
-            </div>
-            <span style={{ fontWeight: 700, fontSize: '1.25rem', fontFamily: 'var(--font-primary)' }}>
-              Zuvio Global School
-            </span>
+          <div style={{ marginBottom: '1.5rem', height: '60px', display: 'flex', alignItems: 'center' }}>
+            <img src="/assets/images/logo-emblem.png" alt="Zuvio Global School emblem" style={{ height: '100%', width: 'auto', objectFit: 'contain' }} />
           </div>
           <p style={{ color: 'var(--color-muted)', fontSize: '0.9rem', lineHeight: '1.7', marginBottom: '1.5rem' }}>
             A future-ready online school where academic excellence meets personalised learning. 
