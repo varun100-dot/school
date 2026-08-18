@@ -626,6 +626,31 @@ export default function HeroSlider({ slides }) {
             display: none !important;
           }
         }
+        @media (max-width: 767px) {
+          .hero-bg-img {
+            display: none !important;
+          }
+          .hero-container {
+            background: linear-gradient(135deg, var(--color-navy) 0%, var(--color-navy-dark) 100%) !important;
+            height: auto !important;
+            min-height: auto !important;
+          }
+          .hero-slide {
+            background: transparent !important;
+          }
+          .hero-slide.active {
+            background: transparent !important;
+          }
+          .hero-split-grid {
+            padding: 3.5rem 1.25rem 2rem 1.25rem !important;
+          }
+          .hero-title {
+            font-size: 2rem !important;
+          }
+          .hero-description {
+            font-size: 0.95rem !important;
+          }
+        }
       `}</style>
     </section>
   );
