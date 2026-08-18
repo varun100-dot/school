@@ -1,0 +1,643 @@
+Zuvio Global School
+Website Content, Image & Asset Requirements
+For the Zuvio Global School website, we will be creating a modern, premium and fully responsive website on WordPress.
+The 21K School website shared as a reference will be used for design direction, structure and user experience inspiration only. The final website will be customised specifically for Zuvio Global School, with its own visual identity, content, imagery and user journey.
+To begin the design and development process smoothly, please provide the following content and visual assets.
+
+WEBSITE PAGES
+Home
+About Us
+Our Curriculum
+Zuvio Beyond
+Blogs
+Contact Us
+
+1. HOME
+Content Required
+Please provide:
+Official school introduction - Zuvio Global School is a future-ready online school where academic excellence meets personalised learning. We empower children to learn beyond boundaries and grow with confidence. 
+Main tagline / slogan- Learning Beyond Boundaries
+Vision & Mission - Mission - At Zuvio Global School, our mission is to create a meaningful learning experience that nurtures curiosity, builds strong academic foundations, develops essential life skills, and empowers every child to grow with confidence and purpose.
+ We strive to prepare learners not only for academic success, but for a changing world—helping them become capable, compassionate, and confident individuals.vision - To reimagine education for a world without boundaries—where every child has the freedom to learn, explore, grow, and discover their unique potential.
+We envision a global learning community that combines academic excellence, innovation, technology, creativity, and real-world learning to prepare confident, capable, and compassionate learners for the future.
+
+5–8 key USPs / reasons to choose Zuvio - Why Zuvio?
+1. Global Presence A globally connected learning community with an international outlook.
+2. International Credibility Global standards, perspectives, and learning practices designed for a changing world.
+3. World-Class Teachers Experienced educators who bring expertise, diverse perspectives, and engaging teaching practices.
+4. US-Based Learning Platform A powerful, thoughtfully designed US-based LMS that brings learning, collaboration, resources, and progress tracking together.
+5. CBSE, NEP & NCF Aligned A well-designed curriculum aligned with CBSE, NEP 2020, and NCF, combining academic rigour with future-ready skills.
+6. Personalised Learning Learning experiences that recognise every child's unique pace, strengths, interests, and potential.
+7. Inclusive Learning for Every Child A supportive environment with a special focus on special learners, ensuring every child feels included, valued, and empowered.
+8. World-Class Learning Experiences Beyond academics—with technology, creativity, collaboration, projects, and real-world experiences that make learning meaningful.
+CONTENT INTEGRATED FROM ZUVIO E BROCHURE
+Brand promise: “Every child deserves an education that prepares them for life, not just examinations.”
+Brand belief: “We are not building another school. We are building a future where every child has the opportunity to learn beyond boundaries.”
+Positioning: Zuvio is presented as more than a school: a global learning community and future-ready learning ecosystem that blends academic excellence with innovation, creativity, technology and real-world skills.
+Additional learning principles: Personalised rather than standardised learning; flexible learning; engaging learning beyond memorisation; preparation for life, not only examinations; accessibility to learners across the world.
+Learning Advantage pillars: Global Perspective Opportunities; Personalised Pathways; Future Readiness; Family Partnership; Character Development; Lifelong Learning.
+Zuvio 8C Philosophy™ themes: Every Child Is Unique; Curiosity Is the Beginning of Learning; Learning Should Have Purpose; Character Matters as Much as Achievement; The Future Belongs to Lifelong Learners. The supporting diagram also highlights Curiosity, Character, Creativity, Confidence, Communication, Collaboration, Critical Thinking and Compassion.
+Source: Zuvio E Brochure, pp. 3–17
+
+Established year - 2026
+Number of students - 
+Number of teachers
+Grades/classes offered - K-8
+Student-teacher ratio, if available 15:1
+Curriculum / Board details - CBSE/ NIOS
+Key academic highlights - Academic & Global Partnerships
+In Partnership with Globally Recognised Institutions
+Zuvio Global School collaborates with Oxford and IAO, strengthening our commitment to globally benchmarked learning, academic excellence, and international standards.
+And under Key Academic Highlights, you can add:
+CBSE, NEP & NCF Aligned Curriculum
+US-Based Learning Platform
+Oxford & IAO Partnerships
+World-Class Educators
+Personalised Learning
+Experiential & Project-Based Learning
+Global Learning Opportunities
+Individualised Support for Every Learner
+
+
+Key facilities - NA
+Student achievements - NA
+Awards & recognitions - NA
+Parent/student testimonials - NA
+Main CTA preference - Explore Zuvio
+Any other important information to highlight - NA
+Image Requirements
+Image
+Suggested File Name
+
+
+Alternative hero image
+home-hero-02.webp
+School exterior
+Home-school-campus.webp - NA
+Students learning in classroom
+home-classroom-learning.webp
+Teacher interacting with students
+home-teacher-students.webp
+Students participating in activities
+home-student-activities.webp
+School facilities
+home-school-facilities.webp
+Student achievement
+home-student-achievement.webp
+Sports/activity image
+home-sports-activity.webp
+Parent testimonial photo 01
+home-testimonial-01.webp
+Parent testimonial photo 02
+home-testimonial-02.webp
+Parent testimonial photo 03
+home-testimonial-03.webp
+Recommended: Please provide 2–3 strong hero image options so we can select the most suitable visual during design.
+
+2. ABOUT US
+Content Required
+Please provide:
+Complete school story
+Why Zuvio Global School was established
+Founder/Director information
+Principal information
+Leadership team information
+Vision
+Mission
+Core values
+Educational philosophy
+Teaching philosophy / approach
+Important milestones
+Affiliations / accreditations
+Certifications
+Awards & recognitions
+Leadership Information
+CONTENT INTEGRATED FROM PROVIDED PDFS
+Complete school story: Zuvio Global School began from a question: “What if education was designed for the child instead of expecting the child to fit the system?” The brochure explains that as technology, AI and global connectivity changed the world, education also needed to evolve. Zuvio was conceived to provide flexible, personalised, globally connected learning that nurtures creativity, critical thinking, communication and adaptability.
+Why Zuvio was established: To create an education model designed around the child, preparing learners for the future rather than reproducing the limitations of the past.
+Vision: To create a world where every child can access future-ready, personalised and globally connected learning without boundaries, and to empower every child to become a confident global citizen of tomorrow.
+Mission: To empower every child to discover their potential and thrive in a changing world by combining academic excellence with creativity, critical thinking, technology and life skills.
+Educational philosophy: “Every Child. Every Mind. Every Possibility.” Education is described as unlocking minds rather than filling them; when children feel inspired, respected and empowered, learning becomes a lifelong journey.
+Teaching / learning approach: Learning should be an experience, not just a process. Zuvio emphasises curiosity, understanding, application, collaboration, growth and inspiration as a continuous learning cycle.
+Core values / Zuvio Compass™: Curiosity, Respect, Innovation, Compassion, Excellence, Global Citizenship, Courage and Integrity.
+Important milestones supported by the provided material: Zuvio Global School is established in 2026. The provided brochure documents the development of its brand foundation, 8C Philosophy™, Zuvio Compass™, Zuvio Learning Advantage™ and Zuvio Learning Model™.
+Affiliations / academic partnerships: The website requirements state that Zuvio Global School collaborates with Oxford and IAO, strengthening its commitment to globally benchmarked learning, academic excellence and international standards.
+Certifications: No specific certification is identified in the provided PDFs.
+Awards & recognitions: No specific award or recognition is identified in the provided PDFs.
+Source: Zuvio E Brochure, pp. 6–19; Zuvio Global School Requirements, Home and About sections
+For each person:
+Full Name
+Designation
+Qualification
+Professional experience
+Short profile / bio
+Personal message, if applicable
+Image Requirements
+Image
+Suggested File Name
+About page hero
+about-hero.webp
+School campus
+about-campus.webp
+Founder portrait
+about-founder.webp
+Director portrait
+about-director.webp
+Principal portrait
+about-principal.webp
+Academic Head portrait
+about-academic-head.webp
+Leadership team
+about-leadership-team.webp
+Old/original school photo, if available
+about-school-journey.webp
+School milestone/event
+about-milestone-01.webp
+School community image
+about-school-community.webp
+If there are multiple leadership members, please name them as:
+about-principal-name.webpAbout-director-name.webpThese images will provide in future
+LEADERSHIP DETAILS AVAILABLE FROM ZUVIO ECARD
+Pragya Jain — Co-Founder & Director. Qualification, professional experience, full bio and personal message are not stated in the provided e-card.
+Deepak Jain — Co-Founder & Director. Qualification, professional experience, full bio and personal message are not stated in the provided e-card.
+Source: ZUVIO ECARD, page 1
+
+
+3. OUR CURRICULUM
+Content Required
+Please provide:
+Board / curriculum followed
+Affiliation details
+Grades/classes offered
+Grade-wise academic structure
+Subjects offered
+Teaching methodology
+Learning approach
+Assessment methodology
+Project-based / experiential learning
+Technology integration
+STEM / AI / Robotics / Coding, if applicable
+Languages offered
+Skill development programmes
+Career counselling / university guidance
+Olympiads / competitive exam preparation, if applicable
+Special academic programmes
+CONTENT INTEGRATED FROM PROVIDED PDFS
+Board / curriculum: The e-card states “K–8 Online School | NIOS / CBSE Curriculum Aligned.”
+Grades offered: K–8.
+Academic positioning: Strong academic foundation combined with future-ready learning, global perspective, personalised growth and lifelong learning.
+Teaching methodology: The Zuvio Learning Model™ uses a continuous cycle: Discover → Understand → Apply → Collaborate → Grow → Inspire → another cycle of curiosity.
+Learning approach: Child-centred, flexible, personalised and meaningful; learning extends beyond academics to curiosity, critical thinking, creativity, communication, collaboration, real-world problem-solving, confidence, purpose and life skills.
+Assessment methodology: The brochure does not specify an assessment framework. It explicitly states that learning is not measured only by what a child remembers after a test, but also by what a child understands, creates, contributes and becomes.
+Project / experiential learning: The brochure positions learning as an experience and highlights real-world learning, application, collaboration and problem-solving. Specific project schedules or assessment rubrics are not provided.
+Technology integration: The school is positioned as an online, future-ready learning environment and the brochure references technology, AI and global connectivity as part of the educational context. Specific platform specifications are not stated in the brochure.
+STEM / AI / Robotics / Coding: Technology and AI are referenced, but the provided PDFs do not confirm specific STEM, robotics or coding programmes.
+Languages offered: Not specified in the provided PDFs.
+Skill development: Creativity, critical thinking, communication, collaboration, adaptability, confidence, character, compassion, global citizenship, future readiness and lifelong learning.
+Career counselling / university guidance: Not specified in the provided PDFs.
+Olympiads / competitive exam preparation: Not specified in the provided PDFs.
+Special academic framework: The Zuvio Learning Advantage™ and Zuvio Learning Model™ are the main named frameworks presented in the brochure.
+Source: Zuvio E Brochure, pp. 8–19; ZUVIO ECARD, page 2
+If the curriculum is divided into different stages, please provide information separately for each stage.
+For example:
+Early Years
+Primary
+Middle School
+Secondary School
+Senior Secondary
+Image Requirements
+Image
+Suggested File Name
+Curriculum page hero
+curriculum-hero.webp
+Classroom learning
+curriculum-classroom.webp
+Teacher-led learning
+curriculum-teaching.webp
+Students working on project
+curriculum-project-learning.webp
+STEM activity
+curriculum-stem.webp
+Science laboratory
+curriculum-science-lab.webp
+Computer/technology learning
+curriculum-technology.webp
+Robotics/AI activity
+curriculum-robotics-ai.webp
+Students collaborating
+curriculum-collaborative-learning.webp
+Assessment/exam activity
+curriculum-assessment.webp
+Language learning
+curriculum-language-learning.webp
+Career guidance
+curriculum-career-guidance.webp
+If different curriculum stages have dedicated imagery:
+curriculum-primary.webpcurriculum-middle-school.webpcurriculum-secondary.webpcurriculum-senior-secondary.webp
+
+4. ZUVIO BEYOND
+Please provide the complete explanation of what Zuvio Beyond represents.
+CONTENT INTEGRATED FROM ZUVIO E BROCHURE
+Overall definition: The brochure presents Zuvio as education that goes beyond textbooks and examinations, with a focus on curiosity, creativity, critical thinking, communication, collaboration, real-world learning, character and life skills.
+Zuvio Beyond positioning: “Beyond academics” can be used as the overarching experience statement for activities and learner development. The brochure supports a whole-child approach, but does not provide verified activity-by-activity programme details.
+Confirmed from source material: Technology, innovation, creativity, collaboration, projects, real-world experiences, global learning opportunities, family partnership, character development and lifelong learning are central themes.
+Activity-specific information: The provided PDFs do not give confirmed programme names, grades, frequency, achievements or schedules for sports, performing arts, music, dance, theatre, visual arts, clubs, robotics, trips, field visits, community service or competitions. These remain to be supplied separately.
+Source: Zuvio E Brochure, pp. 4–19
+Content Required
+Please provide information about:
+Sports
+Performing Arts
+Music
+Dance
+Theatre
+Visual Arts
+Clubs
+STEM / Innovation
+Robotics / Coding
+Student Leadership
+Competitions
+Educational Trips
+Field Visits
+Community Service
+Social Responsibility
+Life Skills
+Wellness
+Cultural Activities
+Student Achievements
+For each major activity/programme, please provide:
+Activity name
+Short description
+Grades applicable
+Key highlights
+Achievements
+Frequency, if relevant
+Relevant photographs/videos
+Image Requirements
+General
+Image
+Suggested File Name
+Zuvio Beyond hero
+beyond-hero.webp
+Students participating together
+beyond-student-experience.webp
+Outdoor activity
+beyond-outdoor-learning.webp
+Student leadership
+beyond-student-leadership.webp
+Sports
+beyond-sports.webpbeyond-football.webpbeyond-basketball.webpbeyond-athletics.webp
+Arts & Culture
+beyond-music.webpbeyond-dance.webpbeyond-theatre.webpbeyond-visual-arts.webp
+Clubs & Innovation
+beyond-clubs.webpbeyond-stem.webpbeyond-robotics.webpbeyond-coding.webp
+Trips & Experiences
+beyond-educational-trip.webpbeyond-field-trip.webpbeyond-experiential-learning.webp
+Community & Leadership
+beyond-community-service.webpbeyond-social-responsibility.webpbeyond-leadership.webp
+Achievements
+beyond-student-achievement-01.webpbeyond-student-achievement-02.webpbeyond-competition.webp
+
+5. BLOGS
+Content Required
+For each existing blog:
+Blog title
+Complete article
+Author name
+Author designation
+Publish date
+Category
+Featured image
+Short excerpt/summary
+Blog Image Requirements
+Each blog should ideally have one high-quality featured image.
+Please name them:
+blog-[short-title].webp
+Example:
+blog-benefits-of-experiential-learning.webp
+For multiple images inside one article:
+blog-experiential-learning-01.webpblog-experiential-learning-02.webpblog-experiential-learning-03.webp
+Recommended Blog Categories
+Education
+Parenting
+Student Life
+Curriculum
+School News
+Events
+Achievements
+Activities
+Career Guidance
+Learning & Development
+
+6. CONTACT US
+Content Required
+Please provide:
+Complete school address - in card
+Phone number(s) in card
+WhatsApp number - in card
+General email - info@zuvioglobalschool.com
+Admissions email - same 
+Office timings- 10-7 
+Admission office timings - same
+Google Maps location/link - 
+CONTACT DETAILS AVAILABLE FROM ZUVIO ECARD
+Co-Founder & Director: Pragya Jain
+Co-Founder & Director: Deepak Jain
+Phone: 7827262956
+General email: info@zuvioglobalschool.com
+Website: www.zuvioglobalschool.com
+Address: B-09, Lower Ground Floor, ITL Twin Tower, Netaji Subhash Place, Pitampura, Delhi - 110034.
+WhatsApp: The e-card displays the same phone number but does not separately label it as WhatsApp.
+Google Maps: No map link is visible in the provided e-card.
+Source: ZUVIO ECARD, page 1
+Social media links
+https://www.instagram.com/thezuvio?igsh=cmUwZGV1YWI3eXc=
+https://www.facebook.com/share/1F77iQS86d/
+https://www.linkedin.com/company/142914253/admin/dashboard/
+
+Image Requirements
+Image
+Suggested File Name
+Contact page hero
+contact-hero.webp
+School exterior
+contact-school-exterior.webp
+Reception
+contact-reception.webp
+Campus
+contact-campus.webp
+Location/map image, if required
+contact-location.webp
+
+COMMON SCHOOL IMAGE LIBRARY
+Apart from page-specific images, please provide a complete library of original school photographs.
+Campus
+campus-exterior-01.webpcampus-exterior-02.webpcampus-entrance.webpcampus-aerial.webpcampus-corridor.webpcampus-common-area.webp
+Classrooms
+classroom-01.webpclassroom-02.webpclassroom-teaching.webpclassroom-student-learning.webpclassroom-group-activity.webp
+Facilities
+facility-library.webpfacility-science-lab.webpfacility-computer-lab.webpfacility-stem-lab.webpfacility-auditorium.webpfacility-cafeteria.webpfacility-medical-room.webp
+Teachers & Leadership
+faculty-teachers-01.webpfaculty-teachers-02.webpfaculty-group.webp
+For individual faculty:
+faculty-[name].webp
+For leadership:
+leadership-[name].webp
+
+EVENTS & SCHOOL LIFE
+Please provide photographs from:
+Annual Day
+Sports Day
+Cultural Events
+Exhibitions
+Competitions
+Celebrations
+Workshops
+Seminars
+Field Trips
+Educational Trips
+Graduation
+Special Events
+Suggested naming:
+event-annual-day-2026-01.webpevent-sports-day-2026-01.webpevent-cultural-day-2026-01.webpevent-science-exhibition-2026-01.webp
+If the year is different, please use the actual year.
+
+AWARDS & RECOGNITION
+Please provide:
+Award name
+Year
+Awarding organisation
+Short description
+Certificate, if available
+Award logo/badge
+Relevant photograph
+Suggested naming:
+award-[award-name]-[year].webp
+Example:
+award-best-school-2026.webp
+Certificates/documents can be provided in PDF format.
+
+TESTIMONIALS
+For each testimonial, please provide:
+Parent/student name
+Student grade
+Testimonial
+Photograph, if available
+Permission to publish, where required
+Suggested naming:
+testimonial-parent-01.webptestimonial-parent-02.webptestimonial-student-01.webp
+
+LOGO & BRAND ASSETS
+Please provide:
+Primary logo — SVG/AI/EPS preferred
+Logo PNG
+White/reversed logo
+Brand guidelines
+Brand colours
+Official fonts
+Favicon
+Existing brochures
+Prospectus
+Presentations
+Existing marketing creatives
+Suggested naming:
+zuvio-logo.svgzuvio-logo.pngzuvio-logo-white.svgzuvio-brand-guidelines.pdfzuvio-favicon.png
+DOCUMENTS / BRAND ASSETS AVAILABLE FROM PROVIDED FILES
+Existing brochure: Zuvio E Brochure.pdf — contains brand foundation, school story, vision, mission, philosophy, core values, learning advantage and learning model.
+Existing e-card: ZUVIO ECARD.pdf — contains founder/director details, contact information and school positioning.
+Brand guideline reference: The E Brochure is titled “Brand Foundation & Identity Guide” and can serve as a current brand-content reference. Separate editable brand files, font files, SVG/AI/EPS logos and favicon are not contained in the provided PDFs.
+Source: Provided project files
+
+VIDEO ASSETS
+If available, please provide:
+School introduction video
+Campus walkthrough
+Principal/Founder message
+Student testimonials
+Parent testimonials
+Zuvio Beyond activities
+Sports videos
+Events
+School promotional film
+Suggested naming:
+video-school-introduction.mp4video-campus-tour.mp4video-principal-message.mp4video-student-testimonial-01.mp4video-parent-testimonial-01.mp4video-zuvio-beyond.mp4
+
+IMAGE QUALITY REQUIREMENTS
+Please provide original/high-resolution images wherever possible.
+Preferred:
+Original camera files
+High-resolution JPG
+PNG for transparent graphics
+WebP versions can be generated during development
+Minimum recommended width: 2000px for large website banners
+Portrait images: preferably 1200px+ width
+Avoid screenshots where possible
+Avoid WhatsApp-compressed images
+Avoid images containing visible watermarks
+We will optimise images for website performance during development.
+
+IMPORTANT: IMAGE USAGE & CONSENT
+Please confirm that Zuvio Global School has the necessary rights/permissions to use the provided:
+Student photographs
+Faculty photographs
+Parent testimonials
+Videos
+Event photographs
+Award/certificate images
+on the official school website and related digital platforms.
+
+ADMISSIONS
+Please provide:
+Admission process
+Eligibility criteria
+Grades open for admission
+Application process
+Important dates
+Required documents
+Fee information, if it is to be displayed
+Admission enquiry process
+SOURCE-BASED GAP CHECK
+Admissions process: Not provided in the supplied PDFs.
+Eligibility / grades open: K–8 is stated as the school range; grade-wise admission eligibility is not specified.
+Application process / dates / documents / fees: Not provided in the supplied PDFs.
+Admission enquiry: Use info@zuvioglobalschool.com and 7827262956 as currently available contact points, subject to confirmation.
+Source: ZUVIO ECARD and Zuvio E Brochure
+CONTENT INTEGRATION STATUS
+Filled / supplemented from PDFs: Home positioning, brand story, vision, mission, philosophy, core values, learning framework, founders, contact details, academic positioning and broad Zuvio Beyond positioning.
+Still required from school: student count, teacher count, detailed grade-wise curriculum, subjects, languages, assessment framework, specific extracurricular programme details, principal/academic-head profiles, achievements, awards, testimonials, admissions process, Google Maps link and media/photography assets.
+Preferred CTA
+
+TECHNICAL INFORMATION
+For WordPress development, we may require:
+Domain details
+Hosting details/access
+WordPress admin access
+Official email details
+Google Analytics
+Google Search Console
+Google Tag Manager
+Existing website/database details, if applicable
+Technical access can be shared separately and securely when the development phase begins.
+
+FINAL ASSET SUBMISSION
+To keep the project organised, we recommend sharing the assets in the following folder structure:
+01_Content02_Logo_Brand03_Home04_About05_Curriculum06_Zuvio_Beyond07_Blogs08_Contact09_Faculty10_Facilities11_Events12_Awards13_Testimonials14_Videos15_Documents
+Please retain the suggested file names wherever possible. This will help us identify and place the correct assets efficiently during the design and development process.
+
+Important
+The 21K School website is being used only as a reference for design direction, structure and user experience. The final Zuvio Global School website will be an original design.
+We will combine:
+Zuvio's Brand + Content + Photography + School Story + Curriculum + Zuvio Beyond + Modern UI/UX + WordPress Development
+to create one cohesive, premium and conversion-focused school website.
+
+
+SEO REQUIREMENTS
+Add the following SEO requirements to the website content and development scope. These are standard on-page, technical, image, local and social SEO elements and should be completed page-by-page before launch.
+1. SEO CONTENT REQUIRED FOR EACH PAGE
+• Primary target keyword / keyphrase
+• Secondary keywords and related search terms
+• Search intent / primary user intent
+• SEO page title
+• Meta description
+• SEO-friendly URL slug
+• One clear H1 per page
+• H2 / H3 heading structure using logical topic hierarchy
+• Unique introductory copy that clearly explains the page topic
+• Relevant body copy written for users first; avoid keyword stuffing
+• Primary CTA and supporting CTA text
+• Internal links to relevant Zuvio pages
+• External authoritative links where genuinely useful
+• Breadcrumb label / breadcrumb path
+• Canonical URL
+• Index / noindex requirement, where applicable
+2. PAGE-WISE SEO INPUTS
+Home: Define the primary keyword around Zuvio Global School / online school positioning, plus supporting terms related to future-ready, personalised and global learning. Create a unique title, meta description, H1 and homepage internal-link plan.
+About Us: Target brand, school story, educational philosophy, vision, mission and founder/leadership intent. Keep the page strongly brand-led while supporting relevant non-brand discovery terms.
+Our Curriculum: Target curriculum, CBSE / NIOS alignment, K-8 online schooling, personalised learning, future-ready learning, project-based / experiential learning and related curriculum terms, subject to final keyword research.
+Zuvio Beyond: Target extracurricular, holistic development, sports, arts, STEM, innovation, leadership, life skills and student experience topics according to the actual programmes offered.
+Blogs: Each article requires its own keyword, title, meta description, URL, H1, headings, excerpt, author information, featured-image alt text, internal links and relevant schema.
+Contact Us: Optimise for branded contact intent and relevant location / school contact searches. Include consistent NAP information, map details, contact CTAs and local/business structured data where appropriate.
+3. TECHNICAL SEO REQUIREMENTS
+• XML sitemap generated and submitted to Google Search Console
+• Robots.txt configured correctly
+• Canonical tags implemented on indexable pages
+• Correct HTTP/HTTPS canonicalisation and one preferred domain version
+• 301 redirects mapped for any changed or removed URLs
+• Custom 404 page with useful navigation and recovery links
+• No accidental noindex, nofollow or blocked resources on production pages
+• Clean, readable and consistent URL structure
+• Mobile-first responsive behaviour checked across major screen sizes
+• Core Web Vitals / page-speed optimisation for production
+• Image compression, responsive image sizes and lazy loading where appropriate
+• WebP / modern image formats where supported
+• HTTPS / SSL active site-wide
+• Open Graph tags for social sharing
+• Twitter/X card metadata where required
+• Pagination / archive indexation rules for blogs where applicable
+• Search-engine crawlability and indexation checked before launch
+• Staging environment blocked from search engines and production site verified before launch
+4. STRUCTURED DATA / SCHEMA MARKUP
+• Organization / EducationalOrganization schema for the school entity
+• WebSite schema with site name and relevant search-action markup where appropriate
+• WebPage schema for key pages
+• BreadcrumbList schema for hierarchical pages
+• Article / BlogPosting schema for individual blog posts
+• Person schema for founders / leadership profiles where appropriate
+• LocalBusiness / address-related structured data only where it accurately represents the school and its physical location
+• FAQPage schema only for genuine visible FAQs that meet search-engine guidelines
+5. IMAGE SEO REQUIREMENTS
+• Descriptive, SEO-friendly image file names
+• Unique and meaningful ALT text for informative images
+• Decorative images marked appropriately so they do not add unnecessary accessibility noise
+• Image dimensions defined for the intended placement
+• Compressed images without visible quality loss
+• Captions / surrounding contextual text where useful
+• Avoid duplicate or generic ALT text across multiple images
+6. LOCAL SEO & CONTACT DATA
+• Consistent school name, address and phone number (NAP) across the website
+• Google Maps / location details supplied and embedded where appropriate
+• Google Business Profile details, if applicable to the school and its operating model
+• Location-focused title / meta content only where genuinely relevant
+• Consistent address formatting across Contact, Footer, schema and third-party profiles
+• Social profile links kept consistent across website and external listings
+7. SEO FOR BLOGS / CONTENT MARKETING
+• Keyword/topic research before article creation
+• Search-intent-led article outline
+• Unique SEO title and meta description
+• Strong H1 plus logical H2/H3 structure
+• Short, useful URL slug
+• Author name and author profile information
+• Publish / updated date where relevant
+• Internal links to relevant programme, curriculum, about and contact pages
+• Related article links to strengthen content clusters
+• Featured image with optimised file name and ALT text
+• Article / BlogPosting schema
+• Original content; avoid thin, duplicated or AI-generated filler content
+8. SEO TRACKING & REPORTING
+• Google Search Console configured and verified
+• GA4 configured and verified
+• Google Tag Manager configured where required
+• Primary website conversions tracked: admission enquiry, contact form, call click, WhatsApp click, email click and other approved CTAs
+• Organic landing pages and conversion paths monitored
+• Search queries, impressions, clicks and ranking trends monitored after launch
+• SEO health / crawl issues reviewed periodically
+9. SEO QA CHECK BEFORE LAUNCH
+• Every important indexable page has a unique SEO title and meta description
+• Every important page has one clear H1 and logical heading hierarchy
+• No duplicate / placeholder page titles or metadata
+• URLs, canonicals, redirects and indexation rules checked
+• Internal links and navigation checked for broken paths
+• Images have appropriate file names and ALT text
+• Schema validated without critical errors
+• XML sitemap and robots.txt checked
+• Google Search Console coverage / indexing checked after deployment
+• Mobile usability, page speed and Core Web Vitals reviewed
+• Social preview cards checked for key pages
+• Final content proofread and factual claims approved by Zuvio
+SEO CONTENT TO BE PROVIDED / CONFIRMED BY ZUVIO
+• Priority SEO keywords / preferred search terms, if already defined
+• Approved school name, brand variations and preferred wording for search visibility
+• Confirmed admission / programme terminology
+• Final Google Maps URL / location details
+• Google Business Profile URL or confirmation that one exists
+• Any existing SEO titles, meta descriptions, rankings or keyword reports, if available
+• Approved FAQ content, if FAQs are to be published
