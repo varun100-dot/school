@@ -17,8 +17,9 @@ export default function About() {
     });
   }, []);
 
-  const storySec = aboutData.sections.find(s => s.section_key === 'our_story') || {};
-  const visionSec = aboutData.sections.find(s => s.section_key === 'vision_mission') || {};
+  const sections = aboutData?.sections || [];
+  const storySec = sections.find(s => s.section_key === 'our_story') || {};
+  const visionSec = sections.find(s => s.section_key === 'vision_mission') || {};
 
   return (
     <div>
@@ -175,7 +176,7 @@ export default function About() {
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 400px))', gap: '3rem', justifyContent: 'center' }}>
-            {aboutData.leadership.map((person, idx) => (
+            {(aboutData?.leadership || []).map((person, idx) => (
               <div key={idx} style={{
                 backgroundColor: '#FFFFFF',
                 borderRadius: 'var(--radius-lg)',

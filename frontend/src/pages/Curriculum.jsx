@@ -121,7 +121,7 @@ export default function Curriculum() {
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}>
-            {stages.map((stage, idx) => (
+            {(stages || []).map((stage, idx) => (
               <div key={idx} style={{
                 backgroundColor: '#FFFFFF',
                 borderRadius: 'var(--radius-lg)',
@@ -135,7 +135,7 @@ export default function Curriculum() {
                 </div>
                 
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1.5rem' }}>
-                  {stage.items.map((item, itemIdx) => (
+                  {(stage?.items || []).map((item, itemIdx) => (
                     <div key={itemIdx} style={{
                       backgroundColor: 'var(--color-bg)',
                       padding: '1.5rem',

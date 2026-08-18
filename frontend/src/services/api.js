@@ -43,11 +43,11 @@ export async function getNavigation() {
   } catch (err) {
     return [
       { label: 'Home', url: '/' },
-      { label: 'About Us', url: '/about' },
-      { label: 'Our Curriculum', url: '/curriculum' },
+      { label: 'About Us', url: '/about-us' },
+      { label: 'Our Curriculum', url: '/our-curriculum' },
       { label: 'Zuvio Beyond', url: '/zuvio-beyond' },
       { label: 'Blogs', url: '/blogs' },
-      { label: 'Contact Us', url: '/contact' }
+      { label: 'Contact Us', url: '/contact-us' }
     ];
   }
 }

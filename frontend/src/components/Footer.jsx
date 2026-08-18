@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Mail, Phone, MapPin, Clock, Instagram, Facebook, Linkedin, BookOpen } from 'lucide-react';
+import { Mail, Phone, MapPin, Clock, Instagram, Facebook, Linkedin } from 'lucide-react';
 import { getSiteSettings } from '../services/api';
 
 export default function Footer() {
@@ -12,11 +12,11 @@ export default function Footer() {
 
   return (
     <footer style={{
-      backgroundColor: 'var(--color-navy)',
-      color: '#FFFFFF',
+      backgroundColor: 'var(--color-light-bg)',
+      color: 'var(--color-text)',
       padding: '5rem 2rem 2rem 2rem',
       fontFamily: 'var(--font-secondary)',
-      borderTop: '4px solid var(--color-gold)'
+      borderTop: '1px solid var(--color-border)'
     }}>
       <div style={{
         maxWidth: 'var(--max-width)',
@@ -29,8 +29,12 @@ export default function Footer() {
         
         {/* Column 1: School Identity */}
         <div>
-          <div style={{ marginBottom: '1.5rem', height: '60px', display: 'flex', alignItems: 'center' }}>
-            <img src="/assets/images/logo-emblem.png" alt="Zuvio Global School emblem" style={{ height: '100%', width: 'auto', objectFit: 'contain' }} />
+          <div style={{ marginBottom: '1.5rem', height: '48px', display: 'flex', alignItems: 'center' }}>
+            <img 
+              src="/assets/images/logo.png" 
+              alt="Zuvio Global School" 
+              style={{ height: '100%', width: 'auto', objectFit: 'contain' }} 
+            />
           </div>
           <p style={{ color: 'var(--color-muted)', fontSize: '0.9rem', lineHeight: '1.7', marginBottom: '1.5rem' }}>
             A future-ready online school where academic excellence meets personalised learning. 
@@ -38,17 +42,17 @@ export default function Footer() {
           </p>
           <div style={{ display: 'flex', gap: '1rem' }}>
             {settings.social_instagram && (
-              <a href={settings.social_instagram} target="_blank" rel="noreferrer" style={{ color: '#FFFFFF', opacity: 0.8 }} aria-label="Zuvio Instagram">
+              <a href={settings.social_instagram} target="_blank" rel="noreferrer" style={{ color: 'var(--color-navy)', opacity: 0.8, transition: 'color 0.2s' }} onMouseEnter={e => e.currentTarget.style.color = 'var(--color-gold)'} onMouseLeave={e => e.currentTarget.style.color = 'var(--color-navy)'} aria-label="Zuvio Instagram">
                 <Instagram size={20} />
               </a>
             )}
             {settings.social_facebook && (
-              <a href={settings.social_facebook} target="_blank" rel="noreferrer" style={{ color: '#FFFFFF', opacity: 0.8 }} aria-label="Zuvio Facebook">
+              <a href={settings.social_facebook} target="_blank" rel="noreferrer" style={{ color: 'var(--color-navy)', opacity: 0.8, transition: 'color 0.2s' }} onMouseEnter={e => e.currentTarget.style.color = 'var(--color-gold)'} onMouseLeave={e => e.currentTarget.style.color = 'var(--color-navy)'} aria-label="Zuvio Facebook">
                 <Facebook size={20} />
               </a>
             )}
             {settings.social_linkedin && (
-              <a href={settings.social_linkedin} target="_blank" rel="noreferrer" style={{ color: '#FFFFFF', opacity: 0.8 }} aria-label="Zuvio LinkedIn">
+              <a href={settings.social_linkedin} target="_blank" rel="noreferrer" style={{ color: 'var(--color-navy)', opacity: 0.8, transition: 'color 0.2s' }} onMouseEnter={e => e.currentTarget.style.color = 'var(--color-gold)'} onMouseLeave={e => e.currentTarget.style.color = 'var(--color-navy)'} aria-label="Zuvio LinkedIn">
                 <Linkedin size={20} />
               </a>
             )}
@@ -57,32 +61,32 @@ export default function Footer() {
 
         {/* Column 2: Navigation links */}
         <div>
-          <h3 style={{ fontSize: '1.1rem', marginBottom: '1.5rem', fontFamily: 'var(--font-primary)', color: 'var(--color-gold)' }}>Quick Links</h3>
+          <h3 style={{ fontSize: '1.1rem', marginBottom: '1.5rem', fontFamily: 'var(--font-primary)', color: 'var(--color-navy)', borderBottom: '2px solid var(--color-gold)', display: 'inline-block', paddingBottom: '4px' }}>Quick Links</h3>
           <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.8rem', fontSize: '0.9rem' }}>
-            <li><Link to="/" style={{ opacity: 0.85 }}>Home</Link></li>
-            <li><Link to="/about" style={{ opacity: 0.85 }}>About Us</Link></li>
-            <li><Link to="/curriculum" style={{ opacity: 0.85 }}>Our Curriculum</Link></li>
-            <li><Link to="/zuvio-beyond" style={{ opacity: 0.85 }}>Zuvio Beyond</Link></li>
-            <li><Link to="/blogs" style={{ opacity: 0.85 }}>Blogs</Link></li>
-            <li><Link to="/contact" style={{ opacity: 0.85 }}>Contact Us</Link></li>
+            <li><Link to="/" style={{ color: 'var(--color-navy)', fontWeight: 500, transition: 'color 0.2s' }} onMouseEnter={e => e.target.style.color = 'var(--color-gold)'} onMouseLeave={e => e.target.style.color = 'var(--color-navy)'}>Home</Link></li>
+            <li><Link to="/about-us" style={{ color: 'var(--color-navy)', fontWeight: 500, transition: 'color 0.2s' }} onMouseEnter={e => e.target.style.color = 'var(--color-gold)'} onMouseLeave={e => e.target.style.color = 'var(--color-navy)'}>About Us</Link></li>
+            <li><Link to="/our-curriculum" style={{ color: 'var(--color-navy)', fontWeight: 500, transition: 'color 0.2s' }} onMouseEnter={e => e.target.style.color = 'var(--color-gold)'} onMouseLeave={e => e.target.style.color = 'var(--color-navy)'}>Our Curriculum</Link></li>
+            <li><Link to="/zuvio-beyond" style={{ color: 'var(--color-navy)', fontWeight: 500, transition: 'color 0.2s' }} onMouseEnter={e => e.target.style.color = 'var(--color-gold)'} onMouseLeave={e => e.target.style.color = 'var(--color-navy)'}>Zuvio Beyond</Link></li>
+            <li><Link to="/blogs" style={{ color: 'var(--color-navy)', fontWeight: 500, transition: 'color 0.2s' }} onMouseEnter={e => e.target.style.color = 'var(--color-gold)'} onMouseLeave={e => e.target.style.color = 'var(--color-navy)'}>Blogs</Link></li>
+            <li><Link to="/contact-us" style={{ color: 'var(--color-navy)', fontWeight: 500, transition: 'color 0.2s' }} onMouseEnter={e => e.target.style.color = 'var(--color-gold)'} onMouseLeave={e => e.target.style.color = 'var(--color-navy)'}>Contact Us</Link></li>
           </ul>
         </div>
 
         {/* Column 3: Address & Info */}
         <div>
-          <h3 style={{ fontSize: '1.1rem', marginBottom: '1.5rem', fontFamily: 'var(--font-primary)', color: 'var(--color-gold)' }}>Contact Details</h3>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', fontSize: '0.9rem', color: '#E2E8F0' }}>
+          <h3 style={{ fontSize: '1.1rem', marginBottom: '1.5rem', fontFamily: 'var(--font-primary)', color: 'var(--color-navy)', borderBottom: '2px solid var(--color-gold)', display: 'inline-block', paddingBottom: '4px' }}>Contact Details</h3>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', fontSize: '0.9rem', color: 'var(--color-text)' }}>
             <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'flex-start' }}>
               <MapPin size={18} style={{ color: 'var(--color-gold)', flexShrink: 0 }} />
               <span>{settings.address}</span>
             </div>
             <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
               <Phone size={18} style={{ color: 'var(--color-gold)' }} />
-              <a href={`tel:${settings.phone}`} style={{ color: '#E2E8F0', textDecoration: 'none', transition: 'color 0.2s' }} onMouseEnter={e => e.target.style.color = 'var(--color-gold)'} onMouseLeave={e => e.target.style.color = '#E2E8F0'}>{settings.phone}</a>
+              <a href={`tel:${settings.phone}`} style={{ color: 'var(--color-navy)', fontWeight: 500, textDecoration: 'none', transition: 'color 0.2s' }} onMouseEnter={e => e.target.style.color = 'var(--color-gold)'} onMouseLeave={e => e.target.style.color = 'var(--color-navy)'}>{settings.phone}</a>
             </div>
             <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
               <Mail size={18} style={{ color: 'var(--color-gold)' }} />
-              <a href={`mailto:${settings.general_email}`} style={{ color: '#E2E8F0', textDecoration: 'none', transition: 'color 0.2s' }} onMouseEnter={e => e.target.style.color = 'var(--color-gold)'} onMouseLeave={e => e.target.style.color = '#E2E8F0'}>{settings.general_email}</a>
+              <a href={`mailto:${settings.general_email}`} style={{ color: 'var(--color-navy)', fontWeight: 500, textDecoration: 'none', transition: 'color 0.2s' }} onMouseEnter={e => e.target.style.color = 'var(--color-gold)'} onMouseLeave={e => e.target.style.color = 'var(--color-navy)'}>{settings.general_email}</a>
             </div>
             <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
               <Clock size={18} style={{ color: 'var(--color-gold)' }} />
@@ -96,13 +100,13 @@ export default function Footer() {
       <div style={{
         maxWidth: 'var(--max-width)',
         margin: '0 auto',
-        borderTop: '1px solid rgba(226, 232, 240, 0.1)',
+        borderTop: '1px solid var(--color-border)',
         paddingTop: '2rem',
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
         fontSize: '0.8rem',
-        color: '#94A3B8',
+        color: 'var(--color-muted)',
         flexWrap: 'wrap',
         gap: '1rem'
       }}>

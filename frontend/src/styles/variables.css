@@ -3,27 +3,29 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap');
 
 :root {
-  /* Official Zuvio Brand Palette */
-  --zuvio-navy: #01255C;
+  /* Official Zuvio Brand Palette (Refined) */
+  --zuvio-navy: #062B63;
   --zuvio-deep-navy: #000A42;
-  --zuvio-teal-deep: #073958;
-  --zuvio-teal: #1C808F;
-  --zuvio-gold: #E5B44C;
-  --zuvio-gold-bright: #F6D03E;
+  --zuvio-royal: #0B2F6B;
+  --zuvio-teal: #0099A8;
+  --zuvio-gold: #D9A441;
+  --zuvio-gold-bright: #E5B94A;
   --zuvio-white: #FFFFFF;
+  --zuvio-light-bg: #F7F9FC;
 
   /* Theme Mapping */
   --color-navy: var(--zuvio-navy);
   --color-navy-dark: var(--zuvio-deep-navy);
-  --color-teal-deep: var(--zuvio-teal-deep);
+  --color-royal: var(--zuvio-royal);
   --color-teal: var(--zuvio-teal);
   --color-gold: var(--zuvio-gold);
-  --color-gold-hover: #CFA03E;
+  --color-gold-hover: #C59132;
   --color-gold-bright: var(--zuvio-gold-bright);
   --color-bg: var(--zuvio-white);
   --color-white: var(--zuvio-white);
+  --color-light-bg: var(--zuvio-light-bg);
   
-  /* Text and Borders (Replaces #64748B, #E2E8F0, #1E293B) */
+  /* Text and Borders */
   --color-text: #0E1E38;
   --color-muted: #5C6E8C;
   --color-border: #E1E8F0;
@@ -46,9 +48,9 @@
   --transition-normal: 0.3s ease;
 
   /* Shadows */
-  --shadow-sm: 0 1px 3px rgba(1, 37, 92, 0.08);
-  --shadow-md: 0 4px 6px -1px rgba(1, 37, 92, 0.1), 0 2px 4px -1px rgba(1, 37, 92, 0.06);
-  --shadow-lg: 0 10px 15px -3px rgba(1, 37, 92, 0.1), 0 4px 6px -2px rgba(1, 37, 92, 0.05);
+  --shadow-sm: 0 1px 3px rgba(6, 43, 99, 0.08);
+  --shadow-md: 0 4px 6px -1px rgba(6, 43, 99, 0.1), 0 2px 4px -1px rgba(6, 43, 99, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(6, 43, 99, 0.1), 0 4px 6px -2px rgba(6, 43, 99, 0.05);
 }
 
 * {

@@ -87,24 +87,26 @@ export default function Header() {
           })}
           
           <Link 
-            to="/contact" 
+            to="/contact-us" 
             className="btn" 
             style={{ 
               padding: '0.6rem 1.4rem', 
               fontSize: '0.85rem',
-              fontWeight: 600,
-              backgroundColor: 'var(--color-navy)',
-              color: '#FFFFFF',
-              border: '1.5px solid var(--color-navy)',
+              fontWeight: 700,
+              backgroundColor: 'var(--color-gold)',
+              color: 'var(--color-navy-dark)',
+              border: '1.5px solid var(--color-gold)',
               transition: 'all 0.2s ease'
             }}
             onMouseEnter={(e) => {
-              e.target.style.backgroundColor = 'var(--color-gold)';
-              e.target.style.borderColor = 'var(--color-gold)';
+              e.target.style.backgroundColor = 'var(--color-navy-dark)';
+              e.target.style.borderColor = 'var(--color-navy-dark)';
+              e.target.style.color = '#FFFFFF';
             }}
             onMouseLeave={(e) => {
-              e.target.style.backgroundColor = 'var(--color-navy)';
-              e.target.style.borderColor = 'var(--color-navy)';
+              e.target.style.backgroundColor = 'var(--color-gold)';
+              e.target.style.borderColor = 'var(--color-gold)';
+              e.target.style.color = 'var(--color-navy-dark)';
             }}
           >
             Enquire Now
@@ -161,15 +163,16 @@ export default function Header() {
             </Link>
           ))}
           <Link 
-            to="/contact" 
+            to="/contact-us" 
             className="btn" 
             style={{ 
               padding: '0.8rem', 
               textAlign: 'center', 
               marginTop: '1rem',
-              backgroundColor: 'var(--color-navy)',
-              color: '#FFFFFF',
-              fontWeight: 600
+              backgroundColor: 'var(--color-gold)',
+              color: 'var(--color-navy-dark)',
+              fontWeight: 700,
+              border: '1.5px solid var(--color-gold)'
             }}
           >
             Enquire Now
