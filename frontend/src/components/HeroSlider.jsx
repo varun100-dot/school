@@ -1,11 +1,25 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Loader2, CheckCircle2, AlertTriangle } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { submitEnquiry } from '../services/api';
+import FloatingBubbles from './FloatingBubbles';
 
 export default function HeroSlider({ slides }) {
   const [current, setCurrent] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const autoPlayRef = useRef();
+
+  // Hero Enquiry Form state
+  const [formData, setFormData] = useState({
+    parent_name: '',
+    email: '',
+    phone: '',
+    grade: '',
+    message: ''
+  });
+  const [errors, setErrors] = useState({});
+  const [formStatus, setFormStatus] = useState('idle'); // idle, submitting, success, error
+  const [errorMessage, setErrorMessage] = useState('');
 
   const nextSlide = () => {
     setCurrent((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
@@ -33,27 +47,77 @@ export default function HeroSlider({ slides }) {
     };
   }, [isPaused, current, slides]);
 
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    if (errors[name]) {
+      setErrors((prev) => ({ ...prev, [name]: '' }));
+    }
+  };
+
+  const validateForm = () => {
+    const tempErrors = {};
+    if (!formData.parent_name.trim()) tempErrors.parent_name = 'Required';
+    if (!formData.email.trim()) {
+      tempErrors.email = 'Required';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      tempErrors.email = 'Invalid';
+    }
+    if (!formData.phone.trim()) {
+      tempErrors.phone = 'Required';
+    } else if (formData.phone.length < 8) {
+      tempErrors.phone = 'Invalid';
+    }
+    if (!formData.grade) tempErrors.grade = 'Required';
+    setErrors(tempErrors);
+    return Object.keys(tempErrors).length === 0;
+  };
+
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+    if (!validateForm()) return;
+
+    setFormStatus('submitting');
+    setErrorMessage('');
+
+    try {
+      const res = await submitEnquiry({
+        parent_name: formData.parent_name,
+        student_name: formData.parent_name + ' (Student)',
+        email: formData.email,
+        phone: formData.phone,
+        grade: formData.grade,
+        message: formData.message || 'Submitted via Hero Banner'
+      });
+      if (res && res.message && res.message.includes('Mock')) {
+        setFormStatus('error');
+        setErrorMessage('Database connection required. Form could not be persisted.');
+      } else {
+        setFormStatus('success');
+        setFormData({ parent_name: '', email: '', phone: '', grade: '', message: '' });
+      }
+    } catch (err) {
+      setFormStatus('error');
+      setErrorMessage(err.message || 'Database connection required.');
+    }
+  };
+
   if (!slides || slides.length === 0) return null;
 
   return (
     <section 
-      style={{
-        position: 'relative',
-        height: '80vh',
-        minHeight: '600px',
-        overflow: 'hidden',
-        backgroundColor: '#000A42',
-        fontFamily: 'var(--font-secondary)'
-      }}
+      className="hero-container"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
       onFocus={() => setIsPaused(true)}
       onBlur={() => setIsPaused(false)}
     >
-      {/* Slides */}
+      {/* Floating Bubbles Background (Layer 1) */}
+      <FloatingBubbles />
+
+      {/* Slides (Layer 2) */}
       {slides.map((slide, index) => {
         const isActive = index === current;
-        // Robust URI space escaping for local filenames with spaces
         const safeImageUrl = slide.image ? slide.image.replace(/ /g, '%20') : '';
 
         return (
@@ -72,7 +136,7 @@ export default function HeroSlider({ slides }) {
               alignItems: 'center'
             }}
           >
-            {/* Full-bleed Background image */}
+            {/* Background image */}
             <div
               style={{
                 position: 'absolute',
@@ -88,7 +152,7 @@ export default function HeroSlider({ slides }) {
               className={isActive ? 'scale-zoom' : ''}
             />
 
-            {/* Premium Left-to-Right Dark Gradient Overlay (helps contrast without muddying the image) */}
+            {/* Dark Gradient Overlay */}
             <div
               style={{
                 position: 'absolute',
@@ -96,25 +160,14 @@ export default function HeroSlider({ slides }) {
                 left: 0,
                 width: '100%',
                 height: '100%',
-                background: 'linear-gradient(to right, rgba(0, 10, 66, 0.92) 0%, rgba(0, 10, 66, 0.75) 45%, rgba(0, 10, 66, 0.25) 100%)',
+                background: 'linear-gradient(to right, rgba(0, 10, 66, 0.95) 0%, rgba(0, 10, 66, 0.8) 50%, rgba(0, 10, 66, 0.3) 100%)',
                 zIndex: 1
               }}
             />
 
-            {/* Slide Content Box */}
-            <div style={{
-              position: 'relative',
-              zIndex: 2,
-              width: '100%',
-              maxWidth: 'var(--max-width)',
-              margin: '0 auto',
-              padding: '0 3rem',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center',
-              height: '100%'
-            }}>
-              <div style={{ maxWidth: '650px', textAlign: 'left' }} className="hero-content">
+            {/* Responsive Split Layout */}
+            <div className="hero-split-grid" style={{ zIndex: 2 }}>
+              <div className="hero-content">
                 {slide.subtitle && (
                   <span style={{
                     fontSize: '0.85rem',
@@ -130,7 +183,7 @@ export default function HeroSlider({ slides }) {
                 )}
                 
                 <h1 style={{
-                  fontSize: '3.75rem',
+                  fontSize: '3.5rem',
                   fontFamily: 'var(--font-primary)',
                   fontWeight: 700,
                   color: '#FFFFFF',
@@ -142,16 +195,16 @@ export default function HeroSlider({ slides }) {
                 </h1>
                 
                 <p style={{
-                  fontSize: '1.15rem',
+                  fontSize: '1.1rem',
                   color: '#E2E8F0',
-                  lineHeight: '1.7',
+                  lineHeight: '1.6',
                   marginBottom: '2.5rem',
                   fontWeight: 400
-                }}>
+                }} className="hero-description">
                   {slide.description}
                 </p>
 
-                <div style={{ display: 'flex', gap: '1.25rem' }}>
+                <div className="hero-btn-row" style={{ display: 'flex', gap: '1.25rem' }}>
                   {slide.primary_cta_text && (
                     <Link to={slide.primary_cta_url || '/'} className="btn btn-primary" style={{ padding: '0.9rem 2.25rem' }}>
                       {slide.primary_cta_text}
@@ -164,10 +217,199 @@ export default function HeroSlider({ slides }) {
                   )}
                 </div>
               </div>
+
+              {/* Grid spacer on desktop to make room for the overlay form */}
+              <div className="hero-form-spacer" />
             </div>
           </div>
         );
       })}
+
+      {/* Absolute Form Overlay (Layer 3) */}
+      <div className="hero-absolute-form">
+        <div style={{
+          backgroundColor: 'rgba(255, 255, 255, 0.96)',
+          border: '1px solid rgba(255, 255, 255, 0.35)',
+          borderTop: '4px solid var(--color-gold)',
+          borderRadius: '14px',
+          boxShadow: '0 20px 45px rgba(0, 0, 0, 0.18)',
+          padding: '1.75rem',
+          color: 'var(--color-navy)',
+          width: '100%',
+          maxWidth: '400px'
+        }}>
+          {formStatus === 'success' ? (
+            <div style={{ textAlign: 'center', padding: '1.5rem 0' }}>
+              <CheckCircle2 size={36} style={{ color: 'var(--color-success)', marginBottom: '1rem' }} />
+              <h3 style={{ fontSize: '1.25rem', marginBottom: '0.5rem', fontFamily: 'var(--font-primary)' }}>Enquiry Received</h3>
+              <p style={{ fontSize: '0.85rem', color: 'var(--color-muted)' }}>
+                Thank you. We will get in touch with you shortly to plan your child's roadmap.
+              </p>
+            </div>
+          ) : (
+            <form onSubmit={handleFormSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
+              <div style={{ marginBottom: '0.25rem' }}>
+                <h3 style={{ fontSize: '1.35rem', fontFamily: 'var(--font-primary)', color: 'var(--color-navy)', margin: 0 }}>Enquire Now</h3>
+                <p style={{ fontSize: '0.75rem', color: 'var(--color-muted)', margin: '0.2rem 0 0 0' }}>
+                  Take the first step towards your child's learning journey.
+                </p>
+              </div>
+
+              {formStatus === 'error' && (
+                <div style={{
+                  display: 'flex',
+                  gap: '0.5rem',
+                  backgroundColor: '#FDF2F8',
+                  border: '1px solid #FBCFE8',
+                  padding: '0.5rem 0.75rem',
+                  borderRadius: 'var(--radius-sm)',
+                  color: '#C084FC',
+                  fontSize: '0.75rem'
+                }}>
+                  <AlertTriangle size={14} style={{ flexShrink: 0, marginTop: '2px' }} />
+                  <span>{errorMessage}</span>
+                </div>
+              )}
+
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem' }}>
+                <div>
+                  <input
+                    type="text"
+                    name="parent_name"
+                    placeholder="Parent Name"
+                    value={formData.parent_name}
+                    onChange={handleInputChange}
+                    className="hero-input"
+                    style={{
+                      width: '100%',
+                      padding: '0.5rem 0.75rem',
+                      border: errors.parent_name ? '1px solid #D946EF' : '1px solid rgba(6, 43, 99, 0.2)',
+                      borderRadius: 'var(--radius-sm)',
+                      fontSize: '0.85rem',
+                      outline: 'none',
+                      backgroundColor: '#FFFFFF',
+                      transition: 'border-color 0.2s'
+                    }}
+                  />
+                </div>
+                <div>
+                  <input
+                    type="email"
+                    name="email"
+                    placeholder="Email Address"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    className="hero-input"
+                    style={{
+                      width: '100%',
+                      padding: '0.5rem 0.75rem',
+                      border: errors.email ? '1px solid #D946EF' : '1px solid rgba(6, 43, 99, 0.2)',
+                      borderRadius: 'var(--radius-sm)',
+                      fontSize: '0.85rem',
+                      outline: 'none',
+                      backgroundColor: '#FFFFFF',
+                      transition: 'border-color 0.2s'
+                    }}
+                  />
+                </div>
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: '0.5rem' }}>
+                <div>
+                  <input
+                    type="tel"
+                    name="phone"
+                    placeholder="Phone Number"
+                    value={formData.phone}
+                    onChange={handleInputChange}
+                    className="hero-input"
+                    style={{
+                      width: '100%',
+                      padding: '0.5rem 0.75rem',
+                      border: errors.phone ? '1px solid #D946EF' : '1px solid rgba(6, 43, 99, 0.2)',
+                      borderRadius: 'var(--radius-sm)',
+                      fontSize: '0.85rem',
+                      outline: 'none',
+                      backgroundColor: '#FFFFFF',
+                      transition: 'border-color 0.2s'
+                    }}
+                  />
+                </div>
+                <div>
+                  <select
+                    name="grade"
+                    value={formData.grade}
+                    onChange={handleInputChange}
+                    className="hero-input"
+                    style={{
+                      width: '100%',
+                      padding: '0.5rem 0.75rem',
+                      border: errors.grade ? '1px solid #D946EF' : '1px solid rgba(6, 43, 99, 0.2)',
+                      borderRadius: 'var(--radius-sm)',
+                      fontSize: '0.85rem',
+                      outline: 'none',
+                      backgroundColor: '#FFFFFF',
+                      transition: 'border-color 0.2s'
+                    }}
+                  >
+                    <option value="">Grade</option>
+                    <option value="Early Years">Early Years</option>
+                    <option value="Primary (1-5)">Grades 1-5</option>
+                    <option value="Middle School (6-8)">Grades 6-8</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <textarea
+                  name="message"
+                  placeholder="Message / Question (Optional)"
+                  rows={2}
+                  value={formData.message}
+                  onChange={handleInputChange}
+                  className="hero-input"
+                  style={{
+                    width: '100%',
+                    padding: '0.5rem 0.75rem',
+                    border: '1px solid rgba(6, 43, 99, 0.2)',
+                    borderRadius: 'var(--radius-sm)',
+                    fontSize: '0.85rem',
+                    outline: 'none',
+                    backgroundColor: '#FFFFFF',
+                    resize: 'none',
+                    transition: 'border-color 0.2s'
+                  }}
+                />
+              </div>
+
+              <button
+                type="submit"
+                disabled={formStatus === 'submitting'}
+                className="btn btn-primary"
+                style={{
+                  width: '100%',
+                  padding: '0.75rem',
+                  fontSize: '0.9rem',
+                  marginTop: '0.2rem',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  gap: '0.5rem'
+                }}
+              >
+                {formStatus === 'submitting' ? (
+                  <>
+                    <Loader2 size={16} className="spin-anim" />
+                    <span>Submitting...</span>
+                  </>
+                ) : (
+                  <span>Submit Enquiry</span>
+                )}
+              </button>
+            </form>
+          )}
+        </div>
+      </div>
 
       {/* Navigation Arrows */}
       <button
@@ -217,7 +459,7 @@ export default function HeroSlider({ slides }) {
       </button>
 
       {/* Slide Indicators */}
-      <div style={{
+      <div className="hero-indicators" style={{
         position: 'absolute',
         right: '3rem',
         bottom: '2.5rem',
@@ -251,14 +493,86 @@ export default function HeroSlider({ slides }) {
         .scale-zoom {
           animation: zoom 6s forwards;
         }
+        .hero-container {
+          position: relative;
+          height: 80vh;
+          min-height: 620px;
+          overflow: hidden;
+          background-color: #000A42;
+        }
+        .hero-split-grid {
+          display: grid;
+          grid-template-columns: 1.2fr 0.8fr;
+          gap: 4rem;
+          align-items: center;
+          height: 100%;
+          position: relative;
+          z-index: 10;
+          max-width: var(--max-width);
+          margin: 0 auto;
+          padding: 0 3rem;
+          width: 100%;
+        }
+        .hero-absolute-form {
+          position: absolute;
+          right: calc((100vw - var(--max-width)) / 2 + 3rem);
+          top: 50%;
+          transform: translateY(-50%);
+          z-index: 20;
+        }
+        .hero-input:focus {
+          border-color: var(--color-navy) !important;
+          box-shadow: 0 0 0 2px rgba(6, 43, 99, 0.08);
+        }
+        @media (max-width: 1280px) {
+          .hero-absolute-form {
+            right: 3rem;
+          }
+        }
+        @media (max-width: 1024px) {
+          .hero-container {
+            height: auto;
+            min-height: auto;
+            display: flex;
+            flex-direction: column;
+          }
+          .hero-split-grid {
+            grid-template-columns: 1fr;
+            gap: 2.5rem;
+            padding: 5rem 2rem;
+            height: auto;
+          }
+          .hero-absolute-form {
+            position: relative;
+            right: auto;
+            top: auto;
+            transform: none;
+            margin: 0 auto 4rem auto;
+            max-width: 480px;
+            width: calc(100% - 4rem);
+            display: flex;
+            justify-content: center;
+          }
+          .hero-form-spacer {
+            display: none;
+          }
+          .hero-indicators {
+            display: none !important;
+          }
+        }
         @media (max-width: 768px) {
           .hero-title {
             font-size: 2.5rem !important;
           }
+          .hero-description {
+            font-size: 1rem !important;
+          }
           .hero-content {
             text-align: center !important;
             margin: 0 auto !important;
-            padding-bottom: 4rem;
+          }
+          .hero-btn-row {
+            justify-content: center;
           }
         }
       `}</style>

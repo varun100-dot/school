@@ -3,6 +3,7 @@ import { getAboutData } from '../services/api';
 import SEO from '../components/SEO';
 import { Award, Compass, Eye, Target, Users } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import FloatingBubbles from '../components/FloatingBubbles';
 
 export default function About() {
   const [aboutData, setAboutData] = useState({ sections: [], timeline: [], leadership: [] });
@@ -213,8 +214,9 @@ export default function About() {
       </section>
 
       {/* CTA Section */}
-      <section className="section" style={{ backgroundColor: 'var(--color-navy-dark)', color: '#FFFFFF', textAlign: 'center', padding: '6rem 2rem' }}>
-        <div className="container" style={{ maxWidth: '600px' }}>
+      <section className="section" style={{ position: 'relative', backgroundColor: 'var(--color-navy-dark)', color: '#FFFFFF', textAlign: 'center', padding: '6rem 2rem', overflow: 'hidden' }}>
+        <FloatingBubbles />
+        <div className="container" style={{ position: 'relative', zIndex: 2, maxWidth: '600px' }}>
           <h2 style={{ fontSize: '2.5rem', fontFamily: 'var(--font-primary)', color: '#FFFFFF', marginBottom: '1.5rem' }}>Empower Your Child Today</h2>
           <p style={{ fontSize: '1.05rem', color: '#E2E8F0', marginBottom: '2.5rem', lineHeight: '1.6' }}>
             Get in touch to learn more about our CBSE aligned, child-centered digital education modules.

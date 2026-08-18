@@ -3,6 +3,7 @@ import { getBeyondData } from '../services/api';
 import SEO from '../components/SEO';
 import { Compass, Music, Shield, Trophy, LayoutGrid, CheckCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import FloatingBubbles from '../components/FloatingBubbles';
 
 export default function Beyond() {
   const [beyondData, setBeyondData] = useState({ sections: [], gallery: [] });
@@ -176,8 +177,9 @@ export default function Beyond() {
       </section>
 
       {/* CTA Section */}
-      <section className="section" style={{ backgroundColor: 'var(--color-navy-dark)', color: '#FFFFFF', textAlign: 'center', padding: '6rem 2rem' }}>
-        <div className="container" style={{ maxWidth: '600px' }}>
+      <section className="section" style={{ position: 'relative', backgroundColor: 'var(--color-navy-dark)', color: '#FFFFFF', textAlign: 'center', padding: '6rem 2rem', overflow: 'hidden' }}>
+        <FloatingBubbles />
+        <div className="container" style={{ position: 'relative', zIndex: 2, maxWidth: '600px' }}>
           <h2 style={{ fontSize: '2.5rem', fontFamily: 'var(--font-primary)', color: '#FFFFFF', marginBottom: '1.5rem' }}>Want to Know More?</h2>
           <p style={{ fontSize: '1.05rem', color: '#E2E8F0', marginBottom: '2.5rem', lineHeight: '1.6' }}>
             Connect with our team to discuss program details for each grade stage.

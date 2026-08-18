@@ -4,6 +4,7 @@ import { getHeroSlides, getHomepageData, getBlogs } from '../services/api';
 import HeroSlider from '../components/HeroSlider';
 import SEO from '../components/SEO';
 import SafeImage from '../components/SafeImage';
+import FloatingBubbles from '../components/FloatingBubbles';
 import { ArrowRight, BookOpen, Layers, CheckCircle2, UserCheck, Calendar } from 'lucide-react';
 
 export default function Home() {
@@ -68,8 +69,9 @@ export default function Home() {
       </section>
 
       {/* Section 3: Why Zuvio (Editorial Asymmetric Layout) */}
-      <section className="section" style={{ backgroundColor: 'var(--color-surface-blue)', borderBottom: '1px solid var(--color-border)' }}>
-        <div className="container">
+      <section className="section" style={{ position: 'relative', backgroundColor: 'var(--color-surface-blue)', borderBottom: '1px solid var(--color-border)', overflow: 'hidden' }}>
+        <FloatingBubbles />
+        <div className="container" style={{ position: 'relative', zIndex: 2 }}>
           <div style={{
             display: 'grid',
             gridTemplateColumns: '1.1fr 1.9fr',
@@ -171,8 +173,9 @@ export default function Home() {
       </section>
 
       {/* Section 5: Interactive Learning Journey (Timeline) */}
-      <section className="section" style={{ backgroundColor: 'var(--color-surface-blue)', borderBottom: '1px solid var(--color-border)' }}>
-        <div className="container">
+      <section className="section" style={{ position: 'relative', backgroundColor: 'var(--color-surface-blue)', borderBottom: '1px solid var(--color-border)', overflow: 'hidden' }}>
+        <FloatingBubbles />
+        <div className="container" style={{ position: 'relative', zIndex: 2 }}>
           <div className="text-center" style={{ marginBottom: '4rem' }}>
             <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--color-gold)', textTransform: 'uppercase', letterSpacing: '1.5px', display: 'block', marginBottom: '0.5rem' }}>Process</span>
             <h2 style={{ fontSize: '2.5rem', fontFamily: 'var(--font-primary)', color: 'var(--color-navy)' }}>
@@ -271,12 +274,15 @@ export default function Home() {
 
       {/* Section 7: Final CTA Conversion Area */}
       <section className="section" style={{
+        position: 'relative',
         backgroundColor: 'var(--color-navy-dark)',
         color: '#FFFFFF',
         textAlign: 'center',
-        padding: '6rem 2rem'
+        padding: '6rem 2rem',
+        overflow: 'hidden'
       }}>
-        <div style={{ maxWidth: '700px', margin: '0 auto' }}>
+        <FloatingBubbles />
+        <div style={{ position: 'relative', zIndex: 2, maxWidth: '700px', margin: '0 auto' }}>
           <h2 style={{ fontSize: '3rem', fontFamily: 'var(--font-primary)', color: '#FFFFFF', marginBottom: '1.5rem' }}>Ready to Learn Beyond Boundaries?</h2>
           <p style={{ fontSize: '1.1rem', color: '#E2E8F0', marginBottom: '2.5rem', lineHeight: '1.7' }}>
             Join Zuvio Global School today. Connect with our academic advisors to configure a personalised pathway tailored specifically for your child.
