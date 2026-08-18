@@ -9,16 +9,11 @@ INSERT INTO `roles` (`id`, `name`, `description`) VALUES
 (2, 'editor', 'Access to manage page contents, blogs, media and settings')
 ON DUPLICATE KEY UPDATE description = VALUES(description);
 
--- 2. Users (Admin User Setup)
--- IMPORTANT: Replace 'REPLACE_WITH_YOUR_BCRYPT_HASH' with a securely generated bcrypt hash before executing this script.
--- DO NOT commit a usable production password to the repository.
-INSERT IGNORE INTO `users` (`id`, `username`, `email`, `password_hash`, `role_id`) VALUES
-(1, 'zuvioadmin', 'admin@zuvioglobalschool.com', 'REPLACE_WITH_YOUR_BCRYPT_HASH', 1);
 
 -- 3. Site Settings (Official Verified Brand Reference)
 INSERT INTO `site_settings` (`setting_key`, `setting_value`, `description`) VALUES
 ('school_name', 'Zuvio Global School', 'Official school name'),
-('logo_url', '/assets/images/zuvio-logo.png', 'Logo path relative to frontend root'),
+('logo_url', '/assets/images/logo.png', 'Logo path relative to frontend root'),
 ('phone', '7827262956', 'Main contact number'),
 ('whatsapp', '7827262956', 'WhatsApp contact (same as phone)'),
 ('general_email', 'info@zuvioglobalschool.com', 'General queries email'),
