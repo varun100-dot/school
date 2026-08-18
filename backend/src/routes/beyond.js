@@ -14,7 +14,20 @@ router.get('/', async (req, res) => {
     });
   } catch (err) {
     res.json({
-      sections: [],
+      sections: [
+        {
+          section_key: 'intro',
+          title: 'Beyond Academics',
+          subtitle: 'Holistic Development at Zuvio',
+          content: 'Zuvio goes beyond textbooks and examinations, with a focus on curiosity, creativity, critical thinking, communication, collaboration, real-world learning, character and life skills. Technology, innovation, projects, and global opportunities are central themes.'
+        },
+        {
+          section_key: 'activities_placeholder',
+          title: 'Our Extracurricular Programs',
+          subtitle: 'Sports, Arts & Clubs',
+          content: 'Content pending - Specific program descriptions, grades, and schedules for Sports, Music, Dance, Theatre, Visual Arts, Clubs, and Trips will remain draft placeholders until finalized.'
+        }
+      ],
       gallery: []
     });
   }

@@ -239,7 +239,7 @@ export async function getBlogs(category = '', page = 1, limit = 10) {
     // Return sample static blog post
     return [
       {
-        title: 'Welcome to Zuvio Global School: Learning Beyond Boundaries',
+        title: '[Demo Seed] Welcome to Zuvio Global School: Learning Beyond Boundaries',
         slug: 'welcome-to-zuvio-global-school',
         excerpt: 'An introductory post explaining Zuvio\'s vision of a borderless classroom, CBSE-aligned paths, and child-centered systems.',
         content: 'At Zuvio Global School, we believe that education should adapt to the child, rather than the child fitting the system. Launched in 2026, Zuvio represents a new paradigm of digital-first school models. Over the coming weeks, we will explore our 8C Philosophy™, including the development of Curiosity, Creativity, Compassion, and Character alongside academic achievements. Read about our partnerships with IAO and Oxford, and join us on this global learning journey.',
@@ -260,7 +260,7 @@ export async function getBlogBySlug(slug) {
   } catch (err) {
     if (slug === 'welcome-to-zuvio-global-school') {
       return {
-        title: 'Welcome to Zuvio Global School: Learning Beyond Boundaries',
+        title: '[Demo Seed] Welcome to Zuvio Global School: Learning Beyond Boundaries',
         slug: 'welcome-to-zuvio-global-school',
         excerpt: 'An introductory post explaining Zuvio\'s vision of a borderless classroom...',
         content: 'At Zuvio Global School, we believe that education should adapt to the child, rather than the child fitting the system. Launched in 2026, Zuvio represents a new paradigm of digital-first school models. Over the coming weeks, we will explore our 8C Philosophy™, including the development of Curiosity, Creativity, Compassion, and Character alongside academic achievements. Read about our partnerships with IAO and Oxford, and join us on this global learning journey.',

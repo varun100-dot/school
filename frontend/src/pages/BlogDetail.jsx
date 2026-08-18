@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { getBlogBySlug } from '../services/api';
 import SEO from '../components/SEO';
+import SafeImage from '../components/SafeImage';
 import { Calendar, User, ArrowLeft, BookOpen } from 'lucide-react';
 
 export default function BlogDetail() {
@@ -104,11 +105,12 @@ export default function BlogDetail() {
             borderRadius: 'var(--radius-lg)',
             overflow: 'hidden',
             maxHeight: '450px',
+            height: '400px',
             backgroundColor: '#0F172A',
             marginBottom: '3rem',
             boxShadow: 'var(--shadow-md)'
           }}>
-            <img src={post.featured_image} alt={post.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            <SafeImage src={post.featured_image} alt={post.title} fallbackText="No featured image" />
           </div>
         )}
 

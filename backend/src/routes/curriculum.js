@@ -18,7 +18,36 @@ router.get('/', async (req, res) => {
     
     res.json(groupedStages);
   } catch (err) {
-    res.json([]);
+    res.json([
+      {
+        id: 1,
+        name: 'Early Years',
+        slug: 'early-years',
+        description: 'Introduction to fundamental social, cognitive, and physical development steps.',
+        items: [
+          { title: 'Curiosity and Discovery', description: 'Focus on building exploratory senses and baseline language abilities.' }
+        ]
+      },
+      {
+        id: 2,
+        name: 'Primary School',
+        slug: 'primary-school',
+        description: 'Core subjects foundational study (Grades 1 to 5).',
+        items: [
+          { title: 'Core Foundations', description: 'Mathematics, Science, English, and Social Studies aligned with CBSE/NIOS.' }
+        ]
+      },
+      {
+        id: 3,
+        name: 'Middle School',
+        slug: 'middle-school',
+        description: 'Analytical thinking and specialized modules alignment (Grades 6 to 8).',
+        items: [
+          { title: 'Analytical Growth', description: 'Critical thinking, advanced science foundations, and initial technology exposure.' },
+          { title: 'Extracurricular Activities', description: 'Content pending - detailed grade-wise extracurricular activity lists will follow.' }
+        ]
+      }
+    ]);
   }
 });
 

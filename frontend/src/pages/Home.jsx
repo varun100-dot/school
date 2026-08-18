@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { getHeroSlides, getHomepageData, getBlogs } from '../services/api';
 import HeroSlider from '../components/HeroSlider';
 import SEO from '../components/SEO';
+import SafeImage from '../components/SafeImage';
 import { ArrowRight, BookOpen, Layers, CheckCircle2, UserCheck, Calendar } from 'lucide-react';
 
 export default function Home() {
@@ -66,41 +67,61 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Section 3: Why Zuvio (USP Grid) */}
-      <section className="section" style={{ backgroundColor: 'var(--color-bg)' }}>
+      {/* Section 3: Why Zuvio (Editorial Asymmetric Layout) */}
+      <section className="section" style={{ backgroundColor: 'var(--color-bg)', borderBottom: '1px solid var(--color-border)' }}>
         <div className="container">
-          <div className="text-center" style={{ marginBottom: '4rem' }}>
-            <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--color-gold)', textTransform: 'uppercase', letterSpacing: '1.5px', display: 'block', marginBottom: '0.5rem' }}>Why Zuvio</span>
-            <h2 style={{ fontSize: '2.5rem', fontFamily: 'var(--font-primary)', color: 'var(--color-navy)' }}>
-              A Future-Ready Online School
-            </h2>
-          </div>
-
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-            gap: '2rem'
-          }}>
-            {homeData.features.map((feature, idx) => (
-              <div key={idx} style={{
-                backgroundColor: '#FFFFFF',
-                padding: '2.5rem 2rem',
-                borderRadius: 'var(--radius-md)',
-                boxShadow: 'var(--shadow-sm)',
-                borderTop: '3px solid var(--color-gold)',
-                transition: 'transform var(--transition-fast)'
-              }}
-              onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-4px)'}
-              onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}
-              >
-                <h3 style={{ fontSize: '1.25rem', fontFamily: 'var(--font-primary)', color: 'var(--color-navy)', marginBottom: '1rem' }}>
-                  {feature.title}
-                </h3>
-                <p style={{ color: 'var(--color-muted)', fontSize: '0.9rem', lineHeight: '1.6' }}>
-                  {feature.description}
-                </p>
-              </div>
-            ))}
+            gridTemplateColumns: '1.1fr 1.9fr',
+            gap: '4rem',
+            alignItems: 'flex-start'
+          }} className="why-zuvio-grid">
+            
+            {/* Left Column: Big Editorial Statement */}
+            <div style={{ position: 'sticky', top: '120px' }}>
+              <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--color-gold)', textTransform: 'uppercase', letterSpacing: '2px', display: 'block', marginBottom: '0.5rem' }}>
+                Why Zuvio
+              </span>
+              <h2 style={{ fontSize: '2.8rem', fontFamily: 'var(--font-primary)', color: 'var(--color-navy)', lineHeight: '1.25', marginBottom: '1.5rem' }}>
+                A Future-Ready Online School
+              </h2>
+              <div style={{ width: '60px', height: '3px', backgroundColor: 'var(--color-gold)', marginBottom: '1.5rem' }} />
+              <p style={{ color: 'var(--color-muted)', fontSize: '1.05rem', lineHeight: '1.7', marginBottom: '2rem' }}>
+                At Zuvio Global School, academic excellence meets personalised learning. We prepare children for a changing world by helping them become capable, compassionate global learners.
+              </p>
+              <Link to="/about" className="btn btn-outline" style={{ display: 'inline-block' }}>
+                Read Our Story
+              </Link>
+            </div>
+
+            {/* Right Column: Grid of Benefit Blocks */}
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: '1fr 1fr',
+              gap: '1.5rem'
+            }} className="why-zuvio-blocks">
+              {homeData.features.slice(0, 6).map((feature, idx) => (
+                <div key={idx} style={{
+                  backgroundColor: '#FFFFFF',
+                  padding: '2rem',
+                  borderRadius: 'var(--radius-md)',
+                  boxShadow: 'var(--shadow-sm)',
+                  borderLeft: '4px solid var(--color-gold)',
+                  transition: 'transform var(--transition-fast)'
+                }}
+                onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-2px)'}
+                onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}
+                >
+                  <h3 style={{ fontSize: '1.15rem', fontFamily: 'var(--font-primary)', color: 'var(--color-navy)', marginBottom: '0.75rem' }}>
+                    {feature.title}
+                  </h3>
+                  <p style={{ color: 'var(--color-muted)', fontSize: '0.85rem', lineHeight: '1.6', margin: 0 }}>
+                    {feature.description}
+                  </p>
+                </div>
+              ))}
+            </div>
+
           </div>
         </div>
       </section>
@@ -228,11 +249,7 @@ export default function Home() {
                   flexDirection: 'column'
                 }}>
                   <div style={{ height: '200px', overflow: 'hidden', backgroundColor: 'var(--color-navy)' }}>
-                    {post.featured_image ? (
-                      <img src={post.featured_image} alt={post.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                    ) : (
-                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', color: '#FFFFFF', opacity: 0.3 }}><BookOpen size={48} /></div>
-                    )}
+                    <SafeImage src={post.featured_image} alt={post.title} fallbackText="No featured image" />
                   </div>
                   <div style={{ padding: '1.5rem', flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
                     <span style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--color-gold)', textTransform: 'uppercase', marginBottom: '0.5rem', display: 'block' }}>{post.category_name}</span>
@@ -272,6 +289,16 @@ export default function Home() {
       </section>
 
       <style>{`
+        @media (max-width: 900px) {
+          .why-zuvio-grid {
+            grid-template-columns: 1fr !important;
+            gap: 2.5rem !important;
+          }
+          .why-zuvio-blocks {
+            grid-template-columns: 1fr !important;
+            gap: 1.25rem !important;
+          }
+        }
         @media (max-width: 768px) {
           .timeline-line {
             display: none !important;

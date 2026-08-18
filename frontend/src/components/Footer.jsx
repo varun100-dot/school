@@ -83,15 +83,15 @@ export default function Footer() {
             </div>
             <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
               <Phone size={18} style={{ color: 'var(--color-gold)' }} />
-              <span>{settings.phone}</span>
+              <a href={`tel:${settings.phone}`} style={{ color: '#E2E8F0', textDecoration: 'none', transition: 'color 0.2s' }} onMouseEnter={e => e.target.style.color = 'var(--color-gold)'} onMouseLeave={e => e.target.style.color = '#E2E8F0'}>{settings.phone}</a>
             </div>
             <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
               <Mail size={18} style={{ color: 'var(--color-gold)' }} />
-              <span>{settings.general_email}</span>
+              <a href={`mailto:${settings.general_email}`} style={{ color: '#E2E8F0', textDecoration: 'none', transition: 'color 0.2s' }} onMouseEnter={e => e.target.style.color = 'var(--color-gold)'} onMouseLeave={e => e.target.style.color = '#E2E8F0'}>{settings.general_email}</a>
             </div>
             <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
               <Clock size={18} style={{ color: 'var(--color-gold)' }} />
-              <span>Office Hours: {settings.office_timings}</span>
+              <span>Office Hours: {settings.office_timings} Daily</span>
             </div>
           </div>
         </div>
@@ -107,7 +107,7 @@ export default function Footer() {
         justifyContent: 'space-between',
         alignItems: 'center',
         fontSize: '0.8rem',
-        color: 'var(--color-muted)',
+        color: '#94A3B8',
         flexWrap: 'wrap',
         gap: '1rem'
       }}>

@@ -26,7 +26,7 @@ router.get('/', async (req, res) => {
     // Development Fallback
     res.json([
       {
-        title: 'Welcome to Zuvio Global School: Learning Beyond Boundaries',
+        title: '[Demo Seed] Welcome to Zuvio Global School: Learning Beyond Boundaries',
         slug: 'welcome-to-zuvio-global-school',
         excerpt: 'An introductory post explaining Zuvio\'s vision of a borderless classroom...',
         featured_image: '/assets/images/Hero image 1.png',

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { getBlogs } from '../services/api';
 import SEO from '../components/SEO';
+import SafeImage from '../components/SafeImage';
 import { BookOpen, Calendar, ChevronRight } from 'lucide-react';
 
 const CATEGORIES = [
@@ -134,13 +135,7 @@ export default function Blogs() {
                 onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}
                 >
                   <div style={{ height: '220px', overflow: 'hidden', backgroundColor: 'var(--color-navy)' }}>
-                    {post.featured_image ? (
-                      <img src={post.featured_image} alt={post.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                    ) : (
-                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', color: '#FFFFFF', opacity: 0.3 }}>
-                        <BookOpen size={48} />
-                      </div>
-                    )}
+                    <SafeImage src={post.featured_image} alt={post.title} fallbackText="No featured image" />
                   </div>
 
                   <div style={{ padding: '2rem', flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
