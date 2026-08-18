@@ -194,6 +194,9 @@ export default function Header() {
           }
         }
         @media (max-width: 900px) {
+          header {
+            position: relative !important;
+          }
           .desktop-nav {
             display: none !important;
           }

@@ -80,7 +80,7 @@ export default function Home() {
           }} className="why-zuvio-grid">
             
             {/* Left Column: Big Editorial Statement */}
-            <div style={{ position: 'sticky', top: '120px' }}>
+            <div className="why-zuvio-intro-col" style={{ position: 'sticky', top: '120px' }}>
               <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--color-gold)', textTransform: 'uppercase', letterSpacing: '2px', display: 'block', marginBottom: '0.5rem' }}>
                 Why Zuvio
               </span>
@@ -296,6 +296,9 @@ export default function Home() {
 
       <style>{`
         @media (max-width: 900px) {
+          .why-zuvio-intro-col {
+            position: static !important;
+          }
           .why-zuvio-grid {
             grid-template-columns: 1fr !important;
             gap: 2.5rem !important;
