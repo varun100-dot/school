@@ -99,7 +99,7 @@ export default function Curriculum() {
               justifyContent: 'center',
               alignItems: 'center',
               textAlign: 'center',
-              height: '350px'
+              minHeight: '350px'
             }}>
               <RefreshCw size={48} style={{ color: 'var(--color-gold)', marginBottom: '1.5rem' }} />
               <h3 style={{ fontSize: '1.5rem', fontFamily: 'var(--font-primary)', color: '#FFFFFF', marginBottom: '0.75rem' }}>Continuous Development Cycle</h3>

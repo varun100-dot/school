@@ -123,50 +123,21 @@ export default function HeroSlider({ slides }) {
         return (
           <div
             key={index}
-            style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: '100%',
-              opacity: isActive ? 1 : 0,
-              transition: 'opacity 1s ease-in-out',
-              zIndex: isActive ? 2 : 1,
-              display: 'flex',
-              alignItems: 'center'
-            }}
+            className={`hero-slide ${isActive ? 'active' : ''}`}
           >
-            {/* Background image */}
+            {/* Background image wrapper */}
             <div
+              className={`hero-bg-img ${isActive ? 'scale-zoom' : ''}`}
               style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                width: '100%',
-                height: '100%',
-                backgroundImage: `url("${safeImageUrl}")`,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                transition: 'transform 6s ease'
+                backgroundImage: `url("${safeImageUrl}")`
               }}
-              className={isActive ? 'scale-zoom' : ''}
             />
 
             {/* Dark Gradient Overlay */}
-            <div
-              style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                width: '100%',
-                height: '100%',
-                background: 'linear-gradient(to right, rgba(0, 10, 66, 0.95) 0%, rgba(0, 10, 66, 0.8) 50%, rgba(0, 10, 66, 0.3) 100%)',
-                zIndex: 1
-              }}
-            />
+            <div className="hero-overlay" />
 
             {/* Responsive Split Layout */}
-            <div className="hero-split-grid" style={{ zIndex: 2 }}>
+            <div className="hero-split-grid">
               <div className="hero-content">
                 {slide.subtitle && (
                   <span style={{
@@ -183,28 +154,24 @@ export default function HeroSlider({ slides }) {
                 )}
                 
                 <h1 style={{
-                  fontSize: '3.5rem',
                   fontFamily: 'var(--font-primary)',
                   fontWeight: 700,
                   color: '#FFFFFF',
-                  lineHeight: '1.15',
-                  marginBottom: '1.25rem',
+                  lineHeight: '1.2',
                   letterSpacing: '-0.5px'
                 }} className="hero-title">
                   {slide.title}
                 </h1>
                 
                 <p style={{
-                  fontSize: '1.1rem',
                   color: '#E2E8F0',
                   lineHeight: '1.6',
-                  marginBottom: '2.5rem',
                   fontWeight: 400
                 }} className="hero-description">
                   {slide.description}
                 </p>
 
-                <div className="hero-btn-row" style={{ display: 'flex', gap: '1.25rem' }}>
+                <div className="hero-btn-row">
                   {slide.primary_cta_text && (
                     <Link to={slide.primary_cta_url || '/'} className="btn btn-primary" style={{ padding: '0.9rem 2.25rem' }}>
                       {slide.primary_cta_text}
@@ -459,14 +426,7 @@ export default function HeroSlider({ slides }) {
       </button>
 
       {/* Slide Indicators */}
-      <div className="hero-indicators" style={{
-        position: 'absolute',
-        right: '3rem',
-        bottom: '2.5rem',
-        display: 'flex',
-        gap: '0.75rem',
-        zIndex: 10
-      }}>
+      <div className="hero-indicators">
         {slides.map((_, index) => (
           <button
             key={index}
@@ -499,6 +459,42 @@ export default function HeroSlider({ slides }) {
           min-height: 620px;
           overflow: hidden;
           background-color: #000A42;
+          font-family: var(--font-secondary);
+        }
+        .hero-slide {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          opacity: 0;
+          transition: opacity 1s ease-in-out;
+          z-index: 1;
+          display: flex;
+          align-items: center;
+        }
+        .hero-slide.active {
+          opacity: 1;
+          z-index: 2;
+        }
+        .hero-bg-img {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-size: cover;
+          background-position: center;
+        }
+        .hero-overlay {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: 'linear-gradient(to right, rgba(0, 10, 66, 0.95) 0%, rgba(0, 10, 66, 0.8) 50%, rgba(0, 10, 66, 0.3) 100%)';
+          background: linear-gradient(to right, rgba(0, 10, 66, 0.95) 0%, rgba(0, 10, 66, 0.8) 50%, rgba(0, 10, 66, 0.3) 100%);
+          z-index: 1;
         }
         .hero-split-grid {
           display: grid;
@@ -513,12 +509,36 @@ export default function HeroSlider({ slides }) {
           padding: 0 3rem;
           width: 100%;
         }
+        .hero-content {
+          max-width: 650px;
+          text-align: left;
+        }
+        .hero-title {
+          font-size: 3.5rem;
+          margin-bottom: 1.25rem;
+        }
+        .hero-description {
+          font-size: 1.1rem;
+          margin-bottom: 2.5rem;
+        }
+        .hero-btn-row {
+          display: flex;
+          gap: 1.25rem;
+        }
         .hero-absolute-form {
           position: absolute;
           right: calc((100vw - var(--max-width)) / 2 + 3rem);
           top: 50%;
           transform: translateY(-50%);
           z-index: 20;
+        }
+        .hero-indicators {
+          position: absolute;
+          right: 3rem;
+          bottom: 2.5rem;
+          display: flex;
+          gap: 0.75rem;
+          z-index: 10;
         }
         .hero-input:focus {
           border-color: var(--color-navy) !important;
@@ -531,48 +551,79 @@ export default function HeroSlider({ slides }) {
         }
         @media (max-width: 1024px) {
           .hero-container {
-            height: auto;
-            min-height: auto;
-            display: flex;
-            flex-direction: column;
+            height: auto !important;
+            min-height: auto !important;
+            display: flex !important;
+            flex-direction: column !important;
+            background-color: var(--color-navy-dark) !important;
           }
-          .hero-split-grid {
-            grid-template-columns: 1fr;
-            gap: 2.5rem;
-            padding: 5rem 2rem;
-            height: auto;
+          .hero-slide {
+            position: relative !important;
+            top: auto !important;
+            left: auto !important;
+            width: 100% !important;
+            height: auto !important;
+            opacity: 0 !important;
+            display: none !important;
+            transition: none !important;
+            z-index: 1 !important;
+            background-color: var(--color-navy-dark) !important;
           }
-          .hero-absolute-form {
-            position: relative;
-            right: auto;
-            top: auto;
-            transform: none;
-            margin: 0 auto 4rem auto;
-            max-width: 480px;
-            width: calc(100% - 4rem);
-            display: flex;
-            justify-content: center;
+          .hero-slide.active {
+            opacity: 1 !important;
+            display: flex !important;
+            flex-direction: column !important;
+            z-index: 2 !important;
           }
-          .hero-form-spacer {
-            display: none;
+          .hero-bg-img {
+            position: relative !important;
+            width: 100% !important;
+            height: 280px !important;
+            background-size: cover !important;
+            background-position: center !important;
           }
-          .hero-indicators {
+          .hero-overlay {
             display: none !important;
           }
-        }
-        @media (max-width: 768px) {
+          .hero-split-grid {
+            grid-template-columns: 1fr !important;
+            gap: 2rem !important;
+            padding: 3rem 1.25rem 2rem 1.25rem !important;
+            height: auto !important;
+          }
+          .hero-content {
+            max-width: 100% !important;
+            text-align: center !important;
+          }
           .hero-title {
-            font-size: 2.5rem !important;
+            font-size: 2.25rem !important;
+            margin-bottom: 1rem !important;
           }
           .hero-description {
             font-size: 1rem !important;
-          }
-          .hero-content {
-            text-align: center !important;
-            margin: 0 auto !important;
+            margin-bottom: 1.75rem !important;
           }
           .hero-btn-row {
-            justify-content: center;
+            justify-content: center !important;
+            margin-bottom: 1rem !important;
+          }
+          .hero-absolute-form {
+            position: relative !important;
+            right: auto !important;
+            top: auto !important;
+            transform: none !important;
+            margin: 0 auto 3rem auto !important;
+            max-width: 100% !important;
+            width: calc(100% - 2.5rem) !important;
+            display: flex !important;
+            justify-content: center !important;
+            z-index: 10 !important;
+          }
+          .hero-form-spacer {
+            display: none !important;
+          }
+          .hero-indicators {
+            display: none !important;
           }
         }
       `}</style>

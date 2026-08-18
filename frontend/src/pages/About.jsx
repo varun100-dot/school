@@ -83,7 +83,7 @@ export default function About() {
       {/* Section 2: Vision & Mission */}
       <section className="section" style={{ backgroundColor: 'var(--color-surface-blue)', borderBottom: '1px solid var(--color-border)' }}>
         <div className="container">
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '3rem' }} className="grid-2">
+          <div className="grid-2" style={{ gap: '3rem' }}>
             
             {/* Vision */}
             <div style={{
