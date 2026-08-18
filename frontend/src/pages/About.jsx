@@ -30,7 +30,7 @@ export default function About() {
 
       {/* Hero Banner */}
       <section style={{
-        backgroundImage: 'linear-gradient(rgba(15, 23, 42, 0.8), rgba(15, 23, 42, 0.85)), url("/assets/images/Hero image 2.png")',
+        backgroundImage: 'linear-gradient(rgba(0, 10, 66, 0.8), rgba(0, 10, 66, 0.85)), url("/assets/images/Hero image 2.png")',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         color: '#FFFFFF',
@@ -80,7 +80,7 @@ export default function About() {
       </section>
 
       {/* Section 2: Vision & Mission */}
-      <section className="section" style={{ backgroundColor: 'var(--color-bg)' }}>
+      <section className="section" style={{ backgroundColor: 'var(--color-surface-blue)', borderBottom: '1px solid var(--color-border)' }}>
         <div className="container">
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '3rem' }} className="grid-2">
             
@@ -166,7 +166,7 @@ export default function About() {
       </section>
 
       {/* Section 4: Founders & Leadership (Factual Profile placeholders) */}
-      <section className="section" style={{ backgroundColor: 'var(--color-bg)' }}>
+      <section className="section" style={{ backgroundColor: 'var(--color-surface-blue)', borderBottom: '1px solid var(--color-border)' }}>
         <div className="container">
           <div style={{ maxWidth: '800px', margin: '0 auto', textAlign: 'center', marginBottom: '4rem' }}>
             <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--color-gold)', textTransform: 'uppercase', letterSpacing: '1.5px', display: 'block', marginBottom: '0.5rem' }}>Our Leadership</span>
@@ -213,13 +213,13 @@ export default function About() {
       </section>
 
       {/* CTA Section */}
-      <section className="section" style={{ backgroundColor: 'var(--color-navy)', color: '#FFFFFF', textAlign: 'center' }}>
+      <section className="section" style={{ backgroundColor: 'var(--color-navy-dark)', color: '#FFFFFF', textAlign: 'center', padding: '6rem 2rem' }}>
         <div className="container" style={{ maxWidth: '600px' }}>
           <h2 style={{ fontSize: '2.5rem', fontFamily: 'var(--font-primary)', color: '#FFFFFF', marginBottom: '1.5rem' }}>Empower Your Child Today</h2>
           <p style={{ fontSize: '1.05rem', color: '#E2E8F0', marginBottom: '2.5rem', lineHeight: '1.6' }}>
             Get in touch to learn more about our CBSE aligned, child-centered digital education modules.
           </p>
-          <Link to="/contact" className="btn btn-primary" style={{ padding: '0.9rem 2.5rem' }}>Enquire Now</Link>
+          <Link to="/contact-us" className="btn" style={{ padding: '0.9rem 2.5rem', backgroundColor: 'var(--color-gold)', color: 'var(--color-navy-dark)', fontWeight: 700 }}>Enquire Now</Link>
         </div>
       </section>
     </div>

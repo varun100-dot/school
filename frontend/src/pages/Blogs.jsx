@@ -42,9 +42,8 @@ export default function Blogs() {
         description="Read articles on online education, parenting tips, CBSE curriculums, and announcements from Zuvio Global School."
       />
 
-      {/* Hero Banner */}
       <section style={{
-        backgroundColor: 'var(--color-navy)',
+        backgroundColor: 'var(--color-navy-dark)',
         color: '#FFFFFF',
         padding: '5rem 2rem',
         textAlign: 'center',

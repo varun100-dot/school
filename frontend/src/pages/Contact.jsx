@@ -20,7 +20,7 @@ export default function Contact() {
 
       {/* Hero Banner */}
       <section style={{
-        backgroundImage: 'linear-gradient(rgba(15, 23, 42, 0.8), rgba(15, 23, 42, 0.85)), url("/assets/images/Teacher interacting with students.png")',
+        backgroundImage: 'linear-gradient(rgba(0, 10, 66, 0.8), rgba(0, 10, 66, 0.85)), url("/assets/images/Teacher interacting with students.png")',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         color: '#FFFFFF',
@@ -42,7 +42,7 @@ export default function Contact() {
       </section>
 
       {/* Main Split Layout */}
-      <section className="section" style={{ backgroundColor: 'var(--color-bg)' }}>
+      <section className="section" style={{ backgroundColor: '#FFFFFF', borderBottom: '1px solid var(--color-border)' }}>
         <div className="container">
           <div className="grid-2" style={{ gap: '4rem', alignItems: 'flex-start' }}>
             

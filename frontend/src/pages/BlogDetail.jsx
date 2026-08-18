@@ -58,9 +58,8 @@ export default function BlogDetail() {
         ogImage={post.featured_image}
       />
 
-      {/* Hero Banner header */}
       <header style={{
-        backgroundColor: 'var(--color-navy)',
+        backgroundColor: 'var(--color-navy-dark)',
         color: '#FFFFFF',
         padding: '4rem 2rem',
         borderBottom: '4px solid var(--color-gold)'

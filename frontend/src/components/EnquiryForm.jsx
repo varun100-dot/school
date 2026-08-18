@@ -97,7 +97,7 @@ export default function EnquiryForm() {
     <form onSubmit={handleSubmit} style={{
       border: '1px solid var(--color-border)',
       borderRadius: 'var(--radius-md)',
-      backgroundColor: '#FFFFFF',
+      backgroundColor: 'var(--color-surface-blue)',
       padding: '2.5rem',
       fontFamily: 'var(--font-secondary)',
       display: 'flex',
@@ -275,7 +275,7 @@ export default function EnquiryForm() {
           transition: 'background-color 0.2s',
           marginTop: '0.5rem'
         }}
-        onMouseEnter={(e) => e.target.style.backgroundColor = 'var(--color-navy-light)'}
+        onMouseEnter={(e) => e.target.style.backgroundColor = 'var(--color-gold)'}
         onMouseLeave={(e) => e.target.style.backgroundColor = 'var(--color-navy)'}
       >
         {status === 'submitting' ? (

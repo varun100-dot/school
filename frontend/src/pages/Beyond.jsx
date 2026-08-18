@@ -29,7 +29,7 @@ export default function Beyond() {
 
       {/* Hero Banner */}
       <section style={{
-        backgroundImage: 'linear-gradient(rgba(15, 23, 42, 0.8), rgba(15, 23, 42, 0.85)), url("/assets/images/Students learning in classroom.png")',
+        backgroundImage: 'linear-gradient(rgba(0, 10, 66, 0.8), rgba(0, 10, 66, 0.85)), url("/assets/images/Students learning in classroom.png")',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         color: '#FFFFFF',
@@ -91,7 +91,7 @@ export default function Beyond() {
       </section>
 
       {/* Section 2: Program placeholders (Draft content rules) */}
-      <section className="section" style={{ backgroundColor: 'var(--color-bg)' }}>
+      <section className="section" style={{ backgroundColor: 'var(--color-surface-blue)', borderBottom: '1px solid var(--color-border)' }}>
         <div className="container">
           <div style={{ maxWidth: '800px', margin: '0 auto', textAlign: 'center', marginBottom: '4rem' }}>
             <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--color-gold)', textTransform: 'uppercase', letterSpacing: '1.5px', display: 'block', marginBottom: '0.5rem' }}>
@@ -120,7 +120,7 @@ export default function Beyond() {
                 borderRadius: 'var(--radius-lg)',
                 padding: '2.5rem 2rem',
                 border: '1px solid var(--color-border)',
-                boxShadow: 'var(--shadow-sm)',
+                boxShadow: 'var(--shadow-md)',
                 textAlign: 'center'
               }}>
                 <div style={{ display: 'inline-flex', padding: '0.75rem', backgroundColor: '#FEF3C7', color: 'var(--color-gold)', borderRadius: '50%', marginBottom: '1.25rem' }}>
@@ -176,13 +176,13 @@ export default function Beyond() {
       </section>
 
       {/* CTA Section */}
-      <section className="section" style={{ backgroundColor: 'var(--color-navy)', color: '#FFFFFF', textAlign: 'center' }}>
+      <section className="section" style={{ backgroundColor: 'var(--color-navy-dark)', color: '#FFFFFF', textAlign: 'center', padding: '6rem 2rem' }}>
         <div className="container" style={{ maxWidth: '600px' }}>
           <h2 style={{ fontSize: '2.5rem', fontFamily: 'var(--font-primary)', color: '#FFFFFF', marginBottom: '1.5rem' }}>Want to Know More?</h2>
           <p style={{ fontSize: '1.05rem', color: '#E2E8F0', marginBottom: '2.5rem', lineHeight: '1.6' }}>
             Connect with our team to discuss program details for each grade stage.
           </p>
-          <Link to="/contact" className="btn btn-primary" style={{ padding: '0.9rem 2.5rem' }}>Enquire Now</Link>
+          <Link to="/contact-us" className="btn" style={{ padding: '0.9rem 2.5rem', backgroundColor: 'var(--color-gold)', color: 'var(--color-navy-dark)', fontWeight: 700 }}>Enquire Now</Link>
         </div>
       </section>
     </div>

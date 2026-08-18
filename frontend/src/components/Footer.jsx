@@ -29,11 +29,11 @@ export default function Footer() {
         
         {/* Column 1: School Identity */}
         <div>
-          <div style={{ marginBottom: '1.5rem', height: '48px', display: 'flex', alignItems: 'center' }}>
+          <div style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center' }}>
             <img 
               src="/assets/images/logo.png" 
               alt="Zuvio Global School" 
-              style={{ height: '100%', width: 'auto', objectFit: 'contain' }} 
+              className="footer-logo-img"
             />
           </div>
           <p style={{ color: 'var(--color-muted)', fontSize: '0.9rem', lineHeight: '1.7', marginBottom: '1.5rem' }}>
@@ -115,7 +115,16 @@ export default function Footer() {
       </div>
 
       <style>{`
+        .footer-logo-img {
+          width: 180px;
+          height: auto;
+          object-fit: contain;
+          display: block;
+        }
         @media (max-width: 768px) {
+          .footer-logo-img {
+            width: 150px;
+          }
           .footer-grid {
             grid-template-columns: 1fr !important;
             gap: 2.5rem !important;

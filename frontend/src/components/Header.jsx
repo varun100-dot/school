@@ -45,16 +45,12 @@ export default function Header() {
         fontFamily: 'var(--font-secondary)'
       }}>
         {/* Official Logo */}
-        <Link to="/" style={{ display: 'flex', alignItems: 'center', height: '42px' }}>
+        <Link to="/" style={{ display: 'flex', alignItems: 'center' }}>
           <img 
             src="/assets/images/logo.png" 
-            alt="Zuvio Global School Logo" 
-            style={{ 
-              height: '100%', 
-              width: 'auto', 
-              objectFit: 'contain',
-              display: 'block'
-            }} 
+            alt="Zuvio Global School" 
+            className="header-logo-img"
+            style={{ display: 'block' }}
           />
         </Link>
 
@@ -181,6 +177,22 @@ export default function Header() {
       )}
 
       <style>{`
+        .header-logo-img {
+          height: 56px;
+          width: auto;
+          object-fit: contain;
+          transition: height var(--transition-normal);
+        }
+        @media (max-width: 1024px) {
+          .header-logo-img {
+            height: 48px;
+          }
+        }
+        @media (max-width: 768px) {
+          .header-logo-img {
+            height: 44px;
+          }
+        }
         @media (max-width: 900px) {
           .desktop-nav {
             display: none !important;

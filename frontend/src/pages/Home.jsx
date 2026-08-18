@@ -68,7 +68,7 @@ export default function Home() {
       </section>
 
       {/* Section 3: Why Zuvio (Editorial Asymmetric Layout) */}
-      <section className="section" style={{ backgroundColor: 'var(--color-bg)', borderBottom: '1px solid var(--color-border)' }}>
+      <section className="section" style={{ backgroundColor: 'var(--color-surface-blue)', borderBottom: '1px solid var(--color-border)' }}>
         <div className="container">
           <div style={{
             display: 'grid',
@@ -171,7 +171,7 @@ export default function Home() {
       </section>
 
       {/* Section 5: Interactive Learning Journey (Timeline) */}
-      <section className="section" style={{ backgroundColor: 'var(--color-bg)' }}>
+      <section className="section" style={{ backgroundColor: 'var(--color-surface-blue)', borderBottom: '1px solid var(--color-border)' }}>
         <div className="container">
           <div className="text-center" style={{ marginBottom: '4rem' }}>
             <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--color-gold)', textTransform: 'uppercase', letterSpacing: '1.5px', display: 'block', marginBottom: '0.5rem' }}>Process</span>
@@ -220,7 +220,7 @@ export default function Home() {
       </section>
 
       {/* Section 6: Recent Blog Posts */}
-      <section className="section" style={{ backgroundColor: '#FFFFFF' }}>
+      <section className="section" style={{ backgroundColor: 'var(--color-surface-warm)', borderBottom: '1px solid var(--color-border)' }}>
         <div className="container">
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '3rem' }}>
             <div>
@@ -271,7 +271,7 @@ export default function Home() {
 
       {/* Section 7: Final CTA Conversion Area */}
       <section className="section" style={{
-        backgroundColor: 'var(--color-navy)',
+        backgroundColor: 'var(--color-navy-dark)',
         color: '#FFFFFF',
         textAlign: 'center',
         padding: '6rem 2rem'
@@ -282,8 +282,8 @@ export default function Home() {
             Join Zuvio Global School today. Connect with our academic advisors to configure a personalised pathway tailored specifically for your child.
           </p>
           <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
-            <Link to="/contact" className="btn btn-primary" style={{ padding: '1rem 2.5rem' }}>Enquire Now</Link>
-            <Link to="/curriculum" className="btn btn-outline" style={{ padding: '1rem 2.5rem', color: '#FFFFFF', borderColor: '#FFFFFF' }}>Explore Curriculum</Link>
+            <Link to="/contact-us" className="btn" style={{ padding: '1rem 2.5rem', backgroundColor: 'var(--color-gold)', color: 'var(--color-navy-dark)', fontWeight: 700 }}>Enquire Now</Link>
+            <Link to="/our-curriculum" className="btn btn-outline" style={{ padding: '1rem 2.5rem', color: '#FFFFFF', borderColor: '#FFFFFF' }}>Explore Curriculum</Link>
           </div>
         </div>
       </section>
