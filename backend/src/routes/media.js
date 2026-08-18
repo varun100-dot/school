@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const db = require('../config/db');
 
+const requireDatabaseConnection = require('../middleware/dbCheck');
+
 // List registered media files
 router.get('/', async (req, res) => {
   try {
@@ -14,7 +16,7 @@ router.get('/', async (req, res) => {
 });
 
 // Register uploaded media entry (Phase 1 Stub)
-router.post('/register', async (req, res) => {
+router.post('/register', requireDatabaseConnection, async (req, res) => {
   const { file_name, storage_path, public_url, alt_text, mime_type, file_size } = req.body;
   if (!file_name || !storage_path || !public_url) {
     return res.status(400).json({ error: 'Missing file_name, storage_path or public_url' });

@@ -88,12 +88,11 @@ app.use(errorHandler);
 
 // Start Server and verify DB connection status
 app.listen(PORT, async () => {
-  console.log(`[API Server] Running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`);
+  console.log(`[API] Server running on port ${PORT}`);
   const dbStatus = await db.testConnection();
   if (dbStatus.connected) {
-    console.log(`[MySQL DB] Successfully connected to ${dbStatus.database} on ${dbStatus.host}`);
+    console.log(`[DB] Connected`);
   } else {
-    console.warn(`[MySQL DB Warning] Connection could not be established: ${dbStatus.error}`);
-    console.warn(`[MySQL DB Warning] API will run in fallback/mock mode.`);
+    console.log(`[DB] Not connected — read-only development mode`);
   }
 });

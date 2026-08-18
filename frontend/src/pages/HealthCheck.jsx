@@ -163,16 +163,16 @@ export default function HealthCheck() {
               <span style={{ 
                 fontSize: '0.85rem', 
                 fontWeight: 'bold', 
-                color: dbStatus === 'connected' ? '#059669' : dbStatus === 'disconnected' ? '#B45309' : '#EF4444', 
-                backgroundColor: dbStatus === 'connected' ? '#D1FAE5' : dbStatus === 'disconnected' ? '#FEF3C7' : '#FEE2E2', 
+                color: dbStatus === 'connected' ? '#059669' : '#EF4444', 
+                backgroundColor: dbStatus === 'connected' ? '#D1FAE5' : '#FEE2E2', 
                 padding: '0.2rem 0.6rem', 
                 borderRadius: '20px' 
               }}>
-                {dbStatus === 'connected' ? 'CONNECTED' : dbStatus === 'disconnected' ? 'FALLBACK/MOCK' : 'FAILED'}
+                {dbStatus === 'connected' ? 'CONNECTED' : 'Database connection required'}
               </span>
             </div>
             <p style={{ color: '#64748B', fontSize: '0.85rem', marginTop: '0.25rem' }}>
-              Status: {dbDetails}
+              {dbStatus === 'connected' ? 'Database connection active.' : 'Database offline. CMS mutations and form entries are disabled.'}
             </p>
           </div>
         </div>

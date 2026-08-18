@@ -10,9 +10,7 @@ router.get('/', async (req, res) => {
     service: 'zuvio-api',
     database: {
       connected: dbStatus.connected,
-      host: dbStatus.host,
-      database: dbStatus.database,
-      details: dbStatus.connected ? 'Operational' : dbStatus.error
+      ready: dbStatus.connected
     },
     timestamp: new Date().toISOString()
   });

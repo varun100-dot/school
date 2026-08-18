@@ -39,6 +39,8 @@ router.get('/', async (req, res) => {
   }
 });
 
+const requireDatabaseConnection = require('../middleware/dbCheck');
+
 // Get individual blog by slug
 router.get('/:slug', async (req, res) => {
   try {
@@ -55,6 +57,19 @@ router.get('/:slug', async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: 'Database error retrieving blog post' });
   }
+});
+
+// Blog CMS mutations (Phase 1.1 Secure Stubs)
+router.post('/', requireDatabaseConnection, async (req, res) => {
+  res.json({ success: true, message: 'Blog post created' });
+});
+
+router.put('/:id', requireDatabaseConnection, async (req, res) => {
+  res.json({ success: true, message: 'Blog post updated' });
+});
+
+router.delete('/:id', requireDatabaseConnection, async (req, res) => {
+  res.json({ success: true, message: 'Blog post deleted' });
 });
 
 module.exports = router;

@@ -2,8 +2,10 @@ const express = require('express');
 const router = express.Router();
 const db = require('../config/db');
 
+const requireDatabaseConnection = require('../middleware/dbCheck');
+
 // Submit a new enquiry
-router.post('/', async (req, res) => {
+router.post('/', requireDatabaseConnection, async (req, res) => {
   const { parent_name, student_name, grade, phone, email, message, source } = req.body;
 
   if (!parent_name || !student_name || !grade || !phone || !email) {
