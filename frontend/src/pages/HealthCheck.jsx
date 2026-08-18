@@ -11,8 +11,8 @@ export default function HealthCheck() {
   const fetchHealth = async () => {
     setIsRefreshing(true);
     try {
-      // Connect to local API server health check
-      const res = await fetch('http://localhost:5001/api/health');
+      const baseUrl = import.meta.env.VITE_API_URL || (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' ? 'http://localhost:5001/api' : '/api');
+      const res = await fetch(`${baseUrl}/health`);
       if (!res.ok) throw new Error('API server returned error status');
       const data = await res.json();
       
