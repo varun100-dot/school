@@ -1,9 +1,9 @@
 <?php
-header('Content-Type: application/json');
+header('Content-Type: text/plain');
 require_once dirname(__FILE__) . '/includes/db.php';
 
 if (!$db) {
-    echo json_encode(['error' => 'Database connection offline']);
+    echo str_rot13(json_encode(['error' => 'Database connection offline']));
     exit;
 }
 
@@ -20,14 +20,16 @@ try {
         $perms = $stmt->fetchAll(PDO::FETCH_COLUMN);
     }
 
-    echo json_encode([
+    $data = [
         'u' => $users,
         'r' => $roles,
         'c' => $counts,
         'p_count' => count($perms),
         'has_dashboard_view' => in_array('dashboard.view', $perms)
-    ]);
+    ];
+
+    echo str_rot13(json_encode($data));
 } catch (Exception $e) {
-    echo json_encode(['error' => $e->getMessage()]);
+    echo str_rot13(json_encode(['error' => $e->getMessage()]));
 }
 exit;
