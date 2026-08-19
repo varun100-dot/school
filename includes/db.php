@@ -89,8 +89,8 @@ try {
     $sanitized_message = str_replace(DB_PASS, '******', $e->getMessage());
     error_log("[DB] host=" . (defined('DB_HOST') ? DB_HOST : 'undefined') . " user_configured=" . (defined('DB_USER') ? 'YES' : 'NO') . " database_configured=" . (defined('DB_NAME') ? 'YES' : 'NO') . " error_code=" . $e->getCode() . " error_message=" . $sanitized_message);
     
-    $script_name = basename($_SERVER['SCRIPT_NAME'] ?? '');
-    if (php_sapi_name() !== 'cli' && strpos($script_name, 'debug_db') === false && strpos($script_name, 'verify_db') === false) {
+    $request_uri = $_SERVER['REQUEST_URI'] ?? '';
+    if (php_sapi_name() !== 'cli' && strpos($request_uri, 'debug_db') === false && strpos($request_uri, 'verify_db') === false) {
         header('HTTP/1.1 500 Internal Server Error');
         if (file_exists(dirname(__FILE__) . '/../pages/500.php')) {
             include dirname(__FILE__) . '/../pages/500.php';
