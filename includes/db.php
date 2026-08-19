@@ -84,6 +84,7 @@ try {
     ];
     $db = new PDO($dsn, DB_USER, DB_PASS, $options);
 } catch (PDOException $e) {
+    $GLOBALS['db_connection_error'] = $e->getMessage();
     // Log error securely, prevent credential exposure, display a 500 page
     $sanitized_message = str_replace(DB_PASS, '******', $e->getMessage());
     error_log("[DB] host=" . (defined('DB_HOST') ? DB_HOST : 'undefined') . " user_configured=" . (defined('DB_USER') ? 'YES' : 'NO') . " database_configured=" . (defined('DB_NAME') ? 'YES' : 'NO') . " error_code=" . $e->getCode() . " error_message=" . $sanitized_message);

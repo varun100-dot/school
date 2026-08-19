@@ -31,6 +31,11 @@ if (isset($db) && $db !== null) {
 } else {
     $response['pdo_connection'] = 'fail';
     $response['error_code'] = 'NO_DB_OBJECT';
+    $error_msg = isset($GLOBALS['db_connection_error']) ? $GLOBALS['db_connection_error'] : 'Unknown connection error';
+    if (defined('DB_PASS') && DB_PASS !== '') {
+        $error_msg = str_replace(DB_PASS, '******', $error_msg);
+    }
+    $response['error_message'] = $error_msg;
 }
 
 echo json_encode($response);
