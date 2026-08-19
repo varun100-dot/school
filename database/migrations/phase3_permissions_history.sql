@@ -1,4 +1,4 @@
--- Zuvio Global School - Phase 3 Database Migration
+-- Zuvio Global School - Phase 3 Permissions and History Migration
 -- Safe, idempotent SQL script using CREATE TABLE IF NOT EXISTS
 
 -- 1. Create Permissions Table
