@@ -53,13 +53,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
                     $perm_stmt->execute([$user['role_id']]);
                     $_SESSION['permissions'] = $perm_stmt->fetchAll(PDO::FETCH_COLUMN);
                     
-                    // Log login action
+                    // Log login action (errors silently ignored)
                     log_audit('USER_LOGIN', 'auth', 'users', $user['id'], null, null, 'User logged in successfully');
                     
-                    // Flush session to disk before redirect so permissions survive the redirect
-                    session_write_close();
-                    header('Location: /admin');
+                    // Use meta-refresh redirect to bypass LiteSpeed caching and avoid
+                    // session_write_close() conflicts on shared PHP handlers.
+                    // No-cache headers prevent LiteSpeed from storing this POST response.
+                    header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+                    header('Pragma: no-cache');
+                    header('Expires: Thu, 01 Jan 1970 00:00:00 GMT');
+                    ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="refresh" content="0;url=/admin/">
+  <title>Redirecting...</title>
+  <style>
+    body { background: #062B63; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; font-family: sans-serif; }
+    .msg { color: #fff; text-align: center; }
+    .msg p { opacity: 0.7; font-size: 0.9rem; margin-top: 0.5rem; }
+  </style>
+</head>
+<body>
+  <div class="msg">
+    <strong>Login successful. Redirecting to dashboard&hellip;</strong>
+    <p>If not redirected, <a href="/admin/" style="color: #D9A441;">click here</a>.</p>
+  </div>
+  <script>window.location.replace('/admin/');</script>
+</body>
+</html>
+<?php
                     exit;
+
                 } else {
                     $error = 'Invalid username, email, or password.';
                 }
