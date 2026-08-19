@@ -6,7 +6,7 @@ require_once dirname(__FILE__) . '/../includes/helper.php';
 safe_session_start();
 
 // Redirect if already logged in
-if (isset($_SESSION['user_id']) && isset($_SESSION['role_name']) && $_SESSION['role_name'] === 'admin') {
+if (isset($_SESSION['user_id']) && isset($_SESSION['role_name']) && in_array($_SESSION['role_name'], ['admin', 'super_admin', 'editor'])) {
     header('Location: /admin');
     exit;
 }
@@ -56,6 +56,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
                     // Log login action
                     log_audit('USER_LOGIN', 'auth', 'users', $user['id'], null, null, 'User logged in successfully');
                     
+                    // Flush session to disk before redirect so permissions survive the redirect
+                    session_write_close();
                     header('Location: /admin');
                     exit;
                 } else {

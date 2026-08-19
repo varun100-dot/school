@@ -5,9 +5,8 @@ require_once dirname(__FILE__) . '/../includes/helper.php';
 require_once dirname(__FILE__) . '/../includes/auth.php';
 
 safe_session_start();
-require_permission('dashboard.view');
 
-// Handle Logout
+// Handle Logout BEFORE permission gate so sign-out always works
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['logout'])) {
     // Log logout audit
     log_audit('USER_LOGOUT', 'auth', 'users', $_SESSION['user_id'] ?? null, null, null, 'User logged out');
@@ -24,6 +23,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['logout'])) {
     header('Location: /admin/login');
     exit;
 }
+
+// Permission gate — runs only for non-logout requests
+require_permission('dashboard.view');
 
 // Fetch Metrics counts
 $blog_count = 0;

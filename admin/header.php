@@ -207,9 +207,7 @@ $current_page = $page_slug ?? 'admin-dashboard';
     <div class="admin-topbar">
       <h2 style="font-size: 1.15rem; color: var(--color-navy); font-family: var(--font-secondary);">System Management Dashboard</h2>
       
-      <!-- Safe custom post logout trigger -->
-      <form method="POST" action="/admin" style="margin: 0;">
-        <button type="submit" name="logout" class="btn btn-outline" style="padding: 0.4rem 1rem; font-size: 0.8rem; border-color: #EF4444; color: #EF4444;">Sign Out</button>
-      </form>
+      <!-- Sign Out link -->
+      <a href="/admin/logout" class="btn btn-outline" style="padding: 0.4rem 1rem; font-size: 0.8rem; border-color: #EF4444; color: #EF4444;" onclick="return confirm('Sign out?');">Sign Out</a>
     </div>
     <div class="admin-body">

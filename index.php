@@ -18,6 +18,25 @@ if (strpos($route, 'admin') === 0) {
             $page_slug = 'admin-login';
             include dirname(__FILE__) . '/admin/login.php';
             break;
+        case 'logout':
+            // Handle GET-based logout for Sign Out link
+            require_once dirname(__FILE__) . '/includes/helper.php';
+            require_once dirname(__FILE__) . '/includes/auth.php';
+            safe_session_start();
+            if (isset($_SESSION['user_id'])) {
+                log_audit('USER_LOGOUT', 'auth', 'users', $_SESSION['user_id'], null, null, 'User logged out via direct link');
+            }
+            $_SESSION = [];
+            if (ini_get("session.use_cookies")) {
+                $params = session_get_cookie_params();
+                setcookie(session_name(), '', time() - 42000,
+                    $params["path"], $params["domain"],
+                    $params["secure"], $params["httponly"]
+                );
+            }
+            session_destroy();
+            header('Location: /admin/login');
+            exit;
         case '':
             $page_slug = 'admin-dashboard';
             include dirname(__FILE__) . '/admin/index.php';
