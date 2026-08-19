@@ -1,18 +1,27 @@
 <?php
 // Zuvio Global School - PDO Database Connection Handler
-// Secure parent-root configuration path resolution strategy
-$config_path = null;
+// 1. Check environment variable override
+$config_path = getenv('ZUVIO_CONFIG_PATH');
 
-if (isset($_SERVER['DOCUMENT_ROOT']) && !empty($_SERVER['DOCUMENT_ROOT'])) {
+// 2. Check Hostinger account-level production path directly
+if (!$config_path || !file_exists($config_path)) {
+    $hostinger_path = '/home/u869064717/config.php';
+    if (file_exists($hostinger_path)) {
+        $config_path = $hostinger_path;
+    }
+}
+
+// 3. Check derived path relative to DOCUMENT_ROOT
+if (!$config_path && isset($_SERVER['DOCUMENT_ROOT']) && !empty($_SERVER['DOCUMENT_ROOT'])) {
     $doc_root = rtrim($_SERVER['DOCUMENT_ROOT'], '/');
     
-    // Level 2 Lookup: /home/u869064717/config.php (Account home root)
+    // Level 2: /home/u869064717/config.php
     $parent_two = dirname(dirname($doc_root));
     if (file_exists($parent_two . '/config.php')) {
         $config_path = $parent_two . '/config.php';
     }
     
-    // Level 1 Lookup: /home/u869064717/domains/zuvioglobalschool.com/config.php
+    // Level 1: /home/u869064717/domains/zuvioglobalschool.com/config.php
     if (!$config_path) {
         $parent_one = dirname($doc_root);
         if (file_exists($parent_one . '/config.php')) {
@@ -21,7 +30,7 @@ if (isset($_SERVER['DOCUMENT_ROOT']) && !empty($_SERVER['DOCUMENT_ROOT'])) {
     }
 }
 
-// Fallback to local configuration file for development
+// 4. Fallback to local configuration file for development
 if (!$config_path) {
     $local_path = dirname(__FILE__) . '/../config.php';
     if (file_exists($local_path)) {
