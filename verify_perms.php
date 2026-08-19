@@ -8,16 +8,10 @@ if (!$db) {
 }
 
 try {
-    // 1. Fetch all users
-    $users = $db->query("SELECT u.id, u.username, u.email, u.role_id, r.name as role_name FROM `users` u LEFT JOIN `roles` r ON r.id = u.role_id")->fetchAll();
+    $users = $db->query("SELECT u.id, u.username, u.role_id, r.name as role_name FROM `users` u LEFT JOIN `roles` r ON r.id = u.role_id")->fetchAll(PDO::FETCH_ASSOC);
+    $roles = $db->query("SELECT id, name FROM `roles`")->fetchAll(PDO::FETCH_ASSOC);
+    $counts = $db->query("SELECT rp.role_id, r.name as role_name, COUNT(*) as perm_count FROM `role_permissions` rp JOIN `roles` r ON r.id = rp.role_id GROUP BY rp.role_id")->fetchAll(PDO::FETCH_ASSOC);
     
-    // 2. Fetch all roles
-    $roles = $db->query("SELECT id, name, description FROM `roles`")->fetchAll();
-    
-    // 3. Fetch role permission counts
-    $counts = $db->query("SELECT rp.role_id, r.name as role_name, COUNT(*) as perm_count FROM `role_permissions` rp JOIN `roles` r ON r.id = rp.role_id GROUP BY rp.role_id")->fetchAll();
-    
-    // 4. Fetch specific permissions for user 'zuvioadmin' (or user id 1)
     $perms = [];
     if (count($users) > 0) {
         $first_user_role = $users[0]['role_id'];
@@ -27,11 +21,12 @@ try {
     }
 
     echo json_encode([
-        'users' => $users,
-        'roles' => $roles,
-        'role_permissions_counts' => $counts,
-        'first_user_permissions' => $perms
-    ], JSON_PRETTY_PRINT);
+        'u' => $users,
+        'r' => $roles,
+        'c' => $counts,
+        'p_count' => count($perms),
+        'has_dashboard_view' => in_array('dashboard.view', $perms)
+    ]);
 } catch (Exception $e) {
     echo json_encode(['error' => $e->getMessage()]);
 }
