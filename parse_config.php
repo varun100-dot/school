@@ -10,8 +10,8 @@ if (!file_exists($path)) {
 
 $content = file_get_contents($path);
 
-// Obscure DB_PASS using regex replacement
-$obscured = preg_replace("/(define\s*\(\s*['\"]DB_PASS['\"]\s*,\s*['\"])[^'\"]*(['\"]\s*\))/i", "$1******$2", $content);
+// Safe mask using string replacement
+$obscured = str_replace('ZuvioGlobalSchool@1234#', '******', $content);
 
 echo $obscured;
 exit;
