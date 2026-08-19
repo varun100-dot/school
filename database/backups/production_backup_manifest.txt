@@ -1,0 +1,41 @@
+Zuvio Global School - Production Backup Manifest
+==================================================
+Backup Date/Time  : 2026-08-19T07:10:13.012Z
+Database Name     : u869064717_school
+Database Host     : srv1113.hstgr.io
+Backup Filename   : production_full.sql
+Backup File Size  : 65835 bytes
+Total Table Count : 29
+
+Row Counts Per Table:
+--------------------------------------------------
+about_sections                     : 2 rows
+about_timeline                     : 1 rows
+audit_logs                         : 0 rows
+beyond_gallery                     : 0 rows
+beyond_sections                    : 2 rows
+blog_categories                    : 10 rows
+blog_tag_map                       : 0 rows
+blog_tags                          : 4 rows
+blogs                              : 1 rows
+curriculum_items                   : 4 rows
+curriculum_stages                  : 3 rows
+enquiries                          : 2 rows
+enquiry_statuses                   : 5 rows
+hero_slide_versions                : 0 rows
+hero_slides                        : 4 rows
+homepage_features                  : 8 rows
+homepage_sections                  : 2 rows
+homepage_stats                     : 4 rows
+leadership                         : 2 rows
+media                              : 11 rows
+media_versions                     : 0 rows
+navigation_items                   : 6 rows
+page_seo                           : 6 rows
+pages                              : 6 rows
+permissions                        : 28 rows
+role_permissions                   : 57 rows
+roles                              : 3 rows
+site_settings                      : 20 rows
+users                              : 1 rows
+==================================================
