@@ -5,7 +5,7 @@ require_once dirname(__FILE__) . '/../includes/helper.php';
 require_once dirname(__FILE__) . '/../includes/auth.php';
 
 safe_session_start();
-require_admin_role();
+require_login();
 
 $logo_path = get_setting('logo_url', '/assets/images/logo.png');
 $current_page = $page_slug ?? 'admin-dashboard';
@@ -170,17 +170,35 @@ $current_page = $page_slug ?? 'admin-dashboard';
     </div>
     
     <nav class="sidebar-menu">
-      <a href="/admin" class="sidebar-item <?php echo $current_page === 'admin-dashboard' ? 'active' : ''; ?>">Dashboard</a>
-      <a href="/admin/blogs" class="sidebar-item <?php echo $current_page === 'admin-blogs' ? 'active' : ''; ?>">Manage Blogs</a>
-      <a href="/admin/hero" class="sidebar-item <?php echo $current_page === 'admin-hero' ? 'active' : ''; ?>">Homepage Hero</a>
-      <a href="/admin/enquiries" class="sidebar-item <?php echo $current_page === 'admin-enquiries' ? 'active' : ''; ?>">Enquiries</a>
-      <a href="/admin/media" class="sidebar-item <?php echo $current_page === 'admin-media' ? 'active' : ''; ?>">Media Manager</a>
-      <a href="/admin/settings" class="sidebar-item <?php echo $current_page === 'admin-settings' ? 'active' : ''; ?>">Site Settings</a>
+      <?php if (has_permission('dashboard.view')): ?>
+        <a href="/admin" class="sidebar-item <?php echo $current_page === 'admin-dashboard' ? 'active' : ''; ?>">Dashboard</a>
+      <?php endif; ?>
+      <?php if (has_permission('blogs.view')): ?>
+        <a href="/admin/blogs" class="sidebar-item <?php echo $current_page === 'admin-blogs' ? 'active' : ''; ?>">Manage Blogs</a>
+      <?php endif; ?>
+      <?php if (has_permission('hero.view')): ?>
+        <a href="/admin/hero" class="sidebar-item <?php echo $current_page === 'admin-hero' ? 'active' : ''; ?>">Homepage Hero</a>
+      <?php endif; ?>
+      <?php if (has_permission('enquiries.view')): ?>
+        <a href="/admin/enquiries" class="sidebar-item <?php echo $current_page === 'admin-enquiries' ? 'active' : ''; ?>">Enquiries</a>
+      <?php endif; ?>
+      <?php if (has_permission('media.view')): ?>
+        <a href="/admin/media" class="sidebar-item <?php echo $current_page === 'admin-media' ? 'active' : ''; ?>">Media Manager</a>
+      <?php endif; ?>
+      <?php if (has_permission('users.view')): ?>
+        <a href="/admin/users" class="sidebar-item <?php echo $current_page === 'admin-users' ? 'active' : ''; ?>">User Management</a>
+      <?php endif; ?>
+      <?php if (has_permission('settings.view')): ?>
+        <a href="/admin/settings" class="sidebar-item <?php echo $current_page === 'admin-settings' ? 'active' : ''; ?>">Site Settings</a>
+      <?php endif; ?>
     </nav>
     
     <div class="sidebar-user">
       <span>Logged in as:</span><br>
-      <strong style="color: #FFFFFF;"><?php echo h($_SESSION['username']); ?></strong>
+      <strong style="color: #FFFFFF;"><?php echo h($_SESSION['username']); ?></strong><br>
+      <span style="font-size: 0.7rem; color: var(--color-gold); text-transform: uppercase; font-weight: bold;">
+        <?php echo h($_SESSION['role_name']); ?>
+      </span>
     </div>
   </aside>
 

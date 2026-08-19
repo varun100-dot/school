@@ -5,7 +5,7 @@ require_once dirname(__FILE__) . '/../includes/helper.php';
 require_once dirname(__FILE__) . '/../includes/auth.php';
 
 safe_session_start();
-require_admin_role();
+require_permission('enquiries.view');
 
 $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 $action = $_GET['action'] ?? 'list';
@@ -14,13 +14,20 @@ $error = '';
 
 // Update status handler
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_status']) && $id > 0) {
+    require_permission('enquiries.update');
     if (!validate_csrf_token($_POST['csrf_token'] ?? '')) {
         $error = 'Security check failed. Please submit again.';
     } else {
         $status_id = (int)$_POST['status_id'];
         try {
+            $old_stmt = $db->prepare("SELECT * FROM `enquiries` WHERE `id` = ? LIMIT 1");
+            $old_stmt->execute([$id]);
+            $old_enquiry = $old_stmt->fetch();
+            
             $stmt = $db->prepare("UPDATE `enquiries` SET `status_id` = ? WHERE `id` = ?");
             $stmt->execute([$status_id, $id]);
+            
+            log_audit('ENQUIRY_UPDATED', 'enquiries', 'enquiries', $id, $old_enquiry, ['status_id' => $status_id], "Updated enquiry ID {$id} status");
             header('Location: /admin/enquiries?msg=status_updated');
             exit;
         } catch (Exception $e) {

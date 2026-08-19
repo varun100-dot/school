@@ -5,13 +5,14 @@ require_once dirname(__FILE__) . '/../includes/helper.php';
 require_once dirname(__FILE__) . '/../includes/auth.php';
 
 safe_session_start();
-require_admin_role();
+require_permission('settings.view');
 
 $msg = '';
 $error = '';
 
 // Handle Settings Update Submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_settings'])) {
+    require_permission('settings.edit');
     if (!validate_csrf_token($_POST['csrf_token'] ?? '')) {
         $error = 'Security check failed. Please submit again.';
     } else {
@@ -34,6 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_settings'])) {
             }
             
             $db->commit();
+            log_audit('SETTINGS_UPDATED', 'settings', 'site_settings', 1, null, null, 'Updated global site settings');
             header('Location: /admin/settings?msg=updated');
             exit;
         } catch (Exception $e) {

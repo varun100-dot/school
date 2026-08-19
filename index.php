@@ -38,6 +38,10 @@ if (strpos($route, 'admin') === 0) {
             $page_slug = 'admin-settings';
             include dirname(__FILE__) . '/admin/settings.php';
             break;
+        case 'users':
+            $page_slug = 'admin-users';
+            include dirname(__FILE__) . '/admin/users.php';
+            break;
         case 'media':
             $page_slug = 'admin-media';
             include dirname(__FILE__) . '/admin/media.php';

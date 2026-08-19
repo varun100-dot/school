@@ -5,7 +5,7 @@ require_once dirname(__FILE__) . '/../includes/helper.php';
 require_once dirname(__FILE__) . '/../includes/auth.php';
 
 safe_session_start();
-require_admin_role();
+require_permission('blogs.view');
 
 $action = $_GET['action'] ?? 'list';
 $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
@@ -78,12 +78,19 @@ function in_value_array($val, $arr) {
 
 // 1. Action Handler: Delete
 if ($action === 'delete' && $id > 0) {
+    require_permission('blogs.delete');
     if (!$db) {
         $error = "Database offline.";
     } else {
         try {
+            $s_fetch = $db->prepare("SELECT * FROM `blogs` WHERE `id` = ? LIMIT 1");
+            $s_fetch->execute([$id]);
+            $old_blog = $s_fetch->fetch();
+            
             $stmt = $db->prepare("DELETE FROM `blogs` WHERE `id` = ?");
             $stmt->execute([$id]);
+            
+            log_audit('BLOG_DELETED', 'blogs', 'blogs', $id, $old_blog, null, "Deleted blog article '{$old_blog['title']}'");
             header('Location: /admin/blogs?msg=deleted');
             exit;
         } catch (Exception $e) {
@@ -104,6 +111,18 @@ if ($db) {
 
 // 2. Action Handler: Save (Create/Update)
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($action === 'add' || $action === 'edit')) {
+    if ($action === 'add') {
+        require_permission('blogs.create');
+    } else {
+        require_permission('blogs.edit');
+    }
+    
+    // If attempting to publish, enforce blogs.publish permission
+    $status = $_POST['status'] === 'published' ? 'published' : 'draft';
+    if ($status === 'published') {
+        require_permission('blogs.publish');
+    }
+
     if (!validate_csrf_token($_POST['csrf_token'] ?? '')) {
         $error = 'Security check failed. Please submit again.';
     } else {
@@ -143,7 +162,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($action === 'add' || $action === '
                     $stmt->execute([
                         $title, $slug, $excerpt, $content, $featured_image, $author, $author_designation, $category_id, $publish_date, $status, $seo_title, $meta_description, $canonical_url
                     ]);
+                    $new_id = $db->lastInsertId();
                     
+                    log_audit('BLOG_CREATED', 'blogs', 'blogs', $new_id, null, ['title' => $title], "Created blog article '{$title}'");
                     header('Location: /admin/blogs?msg=added');
                     exit;
                 } else {
@@ -154,6 +175,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($action === 'add' || $action === '
                         $featured_image = $uploaded_url;
                     }
                     
+                    $old_stmt = $db->prepare("SELECT * FROM `blogs` WHERE `id` = ? LIMIT 1");
+                    $old_stmt->execute([$id]);
+                    $old_blog = $old_stmt->fetch();
+                    
                     $stmt = $db->prepare("
                         UPDATE `blogs` 
                         SET `title` = ?, `slug` = ?, `excerpt` = ?, `content` = ?, `featured_image` = ?, `author` = ?, `author_designation` = ?, `category_id` = ?, `publish_date` = ?, `status` = ?, `seo_title` = ?, `meta_description` = ?, `canonical_url` = ?
@@ -163,6 +188,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($action === 'add' || $action === '
                         $title, $slug, $excerpt, $content, $featured_image, $author, $author_designation, $category_id, $publish_date, $status, $seo_title, $meta_description, $canonical_url, $id
                     ]);
                     
+                    log_audit('BLOG_UPDATED', 'blogs', 'blogs', $id, $old_blog, ['title' => $title], "Updated blog article '{$title}'");
                     header('Location: /admin/blogs?msg=updated');
                     exit;
                 }

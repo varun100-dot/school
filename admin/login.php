@@ -43,6 +43,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
                     $_SESSION['username'] = $user['username'];
                     $_SESSION['role_name'] = $user['role_name'];
                     
+                    // Load granular role permissions
+                    $perm_stmt = $db->prepare("
+                        SELECT p.name 
+                        FROM `role_permissions` rp
+                        JOIN `permissions` p ON p.id = rp.permission_id
+                        WHERE rp.role_id = ?
+                    ");
+                    $perm_stmt->execute([$user['role_id']]);
+                    $_SESSION['permissions'] = $perm_stmt->fetchAll(PDO::FETCH_COLUMN);
+                    
+                    // Log login action
+                    log_audit('USER_LOGIN', 'auth', 'users', $user['id'], null, null, 'User logged in successfully');
+                    
                     header('Location: /admin');
                     exit;
                 } else {
