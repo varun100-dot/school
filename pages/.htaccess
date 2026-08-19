@@ -1,0 +1,3 @@
+# Block direct browser access to page templates
+Order deny,allow
+Deny from all

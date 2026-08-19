@@ -1,0 +1,27 @@
+# Zuvio Global School - Apache Routing Override & Security Hardening
+RewriteEngine On
+
+# Prevent directory browsing
+Options -Indexes
+
+# 1. Block direct browser access to config.php if present in root
+<Files config.php>
+    Order deny,allow
+    Deny from all
+</Files>
+
+# 2. Block direct access to database SQL scripts, Markdown files, or documentations
+<FilesMatch "\.(sql|md|docx|txt)$">
+    Order deny,allow
+    Deny from all
+</FilesMatch>
+
+# 3. Prevent access to the private database/ documentation directory
+RewriteRule ^database/ - [F,L]
+
+# 4. If requested file or directory exists, serve it directly
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Otherwise route to index.php front controller
+RewriteRule ^(.*)$ index.php?route=$1 [QSA,L]

@@ -38,3 +38,10 @@ lerna-debug.log*
 *.njsproj
 *.sln
 *.sw?
+
+# Zuvio Local Configuration file
+config.php
+
+# Zuvio Media uploads
+uploads/*
+!uploads/.gitkeep

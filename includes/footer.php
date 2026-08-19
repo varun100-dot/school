@@ -1,0 +1,206 @@
+<?php
+// Zuvio Global School - Main Footer Template
+require_once dirname(__FILE__) . '/helper.php';
+
+$phone = get_setting('phone', '7827262956');
+$email = get_setting('general_email', 'info@zuvioglobalschool.com');
+$address = get_setting('address', "B-09, Lower Ground Floor,\nITL Twin Tower,\nNetaji Subhash Place,\nPitampura,\nDelhi - 110034");
+$office_timings = get_setting('office_timings', '10-7');
+$copyright = get_setting('copyright', '© 2026 Zuvio Global School. All rights reserved.');
+$logo_path = get_setting('logo_url', '/assets/images/logo.png');
+
+$social_insta = get_setting('social_instagram', '#');
+$social_fb = get_setting('social_facebook', '#');
+$social_linkedin = get_setting('social_linkedin', '#');
+?>
+
+  <!-- Footer Section -->
+  <footer class="site-footer">
+    <div class="footer-container">
+      
+      <!-- Column 1: Brand Anchor -->
+      <div class="footer-col brand-col">
+        <a href="/">
+          <img src="<?php echo h($logo_path); ?>" alt="Zuvio Global School" class="footer-logo">
+        </a>
+        <p class="brand-tagline">Learning Beyond Boundaries</p>
+        <p class="copyright-text"><?php echo h($copyright); ?></p>
+      </div>
+
+      <!-- Column 2: Quick Links -->
+      <div class="footer-col Links-col">
+        <h4 class="footer-title">Quick Navigation</h4>
+        <ul class="footer-links-list">
+          <li><a href="/about" class="footer-link">About Zuvio</a></li>
+          <li><a href="/our-curriculum" class="footer-link">Academic Stages</a></li>
+          <li><a href="/zuvio-beyond" class="footer-link">Beyond Academics</a></li>
+          <li><a href="/blogs" class="footer-link">Blogs & Articles</a></li>
+          <li><a href="/contact" class="footer-link">Contact & Enquiries</a></li>
+        </ul>
+      </div>
+
+      <!-- Column 3: Verified Contact Info -->
+      <div class="footer-col contact-col">
+        <h4 class="footer-title">Contact Us</h4>
+        <p class="contact-info-line">
+          <strong>Address:</strong><br>
+          <?php echo nl2br(h($address)); ?>
+        </p>
+        <p class="contact-info-line">
+          <strong>Phone / WhatsApp:</strong><br>
+          <a href="tel:<?php echo h($phone); ?>" class="contact-anchor">+91 <?php echo h($phone); ?></a>
+        </p>
+        <p class="contact-info-line">
+          <strong>Email:</strong><br>
+          <a href="mailto:<?php echo h($email); ?>" class="contact-anchor"><?php echo h($email); ?></a>
+        </p>
+        <p class="contact-info-line">
+          <strong>Office Hours:</strong> <?php echo h($office_timings); ?> AM - PM
+        </p>
+      </div>
+
+      <!-- Column 4: Institutional Handles -->
+      <div class="footer-col social-col">
+        <h4 class="footer-title">Follow Us</h4>
+        <div class="social-links-row">
+          <?php if ($social_fb !== '#'): ?>
+            <a href="<?php echo h($social_fb); ?>" target="_blank" rel="noopener" class="social-icon-btn" aria-label="Facebook">FB</a>
+          <?php endif; ?>
+          <?php if ($social_insta !== '#'): ?>
+            <a href="<?php echo h($social_insta); ?>" target="_blank" rel="noopener" class="social-icon-btn" aria-label="Instagram">IG</a>
+          <?php endif; ?>
+          <?php if ($social_linkedin !== '#'): ?>
+            <a href="<?php echo h($social_linkedin); ?>" target="_blank" rel="noopener" class="social-icon-btn" aria-label="LinkedIn">LN</a>
+          <?php endif; ?>
+        </div>
+      </div>
+
+    </div>
+  </footer>
+
+  <style>
+    /* Footer Layout Stylings */
+    .site-footer {
+      background-color: var(--color-surface);
+      border-top: 1px solid var(--color-border);
+      padding: 5rem 0 3rem 0;
+      color: var(--color-text);
+      font-family: var(--font-secondary);
+    }
+    .footer-container {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr 1.2fr 0.8fr;
+      gap: 3.5rem;
+    }
+    .footer-col {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+    .footer-logo {
+      height: 60px;
+      width: auto;
+      object-fit: contain;
+      display: block;
+      transition: height 0.3s ease;
+    }
+    .brand-tagline {
+      font-size: 0.9rem;
+      font-style: italic;
+      color: var(--color-muted);
+    }
+    .copyright-text {
+      font-size: 0.8rem;
+      color: var(--color-muted);
+      margin-top: auto;
+    }
+    .footer-title {
+      font-family: var(--font-primary);
+      font-size: 1.25rem;
+      color: var(--color-navy);
+      font-weight: 700;
+      position: relative;
+      padding-bottom: 0.5rem;
+    }
+    .footer-title::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 40px;
+      height: 2px;
+      background-color: var(--color-gold);
+    }
+    .footer-links-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+    .footer-link {
+      font-size: 0.9rem;
+      color: var(--color-text);
+      transition: color var(--transition-fast);
+    }
+    .footer-link:hover {
+      color: var(--color-gold);
+      padding-left: 4px;
+    }
+    .contact-info-line {
+      font-size: 0.9rem;
+      color: var(--color-text);
+      line-height: 1.5;
+    }
+    .contact-anchor {
+      color: var(--color-navy);
+      font-weight: 600;
+      transition: color var(--transition-fast);
+    }
+    .contact-anchor:hover {
+      color: var(--color-gold);
+    }
+    .social-links-row {
+      display: flex;
+      gap: 1rem;
+    }
+    .social-icon-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      border: 1.5px solid var(--color-navy);
+      color: var(--color-navy);
+      font-size: 0.8rem;
+      font-weight: 700;
+      transition: all var(--transition-fast);
+    }
+    .social-icon-btn:hover {
+      background-color: var(--color-navy);
+      color: var(--color-white);
+      transform: translateY(-2px);
+    }
+
+    /* Footer Mobile Responsiveness */
+    @media (max-width: 900px) {
+      .footer-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2.5rem;
+      }
+    }
+    @media (max-width: 580px) {
+      .footer-container {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+      .copyright-text {
+        margin-top: 1rem;
+      }
+    }
+  </style>
+</body>
+</html>
