@@ -9,9 +9,9 @@
 ALTER TABLE `leadership` ADD COLUMN IF NOT EXISTS `slug` VARCHAR(150) DEFAULT NULL;
 ALTER TABLE `leadership` ADD COLUMN IF NOT EXISTS `short_description` TEXT DEFAULT NULL;
 
--- Create unique index for slug
-ALTER TABLE `leadership`
-ADD UNIQUE INDEX `slug` (`slug`);
+-- Create unique index for slug (safe: drops first if already exists)
+ALTER TABLE `leadership` DROP INDEX IF EXISTS `slug`;
+ALTER TABLE `leadership` ADD UNIQUE INDEX `slug` (`slug`);
 
 
 -- Backfill slug from name for existing rows that have no slug
