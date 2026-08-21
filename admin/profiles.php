@@ -111,6 +111,41 @@ if ($db) {
     }
 }
 
+// Action Handler: Reorder Profiles
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && $action === 'reorder') {
+    require_permission('about.edit');
+    if (!validate_csrf_token($_POST['csrf_token'] ?? '')) {
+        $error = 'Security check failed. Please submit again.';
+    } else {
+        $ordered_ids = $_POST['ordered_ids'] ?? '';
+        if (!empty($ordered_ids)) {
+            $ids = explode(',', $ordered_ids);
+            try {
+                if ($db) {
+                    $db->beginTransaction();
+                    $stmt = $db->prepare("UPDATE `leadership` SET `sort_order` = ? WHERE `id` = ?");
+                    foreach ($ids as $index => $item_id) {
+                        $stmt->execute([$index + 1, (int)$item_id]);
+                    }
+                    $db->commit();
+                    log_audit('PROFILE_REORDERED', 'about', 'leadership', null, null, ['order' => $ids], "Reordered profiles");
+                    header('Location: /admin/profiles?msg=reordered');
+                    exit;
+                } else {
+                    $error = "Database offline.";
+                }
+            } catch (Exception $e) {
+                if ($db && $db->inTransaction()) {
+                    $db->rollBack();
+                }
+                $error = 'Transaction Error: ' . $e->getMessage();
+            }
+        } else {
+            $error = 'No order data received.';
+        }
+    }
+}
+
 // 2. Action Handler: Save (Create/Update)
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($action === 'add' || $action === 'edit')) {
     if ($action === 'add') {
@@ -221,7 +256,7 @@ if ($action === 'edit' && $id > 0) {
 
 // 4. Action Handler: Listing
 $profiles = [];
-if ($action === 'list') {
+if ($action === 'list' || $action === 'reorder') {
     if ($db) {
         try {
             $profiles = $db->query("SELECT * FROM `leadership` ORDER BY `sort_order` ASC")->fetchAll();
@@ -241,7 +276,10 @@ include_once dirname(__FILE__) . '/header.php';
     <p style="color: var(--color-muted); font-size: 0.85rem;">Create, edit, publish, or sort leadership bios on the About Us page.</p>
   </div>
   <?php if ($action === 'list'): ?>
-    <a href="/admin/profiles?action=add" class="btn btn-primary" style="font-size: 0.85rem;">+ Create New Profile</a>
+    <div style="display: flex; gap: 0.75rem;">
+      <a href="/admin/profiles?action=reorder" class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.85rem;">⇅ Reorder Profiles</a>
+      <a href="/admin/profiles?action=add" class="btn btn-primary" style="font-size: 0.85rem;">+ Create New Profile</a>
+    </div>
   <?php else: ?>
     <a href="/admin/profiles" class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.85rem;">&larr; Back to List</a>
   <?php endif; ?>
@@ -258,6 +296,10 @@ include_once dirname(__FILE__) . '/header.php';
 <?php elseif (isset($_GET['msg']) && $_GET['msg'] === 'deleted'): ?>
   <div style="background-color: var(--color-surface-blue); border-left: 4px solid var(--color-success); padding: 0.75rem 1rem; border-radius: var(--radius-sm); color: var(--color-navy); font-size: 0.85rem; margin-bottom: 1.5rem;">
     <strong>Success!</strong> Profile deleted successfully.
+  </div>
+<?php elseif (isset($_GET['msg']) && $_GET['msg'] === 'reordered'): ?>
+  <div style="background-color: var(--color-surface-blue); border-left: 4px solid var(--color-success); padding: 0.75rem 1rem; border-radius: var(--radius-sm); color: var(--color-navy); font-size: 0.85rem; margin-bottom: 1.5rem;">
+    <strong>Success!</strong> Profiles order updated successfully.
   </div>
 <?php endif; ?>
 
@@ -327,7 +369,7 @@ include_once dirname(__FILE__) . '/header.php';
 <?php elseif ($action === 'add' || $action === 'edit'): ?>
   <div style="background-color: #FFFFFF; border-radius: var(--radius-md); border: 1px solid var(--color-border); box-shadow: var(--shadow-sm); padding: 2.5rem; max-width: 800px;">
     <form action="/admin/profiles?action=<?php echo $action; ?><?php echo $action === 'edit' ? '&id=' . $id : ''; ?>" method="POST" enctype="multipart/form-data">
-      <input type="hidden" name="csrf_token" value="<?php echo generate_csrf_token(); ?>">
+      <input type="hidden" name="csrf_token" value="<?php echo get_csrf_token(); ?>">
       
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
         
@@ -440,6 +482,183 @@ include_once dirname(__FILE__) . '/header.php';
 
     </form>
   </div>
+
+<!-- REORDER VIEW -->
+<?php elseif ($action === 'reorder'): ?>
+  <div style="background-color: #FFFFFF; border-radius: var(--radius-md); border: 1px solid var(--color-border); box-shadow: var(--shadow-sm); padding: 2.5rem; max-width: 800px;">
+    <p style="color: var(--color-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">
+      Drag and drop the profiles below to rearrange them, or use the <strong>↑</strong> and <strong>↓</strong> buttons. The public About Us page will display leadership team bios in this order.
+    </p>
+
+    <div id="reorder-container" style="display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 2rem;">
+      <?php if (empty($profiles)): ?>
+        <p style="text-align: center; color: var(--color-muted); font-style: italic; padding: 2rem;">
+          No profiles to sort.
+        </p>
+      <?php else: ?>
+        <?php foreach ($profiles as $prof): ?>
+          <div class="reorder-item" data-id="<?php echo $prof['id']; ?>" draggable="true" style="display: flex; align-items: center; justify-content: space-between; background-color: #FFFFFF; border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 1rem 1.5rem; cursor: move; transition: all var(--transition-fast); box-shadow: var(--shadow-sm); user-select: none;">
+            <div style="display: flex; align-items: center; gap: 1.25rem; pointer-events: none;">
+              <!-- Drag Handle Icon -->
+              <div style="color: var(--color-muted); cursor: grab; display: flex; align-items: center; padding-right: 0.25rem;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="9" cy="5" r="1"></circle>
+                  <circle cx="9" cy="12" r="1"></circle>
+                  <circle cx="9" cy="19" r="1"></circle>
+                  <circle cx="15" cy="5" r="1"></circle>
+                  <circle cx="15" cy="12" r="1"></circle>
+                  <circle cx="15" cy="19" r="1"></circle>
+                </svg>
+              </div>
+              
+              <!-- Photo -->
+              <?php if (!empty($prof['image'])): ?>
+                <img src="<?php echo h($prof['image']); ?>" alt="" style="width: 44px; height: 44px; border-radius: 50%; object-fit: cover; border: 1px solid var(--color-border);">
+              <?php else: ?>
+                <div style="width: 44px; height: 44px; border-radius: 50%; background-color: var(--color-navy); color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.9rem;">
+                  <?php echo h(substr($prof['name'], 0, 1)); ?>
+                </div>
+              <?php endif; ?>
+              
+              <!-- Info -->
+              <div>
+                <strong style="color: var(--color-navy); font-size: 0.9rem; display: block;"><?php echo h($prof['name']); ?></strong>
+                <span style="color: var(--color-muted); font-size: 0.75rem;"><?php echo h($prof['designation']); ?></span>
+              </div>
+            </div>
+            
+            <!-- Up / Down buttons -->
+            <div style="display: flex; gap: 0.35rem; align-items: center;">
+              <button type="button" class="btn btn-outline btn-up" style="padding: 0.4rem 0.75rem; font-size: 0.8rem; font-weight: bold; border-radius: var(--radius-sm); border-color: var(--color-border); box-shadow: none; display: flex; align-items: center; justify-content: center; height: 32px; width: 32px;">↑</button>
+              <button type="button" class="btn btn-outline btn-down" style="padding: 0.4rem 0.75rem; font-size: 0.8rem; font-weight: bold; border-radius: var(--radius-sm); border-color: var(--color-border); box-shadow: none; display: flex; align-items: center; justify-content: center; height: 32px; width: 32px;">↓</button>
+            </div>
+          </div>
+        <?php endforeach; ?>
+      <?php endif; ?>
+    </div>
+
+    <form id="reorder-form" action="/admin/profiles?action=reorder" method="POST">
+      <input type="hidden" name="csrf_token" value="<?php echo get_csrf_token(); ?>">
+      <input type="hidden" name="ordered_ids" id="ordered_ids" value="">
+      
+      <div style="border-top: 1px solid var(--color-border); padding-top: 1.5rem; display: flex; justify-content: flex-end; gap: 0.75rem;">
+        <a href="/admin/profiles" class="btn btn-outline" style="padding: 0.6rem 1.5rem;">Cancel</a>
+        <button type="submit" class="btn btn-primary" style="padding: 0.6rem 2rem;">Save New Order</button>
+      </div>
+    </form>
+  </div>
+
+  <style>
+    .reorder-item {
+      transition: transform var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-fast);
+    }
+    .reorder-item:hover {
+      border-color: var(--color-navy) !important;
+      box-shadow: var(--shadow-md) !important;
+    }
+    .reorder-item.dragging {
+      opacity: 0.5;
+      background-color: var(--color-surface-blue) !important;
+      border-style: dashed !important;
+    }
+    .reorder-item.drag-over {
+      border-top: 3px solid var(--color-gold) !important;
+    }
+  </style>
+
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+      const container = document.getElementById('reorder-container');
+      const form = document.getElementById('reorder-form');
+      const orderedIdsInput = document.getElementById('ordered_ids');
+      
+      function updateIds() {
+          const items = container.querySelectorAll('.reorder-item');
+          const ids = Array.from(items).map(item => item.getAttribute('data-id'));
+          orderedIdsInput.value = ids.join(',');
+      }
+      
+      updateIds(); // Initial value
+      
+      // Up / Down Button Logic
+      container.addEventListener('click', function(e) {
+          const upBtn = e.target.closest('.btn-up');
+          const downBtn = e.target.closest('.btn-down');
+          
+          if (upBtn) {
+              const item = upBtn.closest('.reorder-item');
+              const prev = item.previousElementSibling;
+              if (prev && prev.classList.contains('reorder-item')) {
+                  container.insertBefore(item, prev);
+                  updateIds();
+                  item.style.transform = 'scale(1.02)';
+                  setTimeout(() => item.style.transform = 'none', 200);
+              }
+          } else if (downBtn) {
+              const item = downBtn.closest('.reorder-item');
+              const next = item.nextElementSibling;
+              if (next && next.classList.contains('reorder-item')) {
+                  container.insertBefore(next, item);
+                  updateIds();
+                  item.style.transform = 'scale(1.02)';
+                  setTimeout(() => item.style.transform = 'none', 200);
+              }
+          }
+      });
+      
+      // HTML5 Drag and Drop logic using standard drag events
+      let dragEl = null;
+      
+      const items = container.querySelectorAll('.reorder-item');
+      items.forEach(item => {
+          item.addEventListener('dragstart', function(e) {
+              dragEl = this;
+              this.classList.add('dragging');
+              e.dataTransfer.effectAllowed = 'move';
+              e.dataTransfer.setData('text/plain', this.getAttribute('data-id'));
+          });
+          
+          item.addEventListener('dragend', function() {
+              this.classList.remove('dragging');
+              items.forEach(el => el.classList.remove('drag-over'));
+              updateIds();
+          });
+          
+          item.addEventListener('dragover', function(e) {
+              e.preventDefault();
+              e.dataTransfer.dropEffect = 'move';
+              return false;
+          });
+          
+          item.addEventListener('dragenter', function(e) {
+              if (this !== dragEl) {
+                  this.classList.add('drag-over');
+              }
+          });
+          
+          item.addEventListener('dragleave', function() {
+              this.classList.remove('drag-over');
+          });
+          
+          item.addEventListener('drop', function(e) {
+              e.preventDefault();
+              this.classList.remove('drag-over');
+              if (dragEl && this !== dragEl) {
+                  const allItems = Array.from(container.querySelectorAll('.reorder-item'));
+                  const dragIdx = allItems.indexOf(dragEl);
+                  const dropIdx = allItems.indexOf(this);
+                  
+                  if (dragIdx < dropIdx) {
+                      container.insertBefore(dragEl, this.nextSibling);
+                  } else {
+                      container.insertBefore(dragEl, this);
+                  }
+                  updateIds();
+              }
+          });
+      });
+  });
+  </script>
 <?php endif; ?>
 
 <?php
