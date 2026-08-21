@@ -7,7 +7,9 @@ safe_session_start();
 
 // Resolve SEO variables
 $current_slug = isset($page_slug) ? $page_slug : 'home';
-$seo = get_page_seo($current_slug);
+if (!isset($seo)) {
+    $seo = get_page_seo($current_slug);
+}
 
 // Resolve Navigation Items
 $menu_items = [];

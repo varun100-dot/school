@@ -40,6 +40,56 @@ if ($db) {
     }
 }
 
+// Fallback leadership if database is offline or empty
+if (empty($leadership)) {
+    $leadership = [
+        [
+            'name' => 'Sharmin Habib',
+            'slug' => 'sharmin-habib',
+            'designation' => 'Co-Founder & Director',
+            'image' => '/assets/images/Profile_Images/Sharmin_Professional_Profile.webp',
+            'short_description' => 'Sharmin Habib is a seasoned educationist and edtech growth expert with over 18 years of experience. She has successfully founded and scaled preschools and digital K–8 learning models in domestic and international markets.',
+            'bio' => '',
+            'message' => '',
+            'sort_order' => 1,
+            'is_active' => 1
+        ],
+        [
+            'name' => 'Deepak Jain',
+            'slug' => 'deepak-jain',
+            'designation' => 'Co-Founder & Director',
+            'image' => '/assets/images/Profile_Images/Deepak_Professional_Profile.webp',
+            'short_description' => 'Deepak Jain is an entrepreneur and business professional who brings a practical, growth-oriented perspective to Zuvio Global School. He oversees Zuvio’s strategic direction, operations, and partnerships.',
+            'bio' => '',
+            'message' => '',
+            'sort_order' => 2,
+            'is_active' => 1
+        ],
+        [
+            'name' => 'Pragya Jain',
+            'slug' => 'pragya-jain',
+            'designation' => 'Co-Founder & Director',
+            'image' => '/assets/images/Profile_Images/Pragya_Professional_Profile.webp',
+            'short_description' => 'Pragya Jain is an educationist dedicated to child-centric learning that prepares students for life. She conceptualized Zuvio to merge academic rigor with personalization, creativity, and future-ready skills.',
+            'bio' => '',
+            'message' => '',
+            'sort_order' => 3,
+            'is_active' => 1
+        ],
+        [
+            'name' => 'Rashmi Bhasin',
+            'slug' => 'rashmi-bhasin',
+            'designation' => 'Academic Head',
+            'image' => '/assets/images/Profile_Images/Rashmi_Professional_Profile.webp',
+            'short_description' => 'Rashmi Bhasin is the Academic Head of Zuvio Global School. She is a visionary curriculum thinker and mentor committed to designing personalized, interactive, and child-centered online homeschooling experiences.',
+            'bio' => '',
+            'message' => '',
+            'sort_order' => 4,
+            'is_active' => 1
+        ]
+    ];
+}
+
 // Fallback arrays if database is offline
 $story = $sections['our_story'] ?? [
     'title' => 'Our Story',
@@ -158,11 +208,28 @@ include_once dirname(__FILE__) . '/../includes/header.php';
               <span><?php echo h($leader['name']); ?></span>
             <?php endif; ?>
           </div>
-          <div style="padding: 1.75rem; text-align: center; flex-grow: 1;">
-            <h3 style="font-size: 1.35rem; color: var(--color-navy); margin-bottom: 0.25rem;"><?php echo h($leader['name']); ?></h3>
-            <p style="font-size: 0.85rem; color: var(--color-gold); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1.25rem;"><?php echo h($leader['designation']); ?></p>
-            <p style="color: var(--color-muted); font-size: 0.85rem; line-height: 1.6; font-style: italic; margin-bottom: 1.5rem;"><?php echo h($leader['bio']); ?></p>
-            <p style="color: var(--color-text); font-size: 0.9rem; line-height: 1.7; border-top: 1px solid var(--color-border); paddingTop: 1rem;"><?php echo h($leader['message']); ?></p>
+          <div style="padding: 1.75rem; text-align: center; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <h3 style="font-size: 1.35rem; color: var(--color-navy); margin-bottom: 0.25rem; font-family: var(--font-primary);"><?php echo h($leader['name']); ?></h3>
+              <p style="font-size: 0.85rem; color: var(--color-gold); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1.25rem;"><?php echo h($leader['designation']); ?></p>
+              <p style="color: var(--color-text); font-size: 0.9rem; line-height: 1.7; margin-bottom: 1.5rem;">
+                <?php 
+                  $short_desc = $leader['short_description'] ?? '';
+                  if (empty($short_desc) && !empty($leader['bio'])) {
+                      $words = explode(' ', $leader['bio']);
+                      if (count($words) > 30) {
+                          $short_desc = implode(' ', array_slice($words, 0, 30)) . '...';
+                      } else {
+                          $short_desc = $leader['bio'];
+                      }
+                  }
+                  echo h($short_desc); 
+                ?>
+              </p>
+            </div>
+            <div style="margin-top: auto; border-top: 1px solid var(--color-border); padding-top: 1rem;">
+              <a href="/about/<?php echo h($leader['slug'] ?? ''); ?>" style="color: var(--color-teal); font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 0.25rem; transition: color var(--transition-fast);" onmouseover="this.style.color='var(--color-navy)'" onmouseout="this.style.color='var(--color-teal)'">Read More &rarr;</a>
+            </div>
           </div>
         </div>
       <?php endforeach; ?>

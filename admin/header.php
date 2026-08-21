@@ -176,6 +176,9 @@ $current_page = $page_slug ?? 'admin-dashboard';
       <?php if (has_permission('blogs.view')): ?>
         <a href="/admin/blogs" class="sidebar-item <?php echo $current_page === 'admin-blogs' ? 'active' : ''; ?>">Manage Blogs</a>
       <?php endif; ?>
+      <?php if (has_permission('about.view')): ?>
+        <a href="/admin/profiles" class="sidebar-item <?php echo $current_page === 'admin-profiles' ? 'active' : ''; ?>">About Profiles</a>
+      <?php endif; ?>
       <?php if (has_permission('hero.view')): ?>
         <a href="/admin/hero" class="sidebar-item <?php echo $current_page === 'admin-hero' ? 'active' : ''; ?>">Homepage Hero</a>
       <?php endif; ?>

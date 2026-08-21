@@ -189,8 +189,10 @@ CREATE TABLE `about_timeline` (
 CREATE TABLE `leadership` (
   `id` INT AUTO_INCREMENT PRIMARY KEY,
   `name` VARCHAR(150) NOT NULL,
+  `slug` VARCHAR(150) DEFAULT NULL UNIQUE,
   `designation` VARCHAR(150) NOT NULL,
   `image` VARCHAR(255),
+  `short_description` TEXT,
   `bio` TEXT,
   `message` TEXT,
   `sort_order` INT DEFAULT 0,

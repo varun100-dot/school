@@ -70,6 +70,10 @@ if (strpos($route, 'admin') === 0) {
             $page_slug = 'admin-media';
             include dirname(__FILE__) . '/admin/media.php';
             break;
+        case 'profiles':
+            $page_slug = 'admin-profiles';
+            include dirname(__FILE__) . '/admin/profiles.php';
+            break;
         default:
             header('HTTP/1.1 404 Not Found');
             include dirname(__FILE__) . '/pages/404.php';
@@ -116,12 +120,16 @@ switch ($route) {
         break;
         
     default:
-        // Handle potential nested routing like blogs/{slug}
+        // Handle potential nested routing like blogs/{slug} or about/{slug}
         $parts = explode('/', $route);
         if ($parts[0] === 'blogs' && isset($parts[1])) {
             $blog_slug = $parts[1];
             $page_slug = 'blogs';
             include dirname(__FILE__) . '/pages/blog-detail.php';
+        } elseif (($parts[0] === 'about' || $parts[0] === 'about-us') && isset($parts[1])) {
+            $profile_slug = $parts[1];
+            $page_slug = 'about';
+            include dirname(__FILE__) . '/pages/about-detail.php';
         } else {
             header('HTTP/1.1 404 Not Found');
             include dirname(__FILE__) . '/pages/404.php';
