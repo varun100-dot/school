@@ -9,14 +9,10 @@
 ALTER TABLE `leadership` ADD COLUMN IF NOT EXISTS `slug` VARCHAR(150) DEFAULT NULL;
 ALTER TABLE `leadership` ADD COLUMN IF NOT EXISTS `short_description` TEXT DEFAULT NULL;
 
--- Add a unique index on slug if not already present (safe approach)
-SET @exists = 0;
-SELECT @exists := COUNT(1) FROM information_schema.STATISTICS 
-WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'leadership' AND INDEX_NAME = 'slug';
-SET @sql = IF(@exists = 0, 'ALTER TABLE `leadership` ADD UNIQUE INDEX `slug` (`slug`)', 'SELECT 1');
-PREPARE stmt FROM @sql;
-EXECUTE stmt;
-DEALLOCATE PREPARE stmt;
+-- Create unique index for slug
+ALTER TABLE `leadership`
+ADD UNIQUE INDEX `slug` (`slug`);
+
 
 -- Backfill slug from name for existing rows that have no slug
 UPDATE `leadership` SET `slug` = LOWER(REPLACE(REPLACE(REPLACE(`name`, ' ', '-'), '&', ''), '.', '')) WHERE `slug` IS NULL OR `slug` = '';
