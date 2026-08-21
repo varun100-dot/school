@@ -198,10 +198,10 @@ include_once dirname(__FILE__) . '/../includes/header.php';
       <h2 style="font-size: 2.25rem; color: var(--color-navy); margin-top: 0.5rem; font-family: var(--font-primary);">Our Leadership Team</h2>
     </div>
 
-    <div style="display: flex; flex-wrap: wrap; gap: 3rem; justify-content: center;">
+    <div class="leadership-grid">
       <?php foreach ($leadership as $leader): ?>
-        <div style="background-color: #FFFFFF; border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-sm); width: 340px; display: flex; flex-direction: column;">
-          <div style="height: 240px; background-color: var(--color-navy); display: flex; justify-content: center; align-items: center; color: #FFFFFF; font-size: 1.25rem; font-weight: 600; font-family: var(--font-primary);">
+        <div class="leader-card">
+          <div style="height: 300px; background-color: var(--color-navy); display: flex; justify-content: center; align-items: center; color: #FFFFFF; font-size: 1.25rem; font-weight: 600; font-family: var(--font-primary);">
             <?php if (!empty($leader['image'])): ?>
               <img src="<?php echo h($leader['image']); ?>" alt="<?php echo h($leader['name']); ?>" style="width: 100%; height: 100%; object-fit: cover;">
             <?php else: ?>
@@ -264,6 +264,31 @@ include_once dirname(__FILE__) . '/../includes/header.php';
 <?php endif; ?>
 
 <style>
+  .leadership-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+    justify-content: center;
+  }
+  .leader-card {
+    background-color: #FFFFFF;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+  @media (max-width: 1024px) {
+    .leadership-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 600px) {
+    .leadership-grid {
+      grid-template-columns: 1fr;
+    }
+  }
   @media (max-width: 768px) {
     .about-card {
       padding: 1.75rem !important;
