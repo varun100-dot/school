@@ -170,3 +170,24 @@ INSERT INTO `navigation_items` (`id`, `label`, `url`, `parent_id`, `sort_order`,
 (5, 'Blogs', '/blogs', NULL, 5, 1),
 (6, 'Contact Us', '/contact', NULL, 6, 1)
 ON DUPLICATE KEY UPDATE label = VALUES(label), url = VALUES(url), sort_order = VALUES(sort_order);
+
+-- 20. Seed Zuvio Beyond Images into Media Table
+INSERT INTO `media` (`file_name`, `storage_path`, `public_url`, `alt_text`, `mime_type`, `file_size`, `width`, `height`)
+SELECT * FROM (
+  SELECT '01_AI_Explorers.jpg' AS f, 'assets/images/Zuvio_Beyond_Website_Images/01_AI_Explorers.jpg' AS s, '/assets/images/Zuvio_Beyond_Website_Images/01_AI_Explorers.jpg' AS p, 'AI Explorers' AS a, 'image/jpeg' AS m, 179137 AS sz, 1200 AS w, 1200 AS h UNION ALL
+  SELECT '02_Coding.jpg', 'assets/images/Zuvio_Beyond_Website_Images/02_Coding.jpg', '/assets/images/Zuvio_Beyond_Website_Images/02_Coding.jpg', 'Coding', 'image/jpeg', 159039, 1200, 1200 UNION ALL
+  SELECT '03_Robotics.jpg', 'assets/images/Zuvio_Beyond_Website_Images/03_Robotics.jpg', '/assets/images/Zuvio_Beyond_Website_Images/03_Robotics.jpg', 'Robotics', 'image/jpeg', 297239, 1200, 1200 UNION ALL
+  SELECT '04_Rubiks_Cube.jpg', 'assets/images/Zuvio_Beyond_Website_Images/04_Rubiks_Cube.jpg', '/assets/images/Zuvio_Beyond_Website_Images/04_Rubiks_Cube.jpg', 'Rubik\'s Cube', 'image/jpeg', 185391, 1200, 1200 UNION ALL
+  SELECT '05_Abacus.jpg', 'assets/images/Zuvio_Beyond_Website_Images/05_Abacus.jpg', '/assets/images/Zuvio_Beyond_Website_Images/05_Abacus.jpg', 'Abacus', 'image/jpeg', 180540, 1200, 1200 UNION ALL
+  SELECT '06_Vedic_Maths.jpg', 'assets/images/Zuvio_Beyond_Website_Images/06_Vedic_Maths.jpg', '/assets/images/Zuvio_Beyond_Website_Images/06_Vedic_Maths.jpg', 'Vedic Maths', 'image/jpeg', 167855, 1200, 1200 UNION ALL
+  SELECT '07_Financial_Literacy.jpg', 'assets/images/Zuvio_Beyond_Website_Images/07_Financial_Literacy.jpg', '/assets/images/Zuvio_Beyond_Website_Images/07_Financial_Literacy.jpg', 'Financial Literacy', 'image/jpeg', 177100, 1200, 1200 UNION ALL
+  SELECT '08_Entrepreneurship.jpg', 'assets/images/Zuvio_Beyond_Website_Images/08_Entrepreneurship.jpg', '/assets/images/Zuvio_Beyond_Website_Images/08_Entrepreneurship.jpg', 'Entrepreneurship', 'image/jpeg', 206610, 1200, 1200 UNION ALL
+  SELECT '09_Chess.jpg', 'assets/images/Zuvio_Beyond_Website_Images/09_Chess.jpg', '/assets/images/Zuvio_Beyond_Website_Images/09_Chess.jpg', 'Chess', 'image/jpeg', 175309, 1200, 1200 UNION ALL
+  SELECT '10_Digital_Media_and_Arts.jpg', 'assets/images/Zuvio_Beyond_Website_Images/10_Digital_Media_and_Arts.jpg', '/assets/images/Zuvio_Beyond_Website_Images/10_Digital_Media_and_Arts.jpg', 'Digital Media & Arts', 'image/jpeg', 173146, 1200, 1200 UNION ALL
+  SELECT '11_Dance.jpg', 'assets/images/Zuvio_Beyond_Website_Images/11_Dance.jpg', '/assets/images/Zuvio_Beyond_Website_Images/11_Dance.jpg', 'Dance', 'image/jpeg', 151212, 1200, 1200 UNION ALL
+  SELECT '12_Art_and_Craft.jpg', 'assets/images/Zuvio_Beyond_Website_Images/12_Art_and_Craft.jpg', '/assets/images/Zuvio_Beyond_Website_Images/12_Art_and_Craft.jpg', 'Art & Craft', 'image/jpeg', 186219, 1200, 1200 UNION ALL
+  SELECT '13_Academic_Support_and_Enrichment.jpg', 'assets/images/Zuvio_Beyond_Website_Images/13_Academic_Support_and_Enrichment.jpg', '/assets/images/Zuvio_Beyond_Website_Images/13_Academic_Support_and_Enrichment.jpg', 'Academic Support & Enrichment', 'image/jpeg', 222857, 1200, 1200
+) AS tmp
+WHERE NOT EXISTS (
+  SELECT 1 FROM `media` WHERE `storage_path` = tmp.s
+);

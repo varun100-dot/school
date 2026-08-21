@@ -7,6 +7,11 @@ safe_session_start();
 
 // Retrieve route parameters
 $route = isset($_GET['route']) ? trim($_GET['route'], '/') : '';
+if (empty($route)) {
+    // Fallback for built-in PHP server or environments without rewrite rules
+    $request_uri = parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH);
+    $route = trim($request_uri, '/');
+}
 
 // 1. Admin Routing Namespace Interception
 if (strpos($route, 'admin') === 0) {
