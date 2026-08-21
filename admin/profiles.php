@@ -81,7 +81,7 @@ if ($action === 'delete' && $id > 0) {
         $error = "Database offline.";
     } else {
         try {
-            $s_fetch = $db->prepare("SELECT * FROM `leadership` WHERE `id` = ? LIMIT 1");
+            $s_fetch = $db->prepare("SELECT `id`, `name`, `slug`, `designation`, `image`, `short_description`, `bio`, `message`, `sort_order`, `is_active` FROM `leadership` WHERE `id` = ? LIMIT 1");
             $s_fetch->execute([$id]);
             $old_profile = $s_fetch->fetch();
             
@@ -241,13 +241,16 @@ $item = null;
 if ($action === 'edit' && $id > 0) {
     if ($db) {
         try {
-            $stmt = $db->prepare("SELECT * FROM `leadership` WHERE `id` = ? LIMIT 1");
+    $stmt = $db->prepare("SELECT `id`, `name`, `slug`, `designation`, `image`, `short_description`, `bio`, `message`, `sort_order`, `is_active` FROM `leadership` WHERE `id` = ? LIMIT 1");
             $stmt->execute([$id]);
             $item = $stmt->fetch();
             if (!$item) {
                 header('Location: /admin/profiles?error=notfound');
                 exit;
             }
+            // Set defaults for columns that may not exist yet
+            $item['slug'] = $item['slug'] ?? '';
+            $item['short_description'] = $item['short_description'] ?? '';
         } catch (Exception $e) {
             $error = "Error loading profile details.";
         }
@@ -259,7 +262,7 @@ $profiles = [];
 if ($action === 'list' || $action === 'reorder') {
     if ($db) {
         try {
-            $profiles = $db->query("SELECT * FROM `leadership` ORDER BY `sort_order` ASC")->fetchAll();
+            $profiles = $db->query("SELECT `id`, `name`, `slug`, `designation`, `image`, `short_description`, `bio`, `message`, `sort_order`, `is_active` FROM `leadership` ORDER BY `sort_order` ASC")->fetchAll();
         } catch (Exception $e) {
             $error = "Database queries failed.";
         }

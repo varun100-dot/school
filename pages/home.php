@@ -129,7 +129,24 @@ include_once dirname(__FILE__) . '/../includes/header.php';
   <?php if (!empty($slides)): ?>
     <?php foreach ($slides as $idx => $slide): ?>
       <div class="hero-slide <?php echo $idx === 0 ? 'active' : ''; ?>">
-        <div class="hero-bg-img" style="background-image: url('<?php echo h($slide['image']); ?>');"></div>
+        <?php if (!empty($slide['video']) && ($slide['media_type'] ?? 'image') === 'video'): ?>
+          <!-- Video Background -->
+          <div class="hero-bg-img" style="background-image: url('<?php echo h($slide['image'] ?? ''); ?>'); background-color: var(--color-navy);">
+            <video
+              autoplay
+              muted
+              loop
+              playsinline
+              preload="metadata"
+              style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0;"
+            >
+              <source src="<?php echo h($slide['video']); ?>" type="video/<?php echo pathinfo($slide['video'], PATHINFO_EXTENSION); ?>">
+            </video>
+          </div>
+        <?php else: ?>
+          <!-- Image Background -->
+          <div class="hero-bg-img" style="background-image: url('<?php echo h($slide['image']); ?>');"></div>
+        <?php endif; ?>
         <div class="hero-overlay"></div>
         
         <div class="hero-split-grid">
@@ -154,6 +171,7 @@ include_once dirname(__FILE__) . '/../includes/header.php';
       </div>
     <?php endforeach; ?>
   <?php endif; ?>
+
 
   <!-- Absolute Form Overlay -->
   <div class="hero-absolute-form">

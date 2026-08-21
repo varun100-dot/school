@@ -173,16 +173,50 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($action === 'add' || $action === '
                     }
                 }
                 
+                // Process video upload if provided
+                $video = trim($_POST['video'] ?? '');
+                $media_type = 'image';
+                if (isset($_FILES['slide_video_file']) && $_FILES['slide_video_file']['error'] === UPLOAD_ERR_OK) {
+                    $vfile = $_FILES['slide_video_file'];
+                    $allowed_video_types = ['video/mp4', 'video/webm', 'video/ogg'];
+                    
+                    $finfo2 = finfo_open(FILEINFO_MIME_TYPE);
+                    $vmime = finfo_file($finfo2, $vfile['tmp_name']);
+                    finfo_close($finfo2);
+                    
+                    if (!in_array($vmime, $allowed_video_types)) {
+                        throw new Exception("Invalid video format. Only MP4, WEBM, and OGG are allowed.");
+                    }
+                    
+                    // Limit video to 50MB
+                    if ($vfile['size'] > 50 * 1024 * 1024) {
+                        throw new Exception("Video file is too large. Maximum size is 50MB.");
+                    }
+                    
+                    $vext = pathinfo($vfile['name'], PATHINFO_EXTENSION);
+                    $vnew_name = 'hero_video_' . bin2hex(random_bytes(4)) . '_' . time() . '.' . $vext;
+                    $upload_dir = dirname(__FILE__) . '/../uploads/';
+                    if (!is_dir($upload_dir)) mkdir($upload_dir, 0755, true);
+                    
+                    if (move_uploaded_file($vfile['tmp_name'], $upload_dir . $vnew_name)) {
+                        $video = '/uploads/' . $vnew_name;
+                        $media_type = 'video';
+                    }
+                } elseif (!empty($video)) {
+                    // User provided a video URL manually
+                    $media_type = 'video';
+                }
+                
                 if ($action === 'add') {
                     require_permission('hero.create');
                     
                     $stmt = $db->prepare("
                         INSERT INTO `hero_slides` 
-                        (`title`, `subtitle`, `description`, `image`, `primary_cta_text`, `primary_cta_url`, `secondary_cta_text`, `secondary_cta_url`, `sort_order`, `is_active`)
-                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                        (`title`, `subtitle`, `description`, `image`, `video`, `media_type`, `primary_cta_text`, `primary_cta_url`, `secondary_cta_text`, `secondary_cta_url`, `sort_order`, `is_active`)
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                     ");
                     $stmt->execute([
-                        $title, $subtitle, $description, $image, $primary_cta_text, $primary_cta_url, $secondary_cta_text, $secondary_cta_url, $sort_order, $is_active
+                        $title, $subtitle, $description, $image, $video ?? '', $media_type ?? 'image', $primary_cta_text, $primary_cta_url, $secondary_cta_text, $secondary_cta_url, $sort_order, $is_active
                     ]);
                     $new_id = $db->lastInsertId();
                     
@@ -198,18 +232,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($action === 'add' || $action === '
                     $stmt->execute([$id]);
                     $old_slide = $stmt->fetch();
                     
-                    // Retain existing image if no replacement is selected
+                    // Retain existing image/video if no replacement selected
                     if (empty($image) && $old_slide) {
                         $image = $old_slide['image'];
+                    }
+                    if (empty($video ?? '') && $old_slide) {
+                        $video = $old_slide['video'] ?? '';
+                        $media_type = $old_slide['media_type'] ?? 'image';
                     }
                     
                     $stmt = $db->prepare("
                         UPDATE `hero_slides` 
-                        SET `title` = ?, `subtitle` = ?, `description` = ?, `image` = ?, `primary_cta_text` = ?, `primary_cta_url` = ?, `secondary_cta_text` = ?, `secondary_cta_url` = ?, `sort_order` = ?, `is_active` = ?
+                        SET `title` = ?, `subtitle` = ?, `description` = ?, `image` = ?, `video` = ?, `media_type` = ?, `primary_cta_text` = ?, `primary_cta_url` = ?, `secondary_cta_text` = ?, `secondary_cta_url` = ?, `sort_order` = ?, `is_active` = ?
                         WHERE `id` = ?
                     ");
                     $stmt->execute([
-                        $title, $subtitle, $description, $image, $primary_cta_text, $primary_cta_url, $secondary_cta_text, $secondary_cta_url, $sort_order, $is_active, $id
+                        $title, $subtitle, $description, $image, $video ?? '', $media_type ?? 'image', $primary_cta_text, $primary_cta_url, $secondary_cta_text, $secondary_cta_url, $sort_order, $is_active, $id
                     ]);
                     
                     // Create version snapshot and log audit
@@ -428,10 +466,54 @@ include_once dirname(__FILE__) . '/header.php';
       </div>
 
       <div class="admin-form-group">
-        <label class="admin-label">Hero Banner Image Path / URL</label>
-        <input type="text" name="image" class="admin-input" value="<?php echo h($item['image'] ?? ''); ?>" placeholder="e.g. /assets/images/Hero image 1.png" style="margin-bottom: 0.5rem;">
-        <label class="admin-label" style="font-weight: normal; font-size: 0.75rem;">Or upload slide background image file (Max 4MB: JPG, PNG, WEBP):</label>
-        <input type="file" name="slide_image_file" class="admin-input">
+        <label class="admin-label">Hero Banner Media (Image or Video)</label>
+        
+        <div style="background-color: var(--color-surface-blue); border: 1px solid var(--color-border); border-radius: var(--radius-sm); padding: 1.25rem; margin-bottom: 0.5rem;">
+          
+          <!-- Media Type Toggle -->
+          <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
+            <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; font-size: 0.85rem; font-weight: 600; color: var(--color-navy);">
+              <input type="radio" name="media_type_select" value="image" id="media_image" <?php echo (empty($item['media_type']) || ($item['media_type'] ?? 'image') === 'image') ? 'checked' : ''; ?> onchange="document.getElementById('image-section').style.display='block'; document.getElementById('video-section').style.display='none';">
+              🖼 Image Background
+            </label>
+            <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; font-size: 0.85rem; font-weight: 600; color: var(--color-navy);">
+              <input type="radio" name="media_type_select" value="video" id="media_video" <?php echo (($item['media_type'] ?? '') === 'video') ? 'checked' : ''; ?> onchange="document.getElementById('image-section').style.display='none'; document.getElementById('video-section').style.display='block';">
+              🎬 Video Background
+            </label>
+          </div>
+
+          <!-- Image Section -->
+          <div id="image-section" style="<?php echo (($item['media_type'] ?? 'image') === 'video') ? 'display:none;' : ''; ?>">
+            <label class="admin-label" style="font-weight: 500;">Image URL / Path</label>
+            <input type="text" name="image" class="admin-input" value="<?php echo h($item['image'] ?? ''); ?>" placeholder="e.g. /assets/images/Hero image 1.png" style="margin-bottom: 0.5rem;">
+            <label class="admin-label" style="font-weight: normal; font-size: 0.75rem;">Or upload image file (Max 4MB: JPG, PNG, WEBP):</label>
+            <input type="file" name="slide_image_file" class="admin-input" accept="image/jpeg,image/png,image/webp">
+            <?php if (!empty($item['image']) && ($item['media_type'] ?? 'image') === 'image'): ?>
+              <div style="margin-top: 0.5rem; display: flex; align-items: center; gap: 0.75rem;">
+                <div style="width: 100px; height: 56px; background-image: url('<?php echo h($item['image']); ?>'); background-size: cover; background-position: center; border-radius: var(--radius-sm); border: 1px solid var(--color-border);"></div>
+                <span style="font-size: 0.75rem; color: var(--color-muted);">Current image</span>
+              </div>
+            <?php endif; ?>
+          </div>
+
+          <!-- Video Section -->
+          <div id="video-section" style="<?php echo (($item['media_type'] ?? 'image') !== 'video') ? 'display:none;' : ''; ?>">
+            <label class="admin-label" style="font-weight: 500;">Video URL / Path</label>
+            <input type="text" name="video" class="admin-input" value="<?php echo h($item['video'] ?? ''); ?>" placeholder="e.g. /uploads/hero_video.mp4" style="margin-bottom: 0.5rem;">
+            <label class="admin-label" style="font-weight: normal; font-size: 0.75rem;">Or upload video file (Max 50MB: MP4, WEBM, OGV):</label>
+            <input type="file" name="slide_video_file" class="admin-input" accept="video/mp4,video/webm,video/ogg">
+            <label class="admin-label" style="font-weight: normal; font-size: 0.75rem; margin-top: 0.5rem; color: var(--color-muted);">Fallback Image for video banner (displays while video loads / on mobile):</label>
+            <input type="text" name="image" class="admin-input" value="<?php echo h($item['image'] ?? ''); ?>" placeholder="e.g. /assets/images/Hero image 1.png" style="margin-bottom: 0.25rem;">
+            <?php if (!empty($item['video'])): ?>
+              <div style="margin-top: 0.5rem;">
+                <video src="<?php echo h($item['video']); ?>" style="width: 200px; height: 112px; object-fit: cover; border-radius: var(--radius-sm); border: 1px solid var(--color-border);" muted playsinline preload="metadata"></video>
+                <span style="font-size: 0.75rem; color: var(--color-muted); display: block; margin-top: 0.25rem;">Current video</span>
+              </div>
+            <?php endif; ?>
+          </div>
+
+        </div>
+        <span style="font-size: 0.75rem; color: var(--color-muted);">Video backgrounds autoplay silently. Always provide a fallback image for mobile.</span>
       </div>
 
       <div class="grid-2">
