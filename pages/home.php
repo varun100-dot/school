@@ -63,6 +63,59 @@ if ($db) {
     }
 }
 
+// Map the 4 video assets in assets/images/ to the slides
+$slide_videos = [
+    '/assets/images/01_Collaborative_Project_Learning.mp4',
+    '/assets/images/02_Online_Robotics_Learning.mp4',
+    '/assets/images/03_Science_Experiment_Learning.mp4',
+    '/assets/images/04_Student_Presentation_Learning.mp4'
+];
+
+if (empty($slides)) {
+    $slides = [
+        [
+            'title' => 'A Future-Ready Online School',
+            'subtitle' => 'WELCOME TO ZUVIO GLOBAL SCHOOL',
+            'description' => 'Academic excellence meets personalised online learning. We prepare children for a changing world.',
+            'primary_cta_text' => 'Our Curriculum',
+            'primary_cta_url' => '/our-curriculum',
+            'secondary_cta_text' => 'Zuvio Beyond',
+            'secondary_cta_url' => '/zuvio-beyond',
+            'image' => '/assets/images/Hero image 1.png'
+        ],
+        [
+            'title' => 'Personalised Learning Paths',
+            'subtitle' => 'INDIVIDUAL ATTENTION',
+            'description' => 'Every child learns differently. Our interactive virtual classrooms adapt to your child\'s pace.',
+            'primary_cta_text' => 'Our Curriculum',
+            'primary_cta_url' => '/our-curriculum',
+            'secondary_cta_text' => 'Zuvio Beyond',
+            'secondary_cta_url' => '/zuvio-beyond',
+            'image' => '/assets/images/Hero image 2.png'
+        ],
+        [
+            'title' => 'Interactive Science & Lab Work',
+            'subtitle' => 'LEARNING BY DOING',
+            'description' => 'Virtual experiments, hands-on activities, and coding built into the core curriculum.',
+            'primary_cta_text' => 'Our Curriculum',
+            'primary_cta_url' => '/our-curriculum',
+            'secondary_cta_text' => 'Zuvio Beyond',
+            'secondary_cta_url' => '/zuvio-beyond',
+            'image' => '/assets/images/Students learning in classroom.png'
+        ],
+        [
+            'title' => 'Building Leaders of Tomorrow',
+            'subtitle' => 'BEYOND ACADEMICS',
+            'description' => 'Public speaking, collaboration, global citizenship, and creative expression.',
+            'primary_cta_text' => 'Our Curriculum',
+            'primary_cta_url' => '/our-curriculum',
+            'secondary_cta_text' => 'Zuvio Beyond',
+            'secondary_cta_url' => '/zuvio-beyond',
+            'image' => '/assets/images/Teacher interacting with students.png'
+        ]
+    ];
+}
+
 // Fetch USP Features
 $features = [];
 if ($db) {
@@ -127,26 +180,23 @@ include_once dirname(__FILE__) . '/../includes/header.php';
   </div>
 
   <?php if (!empty($slides)): ?>
-    <?php foreach ($slides as $idx => $slide): ?>
+    <?php foreach ($slides as $idx => $slide): 
+      $video_url = $slide_videos[$idx % count($slide_videos)];
+    ?>
       <div class="hero-slide <?php echo $idx === 0 ? 'active' : ''; ?>">
-        <?php if (!empty($slide['video']) && ($slide['media_type'] ?? 'image') === 'video'): ?>
-          <!-- Video Background -->
-          <div class="hero-bg-img" style="background-image: url('<?php echo h($slide['image'] ?? ''); ?>'); background-color: var(--color-navy);">
-            <video
-              autoplay
-              muted
-              loop
-              playsinline
-              preload="metadata"
-              style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0;"
-            >
-              <source src="<?php echo h($slide['video']); ?>" type="video/<?php echo pathinfo($slide['video'], PATHINFO_EXTENSION); ?>">
-            </video>
-          </div>
-        <?php else: ?>
-          <!-- Image Background -->
-          <div class="hero-bg-img" style="background-image: url('<?php echo h($slide['image']); ?>');"></div>
-        <?php endif; ?>
+        <!-- Video Background -->
+        <div class="hero-bg-img" style="background-color: var(--color-navy);">
+          <video
+            autoplay
+            muted
+            loop
+            playsinline
+            preload="metadata"
+            style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0;"
+          >
+            <source src="<?php echo h($video_url); ?>" type="video/mp4">
+          </video>
+        </div>
         <div class="hero-overlay"></div>
         
         <div class="hero-split-grid">
@@ -166,56 +216,10 @@ include_once dirname(__FILE__) . '/../includes/header.php';
               <?php endif; ?>
             </div>
           </div>
-          <div class="hero-form-spacer"></div>
         </div>
       </div>
     <?php endforeach; ?>
   <?php endif; ?>
-
-
-  <!-- Absolute Form Overlay -->
-  <div class="hero-absolute-form">
-    <div class="hero-form-card">
-      <?php if ($form_status === 'success'): ?>
-        <div class="form-success-state">
-          <svg class="success-icon" xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-          <h3>Enquiry Received</h3>
-          <p>Thank you. We will get in touch with you shortly to plan your child's roadmap.</p>
-        </div>
-      <?php else: ?>
-        <form method="POST" action="">
-          <input type="hidden" name="csrf_token" value="<?php echo get_csrf_token(); ?>">
-          <h3>Enquire Now</h3>
-          <p class="form-tagline">Take the first step towards your child's learning journey.</p>
-          
-          <?php if ($form_status === 'error'): ?>
-            <div class="form-error-alert">
-              <span><?php echo h($error_message); ?></span>
-            </div>
-          <?php endif; ?>
-
-          <div class="form-grid-row">
-            <input type="text" name="parent_name" placeholder="Parent Name" required class="hero-input">
-            <input type="email" name="email" placeholder="Email Address" required class="hero-input">
-          </div>
-          
-          <div class="form-grid-row">
-            <input type="tel" name="phone" placeholder="Phone Number" required class="hero-input">
-            <select name="grade" required class="hero-input">
-              <option value="">Grade</option>
-              <option value="Early Years">Early Years</option>
-              <option value="Primary (1-5)">Grades 1-5</option>
-              <option value="Middle School (6-8)">Grades 6-8</option>
-            </select>
-          </div>
-
-          <textarea name="message" placeholder="Message / Question (Optional)" rows="2" class="hero-input" style="resize: none;"></textarea>
-
-          <button type="submit" name="submit_enquiry" class="btn btn-primary" style="width: 100%;">Submit Enquiry</button>
-        </form>
-      <?php endif; ?>
-    </div>
-  </div>
 
   <!-- Carousel Indicators -->
   <div class="hero-indicators">
@@ -358,13 +362,11 @@ include_once dirname(__FILE__) . '/../includes/header.php';
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(to right, rgba(0, 10, 66, 0.95) 0%, rgba(0, 10, 66, 0.8) 50%, rgba(0, 10, 66, 0.3) 100%);
+    background: linear-gradient(to right, rgba(0, 10, 66, 0.9) 0%, rgba(0, 10, 66, 0.7) 50%, rgba(0, 10, 66, 0.2) 100%);
     z-index: 1;
   }
   .hero-split-grid {
-    display: grid;
-    grid-template-columns: 1.2fr 0.8fr;
-    gap: 4rem;
+    display: flex;
     align-items: center;
     height: 100%;
     position: relative;
@@ -375,7 +377,7 @@ include_once dirname(__FILE__) . '/../includes/header.php';
     width: 100%;
   }
   .hero-content {
-    max-width: 650px;
+    max-width: 700px;
     text-align: left;
   }
   .hero-subtitle {
@@ -402,69 +404,6 @@ include_once dirname(__FILE__) . '/../includes/header.php';
     display: flex;
     gap: 1.25rem;
   }
-  
-  /* Absolute Form Overlay layout */
-  .hero-absolute-form {
-    position: absolute;
-    right: calc((100vw - var(--max-width)) / 2 + 3rem);
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 20;
-  }
-  .hero-form-card {
-    background-color: rgba(255, 255, 255, 0.96);
-    border-top: 4px solid var(--color-gold);
-    border-radius: var(--radius-lg);
-    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.18);
-    padding: 1.75rem;
-    width: 400px;
-    color: var(--color-navy);
-  }
-  .hero-form-card h3 {
-    font-size: 1.35rem;
-    margin-bottom: 0.25rem;
-  }
-  .form-tagline {
-    font-size: 0.75rem;
-    color: var(--color-muted);
-    margin-bottom: 1rem;
-  }
-  .hero-input {
-    width: 100%;
-    padding: 0.55rem 0.75rem;
-    border: 1px solid rgba(6, 43, 99, 0.2);
-    border-radius: var(--radius-sm);
-    font-size: 0.85rem;
-    outline: none;
-    background-color: #FFFFFF;
-    margin-bottom: 0.75rem;
-    transition: border-color var(--transition-fast);
-  }
-  .hero-input:focus {
-    border-color: var(--color-navy);
-  }
-  .form-grid-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.5rem;
-  }
-  .form-success-state {
-    text-align: center;
-    padding: 1.5rem 0;
-  }
-  .success-icon {
-    color: var(--color-success);
-    margin-bottom: 1rem;
-  }
-  .form-error-alert {
-    background-color: #FDF2F8;
-    border: 1px solid #FBCFE8;
-    padding: 0.5rem 0.75rem;
-    border-radius: var(--radius-sm);
-    color: #D946EF;
-    font-size: 0.75rem;
-    margin-bottom: 0.75rem;
-  }
 
   .hero-indicators {
     position: absolute;
@@ -490,11 +429,6 @@ include_once dirname(__FILE__) . '/../includes/header.php';
   }
 
   /* Responsive Rules */
-  @media (max-width: 1280px) {
-    .hero-absolute-form {
-      right: 3rem;
-    }
-  }
   @media (max-width: 1024px) {
     .hero-container {
       height: auto !important;
@@ -522,15 +456,13 @@ include_once dirname(__FILE__) . '/../includes/header.php';
     .hero-bg-img {
       position: relative !important;
       width: 100% !important;
-      height: 280px !important;
+      height: 380px !important;
     }
     .hero-overlay {
       display: none !important;
     }
     .hero-split-grid {
-      grid-template-columns: 1fr !important;
-      gap: 2rem !important;
-      padding: 3rem 1.25rem 2rem 1.25rem !important;
+      padding: 3rem 1.25rem 2.5rem 1.25rem !important;
       height: auto !important;
     }
     .hero-content {
@@ -538,42 +470,28 @@ include_once dirname(__FILE__) . '/../includes/header.php';
       text-align: center !important;
     }
     .hero-title {
-      font-size: 2.25rem !important;
+      font-size: 2.5rem !important;
     }
     .hero-description {
-      font-size: 1rem !important;
+      font-size: 1.05rem !important;
     }
     .hero-btn-row {
       justify-content: center !important;
     }
-    .hero-absolute-form {
-      position: relative !important;
-      right: auto !important;
-      top: auto !important;
-      transform: none !important;
-      margin: 0 auto 3rem auto !important;
-      width: calc(100% - 2.5rem) !important;
-      display: flex !important;
-      justify-content: center !important;
-    }
-    .hero-form-card {
-      width: 100% !important;
-      max-width: 420px !important;
-    }
-    .hero-form-spacer, .hero-indicators {
+    .hero-indicators {
       display: none !important;
     }
   }
 
   @media (max-width: 767px) {
     .hero-bg-img {
-      display: none !important; /* Hide photography slide on mobile */
+      display: none !important; /* Hide video element/box on small mobile */
     }
     .hero-container {
       background: linear-gradient(135deg, var(--color-navy) 0%, var(--color-navy-dark) 100%) !important;
     }
     .hero-split-grid {
-      padding: 3.5rem 1.25rem 2rem 1.25rem !important;
+      padding: 3.5rem 1.25rem 3.5rem 1.25rem !important;
     }
     .hero-title {
       font-size: 2rem !important;
