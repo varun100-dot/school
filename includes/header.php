@@ -180,7 +180,8 @@ $phone_number = get_setting('phone', '7827262956');
 
     @media (max-width: 900px) {
       .site-header {
-        position: relative !important; /* Forces normal document flow on mobile to prevent overlaps */
+        position: sticky !important;
+        top: 0;
       }
       .header-logo-img {
         height: 44px;
