@@ -53,7 +53,14 @@ $phone_number = get_setting('phone', '7827262956');
   <meta property="og:type" content="website">
   <meta name="robots" content="<?php echo h($seo['index_status']); ?>">
 
-  <link rel="stylesheet" href="/css/main.css">
+  <?php 
+  $css_version = '';
+  $css_filepath = dirname(__FILE__) . '/../css/main.css';
+  if (file_exists($css_filepath)) {
+      $css_version = '?v=' . substr(md5_file($css_filepath), 0, 8);
+  }
+  ?>
+  <link rel="stylesheet" href="/css/main.css<?php echo $css_version; ?>">
   
   <style>
     /* Header Layout & Brand Transitions */
