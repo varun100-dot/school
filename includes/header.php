@@ -189,6 +189,11 @@ $phone_number = get_setting('phone', '7827262956');
 </head>
 <body>
 
+  <!-- Top Announcement Banner -->
+  <div class="callback-top-banner">
+    🔥 LIMITED SLOTS FOR THIS WEEK!
+  </div>
+
   <!-- Header Section -->
   <header class="site-header">
     <div class="header-container">

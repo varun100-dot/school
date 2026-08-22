@@ -202,5 +202,150 @@ $social_linkedin = get_setting('social_linkedin', '#');
       }
     }
   </style>
+
+  <!-- Floating Request Callback Card -->
+  <div class="callback-floating-card">
+    <div class="callback-card-header">START LEARNING TODAY</div>
+    <button class="callback-card-btn" onclick="openCallbackModal()">
+      <span>Request Callback</span>
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+    </button>
+  </div>
+
+  <!-- Callback Modal Overlay -->
+  <div class="callback-modal-overlay" id="callbackModalOverlay" onclick="closeCallbackModal(event)">
+    <div class="callback-modal-content" onclick="event.stopPropagation()">
+      <button class="callback-modal-close" onclick="closeCallbackModal(null)">&times;</button>
+      <div class="callback-modal-header">
+        <h3>Request Callback</h3>
+        <p>Fill out the details below, and our advisor will call you back at your preferred time.</p>
+      </div>
+      <div id="callbackModalMessage" class="callback-status-message"></div>
+      <form id="callbackForm" onsubmit="submitCallbackForm(event)">
+        <input type="hidden" name="csrf_token" value="<?php echo get_csrf_token(); ?>">
+        
+        <div class="form-group">
+          <label for="cb_parent_name">Parent Name *</label>
+          <input type="text" id="cb_parent_name" name="parent_name" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="cb_email">Email Address *</label>
+          <input type="email" id="cb_email" name="email" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="cb_phone">Phone Number *</label>
+          <input type="tel" id="cb_phone" name="phone" required>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="cb_grade">Grade *</label>
+            <select id="cb_grade" name="grade" required>
+              <option value="">Select</option>
+              <option value="Early Years">Early Years</option>
+              <option value="Primary (1-5)">Grades 1-5</option>
+              <option value="Middle School (6-8)">Grades 6-8</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="cb_preferred_time">Preferred Callback Time *</label>
+            <select id="cb_preferred_time" name="preferred_time" required>
+              <option value="">Select Time</option>
+              <option value="Morning (9 AM - 12 PM)">Morning (9 AM - 12 PM)</option>
+              <option value="Afternoon (12 PM - 3 PM)">Afternoon (12 PM - 3 PM)</option>
+              <option value="Late Afternoon (3 PM - 6 PM)">Late Afternoon (3 PM - 6 PM)</option>
+              <option value="Evening (6 PM - 8 PM)">Evening (6 PM - 8 PM)</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="cb_message">Message / Question (Optional)</label>
+          <textarea id="cb_message" name="message" rows="3"></textarea>
+        </div>
+        
+        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.85rem; margin-top: 0.5rem;">Request Callback</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    function openCallbackModal() {
+      document.getElementById('callbackModalOverlay').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeCallbackModal(event) {
+      if (event === null || event.target === document.getElementById('callbackModalOverlay')) {
+        document.getElementById('callbackModalOverlay').classList.remove('open');
+        document.body.style.overflow = '';
+      }
+    }
+
+    function submitCallbackForm(event) {
+      event.preventDefault();
+      
+      const form = document.getElementById('callbackForm');
+      const statusMsg = document.getElementById('callbackModalMessage');
+      const submitBtn = form.querySelector('button[type="submit"]');
+      
+      // Clear messages
+      statusMsg.className = 'callback-status-message';
+      statusMsg.style.display = 'none';
+      statusMsg.innerHTML = '';
+      
+      submitBtn.disabled = true;
+      submitBtn.innerText = 'Submitting...';
+      
+      const formData = new FormData(form);
+      
+      fetch('/submit-callback.php', {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => {
+        return response.json().then(data => {
+          if (!response.ok) {
+            throw new Error(data.message || 'An error occurred during submission.');
+          }
+          return data;
+        });
+      })
+      .then(data => {
+        // Show success message
+        statusMsg.className = 'callback-status-message success';
+        statusMsg.innerHTML = 'Thank you. Our team will get in touch with you shortly.';
+        statusMsg.style.display = 'block';
+        
+        // Reset form
+        form.reset();
+        
+        // Hide form fields
+        form.style.display = 'none';
+        
+        // Auto close modal after 3 seconds
+        setTimeout(() => {
+          closeCallbackModal(null);
+          // Reset form view in case they open it again
+          setTimeout(() => {
+            form.style.display = 'block';
+            statusMsg.style.display = 'none';
+            submitBtn.disabled = false;
+            submitBtn.innerText = 'Request Callback';
+          }, 500);
+        }, 3000);
+      })
+      .catch(error => {
+        statusMsg.className = 'callback-status-message error';
+        statusMsg.innerHTML = error.message || 'Database connection required. Form could not be persisted.';
+        statusMsg.style.display = 'block';
+        submitBtn.disabled = false;
+        submitBtn.innerText = 'Request Callback';
+      });
+    }
+  </script>
 </body>
 </html>
