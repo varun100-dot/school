@@ -196,50 +196,26 @@ button, input, select, textarea {
   }
 }
 
-/* Responsive Grid extensions & Container Overrides */
+/* Alternating Background Utilities */
+.bg-white { background-color: #FFFFFF !important; }
+.bg-soft-blue { background-color: #F1F5FA !important; }
+.bg-warm-white { background-color: #FCFAF5 !important; }
+
+/* Wide Container & Typography Scale */
 .curriculum-container {
   width: min(92vw, 1400px);
   margin: 0 auto;
-  padding: 0 1.5rem;
-}
-
-.grid-5 {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 24px;
-}
-
-.grid-6 {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 20px;
-}
-
-@media (max-width: 1200px) {
-  .grid-5 {
-    grid-template-columns: repeat(3, 1fr);
-  }
-  .grid-6 {
-    grid-template-columns: repeat(3, 1fr);
-  }
+  padding: 0 60px;
 }
 
 @media (max-width: 768px) {
-  .grid-5, .grid-6 {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
+  .curriculum-container {
+    padding: 0 24px;
   }
 }
 
-@media (max-width: 480px) {
-  .grid-5, .grid-6 {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* Premium Typography Scale */
 .t-hero-title {
-  font-size: clamp(38px, 4vw, 56px);
+  font-size: clamp(38px, 4.5vw, 60px);
   font-weight: 700;
   line-height: 1.2;
 }
@@ -266,7 +242,7 @@ button, input, select, textarea {
   line-height: 1.6;
 }
 
-/* Curriculum Page Redesign Components */
+/* Curriculum Sections & Grid Systems */
 .curriculum-hero {
   background-size: cover;
   background-position: center;
@@ -281,14 +257,6 @@ button, input, select, textarea {
   padding: 100px 0;
   border-bottom: 1px solid var(--color-border);
   position: relative;
-}
-
-.curriculum-stage-section:nth-child(even) {
-  background-color: var(--color-surface);
-}
-
-.curriculum-stage-section:nth-child(odd) {
-  background-color: var(--color-white);
 }
 
 .curriculum-stage-header {
@@ -306,13 +274,15 @@ button, input, select, textarea {
 }
 
 .curriculum-stage-title {
-  color: var(--color-navy);
+  color: var(--color-navy-dark);
   font-family: var(--font-primary);
   margin-bottom: 1rem;
 }
 
 .curriculum-stage-subtitle {
-  color: var(--color-muted);
+  color: var(--color-teal);
+  font-weight: 600;
+  letter-spacing: 0.5px;
 }
 
 .curriculum-desc-text {
@@ -321,23 +291,63 @@ button, input, select, textarea {
   margin-bottom: 3.5rem;
 }
 
-/* Premium Content Cards */
-.curriculum-info-grid {
+/* True Grids */
+.curriculum-grid-2 {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 28px;
-  margin-bottom: 80px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
 }
 
-@media (max-width: 900px) {
-  .curriculum-info-grid {
+.curriculum-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.curriculum-grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+.curriculum-grid-5 {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 20px;
+}
+
+.curriculum-grid-6 {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 20px;
+}
+
+@media (max-width: 1100px) {
+  .curriculum-grid-4, .curriculum-grid-5, .curriculum-grid-6 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 850px) {
+  .curriculum-grid-3, .curriculum-grid-4, .curriculum-grid-5, .curriculum-grid-6 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .curriculum-grid-2 {
     grid-template-columns: 1fr;
   }
 }
 
+@media (max-width: 580px) {
+  .curriculum-grid-3, .curriculum-grid-4, .curriculum-grid-5, .curriculum-grid-6 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Premium Rectangular Content Cards */
 .curriculum-list-card {
   background-color: var(--color-white);
-  border-radius: var(--radius-md);
+  border: 1.5px solid var(--color-border);
+  border-radius: 8px;
   box-shadow: var(--shadow-sm);
   padding: 32px;
   border-top: 4px solid var(--color-gold);
@@ -350,12 +360,13 @@ button, input, select, textarea {
 }
 
 .curriculum-list-card h4 {
-  font-size: 1.35rem;
-  color: var(--color-navy);
+  font-size: 1.25rem;
+  color: var(--color-navy-dark);
   margin-bottom: 1.5rem;
   font-family: var(--font-primary);
   border-bottom: 1px solid var(--color-border);
   padding-bottom: 0.75rem;
+  font-weight: 700;
 }
 
 .curriculum-item-list {
@@ -374,14 +385,14 @@ button, input, select, textarea {
 }
 
 .curriculum-item-list li strong {
-  color: var(--color-navy);
+  color: var(--color-navy-dark);
   font-weight: 600;
 }
 
 .curriculum-bullet-check {
   color: var(--color-gold);
   font-weight: bold;
-  font-size: 1.2rem;
+  font-size: 1.25rem;
   line-height: 1;
   margin-top: 2px;
 }
@@ -389,9 +400,9 @@ button, input, select, textarea {
 /* Process & Visual Strip Components */
 .illustration-container {
   background-color: var(--color-surface-blue);
-  border-radius: var(--radius-lg);
-  padding: 60px 40px;
   border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 50px 40px;
   margin-top: 80px;
   box-shadow: var(--shadow-sm);
 }
@@ -399,7 +410,7 @@ button, input, select, textarea {
 .illustration-title {
   font-size: 0.9rem;
   font-weight: 700;
-  color: var(--color-navy);
+  color: var(--color-navy-dark);
   text-transform: uppercase;
   letter-spacing: 2.5px;
   text-align: center;
@@ -410,17 +421,17 @@ button, input, select, textarea {
   display: flex;
   justify-content: space-between;
   align-items: stretch;
-  gap: 1.5rem;
+  gap: 1.25rem;
 }
 
 .visual-strip-block {
   flex: 1;
   text-align: center;
-  padding: 2.5rem 1.5rem;
-  border-radius: var(--radius-md);
+  padding: 2.25rem 1.25rem;
+  border-radius: 8px;
   color: var(--color-white);
   font-weight: 700;
-  font-size: 1.15rem;
+  font-size: 1.1rem;
   letter-spacing: 1.5px;
   text-transform: uppercase;
   box-shadow: var(--shadow-sm);
@@ -459,80 +470,89 @@ button, input, select, textarea {
 .bg-navy { background-color: var(--color-navy); }
 .bg-deep-navy { background-color: var(--color-navy-dark); }
 
-/* Global Request Callback Conversion Widget */
+/* Global Request Callback Conversion Widget (Screenshot Aligned) */
 .callback-floating-widget {
   position: fixed;
   right: 40px;
   top: 120px;
-  width: 260px;
-  background-color: var(--color-navy);
-  border-left: 4px solid var(--color-gold);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-lg);
-  padding: 1.25rem;
-  z-index: 999;
-  font-family: var(--font-secondary);
-  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+  z-index: 9999;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  width: 290px;
+  pointer-events: auto;
+  font-family: var(--font-secondary);
 }
 
-.callback-floating-widget:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 20px 40px rgba(3, 27, 66, 0.2);
-}
-
-.callback-pill {
-  background-color: #EF4444;
-  color: var(--color-white);
+.callback-widget-pill {
+  background-color: #FFFFFF;
+  color: #032b63;
+  border: 1.5px solid #032b63;
   font-size: 0.72rem;
   font-weight: 700;
   border-radius: 30px;
-  padding: 0.35rem 0.75rem;
-  margin-bottom: 0.75rem;
-  display: inline-block;
-  text-align: center;
-  align-self: flex-start;
+  padding: 0.4rem 1rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  z-index: 2;
+  margin-bottom: -15px;
   letter-spacing: 0.5px;
+  white-space: nowrap;
+  text-transform: uppercase;
 }
 
-.callback-widget-body {
+.callback-widget-card {
+  background-color: #032b63;
+  border: 2.5px solid #FFFFFF;
+  border-radius: 16px;
+  padding: 1.5rem 1.25rem 1.25rem 1.25rem;
+  width: 100%;
+  box-shadow: 0 10px 30px rgba(3, 43, 99, 0.15);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  z-index: 1;
+  text-align: left;
+}
+
+.callback-widget-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 35px rgba(3, 43, 99, 0.25);
+}
+
+.callback-widget-text {
   display: flex;
   flex-direction: column;
+  gap: 0.25rem;
+}
+
+.callback-widget-sub {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .callback-widget-title {
-  font-size: 0.75rem;
+  color: #FFFFFF;
+  font-size: 1.25rem;
   font-weight: 700;
-  color: var(--color-gold);
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  margin-bottom: 0.5rem;
+  margin: 0;
+  line-height: 1.2;
+  font-family: var(--font-secondary);
 }
 
-.callback-widget-btn {
+.callback-widget-icon-box {
+  background-color: rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  width: 48px;
+  height: 48px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  background-color: var(--color-gold);
-  color: var(--color-navy-dark);
-  border: none;
-  padding: 0.75rem 1rem;
-  border-radius: var(--radius-sm);
-  font-size: 0.9rem;
-  font-weight: 700;
-  cursor: pointer;
-  box-shadow: 0 4px 10px rgba(217, 164, 65, 0.2);
-  transition: background-color var(--transition-fast), transform var(--transition-fast);
-}
-
-.callback-widget-btn:hover {
-  background-color: var(--color-gold-hover);
-}
-
-.callback-widget-btn svg {
-  margin-left: 0.5rem;
+  justify-content: center;
+  color: #FFFFFF;
   flex-shrink: 0;
 }
 
@@ -689,12 +709,7 @@ button, input, select, textarea {
     border-radius: 0;
     border-left: none;
     border-top: 3px solid var(--color-gold);
-    padding: 0.75rem 1rem;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
+    padding: 0;
     box-shadow: 0 -4px 15px rgba(6, 43, 99, 0.15);
   }
   .callback-pill {

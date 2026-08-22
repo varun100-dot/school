@@ -205,13 +205,15 @@ $social_linkedin = get_setting('social_linkedin', '#');
 
   <!-- Floating Request Callback Widget -->
   <div class="callback-floating-widget">
-    <div class="callback-pill">🔥 LIMITED SLOTS FOR THIS WEEK!</div>
-    <div class="callback-widget-body">
-      <div class="callback-widget-title">START LEARNING TODAY</div>
-      <button class="callback-widget-btn" onclick="openCallbackModal()">
-        <span>Request Callback</span>
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-      </button>
+    <div class="callback-widget-pill">🔥 LIMITED SLOTS FOR THIS WEEK!</div>
+    <div class="callback-widget-card" onclick="openCallbackModal()">
+      <div class="callback-widget-text">
+        <span class="callback-widget-sub">START LEARNING TODAY</span>
+        <h4 class="callback-widget-title">Request Callback</h4>
+      </div>
+      <div class="callback-widget-icon-box">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line><polyline points="8 14 10 16 16 10"></polyline></svg>
+      </div>
     </div>
   </div>
 

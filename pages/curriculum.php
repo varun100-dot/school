@@ -1,5 +1,5 @@
 <?php
-// Zuvio Global School - Our Curriculum Page Template (Master Professional Redesign)
+// Zuvio Global School - Our Curriculum Page Template (Master Professional Visual Alignment)
 require_once dirname(__FILE__) . '/../includes/db.php';
 require_once dirname(__FILE__) . '/../includes/helper.php';
 
@@ -9,69 +9,58 @@ $page_slug = 'our-curriculum';
 include_once dirname(__FILE__) . '/../includes/header.php';
 ?>
 
-<!-- PAGE 1: CURRICULUM INSIGHTS HERO -->
-<section class="curriculum-hero" style="background-image: linear-gradient(rgba(3, 27, 66, 0.9), rgba(3, 27, 66, 0.95)), url('/assets/images/Students learning in classroom.png');">
+<!-- PAGE 1 — HERO SECTION (White Background) -->
+<section class="curriculum-stage-section bg-white" style="border-bottom: none; padding-top: 120px; padding-bottom: 80px;">
   <div class="curriculum-container">
-    <span style="font-size: 0.95rem; font-weight: 600; color: var(--color-gold); text-transform: uppercase; letter-spacing: 3px; display: block; margin-bottom: 1rem;">Official Academic Curriculum</span>
-    <h1 class="t-hero-title" style="color: #FFFFFF; font-family: var(--font-primary); margin-bottom: 1.5rem;">CURRICULUM INSIGHTS</h1>
-    <p class="t-sub-title" style="color: #E2E8F0; font-family: var(--font-secondary); margin-bottom: 2rem; max-width: 800px; margin-left: auto; margin-right: auto;">
-      A Future-Ready Learning Journey | Nursery to Grade 8
-    </p>
-    <div style="width: 80px; height: 3px; background-color: var(--color-gold); margin: 2rem auto;"></div>
-  </div>
-</section>
-
-<!-- PAGE 1: INTRODUCTION & THE ZUVIO LEARNING JOURNEY -->
-<section class="curriculum-stage-section" style="background-color: var(--color-white);">
-  <div class="curriculum-container">
-    <div style="max-width: 1000px; margin: 0 auto 5rem auto; text-align: center;">
-      <h2 class="t-section-title" style="margin-bottom: 2rem; color: var(--color-navy);">An Editorial Introduction</h2>
-      <p class="t-body-large" style="color: var(--color-text); margin-bottom: 1.5rem; font-weight: 500;">
-        At Zuvio Global School, learning is designed to grow with every child. From stories, sounds, numbers and discovery in the Early Years to research, innovation, technology and independent thinking in Middle School, every stage builds upon the previous one.
+    <div style="text-align: center; max-width: 1000px; margin: 0 auto;">
+      <!-- Zuvio Logo is already in header.php, so we output the Title and Subtitle -->
+      <h1 class="t-hero-title" style="color: var(--color-navy-dark); font-family: var(--font-primary); text-transform: uppercase; margin-bottom: 1.5rem; letter-spacing: 2px;">CURRICULUM INSIGHTS</h1>
+      <p class="t-sub-title" style="color: var(--color-teal); font-family: var(--font-secondary); margin-bottom: 3.5rem; font-weight: 600;">
+        A Future-Ready Learning Journey | Nursery to Grade 8
       </p>
-      <p class="t-body-large" style="color: var(--color-muted);">
-        Our curriculum is designed in alignment with CBSE, NEP 2020 and NCF principles, combining strong academic foundations with creativity, communication, digital fluency, life skills and real-world learning.
-      </p>
-    </div>
-
-    <!-- THE ZUVIO LEARNING JOURNEY ILLUSTRATION -->
-    <div class="illustration-container">
-      <div class="illustration-title">THE ZUVIO LEARNING JOURNEY</div>
-      <div class="grid-4" style="gap: 28px;">
-        
-        <div style="background-color: #ECFDF5; border: 1.5px solid #A7F3D0; border-radius: var(--radius-md); padding: 2.5rem 2rem; text-align: center; box-shadow: var(--shadow-sm); transition: transform 0.2s ease;">
-          <span style="font-size: 0.85rem; font-weight: 700; color: #059669; display: block; margin-bottom: 0.75rem; letter-spacing: 1.5px;">NURSERY - KG</span>
-          <h4 style="font-size: 1.75rem; color: #031B42; font-family: var(--font-primary); font-weight: 700; margin-bottom: 0;">EXPLORE</h4>
-        </div>
-
-        <div style="background-color: #FFFBEB; border: 1.5px solid #FDE68A; border-radius: var(--radius-md); padding: 2.5rem 2rem; text-align: center; box-shadow: var(--shadow-sm); transition: transform 0.2s ease;">
-          <span style="font-size: 0.85rem; font-weight: 700; color: #D97706; display: block; margin-bottom: 0.75rem; letter-spacing: 1.5px;">GRADES 1 - 2</span>
-          <h4 style="font-size: 1.75rem; color: #031B42; font-family: var(--font-primary); font-weight: 700; margin-bottom: 0;">BUILD</h4>
-        </div>
-
-        <div style="background-color: #EFF6FF; border: 1.5px solid #BFDBFE; border-radius: var(--radius-md); padding: 2.5rem 2rem; text-align: center; box-shadow: var(--shadow-sm); transition: transform 0.2s ease;">
-          <span style="font-size: 0.85rem; font-weight: 700; color: #2563EB; display: block; margin-bottom: 0.75rem; letter-spacing: 1.5px;">GRADES 3 - 5</span>
-          <h4 style="font-size: 1.75rem; color: #031B42; font-family: var(--font-primary); font-weight: 700; margin-bottom: 0;">UNDERSTAND</h4>
-        </div>
-
-        <div style="background-color: #F5F3FF; border: 1.5px solid #DDD6FE; border-radius: var(--radius-md); padding: 2.5rem 2rem; text-align: center; box-shadow: var(--shadow-sm); transition: transform 0.2s ease;">
-          <span style="font-size: 0.85rem; font-weight: 700; color: #7C3AED; display: block; margin-bottom: 0.75rem; letter-spacing: 1.5px;">GRADES 6 - 8</span>
-          <h4 style="font-size: 1.75rem; color: #031B42; font-family: var(--font-primary); font-weight: 700; margin-bottom: 0;">INNOVATE</h4>
-        </div>
-
-      </div>
       
-      <div class="text-center" style="margin-top: 3.5rem; border-top: 1px solid var(--color-border); padding-top: 2rem;">
-        <p style="font-family: var(--font-primary); font-size: 1.45rem; font-weight: 700; color: var(--color-navy); font-style: italic; margin: 0; letter-spacing: 0.5px;">
-          "Strong Foundations. Future Skills. Learning Without Boundaries."
+      <div style="text-align: left; margin-bottom: 5rem;">
+        <p class="t-body-large" style="margin-bottom: 1.5rem; color: var(--color-text); font-weight: 500;">
+          At Zuvio Global School, learning is designed to grow with every child. From stories, sounds, numbers and discovery in the Early Years to research, innovation, technology and independent thinking in Middle School, every stage builds upon the previous one.
+        </p>
+        <p class="t-body-large" style="color: var(--color-text); font-weight: 500;">
+          Our curriculum is designed in alignment with CBSE, NEP 2020 and NCF principles, combining strong academic foundations with creativity, communication, digital fluency, life skills and real-world learning.
         </p>
       </div>
+
+      <!-- THE ZUVIO LEARNING JOURNEY -->
+      <div class="illustration-container" style="margin-top: 2rem;">
+        <div class="illustration-title">THE ZUVIO LEARNING JOURNEY</div>
+        <div class="curriculum-grid-4" style="gap: 20px;">
+          <div style="background-color: #ECFDF5; border: 1.5px solid #A7F3D0; border-radius: 8px; padding: 2.25rem 1.5rem; text-align: center; box-shadow: var(--shadow-sm);">
+            <span style="font-size: 0.85rem; font-weight: 700; color: #059669; display: block; margin-bottom: 0.5rem; letter-spacing: 1.5px; text-transform: uppercase;">Nursery-KG</span>
+            <h4 style="font-size: 1.6rem; color: var(--color-navy-dark); font-family: var(--font-primary); font-weight: 700; margin: 0; text-transform: uppercase;">Explore</h4>
+          </div>
+          <div style="background-color: #FFFBEB; border: 1.5px solid #FDE68A; border-radius: 8px; padding: 2.25rem 1.5rem; text-align: center; box-shadow: var(--shadow-sm);">
+            <span style="font-size: 0.85rem; font-weight: 700; color: #D97706; display: block; margin-bottom: 0.5rem; letter-spacing: 1.5px; text-transform: uppercase;">Grades 1-2</span>
+            <h4 style="font-size: 1.6rem; color: var(--color-navy-dark); font-family: var(--font-primary); font-weight: 700; margin: 0; text-transform: uppercase;">Build</h4>
+          </div>
+          <div style="background-color: #EFF6FF; border: 1.5px solid #BFDBFE; border-radius: 8px; padding: 2.25rem 1.5rem; text-align: center; box-shadow: var(--shadow-sm);">
+            <span style="font-size: 0.85rem; font-weight: 700; color: #2563EB; display: block; margin-bottom: 0.5rem; letter-spacing: 1.5px; text-transform: uppercase;">Grades 3-5</span>
+            <h4 style="font-size: 1.6rem; color: var(--color-navy-dark); font-family: var(--font-primary); font-weight: 700; margin: 0; text-transform: uppercase;">Understand</h4>
+          </div>
+          <div style="background-color: #F5F3FF; border: 1.5px solid #DDD6FE; border-radius: 8px; padding: 2.25rem 1.5rem; text-align: center; box-shadow: var(--shadow-sm);">
+            <span style="font-size: 0.85rem; font-weight: 700; color: #7C3AED; display: block; margin-bottom: 0.5rem; letter-spacing: 1.5px; text-transform: uppercase;">Grades 6-8</span>
+            <h4 style="font-size: 1.6rem; color: var(--color-navy-dark); font-family: var(--font-primary); font-weight: 700; margin: 0; text-transform: uppercase;">Innovate</h4>
+          </div>
+        </div>
+        <div style="margin-top: 3rem; text-align: center;">
+          <p style="font-family: var(--font-primary); font-size: 1.45rem; font-weight: 700; color: var(--color-navy-dark); font-style: italic; margin: 0; letter-spacing: 0.5px;">
+            Strong Foundations. Future Skills. Learning Without Boundaries.
+          </p>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- PAGE 2: 1. EARLY YEARS -->
-<section class="curriculum-stage-section">
+<!-- PAGE 2 — EARLY YEARS (Soft Blue Background) -->
+<section class="curriculum-stage-section bg-soft-blue">
   <div class="curriculum-container">
     <div class="curriculum-stage-header text-center">
       <span class="curriculum-stage-title-number">Nursery - Kindergarten</span>
@@ -85,70 +74,80 @@ include_once dirname(__FILE__) . '/../includes/header.php';
       </p>
     </div>
 
-    <div class="grid-3" style="gap: 28px;">
-      
-      <!-- Core Learning Areas -->
-      <div class="curriculum-list-card" style="border-top-color: var(--color-gold);">
-        <h4>Core Learning Areas</h4>
-        <ul class="curriculum-item-list">
-          <li><span class="curriculum-bullet-check">&#10004;</span> <span>Early Literacy & Phonics</span></li>
-          <li><span class="curriculum-bullet-check">&#10004;</span> <span>Early Numeracy</span></li>
-          <li><span class="curriculum-bullet-check">&#10004;</span> <span>Environmental Awareness</span></li>
-          <li><span class="curriculum-bullet-check">&#10004;</span> <span>Communication & Vocabulary</span></li>
-          <li><span class="curriculum-bullet-check">&#10004;</span> <span>Creative Expression</span></li>
-          <li><span class="curriculum-bullet-check">&#10004;</span> <span>Motor & Sensory Development</span></li>
-          <li><span class="curriculum-bullet-check">&#10004;</span> <span>Social & Emotional Learning</span></li>
-        </ul>
+    <!-- CORE LEARNING AREAS -->
+    <div style="margin-bottom: 4.5rem;">
+      <h3 style="font-size: 1.45rem; color: var(--color-navy-dark); font-weight: 700; margin-bottom: 1.75rem; text-transform: uppercase; font-family: var(--font-primary); border-left: 4px solid var(--color-gold); padding-left: 12px; letter-spacing: 0.5px;">Core Learning Areas</h3>
+      <div class="curriculum-grid-3">
+        <div class="curriculum-list-card" style="border-top-color: #059669; padding: 24px;">
+          <h4 style="margin: 0; border: none; padding: 0; font-size: 1.15rem;">Early Literacy & Phonics</h4>
+        </div>
+        <div class="curriculum-list-card" style="border-top-color: #D97706; padding: 24px;">
+          <h4 style="margin: 0; border: none; padding: 0; font-size: 1.15rem;">Early Numeracy</h4>
+        </div>
+        <div class="curriculum-list-card" style="border-top-color: #2563EB; padding: 24px;">
+          <h4 style="margin: 0; border: none; padding: 0; font-size: 1.15rem;">Environmental Awareness</h4>
+        </div>
+        <div class="curriculum-list-card" style="border-top-color: #7C3AED; padding: 24px;">
+          <h4 style="margin: 0; border: none; padding: 0; font-size: 1.15rem;">Communication & Vocabulary</h4>
+        </div>
+        <div class="curriculum-list-card" style="border-top-color: var(--color-teal); padding: 24px;">
+          <h4 style="margin: 0; border: none; padding: 0; font-size: 1.15rem;">Creative Expression</h4>
+        </div>
+        <div class="curriculum-list-card" style="border-top-color: var(--color-gold); padding: 24px;">
+          <h4 style="margin: 0; border: none; padding: 0; font-size: 1.15rem;">Motor & Sensory Development</h4>
+        </div>
+        <div class="curriculum-list-card" style="border-top-color: #059669; padding: 24px; grid-column: span 1;">
+          <h4 style="margin: 0; border: none; padding: 0; font-size: 1.15rem;">Social & Emotional Learning</h4>
+        </div>
       </div>
+    </div>
 
-      <!-- Learning Experiences -->
+    <!-- LEARNING EXPERIENCES & KEY OUTCOMES -->
+    <div class="curriculum-grid-2" style="margin-bottom: 5rem;">
       <div class="curriculum-list-card" style="border-top-color: var(--color-teal);">
         <h4>Learning Experiences</h4>
         <ul class="curriculum-item-list">
-          <li><span class="curriculum-bullet-check">&#10004;</span> <span>Storytelling</span></li>
-          <li><span class="curriculum-bullet-check">&#10004;</span> <span>Rhymes</span></li>
-          <li><span class="curriculum-bullet-check">&#10004;</span> <span>Show & Tell</span></li>
-          <li><span class="curriculum-bullet-check">&#10004;</span> <span>Games</span></li>
-          <li><span class="curriculum-bullet-check">&#10004;</span> <span>Hands-on Activities</span></li>
-          <li><span class="curriculum-bullet-check">&#10004;</span> <span>Art & Craft</span></li>
-          <li><span class="curriculum-bullet-check">&#10004;</span> <span>Music & Movement</span></li>
-          <li><span class="curriculum-bullet-check">&#10004;</span> <span>Interactive Digital Activities</span></li>
+          <li><span class="curriculum-bullet-check">&#10004;</span> Storytelling & Phonics Fun</li>
+          <li><span class="curriculum-bullet-check">&#10004;</span> Nursery Rhymes & Action Songs</li>
+          <li><span class="curriculum-bullet-check">&#10004;</span> Show & Tell Activities</li>
+          <li><span class="curriculum-bullet-check">&#10004;</span> Sensory Games & Visual Logic</li>
+          <li><span class="curriculum-bullet-check">&#10004;</span> Simple Hands-on Projects</li>
+          <li><span class="curriculum-bullet-check">&#10004;</span> Creative Art, Drawing & Crafts</li>
+          <li><span class="curriculum-bullet-check">&#10004;</span> Music, Auditory Games & Movement</li>
+          <li><span class="curriculum-bullet-check">&#10004;</span> Interactive Educational Software & Tools</li>
         </ul>
       </div>
 
-      <!-- Key Outcomes -->
       <div class="curriculum-list-card" style="border-top-color: #2563EB;">
         <h4>Key Outcomes</h4>
         <ul class="curriculum-item-list">
-          <li><span class="curriculum-bullet-check">&#10004;</span> <span>Confidence</span></li>
-          <li><span class="curriculum-bullet-check">&#10004;</span> <span>Curiosity</span></li>
-          <li><span class="curriculum-bullet-check">&#10004;</span> <span>Communication</span></li>
-          <li><span class="curriculum-bullet-check">&#10004;</span> <span>Foundational Literacy</span></li>
-          <li><span class="curriculum-bullet-check">&#10004;</span> <span>Foundational Numeracy</span></li>
-          <li><span class="curriculum-bullet-check">&#10004;</span> <span>Creativity</span></li>
-          <li><span class="curriculum-bullet-check">&#10004;</span> <span>Independent Learning Habits</span></li>
+          <li><span class="curriculum-bullet-check">&#10004;</span> Self-expression and confidence in speaking</li>
+          <li><span class="curriculum-bullet-check">&#10004;</span> Curiosity and eager questioning habits</li>
+          <li><span class="curriculum-bullet-check">&#10004;</span> Foundational alphabet phonics & baseline vocabulary</li>
+          <li><span class="curriculum-bullet-check">&#10004;</span> Number sense (counting, sorting, sizes)</li>
+          <li><span class="curriculum-bullet-check">&#10004;</span> Appreciation of environment & nature basics</li>
+          <li><span class="curriculum-bullet-check">&#10004;</span> Sensory-motor skill coordination</li>
+          <li><span class="curriculum-bullet-check">&#10004;</span> Healthy socialization and sharing principles</li>
         </ul>
       </div>
-
     </div>
 
-    <!-- Illustration: The Early Learning Garden -->
+    <!-- ILLUSTRATION: THE EARLY LEARNING GARDEN -->
     <div class="illustration-container">
       <div class="illustration-title">ILLUSTRATION: THE EARLY LEARNING GARDEN</div>
       <div class="visual-strip-row">
         <div class="visual-strip-block bg-green">Language</div>
         <div class="visual-strip-block bg-orange">Numeracy</div>
-        <div class="visual-strip-block bg-teal">Creativity</div>
+        <div class="visual-strip-block bg-blue">Creativity</div>
         <div class="visual-strip-block bg-purple">Awareness</div>
-        <div class="visual-strip-block bg-blue">Communication</div>
+        <div class="visual-strip-block bg-teal">Communication</div>
       </div>
     </div>
-
   </div>
 </section>
 
-<!-- PAGE 3: 2. FOUNDATION STAGE -->
-<section class="curriculum-stage-section">
+<!-- PAGE 3 — FOUNDATION STAGE (White Background) -->
+<section class="curriculum-stage-section bg-white">
   <div class="curriculum-container">
     <div class="curriculum-stage-header text-center">
       <span class="curriculum-stage-title-number">Grades 1-2</span>
@@ -162,56 +161,83 @@ include_once dirname(__FILE__) . '/../includes/header.php';
       </p>
     </div>
 
-    <div class="curriculum-info-grid">
-      <!-- Core Subjects -->
-      <div class="curriculum-list-card" style="border-top-color: var(--color-gold);">
-        <h4>Core Subjects</h4>
-        <ul class="curriculum-item-list">
-          <li><span class="curriculum-bullet-check">&#10004;</span> <strong>English:</strong> <span>Foundational reading, writing, comprehension & vocabulary building.</span></li>
-          <li><span class="curriculum-bullet-check">&#10004;</span> <strong>Mathematics:</strong> <span>Introduction to operations, sizing, and pattern recognition.</span></li>
-          <li><span class="curriculum-bullet-check">&#10004;</span> <strong>Environmental Studies:</strong> <span>Learning about community, nature, self and environment.</span></li>
-          <li><span class="curriculum-bullet-check">&#10004;</span> <strong>Hindi / Second Language:</strong> <span>Building primary conversational and writing skills.</span></li>
-          <li><span class="curriculum-bullet-check">&#10004;</span> <strong>Digital Literacy:</strong> <span>Navigating devices safely and typing baseline skills.</span></li>
-        </ul>
-      </div>
-
-      <!-- Beyond Academics & Concept to Experience -->
-      <div class="curriculum-list-card" style="border-top-color: var(--color-teal); display: flex; flex-direction: column; justify-content: space-between;">
-        <div>
-          <h4>Beyond Academics</h4>
-          <div class="grid-2" style="gap: 1rem; margin-bottom: 2rem;">
-            <div class="t-card-text"><span style="color: var(--color-gold); font-weight: bold; margin-right: 0.5rem;">•</span> Art & Creativity</div>
-            <div class="t-card-text"><span style="color: var(--color-gold); font-weight: bold; margin-right: 0.5rem;">•</span> Communication</div>
-            <div class="t-card-text"><span style="color: var(--color-gold); font-weight: bold; margin-right: 0.5rem;">•</span> Life Skills</div>
-            <div class="t-card-text"><span style="color: var(--color-gold); font-weight: bold; margin-right: 0.5rem;">•</span> Physical Wellness</div>
-            <div class="t-card-text"><span style="color: var(--color-gold); font-weight: bold; margin-right: 0.5rem;">•</span> Social-Emotional Learning</div>
-            <div class="t-card-text"><span style="color: var(--color-gold); font-weight: bold; margin-right: 0.5rem;">•</span> General Awareness</div>
-          </div>
+    <!-- CORE SUBJECTS -->
+    <div style="margin-bottom: 4.5rem;">
+      <h3 style="font-size: 1.45rem; color: var(--color-navy-dark); font-weight: 700; margin-bottom: 1.75rem; text-transform: uppercase; font-family: var(--font-primary); border-left: 4px solid var(--color-gold); padding-left: 12px; letter-spacing: 0.5px;">Core Subjects</h3>
+      <div class="curriculum-grid-3">
+        <div class="curriculum-list-card" style="border-top-color: #059669;">
+          <h4>English</h4>
+          <p class="t-card-text">Foundational reading, writing, comprehension & vocabulary building.</p>
         </div>
-        
-        <div style="background-color: var(--color-surface-warm); border-left: 4px solid var(--color-teal); padding: 1.5rem; border-radius: var(--radius-sm); margin-top: auto;">
-          <strong style="display: block; font-size: 0.95rem; color: var(--color-navy); margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.75px;">From Concept to Experience</strong>
-          <p style="font-size: 0.9rem; line-height: 1.6; color: var(--color-muted); margin: 0;">
-            A learner may study plants, observe one at home, record its growth, discuss observations and create a mini project. The aim is to show that learning exists beyond the screen and textbook.
-          </p>
+        <div class="curriculum-list-card" style="border-top-color: #D97706;">
+          <h4>Mathematics</h4>
+          <p class="t-card-text">Introduction to operations, numbers, sizing, and pattern recognition.</p>
+        </div>
+        <div class="curriculum-list-card" style="border-top-color: #2563EB;">
+          <h4>Environmental Studies</h4>
+          <p class="t-card-text">Learning about community, nature, self and the physical environment.</p>
+        </div>
+        <div class="curriculum-list-card" style="border-top-color: #7C3AED;">
+          <h4>Hindi / Second Language</h4>
+          <p class="t-card-text">Building primary conversational, vocabulary and writing skills.</p>
+        </div>
+        <div class="curriculum-list-card" style="border-top-color: var(--color-teal); grid-column: span 2;">
+          <h4>Digital Literacy</h4>
+          <p class="t-card-text">Navigating devices safely, typing baseline skills, and understanding online workspace etiquette.</p>
         </div>
       </div>
     </div>
 
-    <!-- Key Outcomes -->
-    <div class="curriculum-list-card" style="border-top-color: #2563EB; margin-bottom: 80px;">
-      <h4 style="border-bottom: 1px solid var(--color-border); padding-bottom: 0.75rem; margin-bottom: 1.5rem;">Key Outcomes</h4>
-      <div style="display: flex; flex-wrap: wrap; gap: 1rem 1.5rem;">
-        <span style="background-color: var(--color-surface-blue); padding: 0.5rem 1.25rem; border-radius: 30px; font-size: 0.95rem; font-weight: 600; color: var(--color-navy);">Reading & Writing</span>
-        <span style="background-color: var(--color-surface-blue); padding: 0.5rem 1.25rem; border-radius: 30px; font-size: 0.95rem; font-weight: 600; color: var(--color-navy);">Numeracy</span>
-        <span style="background-color: var(--color-surface-blue); padding: 0.5rem 1.25rem; border-radius: 30px; font-size: 0.95rem; font-weight: 600; color: var(--color-navy);">Communication</span>
-        <span style="background-color: var(--color-surface-blue); padding: 0.5rem 1.25rem; border-radius: 30px; font-size: 0.95rem; font-weight: 600; color: var(--color-navy);">Problem-Solving</span>
-        <span style="background-color: var(--color-surface-blue); padding: 0.5rem 1.25rem; border-radius: 30px; font-size: 0.95rem; font-weight: 600; color: var(--color-navy);">Confidence</span>
-        <span style="background-color: var(--color-surface-blue); padding: 0.5rem 1.25rem; border-radius: 30px; font-size: 0.95rem; font-weight: 600; color: var(--color-navy);">Independent Thinking</span>
+    <!-- BEYOND ACADEMICS -->
+    <div style="margin-bottom: 4.5rem;">
+      <h3 style="font-size: 1.45rem; color: var(--color-navy-dark); font-weight: 700; margin-bottom: 1.75rem; text-transform: uppercase; font-family: var(--font-primary); border-left: 4px solid var(--color-teal); padding-left: 12px; letter-spacing: 0.5px;">Beyond Academics</h3>
+      <div class="curriculum-grid-3">
+        <div class="curriculum-list-card" style="border-top-color: var(--color-gold); padding: 24px;">
+          <h4 style="margin: 0; border: none; padding: 0; font-size: 1.15rem;">Art & Creativity</h4>
+        </div>
+        <div class="curriculum-list-card" style="border-top-color: var(--color-teal); padding: 24px;">
+          <h4 style="margin: 0; border: none; padding: 0; font-size: 1.15rem;">Communication</h4>
+        </div>
+        <div class="curriculum-list-card" style="border-top-color: #2563EB; padding: 24px;">
+          <h4 style="margin: 0; border: none; padding: 0; font-size: 1.15rem;">Life Skills</h4>
+        </div>
+        <div class="curriculum-list-card" style="border-top-color: #7C3AED; padding: 24px;">
+          <h4 style="margin: 0; border: none; padding: 0; font-size: 1.15rem;">Physical Wellness</h4>
+        </div>
+        <div class="curriculum-list-card" style="border-top-color: var(--color-teal); padding: 24px;">
+          <h4 style="margin: 0; border: none; padding: 0; font-size: 1.15rem;">Social-Emotional Learning</h4>
+        </div>
+        <div class="curriculum-list-card" style="border-top-color: var(--color-gold); padding: 24px;">
+          <h4 style="margin: 0; border: none; padding: 0; font-size: 1.15rem;">General Awareness</h4>
+        </div>
       </div>
     </div>
 
-    <!-- Illustration: Question to Discovery -->
+    <!-- FROM CONCEPT TO EXPERIENCE -->
+    <div class="curriculum-list-card" style="border-top-color: #2563EB; margin-bottom: 4.5rem; padding: 40px; background-color: var(--color-surface-blue); border: 1px solid rgba(3, 27, 66, 0.08);">
+      <h4 style="font-size: 1.45rem; border-bottom: none; padding-bottom: 0; margin-bottom: 1.5rem; text-transform: uppercase;">From Concept to Experience</h4>
+      <p class="t-body-large" style="margin: 0; line-height: 1.8; color: var(--color-text);">
+        A learner may study plants, observe one at home, record its growth, discuss observations and create a mini project. The aim is to show that learning exists beyond the screen and textbook.
+      </p>
+    </div>
+
+    <!-- KEY OUTCOMES -->
+    <div style="margin-bottom: 5rem;">
+      <h3 style="font-size: 1.45rem; color: var(--color-navy-dark); font-weight: 700; margin-bottom: 1.75rem; text-transform: uppercase; font-family: var(--font-primary); border-left: 4px solid #2563EB; padding-left: 12px; letter-spacing: 0.5px;">Key Outcomes</h3>
+      <div class="curriculum-grid-3">
+        <div class="curriculum-list-card" style="border-top-color: #059669; padding: 24px; text-align: center;">
+          <span style="font-weight: 700; color: var(--color-navy-dark);">Reading & Writing Fluency</span>
+        </div>
+        <div class="curriculum-list-card" style="border-top-color: #D97706; padding: 24px; text-align: center;">
+          <span style="font-weight: 700; color: var(--color-navy-dark);">Basic Mathematical Skills</span>
+        </div>
+        <div class="curriculum-list-card" style="border-top-color: #2563EB; padding: 24px; text-align: center;">
+          <span style="font-weight: 700; color: var(--color-navy-dark);">Inquiring Mindset</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ILLUSTRATION: QUESTION TO DISCOVERY -->
     <div class="illustration-container">
       <div class="illustration-title">ILLUSTRATION: QUESTION TO DISCOVERY</div>
       <div class="visual-strip-row">
@@ -222,12 +248,11 @@ include_once dirname(__FILE__) . '/../includes/header.php';
         <div class="visual-strip-block bg-teal">Create</div>
       </div>
     </div>
-
   </div>
 </section>
 
-<!-- PAGE 4: 3. PREPARATORY STAGE -->
-<section class="curriculum-stage-section">
+<!-- PAGE 4 — PREPARATORY STAGE (Warm Off-White Background) -->
+<section class="curriculum-stage-section bg-warm-white">
   <div class="curriculum-container">
     <div class="curriculum-stage-header text-center">
       <span class="curriculum-stage-title-number">Grades 3-5</span>
@@ -241,84 +266,89 @@ include_once dirname(__FILE__) . '/../includes/header.php';
       </p>
     </div>
 
-    <div class="curriculum-info-grid">
-      <!-- Core Subjects -->
-      <div class="curriculum-list-card" style="border-top-color: var(--color-gold);">
-        <h4>Core Subjects</h4>
-        <ul class="curriculum-item-list">
-          <li><span class="curriculum-bullet-check">&#10004;</span> <strong>English:</strong> <span>Strengthening grammar, interactive speaking, and contextual writing.</span></li>
-          <li><span class="curriculum-bullet-check">&#10004;</span> <strong>Mathematics:</strong> <span>Geometry baseline, fractions, and multiplication logic.</span></li>
-          <li><span class="curriculum-bullet-check">&#10004;</span> <strong>Science:</strong> <span>Scientific method, experimentation & environmental sciences study.</span></li>
-          <li><span class="curriculum-bullet-check">&#10004;</span> <strong>Social Studies:</strong> <span>Local administration structures, mapping, and early history.</span></li>
-          <li><span class="curriculum-bullet-check">&#10004;</span> <strong>Hindi / Second Language:</strong> <span>Literature appreciation, composition, and vocabulary expansion.</span></li>
-          <li><span class="curriculum-bullet-check">&#10004;</span> <strong>Digital Literacy:</strong> <span>Spreadsheets introductory concepts, design fundamentals, and online safety.</span></li>
-        </ul>
-      </div>
-
-      <!-- Future-Ready Learning -->
-      <div class="curriculum-list-card" style="border-top-color: var(--color-teal);">
-        <h4>Future-Ready Learning</h4>
-        <ul class="curriculum-item-list" style="gap: 1.5rem;">
-          <li>
-            <div>
-              <strong>Coding & Computational Thinking:</strong>
-              <div style="color: var(--color-muted); font-size: 0.95rem; margin-top: 0.25rem;">Logical thinking and an introduction to how technology works.</div>
-            </div>
-          </li>
-          <li>
-            <div>
-              <strong>Communication & Public Speaking:</strong>
-              <div style="color: var(--color-muted); font-size: 0.95rem; margin-top: 0.25rem;">Expressing ideas clearly and confidently.</div>
-            </div>
-          </li>
-          <li>
-            <div>
-              <strong>Financial Awareness:</strong>
-              <div style="color: var(--color-muted); font-size: 0.95rem; margin-top: 0.25rem;">Money, saving, spending and responsible choices.</div>
-            </div>
-          </li>
-          <li>
-            <div>
-              <strong>Creative Arts:</strong>
-              <div style="color: var(--color-muted); font-size: 0.95rem; margin-top: 0.25rem;">Imagination, design and self-expression.</div>
-            </div>
-          </li>
-          <li>
-            <div>
-              <strong>Life Skills:</strong>
-              <div style="color: var(--color-muted); font-size: 0.95rem; margin-top: 0.25rem;">Decision-making, responsibility and independence.</div>
-            </div>
-          </li>
-          <li>
-            <div>
-              <strong>Health & Wellness:</strong>
-              <div style="color: var(--color-muted); font-size: 0.95rem; margin-top: 0.25rem;">Healthy physical and emotional habits.</div>
-            </div>
-          </li>
-          <li>
-            <div>
-              <strong>Environmental Awareness:</strong>
-              <div style="color: var(--color-muted); font-size: 0.95rem; margin-top: 0.25rem;">Sustainability and responsibility towards the planet.</div>
-            </div>
-          </li>
-        </ul>
+    <!-- CORE SUBJECTS -->
+    <div style="margin-bottom: 4.5rem;">
+      <h3 style="font-size: 1.45rem; color: var(--color-navy-dark); font-weight: 700; margin-bottom: 1.75rem; text-transform: uppercase; font-family: var(--font-primary); border-left: 4px solid var(--color-gold); padding-left: 12px; letter-spacing: 0.5px;">Core Subjects</h3>
+      <div class="curriculum-grid-3">
+        <div class="curriculum-list-card" style="border-top-color: #059669;">
+          <h4>English</h4>
+          <p class="t-card-text">Contextual reading comprehension, vocabulary, functional grammar & analytical essay writing.</p>
+        </div>
+        <div class="curriculum-list-card" style="border-top-color: #D97706;">
+          <h4>Mathematics</h4>
+          <p class="t-card-text">Fraction calculations, decimal logic, area/perimeter parameters, and logical reasoning.</p>
+        </div>
+        <div class="curriculum-list-card" style="border-top-color: #2563EB;">
+          <h4>Science</h4>
+          <p class="t-card-text">Scientific inquiry, plant/animal biological systems, matter states, and experimental logic.</p>
+        </div>
+        <div class="curriculum-list-card" style="border-top-color: #7C3AED;">
+          <h4>Social Studies</h4>
+          <p class="t-card-text">History foundations, geography map tracking, civics parameters, and societal exploration.</p>
+        </div>
+        <div class="curriculum-list-card" style="border-top-color: var(--color-teal);">
+          <h4>Hindi / Second Language</h4>
+          <p class="t-card-text">Literature studies, grammar structures, paragraph composition, and vocabulary updates.</p>
+        </div>
+        <div class="curriculum-list-card" style="border-top-color: var(--color-gold);">
+          <h4>Digital Literacy</h4>
+          <p class="t-card-text">Using spreadsheets, presenting designs, editing documents, and understanding internet safety.</p>
+        </div>
       </div>
     </div>
 
-    <!-- Key Outcomes -->
-    <div class="curriculum-list-card" style="border-top-color: #2563EB; margin-bottom: 80px;">
-      <h4 style="border-bottom: 1px solid var(--color-border); padding-bottom: 0.75rem; margin-bottom: 1.5rem;">Key Outcomes</h4>
-      <div style="display: flex; flex-wrap: wrap; gap: 1rem 1.5rem;">
-        <span style="background-color: var(--color-surface-blue); padding: 0.5rem 1.25rem; border-radius: 30px; font-size: 0.95rem; font-weight: 600; color: var(--color-navy);">Conceptual Understanding</span>
-        <span style="background-color: var(--color-surface-blue); padding: 0.5rem 1.25rem; border-radius: 30px; font-size: 0.95rem; font-weight: 600; color: var(--color-navy);">Research Skills</span>
-        <span style="background-color: var(--color-surface-blue); padding: 0.5rem 1.25rem; border-radius: 30px; font-size: 0.95rem; font-weight: 600; color: var(--color-navy);">Collaboration</span>
-        <span style="background-color: var(--color-surface-blue); padding: 0.5rem 1.25rem; border-radius: 30px; font-size: 0.95rem; font-weight: 600; color: var(--color-navy);">Creativity</span>
-        <span style="background-color: var(--color-surface-blue); padding: 0.5rem 1.25rem; border-radius: 30px; font-size: 0.95rem; font-weight: 600; color: var(--color-navy);">Digital Fluency</span>
-        <span style="background-color: var(--color-surface-blue); padding: 0.5rem 1.25rem; border-radius: 30px; font-size: 0.95rem; font-weight: 600; color: var(--color-navy);">Problem-Solving</span>
+    <!-- FUTURE-READY LEARNING -->
+    <div style="margin-bottom: 4.5rem;">
+      <h3 style="font-size: 1.45rem; color: var(--color-navy-dark); font-weight: 700; margin-bottom: 1.75rem; text-transform: uppercase; font-family: var(--font-primary); border-left: 4px solid var(--color-teal); padding-left: 12px; letter-spacing: 0.5px;">Future-Ready Learning</h3>
+      <div class="curriculum-grid-2">
+        <div class="curriculum-list-card" style="border-top-color: #059669;">
+          <h4>Coding & Computational Thinking</h4>
+          <p class="t-card-text">Introducing logical programming sequences, algorithm block design, and computational loops.</p>
+        </div>
+        <div class="curriculum-list-card" style="border-top-color: #D97706;">
+          <h4>Communication & Public Speaking</h4>
+          <p class="t-card-text">Coordinating verbal delivery, confidence guidelines, speech structure, and active listening.</p>
+        </div>
+        <div class="curriculum-list-card" style="border-top-color: #2563EB;">
+          <h4>Financial Awareness</h4>
+          <p class="t-card-text">Learning budget basics, currency structures, money management systems, and smart choices.</p>
+        </div>
+        <div class="curriculum-list-card" style="border-top-color: #7C3AED;">
+          <h4>Creative Arts</h4>
+          <p class="t-card-text">Exploring design, craft systems, graphic structures, music appreciation, and fine arts.</p>
+        </div>
+        <div class="curriculum-list-card" style="border-top-color: var(--color-teal);">
+          <h4>Life Skills</h4>
+          <p class="t-card-text">Developing personal organization, time tracking, self-management, and decision making.</p>
+        </div>
+        <div class="curriculum-list-card" style="border-top-color: var(--color-gold);">
+          <h4>Health & Wellness</h4>
+          <p class="t-card-text">Coordinating core nutrition parameters, exercise guidelines, emotional control, and sportsmanship.</p>
+        </div>
+        <div class="curriculum-list-card" style="border-top-color: #2563EB; grid-column: span 2;">
+          <h4>Environmental Awareness</h4>
+          <p class="t-card-text">Focusing on resource saving, waste management cycles, planet protection practices, and community responsibilities.</p>
+        </div>
       </div>
     </div>
 
-    <!-- Illustration: The Learning Lab -->
+    <!-- KEY OUTCOMES -->
+    <div style="margin-bottom: 5rem;">
+      <h3 style="font-size: 1.45rem; color: var(--color-navy-dark); font-weight: 700; margin-bottom: 1.75rem; text-transform: uppercase; font-family: var(--font-primary); border-left: 4px solid #2563EB; padding-left: 12px; letter-spacing: 0.5px;">Key Outcomes</h3>
+      <div class="curriculum-grid-3">
+        <div class="curriculum-list-card" style="border-top-color: #059669; padding: 24px; text-align: center;">
+          <span style="font-weight: 700; color: var(--color-navy-dark);">Scientific Observation Skills</span>
+        </div>
+        <div class="curriculum-list-card" style="border-top-color: #D97706; padding: 24px; text-align: center;">
+          <span style="font-weight: 700; color: var(--color-navy-dark);">Collaborative Team Projects</span>
+        </div>
+        <div class="curriculum-list-card" style="border-top-color: #2563EB; padding: 24px; text-align: center;">
+          <span style="font-weight: 700; color: var(--color-navy-dark);">Logical Coding Principles</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ILLUSTRATION: THE LEARNING LAB -->
     <div class="illustration-container">
       <div class="illustration-title">ILLUSTRATION: THE LEARNING LAB</div>
       <div class="visual-strip-row">
@@ -329,12 +359,11 @@ include_once dirname(__FILE__) . '/../includes/header.php';
         <div class="visual-strip-block bg-teal">Collaborate</div>
       </div>
     </div>
-
   </div>
 </section>
 
-<!-- PAGE 5: 4. MIDDLE SCHOOL -->
-<section class="curriculum-stage-section">
+<!-- PAGE 5 — MIDDLE SCHOOL (White Background) -->
+<section class="curriculum-stage-section bg-white">
   <div class="curriculum-container">
     <div class="curriculum-stage-header text-center">
       <span class="curriculum-stage-title-number">Grades 6-8</span>
@@ -348,61 +377,96 @@ include_once dirname(__FILE__) . '/../includes/header.php';
       </p>
     </div>
 
-    <div class="curriculum-info-grid">
-      <!-- Core Subjects -->
-      <div class="curriculum-list-card" style="border-top-color: var(--color-gold);">
-        <h4>Core Subjects</h4>
-        <ul class="curriculum-item-list">
-          <li><span class="curriculum-bullet-check">&#10004;</span> <strong>English:</strong> <span>Analytical essay writing, literature study, and high-impact verbal expression.</span></li>
-          <li><span class="curriculum-bullet-check">&#10004;</span> <strong>Mathematics:</strong> <span>Algebra, equations, ratios, basic statistics, and data visualization.</span></li>
-          <li><span class="curriculum-bullet-check">&#10004;</span> <strong>Science:</strong> <span>Differentiated study across Physics, Chemistry, Biology, and project works.</span></li>
-          <li><span class="curriculum-bullet-check">&#10004;</span> <strong>Social Science:</strong> <span>History, Geography, and Civics exploring global and local systems.</span></li>
-          <li><span class="curriculum-bullet-check">&#10004;</span> <strong>Hindi / Second Language:</strong> <span>Advanced comprehension, writing portfolios, and literary analysis.</span></li>
-          <li><span class="curriculum-bullet-check">&#10004;</span> <strong>Digital & Technology Education:</strong> <span>Basics of hardware, software systems, computer networks, and file systems.</span></li>
-        </ul>
-      </div>
-
-      <!-- Future Skills & Learning Experiences -->
-      <div class="curriculum-list-card" style="border-top-color: var(--color-purple); display: flex; flex-direction: column; justify-content: space-between;">
-        <div>
-          <h4>Future Skills</h4>
-          <div class="grid-2" style="gap: 1rem; margin-bottom: 2rem;">
-            <div class="t-card-text"><span style="color: var(--color-gold); font-weight: bold; margin-right: 0.5rem;">•</span> Coding & AI Awareness</div>
-            <div class="t-card-text"><span style="color: var(--color-gold); font-weight: bold; margin-right: 0.5rem;">•</span> Entrepreneurship</div>
-            <div class="t-card-text"><span style="color: var(--color-gold); font-weight: bold; margin-right: 0.5rem;">•</span> Financial Literacy</div>
-            <div class="t-card-text"><span style="color: var(--color-gold); font-weight: bold; margin-right: 0.5rem;">•</span> Research & Critical Thinking</div>
-            <div class="t-card-text"><span style="color: var(--color-gold); font-weight: bold; margin-right: 0.5rem;">•</span> Public Speaking & Comm.</div>
-            <div class="t-card-text"><span style="color: var(--color-gold); font-weight: bold; margin-right: 0.5rem;">•</span> Design Thinking</div>
-            <div class="t-card-text"><span style="color: var(--color-gold); font-weight: bold; margin-right: 0.5rem;">•</span> Leadership</div>
-            <div class="t-card-text"><span style="color: var(--color-gold); font-weight: bold; margin-right: 0.5rem;">•</span> Global Citizenship</div>
-            <div class="t-card-text" style="grid-column: span 2;"><span style="color: var(--color-gold); font-weight: bold; margin-right: 0.5rem;">•</span> Career & Interest Exploration</div>
-          </div>
+    <!-- CORE SUBJECTS -->
+    <div style="margin-bottom: 4.5rem;">
+      <h3 style="font-size: 1.45rem; color: var(--color-navy-dark); font-weight: 700; margin-bottom: 1.75rem; text-transform: uppercase; font-family: var(--font-primary); border-left: 4px solid var(--color-gold); padding-left: 12px; letter-spacing: 0.5px;">Core Subjects</h3>
+      <div class="curriculum-grid-3">
+        <div class="curriculum-list-card" style="border-top-color: #059669;">
+          <h4>English</h4>
+          <p class="t-card-text">Analytical literary appreciation, grammar, composition models & debate projects.</p>
         </div>
-
-        <div style="border-top: 1px solid var(--color-border); padding-top: 1.5rem; margin-top: auto;">
-          <h5 style="font-size: 0.95rem; color: var(--color-navy); margin-bottom: 0.75rem; font-family: var(--font-secondary); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Learning Experiences</h5>
-          <p style="font-size: 0.9rem; color: var(--color-muted); line-height: 1.6; margin: 0;">
-            Case Studies • Research Projects • Debates • Experiments • Collaborative Assignments • Presentations • Innovation Challenges • Real-World Problem Solving
-          </p>
+        <div class="curriculum-list-card" style="border-top-color: #D97706;">
+          <h4>Mathematics</h4>
+          <p class="t-card-text">Advanced equations, geometry parameters, algebra, data statistics & chart structures.</p>
+        </div>
+        <div class="curriculum-list-card" style="border-top-color: #2563EB;">
+          <h4>Science</h4>
+          <p class="t-card-text">Detailed branches (Physics laws, Chemistry setups, Biology structures) & science fair projects.</p>
+        </div>
+        <div class="curriculum-list-card" style="border-top-color: #7C3AED;">
+          <h4>Social Science</h4>
+          <p class="t-card-text">Detailed history profiles, geography analysis, civics functions & economic models.</p>
+        </div>
+        <div class="curriculum-list-card" style="border-top-color: var(--color-teal);">
+          <h4>Hindi / Second Language</h4>
+          <p class="t-card-text">Literature critique, essay writing portfolios, composition metrics, and vocabulary tracking.</p>
+        </div>
+        <div class="curriculum-list-card" style="border-top-color: var(--color-gold);">
+          <h4>Digital & Technology Education</h4>
+          <p class="t-card-text">Basics of computer hardware systems, files operations, software logic, and local network setups.</p>
         </div>
       </div>
     </div>
 
-    <!-- Key Outcomes -->
-    <div class="curriculum-list-card" style="border-top-color: #2563EB; margin-bottom: 80px;">
-      <h4 style="border-bottom: 1px solid var(--color-border); padding-bottom: 0.75rem; margin-bottom: 1.5rem;">Key Outcomes</h4>
-      <div style="display: flex; flex-wrap: wrap; gap: 1rem 1.5rem;">
-        <span style="background-color: var(--color-surface-blue); padding: 0.5rem 1.25rem; border-radius: 30px; font-size: 0.95rem; font-weight: 600; color: var(--color-navy);">Critical Thinking</span>
-        <span style="background-color: var(--color-surface-blue); padding: 0.5rem 1.25rem; border-radius: 30px; font-size: 0.95rem; font-weight: 600; color: var(--color-navy);">Academic Independence</span>
-        <span style="background-color: var(--color-surface-blue); padding: 0.5rem 1.25rem; border-radius: 30px; font-size: 0.95rem; font-weight: 600; color: var(--color-navy);">Leadership</span>
-        <span style="background-color: var(--color-surface-blue); padding: 0.5rem 1.25rem; border-radius: 30px; font-size: 0.95rem; font-weight: 600; color: var(--color-navy);">Digital Fluency</span>
-        <span style="background-color: var(--color-surface-blue); padding: 0.5rem 1.25rem; border-radius: 30px; font-size: 0.95rem; font-weight: 600; color: var(--color-navy);">Communication</span>
-        <span style="background-color: var(--color-surface-blue); padding: 0.5rem 1.25rem; border-radius: 30px; font-size: 0.95rem; font-weight: 600; color: var(--color-navy);">Innovation</span>
-        <span style="background-color: var(--color-surface-blue); padding: 0.5rem 1.25rem; border-radius: 30px; font-size: 0.95rem; font-weight: 600; color: var(--color-navy);">Real-World Readiness</span>
+    <!-- FUTURE SKILLS -->
+    <div style="margin-bottom: 4.5rem;">
+      <h3 style="font-size: 1.45rem; color: var(--color-navy-dark); font-weight: 700; margin-bottom: 1.75rem; text-transform: uppercase; font-family: var(--font-primary); border-left: 4px solid var(--color-teal); padding-left: 12px; letter-spacing: 0.5px;">Future Skills</h3>
+      <div class="curriculum-grid-3">
+        <div class="curriculum-list-card" style="border-top-color: #059669; padding: 24px;">
+          <h4 style="margin: 0; border: none; padding: 0; font-size: 1.15rem;">Coding & AI Awareness</h4>
+        </div>
+        <div class="curriculum-list-card" style="border-top-color: #D97706; padding: 24px;">
+          <h4 style="margin: 0; border: none; padding: 0; font-size: 1.15rem;">Entrepreneurship</h4>
+        </div>
+        <div class="curriculum-list-card" style="border-top-color: #2563EB; padding: 24px;">
+          <h4 style="margin: 0; border: none; padding: 0; font-size: 1.15rem;">Financial Literacy</h4>
+        </div>
+        <div class="curriculum-list-card" style="border-top-color: #7C3AED; padding: 24px;">
+          <h4 style="margin: 0; border: none; padding: 0; font-size: 1.15rem;">Research & Critical Thinking</h4>
+        </div>
+        <div class="curriculum-list-card" style="border-top-color: var(--color-teal); padding: 24px;">
+          <h4 style="margin: 0; border: none; padding: 0; font-size: 1.15rem;">Public Speaking & Comm.</h4>
+        </div>
+        <div class="curriculum-list-card" style="border-top-color: var(--color-gold); padding: 24px;">
+          <h4 style="margin: 0; border: none; padding: 0; font-size: 1.15rem;">Design Thinking</h4>
+        </div>
+        <div class="curriculum-list-card" style="border-top-color: #2563EB; padding: 24px;">
+          <h4 style="margin: 0; border: none; padding: 0; font-size: 1.15rem;">Leadership</h4>
+        </div>
+        <div class="curriculum-list-card" style="border-top-color: #7C3AED; padding: 24px;">
+          <h4 style="margin: 0; border: none; padding: 0; font-size: 1.15rem;">Global Citizenship</h4>
+        </div>
+        <div class="curriculum-list-card" style="border-top-color: var(--color-teal); padding: 24px;">
+          <h4 style="margin: 0; border: none; padding: 0; font-size: 1.15rem;">Career & Interest Exploration</h4>
+        </div>
       </div>
     </div>
 
-    <!-- Illustration: Future Skills in Action -->
+    <!-- LEARNING EXPERIENCES -->
+    <div class="curriculum-list-card" style="border-top-color: #2563EB; margin-bottom: 4.5rem; padding: 40px; background-color: var(--color-surface-blue); border: 1px solid rgba(3, 27, 66, 0.08);">
+      <h4 style="font-size: 1.45rem; border-bottom: none; padding-bottom: 0; margin-bottom: 1.5rem; text-transform: uppercase;">Learning Experiences</h4>
+      <p class="t-body-large" style="margin: 0; line-height: 1.8; color: var(--color-text);">
+        Case Studies • Research Projects • Debates • Experiments • Collaborative Assignments • Presentations • Innovation Challenges • Real-World Problem Solving
+      </p>
+    </div>
+
+    <!-- KEY OUTCOMES -->
+    <div style="margin-bottom: 5rem;">
+      <h3 style="font-size: 1.45rem; color: var(--color-navy-dark); font-weight: 700; margin-bottom: 1.75rem; text-transform: uppercase; font-family: var(--font-primary); border-left: 4px solid #2563EB; padding-left: 12px; letter-spacing: 0.5px;">Key Outcomes</h3>
+      <div class="curriculum-grid-3">
+        <div class="curriculum-list-card" style="border-top-color: #059669; padding: 24px; text-align: center;">
+          <span style="font-weight: 700; color: var(--color-navy-dark);">Advanced Problem-Solving Capabilities</span>
+        </div>
+        <div class="curriculum-list-card" style="border-top-color: #D97706; padding: 24px; text-align: center;">
+          <span style="font-weight: 700; color: var(--color-navy-dark);">Independent Critical Investigation</span>
+        </div>
+        <div class="curriculum-list-card" style="border-top-color: #2563EB; padding: 24px; text-align: center;">
+          <span style="font-weight: 700; color: var(--color-navy-dark);">Ready for Higher Secondary Paths</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ILLUSTRATION: FUTURE SKILLS IN ACTION -->
     <div class="illustration-container">
       <div class="illustration-title">ILLUSTRATION: FUTURE SKILLS IN ACTION</div>
       <div class="visual-strip-row">
@@ -413,12 +477,11 @@ include_once dirname(__FILE__) . '/../includes/header.php';
         <div class="visual-strip-block bg-teal">Global</div>
       </div>
     </div>
-
   </div>
 </section>
 
-<!-- PAGE 6: 5. THE ZUVIO LEARNING FRAMEWORK -->
-<section class="curriculum-stage-section" style="background-color: var(--color-surface-warm);">
+<!-- PAGE 6 — ZUVIO LEARNING FRAMEWORK (Soft Blue Background) -->
+<section class="curriculum-stage-section bg-soft-blue">
   <div class="curriculum-container">
     <div class="curriculum-stage-header text-center">
       <span class="curriculum-stage-title-number">Core Framework</span>
@@ -432,42 +495,40 @@ include_once dirname(__FILE__) . '/../includes/header.php';
       </p>
     </div>
 
-    <!-- The 5 Dimensions -->
-    <div class="grid-5" style="margin-bottom: 80px;">
-      
-      <div class="curriculum-list-card" style="border-top-color: #059669; padding: 2rem 1.5rem;">
-        <h4 style="font-size: 1.25rem; color: #059669; border: none; padding: 0; margin-bottom: 0.5rem; text-transform: uppercase;">KNOW</h4>
-        <strong style="font-size: 0.95rem; display: block; margin-bottom: 0.75rem; color: var(--color-navy);">Build the Foundation</strong>
-        <p style="font-size: 0.85rem; color: var(--color-muted); line-height: 1.6; margin: 0;">Understand essential concepts, facts and ideas.</p>
+    <!-- 5 DIMENSIONS IN A 2-COLUMN GRID (5th spans across both) -->
+    <div class="curriculum-grid-2" style="margin-bottom: 5rem;">
+      <div class="curriculum-list-card" style="border-top-color: #059669; padding: 32px;">
+        <h4 style="font-size: 1.35rem; color: #059669; border: none; padding: 0; margin-bottom: 0.5rem; text-transform: uppercase;">KNOW</h4>
+        <strong style="font-size: 1rem; display: block; margin-bottom: 0.75rem; color: var(--color-navy-dark);">Build the Foundation</strong>
+        <p class="t-card-text" style="color: var(--color-muted); margin: 0;">Understand essential concepts, facts and ideas.</p>
       </div>
 
-      <div class="curriculum-list-card" style="border-top-color: var(--color-gold); padding: 2rem 1.5rem;">
-        <h4 style="font-size: 1.25rem; color: var(--color-gold); border: none; padding: 0; margin-bottom: 0.5rem; text-transform: uppercase;">THINK</h4>
-        <strong style="font-size: 0.95rem; display: block; margin-bottom: 0.75rem; color: var(--color-navy);">Develop Understanding</strong>
-        <p style="font-size: 0.85rem; color: var(--color-muted); line-height: 1.6; margin: 0;">Question, analyse, compare, reason and solve.</p>
+      <div class="curriculum-list-card" style="border-top-color: var(--color-gold); padding: 32px;">
+        <h4 style="font-size: 1.35rem; color: var(--color-gold); border: none; padding: 0; margin-bottom: 0.5rem; text-transform: uppercase;">THINK</h4>
+        <strong style="font-size: 1rem; display: block; margin-bottom: 0.75rem; color: var(--color-navy-dark);">Develop Understanding</strong>
+        <p class="t-card-text" style="color: var(--color-muted); margin: 0;">Question, analyse, compare, reason and solve.</p>
       </div>
 
-      <div class="curriculum-list-card" style="border-top-color: #2563EB; padding: 2rem 1.5rem;">
-        <h4 style="font-size: 1.25rem; color: #2563EB; border: none; padding: 0; margin-bottom: 0.5rem; text-transform: uppercase;">CREATE</h4>
-        <strong style="font-size: 0.95rem; display: block; margin-bottom: 0.75rem; color: var(--color-navy);">Turn Ideas Into Possibilities</strong>
-        <p style="font-size: 0.85rem; color: var(--color-muted); line-height: 1.6; margin: 0;">Imagine, experiment, design and innovate.</p>
+      <div class="curriculum-list-card" style="border-top-color: #2563EB; padding: 32px;">
+        <h4 style="font-size: 1.35rem; color: #2563EB; border: none; padding: 0; margin-bottom: 0.5rem; text-transform: uppercase;">CREATE</h4>
+        <strong style="font-size: 1rem; display: block; margin-bottom: 0.75rem; color: var(--color-navy-dark);">Turn Ideas Into Possibilities</strong>
+        <p class="t-card-text" style="color: var(--color-muted); margin: 0;">Imagine, experiment, design and innovate.</p>
       </div>
 
-      <div class="curriculum-list-card" style="border-top-color: #7C3AED; padding: 2rem 1.5rem;">
-        <h4 style="font-size: 1.25rem; color: #7C3AED; border: none; padding: 0; margin-bottom: 0.5rem; text-transform: uppercase;">CONNECT</h4>
-        <strong style="font-size: 0.95rem; display: block; margin-bottom: 0.75rem; color: var(--color-navy);">Learn With the World</strong>
-        <p style="font-size: 0.85rem; color: var(--color-muted); line-height: 1.6; margin: 0;">Communicate, collaborate and understand different perspectives.</p>
+      <div class="curriculum-list-card" style="border-top-color: #7C3AED; padding: 32px;">
+        <h4 style="font-size: 1.35rem; color: #7C3AED; border: none; padding: 0; margin-bottom: 0.5rem; text-transform: uppercase;">CONNECT</h4>
+        <strong style="font-size: 1rem; display: block; margin-bottom: 0.75rem; color: var(--color-navy-dark);">Learn With the World</strong>
+        <p class="t-card-text" style="color: var(--color-muted); margin: 0;">Communicate, collaborate and understand different perspectives.</p>
       </div>
 
-      <div class="curriculum-list-card" style="border-top-color: var(--color-teal); padding: 2rem 1.5rem;">
-        <h4 style="font-size: 1.25rem; color: var(--color-teal); border: none; padding: 0; margin-bottom: 0.5rem; text-transform: uppercase;">APPLY</h4>
-        <strong style="font-size: 0.95rem; display: block; margin-bottom: 0.75rem; color: var(--color-navy);">Make Learning Meaningful</strong>
-        <p style="font-size: 0.85rem; color: var(--color-muted); line-height: 1.6; margin: 0;">Use knowledge confidently in projects, challenges and real-life situations.</p>
+      <div class="curriculum-list-card" style="border-top-color: var(--color-teal); padding: 32px; grid-column: span 2;">
+        <h4 style="font-size: 1.35rem; color: var(--color-teal); border: none; padding: 0; margin-bottom: 0.5rem; text-transform: uppercase;">APPLY</h4>
+        <strong style="font-size: 1rem; display: block; margin-bottom: 0.75rem; color: var(--color-navy-dark);">Make Learning Meaningful</strong>
+        <p class="t-card-text" style="color: var(--color-muted); margin: 0;">Use knowledge confidently in projects, challenges and real-life situations.</p>
       </div>
-
     </div>
 
-    <!-- Illustration: Framework Strip -->
+    <!-- ILLUSTRATION: KNOW &rarr; THINK &rarr; CREATE &rarr; CONNECT &rarr; APPLY -->
     <div class="illustration-container" style="background-color: var(--color-white);">
       <div class="illustration-title">ILLUSTRATION: KNOW &rarr; THINK &rarr; CREATE &rarr; CONNECT &rarr; APPLY</div>
       <div class="visual-strip-row" style="align-items: center;">
@@ -481,18 +542,17 @@ include_once dirname(__FILE__) . '/../includes/header.php';
         <div style="color: var(--color-gold); font-weight: bold; font-size: 1.75rem;" class="arrow-indicator">&rarr;</div>
         <div class="visual-strip-block bg-teal" style="padding: 1.5rem 0.5rem;">APPLY</div>
       </div>
-      <div class="text-center" style="margin-top: 3rem; border-top: 1px solid var(--color-border); padding-top: 1.5rem;">
-        <span style="font-family: var(--font-primary); font-size: 1.35rem; color: var(--color-navy); font-weight: 700; letter-spacing: 1px;">
+      <div class="text-center" style="margin-top: 3.5rem; border-top: 1px solid var(--color-border); padding-top: 2rem;">
+        <span style="font-family: var(--font-primary); font-size: 1.55rem; color: var(--color-navy-dark); font-weight: 700; letter-spacing: 0.5px;">
           Knowledge &rarr; Understanding &rarr; Application &rarr; Innovation
         </span>
       </div>
     </div>
-
   </div>
 </section>
 
-<!-- PAGE 7: 6. LEARNING BEYOND THE TEXTBOOK & 7. ASSESSMENT -->
-<section class="curriculum-stage-section">
+<!-- PAGE 7 — LEARNING BEYOND + ASSESSMENT (White Background) -->
+<section class="curriculum-stage-section bg-white">
   <div class="curriculum-container">
     
     <!-- 6. Learning Beyond the Textbook -->
@@ -502,30 +562,37 @@ include_once dirname(__FILE__) . '/../includes/header.php';
       <p class="t-sub-title curriculum-stage-subtitle">Because the World Is the Real Classroom</p>
     </div>
 
-    <div class="grid-3" style="gap: 28px; margin-bottom: 100px;">
+    <div style="max-width: 1000px; margin: 0 auto 4rem auto;">
+      <p class="t-body-large text-center curriculum-desc-text">
+        Real learning connects what we know with what we can do. Zuvio activities, challenges, projects and co-curricular programs bridge theory and experience.
+      </p>
+    </div>
+
+    <!-- 2-COLUMN x 3-ROW GRID -->
+    <div class="curriculum-grid-2" style="margin-bottom: 8rem;">
       <div class="curriculum-list-card" style="border-top-color: var(--color-gold);">
-        <strong style="color: var(--color-navy); font-size: 1.2rem; display: block; margin-bottom: 0.75rem;">Projects & Experiments</strong>
-        <p style="font-size: 0.95rem; color: var(--color-muted); line-height: 1.6;">Learning by doing, observing, testing and discovering.</p>
+        <strong style="color: var(--color-navy-dark); font-size: 1.2rem; display: block; margin-bottom: 0.75rem;">Projects & Experiments</strong>
+        <p class="t-card-text" style="color: var(--color-muted); margin: 0;">Hands-on inquiry-driven explorations that bridge textbook concepts with physical observations.</p>
       </div>
       <div class="curriculum-list-card" style="border-top-color: var(--color-teal);">
-        <strong style="color: var(--color-navy); font-size: 1.2rem; display: block; margin-bottom: 0.75rem;">Technology & Digital Learning</strong>
-        <p style="font-size: 0.95rem; color: var(--color-muted); line-height: 1.6;">Using technology creatively, effectively and responsibly.</p>
+        <strong style="color: var(--color-navy-dark); font-size: 1.2rem; display: block; margin-bottom: 0.75rem;">Technology & Digital Learning</strong>
+        <p class="t-card-text" style="color: var(--color-muted); margin: 0;">Interactive digital software setups, creative design, research, and collaborative presentations.</p>
       </div>
       <div class="curriculum-list-card" style="border-top-color: #2563EB;">
-        <strong style="color: var(--color-navy); font-size: 1.2rem; display: block; margin-bottom: 0.75rem;">Communication & Collaboration</strong>
-        <p style="font-size: 0.95rem; color: var(--color-muted); line-height: 1.6;">Presentations, discussions, teamwork and global interactions.</p>
+        <strong style="color: var(--color-navy-dark); font-size: 1.2rem; display: block; margin-bottom: 0.75rem;">Communication & Collaboration</strong>
+        <p class="t-card-text" style="color: var(--color-muted); margin: 0;">Debates, show-and-tell, team projects, presentations, and global cultural exchanges.</p>
       </div>
       <div class="curriculum-list-card" style="border-top-color: #7C3AED;">
-        <strong style="color: var(--color-navy); font-size: 1.2rem; display: block; margin-bottom: 0.75rem;">Life Skills</strong>
-        <p style="font-size: 0.95rem; color: var(--color-muted); line-height: 1.6;">Decision-making, independence, financial awareness and emotional intelligence.</p>
+        <strong style="color: var(--color-navy-dark); font-size: 1.2rem; display: block; margin-bottom: 0.75rem;">Life Skills</strong>
+        <p class="t-card-text" style="color: var(--color-muted); margin: 0;">Smart money habits, organization checklists, self-management, and decision processes.</p>
       </div>
       <div class="curriculum-list-card" style="border-top-color: #059669;">
-        <strong style="color: var(--color-navy); font-size: 1.2rem; display: block; margin-bottom: 0.75rem;">Creativity & Innovation</strong>
-        <p style="font-size: 0.95rem; color: var(--color-muted); line-height: 1.6;">Art, coding, design thinking and problem-solving challenges.</p>
+        <strong style="color: var(--color-navy-dark); font-size: 1.2rem; display: block; margin-bottom: 0.75rem;">Creativity & Innovation</strong>
+        <p class="t-card-text" style="color: var(--color-muted); margin: 0;">Art designs, digital coding, engineering frameworks, and problem-solving exercises.</p>
       </div>
       <div class="curriculum-list-card" style="border-top-color: var(--color-navy);">
-        <strong style="color: var(--color-navy); font-size: 1.2rem; display: block; margin-bottom: 0.75rem;">Global Exposure</strong>
-        <p style="font-size: 0.95rem; color: var(--color-muted); line-height: 1.6;">Cultures, perspectives and ideas beyond geographical boundaries.</p>
+        <strong style="color: var(--color-navy-dark); font-size: 1.2rem; display: block; margin-bottom: 0.75rem;">Global Exposure</strong>
+        <p class="t-card-text" style="color: var(--color-muted); margin: 0;">Intercultural studies, mapping exercises, environmental sciences, and global issues discussions.</p>
       </div>
     </div>
 
@@ -536,20 +603,21 @@ include_once dirname(__FILE__) . '/../includes/header.php';
       <p class="t-sub-title curriculum-stage-subtitle">Measure Growth, Not Just Marks</p>
     </div>
 
-    <div style="max-width: 1000px; margin: 0 auto 40px auto; text-align: center;">
+    <div style="max-width: 1000px; margin: 0 auto 4rem auto; text-align: center;">
       <p class="t-body-large curriculum-desc-text">
         Assessment helps learners move forward rather than simply generating a score. It can include concept checks, quizzes, projects, assignments, presentations, portfolios, skill-based assessments and term assessments.
       </p>
-      
-      <div style="background-color: var(--color-surface-warm); border: 1.5px solid var(--color-border); border-radius: var(--radius-md); padding: 2rem; display: inline-block; max-width: 750px; text-align: left; box-shadow: var(--shadow-sm); margin-bottom: 60px;">
-        <span style="font-weight: 700; color: var(--color-gold); display: block; margin-bottom: 0.75rem; text-transform: uppercase; font-size: 0.9rem; letter-spacing: 1px;">Parent Insight:</span>
-        <p style="font-size: 0.95rem; line-height: 1.6; color: var(--color-text); margin: 0; font-style: italic;">
+
+      <!-- Parent Insight -->
+      <div style="background-color: var(--color-surface-warm); border: 1.5px solid var(--color-border); border-radius: 8px; padding: 2.5rem; text-align: left; max-width: 800px; margin: 0 auto 5rem auto; box-shadow: var(--shadow-sm);">
+        <span style="font-weight: 700; color: var(--color-gold); display: block; margin-bottom: 0.75rem; text-transform: uppercase; font-size: 0.95rem; letter-spacing: 1px;">Parent Insight:</span>
+        <p style="font-size: 1.05rem; line-height: 1.8; color: var(--color-text); margin: 0; font-style: italic; font-weight: 500;">
           "Parents receive meaningful insights into academic progress, skills development, strengths and areas where additional support may be useful."
         </p>
       </div>
     </div>
 
-    <!-- Illustration: Assessment for Growth -->
+    <!-- ILLUSTRATION: ASSESSMENT FOR GROWTH -->
     <div class="illustration-container">
       <div class="illustration-title">ILLUSTRATION: ASSESSMENT FOR GROWTH</div>
       <div class="visual-strip-row">
@@ -560,12 +628,11 @@ include_once dirname(__FILE__) . '/../includes/header.php';
         <div class="visual-strip-block bg-teal">Progress</div>
       </div>
     </div>
-
   </div>
 </section>
 
-<!-- PAGE 8: 8. PERSONALISED LEARNING & 9. ZUVIO BEYOND -->
-<section class="curriculum-stage-section" style="background-color: var(--color-surface-blue);">
+<!-- PAGE 8 — PERSONALISED LEARNING + ZUVIO BEYOND (Warm Off-White Background) -->
+<section class="curriculum-stage-section bg-warm-white">
   <div class="curriculum-container">
     
     <!-- 8. Personalised Learning -->
@@ -581,8 +648,8 @@ include_once dirname(__FILE__) . '/../includes/header.php';
       </p>
     </div>
 
-    <!-- Illustration: Personalised Growth -->
-    <div class="illustration-container" style="background-color: var(--color-white); margin-bottom: 100px;">
+    <!-- ILLUSTRATION: PERSONALISED GROWTH -->
+    <div class="illustration-container" style="background-color: var(--color-white); margin-bottom: 8rem; border: 1.5px solid var(--color-border);">
       <div class="illustration-title">ILLUSTRATION: PERSONALISED GROWTH</div>
       <div class="visual-strip-row">
         <div class="visual-strip-block bg-green">Strengths</div>
@@ -594,7 +661,7 @@ include_once dirname(__FILE__) . '/../includes/header.php';
     </div>
 
     <!-- 9. Zuvio Beyond -->
-    <div class="curriculum-stage-header text-center" style="margin-top: 100px;">
+    <div class="curriculum-stage-header text-center">
       <span class="curriculum-stage-title-number">Co-Curricular Exploration</span>
       <h2 class="t-section-title curriculum-stage-title">9. Zuvio Beyond</h2>
       <p class="t-sub-title curriculum-stage-subtitle">Learning That Goes Beyond Academics</p>
@@ -606,54 +673,52 @@ include_once dirname(__FILE__) . '/../includes/header.php';
       </p>
     </div>
 
-    <!-- Categories Grid -->
-    <div class="grid-4" style="gap: 24px; margin-bottom: 80px;">
-      <div class="curriculum-list-card" style="padding: 2rem 1.5rem; text-align: center; border-top-color: #059669;">
-        <h5 style="color: var(--color-navy); font-size: 1.25rem; margin: 0; font-family: var(--font-primary); font-weight: 700;">Creative Arts</h5>
+    <!-- 4-COLUMN CATEGORIES GRID -->
+    <div class="curriculum-grid-4" style="margin-bottom: 5rem;">
+      <div class="curriculum-list-card" style="padding: 2.25rem 1.5rem; text-align: center; border-top-color: #059669; display: flex; align-items: center; justify-content: center;">
+        <h5 style="color: var(--color-navy-dark); font-size: 1.25rem; margin: 0; font-family: var(--font-primary); font-weight: 700;">Creative Arts</h5>
       </div>
-      <div class="curriculum-list-card" style="padding: 2rem 1.5rem; text-align: center; border-top-color: var(--color-gold);">
-        <h5 style="color: var(--color-navy); font-size: 1.25rem; margin: 0; font-family: var(--font-primary); font-weight: 700;">Communication</h5>
+      <div class="curriculum-list-card" style="padding: 2.25rem 1.5rem; text-align: center; border-top-color: #D97706; display: flex; align-items: center; justify-content: center;">
+        <h5 style="color: var(--color-navy-dark); font-size: 1.25rem; margin: 0; font-family: var(--font-primary); font-weight: 700;">Communication</h5>
       </div>
-      <div class="curriculum-list-card" style="padding: 2rem 1.5rem; text-align: center; border-top-color: #2563EB;">
-        <h5 style="color: var(--color-navy); font-size: 1.25rem; margin: 0; font-family: var(--font-primary); font-weight: 700;">Thinking Skills</h5>
+      <div class="curriculum-list-card" style="padding: 2.25rem 1.5rem; text-align: center; border-top-color: #2563EB; display: flex; align-items: center; justify-content: center;">
+        <h5 style="color: var(--color-navy-dark); font-size: 1.25rem; margin: 0; font-family: var(--font-primary); font-weight: 700;">Thinking Skills</h5>
       </div>
-      <div class="curriculum-list-card" style="padding: 2rem 1.5rem; text-align: center; border-top-color: #7C3AED;">
-        <h5 style="color: var(--color-navy); font-size: 1.25rem; margin: 0; font-family: var(--font-primary); font-weight: 700;">Technology</h5>
+      <div class="curriculum-list-card" style="padding: 2.25rem 1.5rem; text-align: center; border-top-color: #7C3AED; display: flex; align-items: center; justify-content: center;">
+        <h5 style="color: var(--color-navy-dark); font-size: 1.25rem; margin: 0; font-family: var(--font-primary); font-weight: 700;">Technology</h5>
       </div>
-      <div class="curriculum-list-card" style="padding: 2rem 1.5rem; text-align: center; border-top-color: var(--color-teal);">
-        <h5 style="color: var(--color-navy); font-size: 1.25rem; margin: 0; font-family: var(--font-primary); font-weight: 700;">Wellness</h5>
+      <div class="curriculum-list-card" style="padding: 2.25rem 1.5rem; text-align: center; border-top-color: var(--color-teal); display: flex; align-items: center; justify-content: center;">
+        <h5 style="color: var(--color-navy-dark); font-size: 1.25rem; margin: 0; font-family: var(--font-primary); font-weight: 700;">Wellness</h5>
       </div>
-      <div class="curriculum-list-card" style="padding: 2rem 1.5rem; text-align: center; border-top-color: var(--color-navy);">
-        <h5 style="color: var(--color-navy); font-size: 1.25rem; margin: 0; font-family: var(--font-primary); font-weight: 700;">Global Experiences</h5>
+      <div class="curriculum-list-card" style="padding: 2.25rem 1.5rem; text-align: center; border-top-color: var(--color-navy); display: flex; align-items: center; justify-content: center;">
+        <h5 style="color: var(--color-navy-dark); font-size: 1.25rem; margin: 0; font-family: var(--font-primary); font-weight: 700;">Global Experiences</h5>
       </div>
-      <div class="curriculum-list-card" style="padding: 2rem 1.5rem; text-align: center; border-top-color: var(--color-gold);">
-        <h5 style="color: var(--color-navy); font-size: 1.25rem; margin: 0; font-family: var(--font-primary); font-weight: 700;">Academic Support</h5>
+      <div class="curriculum-list-card" style="padding: 2.25rem 1.5rem; text-align: center; border-top-color: var(--color-gold); display: flex; align-items: center; justify-content: center;">
+        <h5 style="color: var(--color-navy-dark); font-size: 1.25rem; margin: 0; font-family: var(--font-primary); font-weight: 700;">Academic Support</h5>
       </div>
-      <div class="curriculum-list-card" style="padding: 2rem 1.5rem; text-align: center; border-top-color: #059669;">
-        <h5 style="color: var(--color-navy); font-size: 1.25rem; margin: 0; font-family: var(--font-primary); font-weight: 700;">Enrichment</h5>
+      <div class="curriculum-list-card" style="padding: 2.25rem 1.5rem; text-align: center; border-top-color: #059669; display: flex; align-items: center; justify-content: center;">
+        <h5 style="color: var(--color-navy-dark); font-size: 1.25rem; margin: 0; font-family: var(--font-primary); font-weight: 700;">Enrichment</h5>
       </div>
     </div>
 
-    <!-- Illustration: Zuvio Beyond -->
-    <div class="illustration-container" style="background-color: var(--color-white);">
+    <!-- ILLUSTRATION: ZUVIO BEYOND -->
+    <div class="illustration-container" style="background-color: var(--color-white); border: 1.5px solid var(--color-border);">
       <div class="illustration-title">ILLUSTRATION: ZUVIO BEYOND</div>
-      <div class="grid-6" style="gap: 20px;">
-        <div class="visual-strip-block bg-green" style="padding: 1.5rem 0.5rem; font-size: 0.95rem;">Create</div>
-        <div class="visual-strip-block bg-orange" style="padding: 1.5rem 0.5rem; font-size: 0.95rem;">Communicate</div>
-        <div class="visual-strip-block bg-blue" style="padding: 1.5rem 0.5rem; font-size: 0.95rem;">Think</div>
-        <div class="visual-strip-block bg-purple" style="padding: 1.5rem 0.5rem; font-size: 0.95rem;">Tech</div>
-        <div class="visual-strip-block bg-teal" style="padding: 1.5rem 0.5rem; font-size: 0.95rem;">Wellness</div>
-        <div class="visual-strip-block bg-navy" style="padding: 1.5rem 0.5rem; font-size: 0.95rem;">Global</div>
+      <div class="curriculum-grid-6" style="gap: 15px;">
+        <div class="visual-strip-block bg-green" style="padding: 1.5rem 0.5rem; font-size: 1rem;">Create</div>
+        <div class="visual-strip-block bg-orange" style="padding: 1.5rem 0.5rem; font-size: 1rem;">Communicate</div>
+        <div class="visual-strip-block bg-blue" style="padding: 1.5rem 0.5rem; font-size: 1rem;">Think</div>
+        <div class="visual-strip-block bg-purple" style="padding: 1.5rem 0.5rem; font-size: 1rem;">Tech</div>
+        <div class="visual-strip-block bg-teal" style="padding: 1.5rem 0.5rem; font-size: 1rem;">Wellness</div>
+        <div class="visual-strip-block bg-navy" style="padding: 1.5rem 0.5rem; font-size: 1rem;">Global</div>
       </div>
     </div>
-
   </div>
 </section>
 
-<!-- PAGE 9: 10. THE ZUVIO GRADUATE -->
-<section class="curriculum-stage-section">
+<!-- PAGE 9 — THE ZUVIO GRADUATE (White Background) -->
+<section class="curriculum-stage-section bg-white">
   <div class="curriculum-container">
-    
     <div class="curriculum-stage-header text-center">
       <span class="curriculum-stage-title-number">Target Learner Profile</span>
       <h2 class="t-section-title curriculum-stage-title">10. The Zuvio Graduate</h2>
@@ -666,78 +731,75 @@ include_once dirname(__FILE__) . '/../includes/header.php';
       </p>
     </div>
 
-    <!-- Attributes Grid -->
-    <div class="grid-3" style="gap: 28px; margin-bottom: 80px; align-items: stretch;">
-      
+    <!-- 2-COLUMN ATTRIBUTE GRID -->
+    <div class="curriculum-grid-2" style="margin-bottom: 6rem; align-items: stretch;">
       <div class="curriculum-list-card" style="border-top-color: var(--color-gold);">
-        <strong style="color: var(--color-navy); font-size: 1.25rem; display: block; margin-bottom: 0.5rem;">Academically Strong</strong>
-        <p style="font-size: 0.95rem; color: var(--color-muted); line-height: 1.6; margin: 0;">Understands and applies core academic concepts.</p>
+        <h4 style="font-size: 1.2rem; margin-bottom: 0.75rem; border: none; padding: 0;">Academically Strong</h4>
+        <p class="t-card-text" style="color: var(--color-muted); margin: 0;">Understands and applies core academic concepts in math, science, and languages.</p>
       </div>
 
       <div class="curriculum-list-card" style="border-top-color: var(--color-teal);">
-        <strong style="color: var(--color-navy); font-size: 1.25rem; display: block; margin-bottom: 0.5rem;">Curious</strong>
-        <p style="font-size: 0.95rem; color: var(--color-muted); line-height: 1.6; margin: 0;">Questions, explores and seeks deeper understanding.</p>
+        <h4 style="font-size: 1.2rem; margin-bottom: 0.75rem; border: none; padding: 0;">Curious</h4>
+        <p class="t-card-text" style="color: var(--color-muted); margin: 0;">Actively questions, investigates, and seeks deeper logical reasoning behind concepts.</p>
       </div>
 
       <div class="curriculum-list-card" style="border-top-color: #2563EB;">
-        <strong style="color: var(--color-navy); font-size: 1.25rem; display: block; margin-bottom: 0.5rem;">Confident & Articulate</strong>
-        <p style="font-size: 0.95rem; color: var(--color-muted); line-height: 1.6; margin: 0;">Communicates ideas clearly and effectively.</p>
+        <h4 style="font-size: 1.2rem; margin-bottom: 0.75rem; border: none; padding: 0;">Confident & Articulate</h4>
+        <p class="t-card-text" style="color: var(--color-muted); margin: 0;">Communicates ideas confidently and expresses opinions with structure.</p>
       </div>
 
       <div class="curriculum-list-card" style="border-top-color: #7C3AED;">
-        <strong style="color: var(--color-navy); font-size: 1.25rem; display: block; margin-bottom: 0.5rem;">Creative</strong>
-        <p style="font-size: 0.95rem; color: var(--color-muted); line-height: 1.6; margin: 0;">Imagines, designs and builds new possibilities.</p>
+        <h4 style="font-size: 1.2rem; margin-bottom: 0.75rem; border: none; padding: 0;">Creative</h4>
+        <p class="t-card-text" style="color: var(--color-muted); margin: 0;">Designs solutions, thinks outside the box, and constructs original artistic elements.</p>
       </div>
 
       <div class="curriculum-list-card" style="border-top-color: #059669;">
-        <strong style="color: var(--color-navy); font-size: 1.25rem; display: block; margin-bottom: 0.5rem;">Digitally Fluent</strong>
-        <p style="font-size: 0.95rem; color: var(--color-muted); line-height: 1.6; margin: 0;">Navigates a technology-driven world responsibly.</p>
+        <h4 style="font-size: 1.2rem; margin-bottom: 0.75rem; border: none; padding: 0;">Digitally Fluent</h4>
+        <p class="t-card-text" style="color: var(--color-muted); margin: 0;">Uses technology tools effectively, searches safely, and creates projects digitally.</p>
       </div>
 
       <div class="curriculum-list-card" style="border-top-color: var(--color-navy);">
-        <strong style="color: var(--color-navy); font-size: 1.25rem; display: block; margin-bottom: 0.5rem;">Collaborative</strong>
-        <p style="font-size: 0.95rem; color: var(--color-muted); line-height: 1.6; margin: 0;">Works respectfully and productively with others.</p>
+        <h4 style="font-size: 1.2rem; margin-bottom: 0.75rem; border: none; padding: 0;">Collaborative</h4>
+        <p class="t-card-text" style="color: var(--color-muted); margin: 0;">Works respectfully in teams, coordinates tasks, and accepts group feedback.</p>
       </div>
 
       <div class="curriculum-list-card" style="border-top-color: var(--color-gold);">
-        <strong style="color: var(--color-navy); font-size: 1.25rem; display: block; margin-bottom: 0.5rem;">Independent</strong>
-        <p style="font-size: 0.95rem; color: var(--color-muted); line-height: 1.6; margin: 0;">Takes increasing ownership of learning.</p>
+        <h4 style="font-size: 1.2rem; margin-bottom: 0.75rem; border: none; padding: 0;">Independent</h4>
+        <p class="t-card-text" style="color: var(--color-muted); margin: 0;">Takes ownership of study routines, deadlines, and personal improvements.</p>
       </div>
 
       <div class="curriculum-list-card" style="border-top-color: var(--color-teal);">
-        <strong style="color: var(--color-navy); font-size: 1.25rem; display: block; margin-bottom: 0.5rem;">Globally Aware</strong>
-        <p style="font-size: 0.95rem; color: var(--color-muted); line-height: 1.6; margin: 0;">Values cultures, perspectives and global issues.</p>
+        <h4 style="font-size: 1.2rem; margin-bottom: 0.75rem; border: none; padding: 0;">Globally Aware</h4>
+        <p class="t-card-text" style="color: var(--color-muted); margin: 0;">Respects diverse backgrounds, cultures, and understands global citizenship.</p>
       </div>
 
-      <div class="curriculum-list-card" style="border-top-color: #2563EB;">
-        <strong style="color: var(--color-navy); font-size: 1.25rem; display: block; margin-bottom: 0.5rem;">Future-Ready</strong>
-        <p style="font-size: 0.95rem; color: var(--color-muted); line-height: 1.6; margin: 0;">Prepared to learn, adapt and grow in a changing world.</p>
+      <div class="curriculum-list-card" style="border-top-color: #2563EB; grid-column: span 2;">
+        <h4 style="font-size: 1.2rem; margin-bottom: 0.75rem; border: none; padding: 0;">Future-Ready</h4>
+        <p class="t-card-text" style="color: var(--color-muted); margin: 0;">Equipped with adaptability, resilience, and curiosity to keep learning in a fluid environment.</p>
       </div>
-
     </div>
 
-    <!-- Illustration: The Zuvio Graduate -->
-    <div class="illustration-container" style="background-color: var(--color-surface-blue); margin-bottom: 80px;">
+    <!-- ILLUSTRATION: THE ZUVIO GRADUATE -->
+    <div class="illustration-container" style="background-color: var(--color-surface-blue); margin-bottom: 6rem; border: 1.5px solid var(--color-border);">
       <div class="illustration-title">ILLUSTRATION: THE ZUVIO GRADUATE</div>
-      <div class="grid-6" style="gap: 20px;">
-        <div class="visual-strip-block bg-green" style="padding: 1.5rem 0.5rem; font-size: 0.95rem;">Academic</div>
-        <div class="visual-strip-block bg-orange" style="padding: 1.5rem 0.5rem; font-size: 0.95rem;">Curious</div>
-        <div class="visual-strip-block bg-blue" style="padding: 1.5rem 0.5rem; font-size: 0.95rem;">Confident</div>
-        <div class="visual-strip-block bg-purple" style="padding: 1.5rem 0.5rem; font-size: 0.95rem;">Creative</div>
-        <div class="visual-strip-block bg-teal" style="padding: 1.5rem 0.5rem; font-size: 0.95rem;">Digital</div>
-        <div class="visual-strip-block bg-navy" style="padding: 1.5rem 0.5rem; font-size: 0.95rem;">Global</div>
+      <div class="curriculum-grid-6" style="gap: 15px;">
+        <div class="visual-strip-block bg-green" style="padding: 1.5rem 0.5rem; font-size: 1rem;">Academic</div>
+        <div class="visual-strip-block bg-orange" style="padding: 1.5rem 0.5rem; font-size: 1rem;">Curious</div>
+        <div class="visual-strip-block bg-blue" style="padding: 1.5rem 0.5rem; font-size: 1rem;">Confident</div>
+        <div class="visual-strip-block bg-purple" style="padding: 1.5rem 0.5rem; font-size: 1rem;">Creative</div>
+        <div class="visual-strip-block bg-teal" style="padding: 1.5rem 0.5rem; font-size: 1rem;">Digital</div>
+        <div class="visual-strip-block bg-navy" style="padding: 1.5rem 0.5rem; font-size: 1rem;">Global</div>
       </div>
       
-      <div class="text-center" style="margin-top: 3.5rem; border-top: 1px solid var(--color-border); padding-top: 2rem;">
-        <span style="font-size: 1.05rem; font-weight: 700; color: var(--color-navy); letter-spacing: 2px; display: block; margin-bottom: 1.5rem; line-height: 1.6;">
-          CURIOUS • CONFIDENT • CREATIVE • ARTICULATE • INDEPENDENT • COLLABORATIVE • DIGITALLY FLUENT • GLOBALLY AWARE
+      <div class="text-center" style="margin-top: 4rem; border-top: 1px solid var(--color-border); padding-top: 2.5rem;">
+        <span style="font-size: 1.15rem; font-weight: 700; color: var(--color-navy-dark); letter-spacing: 2.5px; display: block; margin-bottom: 2rem; line-height: 1.6; text-transform: uppercase;">
+          Curious • Confident • Creative • Articulate • Independent • Collaborative • Digitally Fluent • Globally Aware
         </span>
-        <h4 style="font-family: var(--font-primary); font-size: 1.85rem; color: var(--color-navy); font-weight: 700; margin: 0; line-height: 1.3;">
+        <h4 style="font-family: var(--font-primary); font-size: 2rem; color: var(--color-navy-dark); font-weight: 700; margin: 0; line-height: 1.3;">
           Strong Foundations. Future Skills. Learning Without Boundaries.
         </h4>
       </div>
     </div>
-
   </div>
 </section>
 
@@ -748,7 +810,7 @@ include_once dirname(__FILE__) . '/../includes/header.php';
     <p class="t-sub-title" style="color: #E2E8F0; margin-bottom: 2.5rem; max-width: 600px; margin-left: auto; margin-right: auto;">
       Get in touch with our admissions coordinators to verify grade availability and structure personalized study paths.
     </p>
-    <button onclick="openCallbackModal()" class="btn btn-primary" style="padding: 1.15rem 3.5rem; font-size: 1.1rem; border-radius: var(--radius-sm);">Request Callback</button>
+    <button onclick="openCallbackModal()" class="btn btn-primary" style="padding: 1.15rem 3.5rem; font-size: 1.1rem; border-radius: 4px;">Request Callback</button>
   </div>
 </section>
 
