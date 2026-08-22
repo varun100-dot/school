@@ -196,20 +196,26 @@ button, input, select, textarea {
   }
 }
 
-/* Responsive Grid extensions */
+/* Responsive Grid extensions & Container Overrides */
+.curriculum-container {
+  width: min(92vw, 1400px);
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
 .grid-5 {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 1.5rem;
+  gap: 24px;
 }
 
 .grid-6 {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
-  gap: 1.25rem;
+  gap: 20px;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1200px) {
   .grid-5 {
     grid-template-columns: repeat(3, 1fr);
   }
@@ -221,7 +227,7 @@ button, input, select, textarea {
 @media (max-width: 768px) {
   .grid-5, .grid-6 {
     grid-template-columns: repeat(2, 1fr);
-    gap: 1rem;
+    gap: 20px;
   }
 }
 
@@ -231,19 +237,50 @@ button, input, select, textarea {
   }
 }
 
+/* Premium Typography Scale */
+.t-hero-title {
+  font-size: clamp(38px, 4vw, 56px);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.t-section-title {
+  font-size: clamp(28px, 3.2vw, 42px);
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.t-sub-title {
+  font-size: clamp(18px, 2vw, 24px);
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.t-body-large {
+  font-size: 18px;
+  line-height: 1.8;
+}
+
+.t-card-text {
+  font-size: 17px;
+  line-height: 1.6;
+}
+
 /* Curriculum Page Redesign Components */
 .curriculum-hero {
   background-size: cover;
   background-position: center;
   color: var(--color-white);
-  padding: 8rem 2rem 6rem 2rem;
+  padding: 100px 0;
   text-align: center;
   position: relative;
+  border-bottom: 2px solid var(--color-gold);
 }
 
 .curriculum-stage-section {
-  padding: 6rem 0;
+  padding: 100px 0;
   border-bottom: 1px solid var(--color-border);
+  position: relative;
 }
 
 .curriculum-stage-section:nth-child(even) {
@@ -255,7 +292,7 @@ button, input, select, textarea {
 }
 
 .curriculum-stage-header {
-  margin-bottom: 3.5rem;
+  margin-bottom: 80px;
 }
 
 .curriculum-stage-title-number {
@@ -263,43 +300,38 @@ button, input, select, textarea {
   font-weight: 600;
   color: var(--color-gold);
   text-transform: uppercase;
-  letter-spacing: 2px;
+  letter-spacing: 3px;
   display: block;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
 }
 
 .curriculum-stage-title {
-  font-size: 2.5rem;
   color: var(--color-navy);
   font-family: var(--font-primary);
   margin-bottom: 1rem;
 }
 
 .curriculum-stage-subtitle {
-  font-size: 1.25rem;
   color: var(--color-muted);
-  font-weight: 400;
 }
 
 .curriculum-desc-text {
-  font-size: 1.1rem;
   line-height: 1.8;
   color: var(--color-text);
-  margin-bottom: 2rem;
+  margin-bottom: 3.5rem;
 }
 
-/* Premium Content Cards & Tables */
+/* Premium Content Cards */
 .curriculum-info-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 3rem;
-  margin-bottom: 4rem;
+  gap: 28px;
+  margin-bottom: 80px;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   .curriculum-info-grid {
     grid-template-columns: 1fr;
-    gap: 2rem;
   }
 }
 
@@ -307,8 +339,14 @@ button, input, select, textarea {
   background-color: var(--color-white);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-sm);
-  padding: 2.5rem;
+  padding: 32px;
   border-top: 4px solid var(--color-gold);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.curriculum-list-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
 }
 
 .curriculum-list-card h4 {
@@ -324,14 +362,14 @@ button, input, select, textarea {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.25rem;
 }
 
 .curriculum-item-list li {
   display: flex;
   align-items: flex-start;
-  gap: 0.75rem;
-  font-size: 0.95rem;
+  gap: 0.85rem;
+  font-size: 17px;
   line-height: 1.6;
 }
 
@@ -343,46 +381,47 @@ button, input, select, textarea {
 .curriculum-bullet-check {
   color: var(--color-gold);
   font-weight: bold;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   line-height: 1;
+  margin-top: 2px;
 }
 
 /* Process & Visual Strip Components */
 .illustration-container {
   background-color: var(--color-surface-blue);
   border-radius: var(--radius-lg);
-  padding: 3rem 2.5rem;
+  padding: 60px 40px;
   border: 1px solid var(--color-border);
-  margin-top: 3.5rem;
+  margin-top: 80px;
   box-shadow: var(--shadow-sm);
 }
 
 .illustration-title {
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   font-weight: 700;
   color: var(--color-navy);
   text-transform: uppercase;
-  letter-spacing: 2px;
+  letter-spacing: 2.5px;
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: 40px;
 }
 
 .visual-strip-row {
   display: flex;
   justify-content: space-between;
   align-items: stretch;
-  gap: 1.25rem;
+  gap: 1.5rem;
 }
 
 .visual-strip-block {
   flex: 1;
   text-align: center;
-  padding: 1.75rem 1rem;
+  padding: 2.5rem 1.5rem;
   border-radius: var(--radius-md);
   color: var(--color-white);
   font-weight: 700;
-  font-size: 0.95rem;
-  letter-spacing: 1px;
+  font-size: 1.15rem;
+  letter-spacing: 1.5px;
   text-transform: uppercase;
   box-shadow: var(--shadow-sm);
   display: flex;
@@ -396,13 +435,18 @@ button, input, select, textarea {
   box-shadow: var(--shadow-md);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   .visual-strip-row {
     flex-direction: column;
-    gap: 1rem;
+    gap: 1.25rem;
   }
   .visual-strip-block {
-    padding: 1.25rem;
+    padding: 1.75rem;
+  }
+  .arrow-indicator {
+    transform: rotate(90deg);
+    text-align: center;
+    margin: 0.5rem 0;
   }
 }
 
@@ -415,26 +459,12 @@ button, input, select, textarea {
 .bg-navy { background-color: var(--color-navy); }
 .bg-deep-navy { background-color: var(--color-navy-dark); }
 
-/* Global Request Callback styles */
-.callback-top-banner {
-  background-color: var(--color-navy-dark);
-  color: var(--color-white);
-  font-family: var(--font-secondary);
-  font-size: 0.85rem;
-  font-weight: 600;
-  text-align: center;
-  padding: 0.6rem 1rem;
-  letter-spacing: 1px;
-  position: relative;
-  z-index: 1001;
-  border-bottom: 2px solid var(--color-gold);
-}
-
-.callback-floating-card {
+/* Global Request Callback Conversion Widget */
+.callback-floating-widget {
   position: fixed;
-  right: 24px;
-  top: 140px;
-  width: 240px;
+  right: 40px;
+  top: 120px;
+  width: 260px;
   background-color: var(--color-navy);
   border-left: 4px solid var(--color-gold);
   border-radius: var(--radius-md);
@@ -443,14 +473,35 @@ button, input, select, textarea {
   z-index: 999;
   font-family: var(--font-secondary);
   transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+  display: flex;
+  flex-direction: column;
 }
 
-.callback-floating-card:hover {
+.callback-floating-widget:hover {
   transform: translateY(-3px);
-  box-shadow: 0 15px 35px rgba(6, 43, 99, 0.15);
+  box-shadow: 0 20px 40px rgba(3, 27, 66, 0.2);
 }
 
-.callback-card-header {
+.callback-pill {
+  background-color: #EF4444;
+  color: var(--color-white);
+  font-size: 0.72rem;
+  font-weight: 700;
+  border-radius: 30px;
+  padding: 0.35rem 0.75rem;
+  margin-bottom: 0.75rem;
+  display: inline-block;
+  text-align: center;
+  align-self: flex-start;
+  letter-spacing: 0.5px;
+}
+
+.callback-widget-body {
+  display: flex;
+  flex-direction: column;
+}
+
+.callback-widget-title {
   font-size: 0.75rem;
   font-weight: 700;
   color: var(--color-gold);
@@ -459,7 +510,7 @@ button, input, select, textarea {
   margin-bottom: 0.5rem;
 }
 
-.callback-card-btn {
+.callback-widget-btn {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -476,12 +527,13 @@ button, input, select, textarea {
   transition: background-color var(--transition-fast), transform var(--transition-fast);
 }
 
-.callback-card-btn:hover {
+.callback-widget-btn:hover {
   background-color: var(--color-gold-hover);
 }
 
-.callback-card-btn svg {
+.callback-widget-btn svg {
   margin-left: 0.5rem;
+  flex-shrink: 0;
 }
 
 /* Modal Styling */
@@ -625,21 +677,49 @@ button, input, select, textarea {
   text-align: center;
 }
 
+/* Mobile Sticky Callback Widget */
 @media (max-width: 768px) {
-  .callback-floating-card {
+  .callback-floating-widget {
+    position: fixed;
+    bottom: 0;
     top: auto;
-    bottom: 20px;
-    right: 20px;
-    width: 200px;
-    padding: 0.85rem;
+    right: 0;
+    left: 0;
+    width: 100%;
+    border-radius: 0;
+    border-left: none;
+    border-top: 3px solid var(--color-gold);
+    padding: 0.75rem 1rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    box-shadow: 0 -4px 15px rgba(6, 43, 99, 0.15);
   }
-  .callback-card-header {
-    font-size: 0.65rem;
-    margin-bottom: 0.35rem;
+  .callback-pill {
+    font-size: 0.7rem;
+    padding: 0.25rem 0.5rem;
+    margin: 0;
+    white-space: nowrap;
+    align-self: center;
   }
-  .callback-card-btn {
+  .callback-widget-body {
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    flex: 1;
+  }
+  .callback-widget-title {
+    display: none;
+  }
+  .callback-widget-btn {
     padding: 0.5rem 0.75rem;
     font-size: 0.8rem;
+    width: auto;
+  }
+  .callback-widget-btn svg {
+    margin-left: 0.35rem;
   }
 }
 
@@ -652,3 +732,4 @@ button, input, select, textarea {
     gap: 1.25rem;
   }
 }
+
