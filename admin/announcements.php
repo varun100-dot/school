@@ -6,8 +6,22 @@ require_once dirname(__FILE__) . '/../includes/auth.php';
 
 safe_session_start();
 
-// Handle mock sessions fallback if local DB is offline
-if (!$db) {
+$use_mock = !$db;
+$migration_needed = false;
+
+// If DB is online, check if announcements table exists
+if ($db) {
+    try {
+        $stmt = $db->query("SELECT 1 FROM `announcements` LIMIT 1");
+    } catch (Exception $e) {
+        // Table doesn't exist (e.g. SQLSTATE[42S02] / error 1146) or other DB issue
+        $use_mock = true;
+        $migration_needed = true;
+    }
+}
+
+// Handle mock sessions fallback if local DB is offline or table is not migrated yet
+if ($use_mock) {
     if (!isset($_SESSION['mock_announcements'])) {
         $_SESSION['mock_announcements'] = [
             [
@@ -45,8 +59,8 @@ $error = '';
 
 // Helper to find announcement
 function find_announcement($ann_id) {
-    global $db;
-    if ($db) {
+    global $db, $use_mock;
+    if (!$use_mock && $db) {
         try {
             $stmt = $db->prepare("SELECT * FROM `announcements` WHERE `id` = ? LIMIT 1");
             $stmt->execute([$ann_id]);
@@ -64,7 +78,7 @@ function find_announcement($ann_id) {
 
 // 1. Action Handler: Delete Announcement
 if ($action === 'delete' && $id > 0) {
-    if ($db) {
+    if (!$use_mock && $db) {
         try {
             $stmt = $db->prepare("SELECT * FROM `announcements` WHERE `id` = ? LIMIT 1");
             $stmt->execute([$id]);
@@ -105,7 +119,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($action === 'add' || $action === '
         if (empty($text)) {
             $error = 'Announcement text is required.';
         } else {
-            if ($db) {
+            if (!$use_mock && $db) {
                 try {
                     if ($action === 'add') {
                         $stmt = $db->prepare("
@@ -164,7 +178,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($action === 'add' || $action === '
 
 // Fetch list of announcements
 $list = [];
-if ($db) {
+if (!$use_mock && $db) {
     try {
         $list = $db->query("SELECT * FROM `announcements` ORDER BY `sort_order` ASC, `id` DESC")->fetchAll();
     } catch (Exception $e) {
@@ -195,7 +209,12 @@ include dirname(__FILE__) . '/header.php';
     <?php endif; ?>
   </div>
 
-  <?php if (!$db): ?>
+  <?php if ($migration_needed): ?>
+    <div style="background-color: #FEF3C7; border-left: 4px solid #D97706; padding: 0.75rem 1rem; border-radius: var(--radius-sm); color: #92400E; font-size: 0.85rem; margin-bottom: 1.5rem; font-weight: 500; line-height: 1.5;">
+      ⚠️ Table Missing: The database table <code>announcements</code> does not exist yet. Running in simulated preview mode.<br>
+      To enable live database storage, please execute the migration file on your SQL server: <code>database/migrations/phase4_announcements.sql</code>.
+    </div>
+  <?php elseif (!$db): ?>
     <div style="background-color: #FEF3C7; border-left: 4px solid #D97706; padding: 0.75rem 1rem; border-radius: var(--radius-sm); color: #92400E; font-size: 0.85rem; margin-bottom: 1.5rem; font-weight: 500;">
       ⚠️ Local Database Offline: Revisions will be stored inside session variables for this local server preview.
     </div>
