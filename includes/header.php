@@ -83,7 +83,7 @@ $phone_number = get_setting('phone', '7827262956');
       align-items: center;
     }
     .header-logo-img {
-      height: 56px;
+      height: 70px;
       width: auto;
       object-fit: contain;
       display: block;
@@ -184,7 +184,7 @@ $phone_number = get_setting('phone', '7827262956');
         top: 0;
       }
       .header-logo-img {
-        height: 44px;
+        height: 52px;
       }
       .desktop-nav {
         display: none;
@@ -214,7 +214,8 @@ $phone_number = get_setting('phone', '7827262956');
             <?php echo h($item['label']); ?>
           </a>
         <?php endforeach; ?>
-        <a href="/contact" class="btn btn-primary" style="padding: 0.6rem 1.25rem; font-size: 0.85rem;">Enquire Now</a>
+        <a href="/contact" class="btn btn-outline" style="padding: 0.6rem 1.25rem; font-size: 0.85rem; border-color: var(--color-navy); color: var(--color-navy); margin-right: 0.5rem;">Enquire Now</a>
+        <a href="javascript:void(0)" onclick="openCallbackModal()" class="btn btn-primary btn-demo" style="padding: 0.6rem 1.25rem; font-size: 0.85rem; background-color: var(--color-teal); border-color: var(--color-teal); color: #fff;">Book a Demo</a>
       </nav>
       
       <!-- Mobile hamburger trigger -->
@@ -238,7 +239,8 @@ $phone_number = get_setting('phone', '7827262956');
         <?php echo h($item['label']); ?>
       </a>
     <?php endforeach; ?>
-    <a href="/contact" class="btn btn-primary" style="margin-top: 1rem; width: 100%;">Enquire Now</a>
+    <a href="/contact" class="btn btn-outline" style="margin-top: 1rem; width: 100%; border-color: var(--color-navy); color: var(--color-navy); text-align: center;">Enquire Now</a>
+    <a href="javascript:void(0)" onclick="openCallbackModal(); toggleMobileMenu(false);" class="btn btn-primary" style="margin-top: 0.5rem; width: 100%; background-color: var(--color-teal); border-color: var(--color-teal); color: #fff; text-align: center;">Book a Demo</a>
   </div>
 
   <script>

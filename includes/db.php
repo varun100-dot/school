@@ -90,7 +90,8 @@ try {
     error_log("[DB] host=" . (defined('DB_HOST') ? DB_HOST : 'undefined') . " user_configured=" . (defined('DB_USER') ? 'YES' : 'NO') . " database_configured=" . (defined('DB_NAME') ? 'YES' : 'NO') . " error_code=" . $e->getCode() . " error_message=" . $sanitized_message);
     
     $request_uri = $_SERVER['REQUEST_URI'] ?? '';
-    if (php_sapi_name() !== 'cli' && strpos($request_uri, 'debug_db') === false && strpos($request_uri, 'verify_db') === false) {
+    // Only exit and display 500 page on production env (or if forced debug parameters are absent)
+    if ($is_production_env && php_sapi_name() !== 'cli' && strpos($request_uri, 'debug_db') === false && strpos($request_uri, 'verify_db') === false) {
         header('HTTP/1.1 500 Internal Server Error');
         if (file_exists(dirname(__FILE__) . '/../pages/500.php')) {
             include dirname(__FILE__) . '/../pages/500.php';

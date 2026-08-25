@@ -63,4 +63,59 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
     }
+
+    // 2. Statistics Counter Animation
+    const counterElements = document.querySelectorAll('[data-target]');
+    
+    if (counterElements.length > 0) {
+        const animateCount = (el) => {
+            const target = parseInt(el.getAttribute('data-target'));
+            const suffix = el.getAttribute('data-suffix') || '';
+            const id = el.id;
+            
+            let start = 0;
+            if (id === 'stat_students') {
+                start = 20;
+            } else if (id === 'stat_educators') {
+                start = 5;
+            }
+            
+            const duration = 2000; // 2 seconds
+            const startTime = performance.now();
+            
+            const updateCount = (currentTime) => {
+                const elapsedTime = currentTime - startTime;
+                const progress = Math.min(elapsedTime / duration, 1);
+                
+                // Ease out quad animation
+                const easeProgress = progress * (2 - progress);
+                const currentVal = Math.floor(start + (target - start) * easeProgress);
+                
+                el.innerText = currentVal + suffix;
+                
+                if (progress < 1) {
+                    requestAnimationFrame(updateCount);
+                } else {
+                    el.innerText = target + suffix;
+                }
+            };
+            
+            requestAnimationFrame(updateCount);
+        };
+
+        const observerOptions = {
+            threshold: 0.5
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animateCount(entry.target);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        counterElements.forEach(el => observer.observe(el));
+    }
 });

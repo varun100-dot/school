@@ -198,8 +198,8 @@ button, input, select, textarea {
 
 /* Alternating Section Backgrounds */
 .bg-white { background-color: #FFFFFF !important; }
-.bg-soft-blue { background-color: #F4F7FA !important; }
-.bg-warm-white { background-color: #FCFAF6 !important; }
+.bg-soft-blue { background-color: var(--pastel-blue) !important; }
+.bg-warm-white { background-color: var(--pastel-orange) !important; }
 
 /* Global Container */
 .curriculum-container {
@@ -317,20 +317,27 @@ button, input, select, textarea {
 
 /* Flat rectangular cells matching Spec #3 & #17 */
 .curriculum-grid-cell {
-  border: 1px solid #D8E0E6;
-  background: #F4F8FA;
-  border-radius: 0;
-  box-shadow: none;
-  padding: 18px 20px;
+  border: 1.5px solid var(--color-border);
+  background: var(--color-white);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  padding: 22px 24px;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+.curriculum-grid-cell:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
 }
 
 /* Coloured process strips (Spec #16 & #17) */
 .curriculum-process-box {
-  border: 1px solid #D8E0E6;
-  background: #FFFFFF;
+  border: 1.5px solid var(--color-border);
+  background: var(--color-white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
   padding: 30px;
   margin-top: 24px;
 }
@@ -351,19 +358,19 @@ button, input, select, textarea {
 }
 
 .curriculum-process-block {
-  height: 80px; /* 72px-86px desktop */
+  height: 85px;
   display: flex;
   align-items: center;
   justify-content: center;
   color: #FFFFFF;
   font-weight: 700;
-  font-size: 16px; /* 15-17px desktop */
+  font-size: 17px;
   letter-spacing: 1px;
   text-transform: uppercase;
   text-align: center;
   padding: 0 10px;
-  border-radius: 0;
-  box-shadow: none;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
 }
 
 /* Sequential accent colors from PDF */
@@ -376,10 +383,12 @@ button, input, select, textarea {
 
 /* Custom layout blocks */
 .curriculum-editorial-block {
-  border: 1px solid #D8E0E6;
-  background: #F4F8FA;
+  border: 1.5px solid var(--color-border);
+  background: var(--pastel-yellow);
   padding: 24px 30px;
   margin-bottom: 28px;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
 }
 
 .curriculum-editorial-block h4 {

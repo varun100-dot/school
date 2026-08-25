@@ -16,7 +16,7 @@ include_once dirname(__FILE__) . '/../includes/header.php';
     <div class="curriculum-container">
       <div class="curriculum-section-header" style="text-align: center;">
         <h1 class="curriculum-hero-title">CURRICULUM INSIGHTS</h1>
-        <p class="curriculum-section-subtitle">A Future-Ready Learning Journey | Nursery to Grade 8</p>
+        <p class="curriculum-section-subtitle">A Future-Ready Learning Journey | K to Grade 8</p>
       </div>
 
       <div class="curriculum-body">
@@ -32,21 +32,21 @@ include_once dirname(__FILE__) . '/../includes/header.php';
       <div class="curriculum-process-box">
         <div class="curriculum-process-title">THE ZUVIO LEARNING JOURNEY</div>
         <div class="curriculum-process-strip curriculum-grid-4">
-          <div class="curriculum-process-block bg-green" style="flex-direction: column; gap: 4px;">
-            <span style="font-size: 11px; font-weight: normal; opacity: 0.95;">Nursery-KG</span>
-            <span>Explore</span>
+          <div class="curriculum-process-block bg-green" style="flex-direction: column; gap: 6px; padding: 12px 10px;">
+            <span style="font-size: 14px; font-weight: 700; opacity: 0.95; letter-spacing: 0.5px;">K-KG</span>
+            <span style="font-size: 18px; font-weight: 800; text-transform: uppercase;">Explore</span>
           </div>
-          <div class="curriculum-process-block bg-orange" style="flex-direction: column; gap: 4px;">
-            <span style="font-size: 11px; font-weight: normal; opacity: 0.95;">Grades 1-2</span>
-            <span>Build</span>
+          <div class="curriculum-process-block bg-orange" style="flex-direction: column; gap: 6px; padding: 12px 10px;">
+            <span style="font-size: 14px; font-weight: 700; opacity: 0.95; letter-spacing: 0.5px;">Grades 1-2</span>
+            <span style="font-size: 18px; font-weight: 800; text-transform: uppercase;">Build</span>
           </div>
-          <div class="curriculum-process-block bg-blue" style="flex-direction: column; gap: 4px;">
-            <span style="font-size: 11px; font-weight: normal; opacity: 0.95;">Grades 3-5</span>
-            <span>Understand</span>
+          <div class="curriculum-process-block bg-blue" style="flex-direction: column; gap: 6px; padding: 12px 10px;">
+            <span style="font-size: 14px; font-weight: 700; opacity: 0.95; letter-spacing: 0.5px;">Grades 3-5</span>
+            <span style="font-size: 18px; font-weight: 800; text-transform: uppercase;">Understand</span>
           </div>
-          <div class="curriculum-process-block bg-purple" style="flex-direction: column; gap: 4px;">
-            <span style="font-size: 11px; font-weight: normal; opacity: 0.95;">Grades 6-8</span>
-            <span>Innovate</span>
+          <div class="curriculum-process-block bg-purple" style="flex-direction: column; gap: 6px; padding: 12px 10px;">
+            <span style="font-size: 14px; font-weight: 700; opacity: 0.95; letter-spacing: 0.5px;">Grades 6-8</span>
+            <span style="font-size: 18px; font-weight: 800; text-transform: uppercase;">Innovate</span>
           </div>
         </div>
       </div>
@@ -59,12 +59,12 @@ include_once dirname(__FILE__) . '/../includes/header.php';
     </div>
   </section>
 
-  <!-- PAGE 2 — 1. EARLY YEARS (Soft Blue Background) -->
+  <!-- PAGE 2 — EARLY YEARS (Soft Blue Background) -->
   <section class="curriculum-section bg-soft-blue">
     <div class="curriculum-container">
       <div class="curriculum-section-header">
-        <h2 class="curriculum-section-title">1. Early Years</h2>
-        <p class="curriculum-section-subtitle">Nursery - Kindergarten | Explore • Play • Discover</p>
+        <h2 class="curriculum-section-title">Early Years</h2>
+        <p class="curriculum-section-subtitle">Kindergarten | Explore • Play • Discover</p>
       </div>
 
       <div class="curriculum-body">
@@ -87,19 +87,29 @@ include_once dirname(__FILE__) . '/../includes/header.php';
         </div>
       </div>
 
-      <!-- Learning Experiences & Key Outcomes -->
+      <!-- Learning Experiences & Key Outcomes Redesigned -->
       <div class="curriculum-grid curriculum-grid-2">
-        <div class="curriculum-grid-cell" style="background: #FFFFFF;">
-          <h4 class="curriculum-grid-title" style="border-bottom: 1px solid #D8E0E6; padding-bottom: 10px; margin-bottom: 12px; text-transform: uppercase;">Learning Experiences</h4>
-          <p class="curriculum-list-inline">
-            Storytelling • Rhymes • Show & Tell • Games • Hands-on Activities • Art & Craft • Music & Movement • Interactive Digital Activities
-          </p>
+        <div class="curriculum-grid-cell" style="background: var(--pastel-blue); border-color: rgba(10, 137, 152, 0.2); border-top: 4px solid var(--color-teal); border-left: none; border-right: none; border-bottom: none;">
+          <h4 class="curriculum-grid-title" style="border-bottom: 1.5px solid rgba(10, 137, 152, 0.15); padding-bottom: 10px; margin-bottom: 12px; text-transform: uppercase; display: flex; align-items: center; gap: 8px;">
+            <span>🌟</span> Learning Experiences
+          </h4>
+          <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px;">
+            <?php foreach (explode(' • ', 'Storytelling • Rhymes • Show & Tell • Games • Hands-on Activities • Art & Craft • Music & Movement • Interactive Digital Activities') as $exp): ?>
+              <span style="background: var(--color-white); color: var(--color-teal); padding: 4px 12px; border-radius: 20px; font-size: 13px; font-weight: 600; border: 1px solid rgba(10, 137, 152, 0.15);"><?php echo h($exp); ?></span>
+            <?php endforeach; ?>
+          </div>
+          <div style="font-size: 11px; font-style: italic; color: var(--color-muted); margin-top: auto; border-top: 1px dashed rgba(10, 137, 152, 0.15); padding-top: 8px;">[Placeholder: Client approved graphics pending]</div>
         </div>
-        <div class="curriculum-grid-cell" style="background: #FFFFFF;">
-          <h4 class="curriculum-grid-title" style="border-bottom: 1px solid #D8E0E6; padding-bottom: 10px; margin-bottom: 12px; text-transform: uppercase;">Key Outcomes</h4>
-          <p class="curriculum-list-inline">
-            Confidence • Curiosity • Communication • Foundational Literacy • Foundational Numeracy • Creativity • Independent Learning Habits
-          </p>
+        <div class="curriculum-grid-cell" style="background: var(--pastel-yellow); border-color: rgba(217, 164, 65, 0.2); border-top: 4px solid var(--color-gold); border-left: none; border-right: none; border-bottom: none;">
+          <h4 class="curriculum-grid-title" style="border-bottom: 1.5px solid rgba(217, 164, 65, 0.15); padding-bottom: 10px; margin-bottom: 12px; text-transform: uppercase; display: flex; align-items: center; gap: 8px;">
+            <span>🎯</span> Key Outcomes
+          </h4>
+          <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px;">
+            <?php foreach (explode(' • ', 'Confidence • Curiosity • Communication • Foundational Literacy • Foundational Numeracy • Creativity • Independent Learning Habits') as $out): ?>
+              <span style="background: var(--color-white); color: #B98721; padding: 4px 12px; border-radius: 20px; font-size: 13px; font-weight: 600; border: 1px solid rgba(217, 164, 65, 0.15);"><?php echo h($out); ?></span>
+            <?php endforeach; ?>
+          </div>
+          <div style="font-size: 11px; font-style: italic; color: var(--color-muted); margin-top: auto; border-top: 1px dashed rgba(217, 164, 65, 0.15); padding-top: 8px;">[Placeholder: Client approved graphics pending]</div>
         </div>
       </div>
 
@@ -117,11 +127,11 @@ include_once dirname(__FILE__) . '/../includes/header.php';
     </div>
   </section>
 
-  <!-- PAGE 3 — 2. FOUNDATION STAGE (White Background) -->
+  <!-- PAGE 3 — FOUNDATION STAGE (White Background) -->
   <section class="curriculum-section bg-white">
     <div class="curriculum-container">
       <div class="curriculum-section-header">
-        <h2 class="curriculum-section-title">2. Foundation Stage</h2>
+        <h2 class="curriculum-section-title">Foundation Stage</h2>
         <p class="curriculum-section-subtitle">Grades 1-2 | Build • Question • Create</p>
       </div>
 
@@ -187,7 +197,7 @@ include_once dirname(__FILE__) . '/../includes/header.php';
   <section class="curriculum-section bg-warm-white">
     <div class="curriculum-container">
       <div class="curriculum-section-header">
-        <h2 class="curriculum-section-title">3. Preparatory Stage</h2>
+        <h2 class="curriculum-section-title">Preparatory Stage</h2>
         <p class="curriculum-section-subtitle">Grades 3-5 | Understand • Apply • Collaborate</p>
       </div>
 
@@ -264,11 +274,11 @@ include_once dirname(__FILE__) . '/../includes/header.php';
     </div>
   </section>
 
-  <!-- PAGE 5 — 4. MIDDLE SCHOOL (White Background) -->
+  <!-- PAGE 5 — MIDDLE SCHOOL (White Background) -->
   <section class="curriculum-section bg-white">
     <div class="curriculum-container">
       <div class="curriculum-section-header">
-        <h2 class="curriculum-section-title">4. Middle School</h2>
+        <h2 class="curriculum-section-title">Middle School</h2>
         <p class="curriculum-section-subtitle">Grades 6-8 | Think • Apply • Innovate</p>
       </div>
 
@@ -334,11 +344,15 @@ include_once dirname(__FILE__) . '/../includes/header.php';
     </div>
   </section>
 
-  <!-- PAGE 6 — 5. THE ZUVIO LEARNING FRAMEWORK (Soft Blue Background) -->
+  <!-- Separating Visual Banner to Break Monotony -->
+  <section class="curriculum-visual-banner" style="background-image: linear-gradient(rgba(235, 245, 251, 0.4), rgba(235, 245, 251, 0.45)), url('/assets/images/curriculum_hero.jpg'); background-size: cover; background-position: center; height: 350px; border-top: 1.5px solid var(--color-border); border-bottom: 1.5px solid var(--color-border);">
+  </section>
+
+  <!-- PAGE 6 — THE ZUVIO LEARNING FRAMEWORK (Soft Blue Background) -->
   <section class="curriculum-section bg-soft-blue">
     <div class="curriculum-container">
       <div class="curriculum-section-header">
-        <h2 class="curriculum-section-title">5. The Zuvio Learning Framework</h2>
+        <h2 class="curriculum-section-title">The Zuvio Learning Framework</h2>
         <p class="curriculum-section-subtitle">From Knowing to Doing</p>
       </div>
 
@@ -392,13 +406,13 @@ include_once dirname(__FILE__) . '/../includes/header.php';
     </div>
   </section>
 
-  <!-- PAGE 7 — 6. LEARNING BEYOND THE TEXTBOOK & 7. ASSESSMENT (White Background) -->
+  <!-- PAGE 7 — LEARNING BEYOND THE TEXTBOOK & ASSESSMENT (White Background) -->
   <section class="curriculum-section bg-white">
     <div class="curriculum-container">
       
-      <!-- 6. Learning Beyond the Textbook -->
+      <!-- Learning Beyond the Textbook -->
       <div class="curriculum-section-header">
-        <h2 class="curriculum-section-title">6. Learning Beyond the Textbook</h2>
+        <h2 class="curriculum-section-title">Learning Beyond the Textbook</h2>
         <p class="curriculum-section-subtitle">Because the World Is the Real Classroom</p>
       </div>
 
@@ -430,9 +444,9 @@ include_once dirname(__FILE__) . '/../includes/header.php';
         </div>
       </div>
 
-      <!-- 7. Assessment at Zuvio -->
+      <!-- Assessment at Zuvio -->
       <div class="curriculum-section-header">
-        <h2 class="curriculum-section-title">7. Assessment at Zuvio</h2>
+        <h2 class="curriculum-section-title">Assessment at Zuvio</h2>
         <p class="curriculum-section-subtitle">Measure Growth, Not Just Marks</p>
       </div>
 
@@ -460,13 +474,13 @@ include_once dirname(__FILE__) . '/../includes/header.php';
     </div>
   </section>
 
-  <!-- PAGE 8 — 8. PERSONALISED LEARNING & 9. ZUVIO BEYOND (Warm Off-White Background) -->
+  <!-- PAGE 8 — PERSONALISED LEARNING & ZUVIO BEYOND (Warm Off-White Background) -->
   <section class="curriculum-section bg-warm-white">
     <div class="curriculum-container">
       
-      <!-- 8. Personalised Learning -->
+      <!-- Personalised Learning -->
       <div class="curriculum-section-header">
-        <h2 class="curriculum-section-title">8. Personalised Learning</h2>
+        <h2 class="curriculum-section-title">Personalised Learning</h2>
         <p class="curriculum-section-subtitle">Every Learner Has a Different Learning Journey</p>
       </div>
 
@@ -488,9 +502,9 @@ include_once dirname(__FILE__) . '/../includes/header.php';
         </div>
       </div>
 
-      <!-- 9. Zuvio Beyond -->
+      <!-- Zuvio Beyond -->
       <div class="curriculum-section-header">
-        <h2 class="curriculum-section-title">9. Zuvio Beyond</h2>
+        <h2 class="curriculum-section-title">Zuvio Beyond</h2>
         <p class="curriculum-section-subtitle">Learning That Goes Beyond Academics</p>
       </div>
 
@@ -527,11 +541,11 @@ include_once dirname(__FILE__) . '/../includes/header.php';
     </div>
   </section>
 
-  <!-- PAGE 9 — 10. THE ZUVIO GRADUATE (White Background) -->
+  <!-- PAGE 9 — THE ZUVIO GRADUATE (White Background) -->
   <section class="curriculum-section bg-white" style="border-bottom: none;">
     <div class="curriculum-container">
       <div class="curriculum-section-header">
-        <h2 class="curriculum-section-title">10. The Zuvio Graduate</h2>
+        <h2 class="curriculum-section-title">The Zuvio Graduate</h2>
         <p class="curriculum-section-subtitle">Who Are We Preparing Our Learners to Become?</p>
       </div>
 

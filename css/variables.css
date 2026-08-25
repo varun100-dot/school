@@ -12,6 +12,14 @@
   --zuvio-deep-navy: #031B42;
   --zuvio-teal: #0A8998;
   --zuvio-gold: #D9A441;
+  
+  /* Pastel Accent Colors */
+  --pastel-blue: #EBF5FB;
+  --pastel-yellow: #FEF9E7;
+  --pastel-orange: #FDF2E9;
+  --pastel-green: #E8F8F5;
+  --pastel-purple: #F5EEF8;
+  --pastel-red: #FDEDEC;
 
   /* Theme Mapping */
   --color-navy: var(--zuvio-navy);

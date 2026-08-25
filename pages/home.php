@@ -63,57 +63,61 @@ if ($db) {
     }
 }
 
-// Map the 4 video assets in assets/images/ to the slides
-$slide_videos = [
-    '/assets/images/01_Collaborative_Project_Learning.mp4',
-    '/assets/images/02_Online_Robotics_Learning.mp4',
-    '/assets/images/03_Science_Experiment_Learning.mp4',
-    '/assets/images/04_Student_Presentation_Learning.mp4'
-];
-
 if (empty($slides)) {
     $slides = [
         [
             'title' => 'A Future-Ready Online School',
-            'subtitle' => 'WELCOME TO ZUVIO GLOBAL SCHOOL',
+            'subtitle' => 'ZUVIO GLOBAL SCHOOL',
             'description' => 'Academic excellence meets personalised online learning. We prepare children for a changing world.',
             'primary_cta_text' => 'Our Curriculum',
             'primary_cta_url' => '/our-curriculum',
             'secondary_cta_text' => 'Zuvio Beyond',
             'secondary_cta_url' => '/zuvio-beyond',
-            'image' => '/assets/images/Hero image 1.png'
+            'image' => '/assets/images/homepage_hero_1.jpg',
+            'video' => '/assets/images/01_Collaborative_Project_Learning.mp4',
+            'media_type' => 'video'
         ],
         [
             'title' => 'Personalised Learning Paths',
-            'subtitle' => 'INDIVIDUAL ATTENTION',
+            'subtitle' => 'ZUVIO GLOBAL SCHOOL',
             'description' => 'Every child learns differently. Our interactive virtual classrooms adapt to your child\'s pace.',
             'primary_cta_text' => 'Our Curriculum',
             'primary_cta_url' => '/our-curriculum',
             'secondary_cta_text' => 'Zuvio Beyond',
             'secondary_cta_url' => '/zuvio-beyond',
-            'image' => '/assets/images/Hero image 2.png'
+            'image' => '/assets/images/Hero image 2.png',
+            'video' => '/assets/images/02_Online_Robotics_Learning.mp4',
+            'media_type' => 'video'
         ],
         [
             'title' => 'Interactive Science & Lab Work',
-            'subtitle' => 'LEARNING BY DOING',
+            'subtitle' => 'ZUVIO GLOBAL SCHOOL',
             'description' => 'Virtual experiments, hands-on activities, and coding built into the core curriculum.',
             'primary_cta_text' => 'Our Curriculum',
             'primary_cta_url' => '/our-curriculum',
             'secondary_cta_text' => 'Zuvio Beyond',
             'secondary_cta_url' => '/zuvio-beyond',
-            'image' => '/assets/images/Students learning in classroom.png'
+            'image' => '/assets/images/Students learning in classroom.png',
+            'video' => '/assets/images/03_Science_Experiment_Learning.mp4',
+            'media_type' => 'video'
         ],
         [
             'title' => 'Building Leaders of Tomorrow',
-            'subtitle' => 'BEYOND ACADEMICS',
+            'subtitle' => 'ZUVIO GLOBAL SCHOOL',
             'description' => 'Public speaking, collaboration, global citizenship, and creative expression.',
             'primary_cta_text' => 'Our Curriculum',
             'primary_cta_url' => '/our-curriculum',
             'secondary_cta_text' => 'Zuvio Beyond',
             'secondary_cta_url' => '/zuvio-beyond',
-            'image' => '/assets/images/Teacher interacting with students.png'
+            'image' => '/assets/images/Teacher interacting with students.png',
+            'video' => '/assets/images/04_Student_Presentation_Learning.mp4',
+            'media_type' => 'video'
         ]
     ];
+} else {
+    foreach ($slides as &$slide) {
+        $slide['subtitle'] = 'ZUVIO GLOBAL SCHOOL';
+    }
 }
 
 // Fetch USP Features
@@ -124,6 +128,75 @@ if ($db) {
         $features = $stmt->fetchAll();
     } catch (Exception $e) {
         error_log("[Home Features Error] " . $e->getMessage());
+    }
+}
+
+if (empty($features)) {
+    $features = [
+        [
+            'title' => 'Global Presence',
+            'description' => 'A globally connected learning community with an international outlook.',
+            'bg_color' => 'var(--pastel-blue)',
+            'border_color' => 'rgba(10, 137, 152, 0.2)'
+        ],
+        [
+            'title' => 'International Credibility',
+            'description' => 'Global standards, perspectives, and learning practices designed for a changing world.',
+            'bg_color' => 'var(--pastel-yellow)',
+            'border_color' => 'rgba(217, 164, 65, 0.2)'
+        ],
+        [
+            'title' => 'World-Class Teachers',
+            'description' => 'Experienced educators who bring expertise, diverse perspectives, and engaging teaching practices.',
+            'bg_color' => 'var(--pastel-orange)',
+            'border_color' => 'rgba(217, 164, 65, 0.2)'
+        ],
+        [
+            'title' => 'US-Based Learning Platform',
+            'description' => 'A powerful, thoughtfully designed US-based LMS that brings learning, collaboration, resources, and progress tracking together.',
+            'bg_color' => 'var(--pastel-green)',
+            'border_color' => 'rgba(10, 137, 152, 0.2)'
+        ],
+        [
+            'title' => 'CBSE, NEP & NCF Aligned',
+            'description' => 'A well-designed curriculum aligned with CBSE, NEP 2020, and NCF, combining academic rigour with future-ready skills.',
+            'bg_color' => 'var(--pastel-purple)',
+            'border_color' => 'rgba(6, 43, 99, 0.1)'
+        ],
+        [
+            'title' => 'Personalised Learning',
+            'description' => 'Learning experiences that recognise every child\'s unique pace, strengths, interests, and potential.',
+            'bg_color' => 'var(--pastel-red)',
+            'border_color' => 'rgba(217, 70, 239, 0.2)'
+        ],
+        [
+            'title' => 'Inclusive Learning',
+            'description' => 'A supportive environment with a special focus on special learners. [Placeholder: Client approved line pending]',
+            'bg_color' => 'var(--pastel-blue)',
+            'border_color' => 'rgba(10, 137, 152, 0.2)'
+        ],
+        [
+            'title' => 'World-Class Experiences',
+            'description' => 'Beyond academics—with technology, creativity, collaboration, projects, and real-world experiences.',
+            'bg_color' => 'var(--pastel-yellow)',
+            'border_color' => 'rgba(217, 164, 65, 0.2)'
+        ]
+    ];
+} else {
+    $colors = [
+        'var(--pastel-blue)', 'var(--pastel-yellow)', 'var(--pastel-orange)', 'var(--pastel-green)',
+        'var(--pastel-purple)', 'var(--pastel-red)', 'var(--pastel-blue)', 'var(--pastel-yellow)'
+    ];
+    $borders = [
+        'rgba(10, 137, 152, 0.2)', 'rgba(217, 164, 65, 0.2)', 'rgba(217, 164, 65, 0.2)', 'rgba(10, 137, 152, 0.2)',
+        'rgba(6, 43, 99, 0.1)', 'rgba(217, 70, 239, 0.2)', 'rgba(10, 137, 152, 0.2)', 'rgba(217, 164, 65, 0.2)'
+    ];
+    foreach ($features as $idx => &$feat) {
+        $feat['bg_color'] = $colors[$idx % count($colors)];
+        $feat['border_color'] = $borders[$idx % count($borders)];
+        if ($feat['title'] === 'Inclusive Learning') {
+            $feat['description'] = 'A supportive environment with a special focus on special learners. [Placeholder: Client approved line pending]';
+        }
     }
 }
 
@@ -138,6 +211,38 @@ if ($db) {
     }
 }
 
+if (empty($stats)) {
+    $stats = [
+        ['label' => 'Established', 'value' => '2026', 'id_key' => 'stat_established'],
+        ['label' => 'Student-Teacher Ratio', 'value' => '15:1', 'id_key' => 'stat_ratio'],
+        ['label' => 'Students Enrolled', 'value' => '120+', 'id_key' => 'stat_students'],
+        ['label' => 'World-Class Educators', 'value' => '25+', 'id_key' => 'stat_educators'],
+        ['label' => 'Experienced Special Educators', 'value' => '1', 'id_key' => 'stat_special']
+    ];
+} else {
+    // Ensure stats are updated and formatted
+    $has_special = false;
+    foreach ($stats as &$st) {
+        if ($st['label'] === 'Students Enrolled') {
+            $st['value'] = '120+';
+            $st['id_key'] = 'stat_students';
+        } elseif ($st['label'] === 'World-Class Educators') {
+            $st['value'] = '25+';
+            $st['id_key'] = 'stat_educators';
+        } elseif ($st['label'] === 'Established') {
+            $st['id_key'] = 'stat_established';
+        } elseif ($st['label'] === 'Student-Teacher Ratio') {
+            $st['id_key'] = 'stat_ratio';
+        }
+        if (strpos($st['label'], 'Special Educators') !== false) {
+            $has_special = true;
+        }
+    }
+    if (!$has_special) {
+        $stats[] = ['label' => 'Experienced Special Educators', 'value' => '1', 'id_key' => 'stat_special'];
+    }
+}
+
 // Fetch Brand Promise Section
 $brand_promise = ['title' => '', 'subtitle' => '', 'content' => ''];
 if ($db) {
@@ -149,6 +254,17 @@ if ($db) {
     } catch (Exception $e) {
         error_log("[Home Section Error] " . $e->getMessage());
     }
+}
+
+if (empty($brand_promise['title'])) {
+    $brand_promise = [
+        'title' => 'Every child deserves an education that prepares them for life, not just examinations.',
+        'subtitle' => 'Zuvio’s Promise and Philosophy',
+        'content' => 'We are not building another future. We are building a future where every child has the opportunity to learn beyond boundaries.'
+    ];
+} else {
+    $brand_promise['subtitle'] = 'Zuvio’s Promise and Philosophy';
+    $brand_promise['content'] = 'We are not building another future. We are building a future where every child has the opportunity to learn beyond boundaries.';
 }
 
 // Fetch Published Blogs
@@ -175,45 +291,47 @@ include_once dirname(__FILE__) . '/../includes/header.php';
 <section class="hero-container">
   <!-- Bubbles Layer -->
   <div class="bubbles-background">
-    <div class="bubble-particle" style="width: 150px; height: 150px; background-color: var(--color-gold); top: 15%; left: 10%;"></div>
-    <div class="bubble-particle" style="width: 250px; height: 250px; background-color: var(--color-teal); bottom: 10%; right: 15%; animation-delay: -3s;"></div>
+    <div class="bubble-particle" style="width: 150px; height: 150px; background-color: var(--pastel-yellow); top: 15%; left: 10%;"></div>
+    <div class="bubble-particle" style="width: 250px; height: 250px; background-color: var(--pastel-blue); bottom: 10%; right: 15%; animation-delay: -3s;"></div>
   </div>
 
   <?php if (!empty($slides)): ?>
-    <?php foreach ($slides as $idx => $slide): 
-      $video_url = $slide_videos[$idx % count($slide_videos)];
-    ?>
+    <?php foreach ($slides as $idx => $slide): ?>
       <div class="hero-slide <?php echo $idx === 0 ? 'active' : ''; ?>">
-        <!-- Video Background -->
-        <div class="hero-bg-img" style="background-color: var(--color-navy);">
-          <video
-            autoplay
-            muted
-            loop
-            playsinline
-            preload="metadata"
-            style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0;"
-          >
-            <source src="<?php echo h($video_url); ?>" type="video/mp4">
-          </video>
-        </div>
+        <?php if (!empty($slide['video']) && ($slide['media_type'] ?? 'image') === 'video'): ?>
+          <!-- Video Background -->
+          <div class="hero-bg-img" style="background-color: var(--color-navy);">
+            <video
+              autoplay
+              muted
+              loop
+              playsinline
+              preload="metadata"
+              style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; filter: brightness(0.95);"
+            >
+              <source src="<?php echo h($slide['video']); ?>" type="video/<?php echo pathinfo($slide['video'], PATHINFO_EXTENSION); ?>">
+            </video>
+          </div>
+        <?php else: ?>
+          <!-- Image Background -->
+          <div class="hero-bg-img" style="background-image: url('<?php echo h($slide['image']); ?>'); background-size: cover; background-position: center; filter: brightness(1.02);"></div>
+        <?php endif; ?>
         <div class="hero-overlay"></div>
         
         <div class="hero-split-grid">
           <div class="hero-content">
-            <?php if (!empty($slide['subtitle'])): ?>
-              <span class="hero-subtitle"><?php echo h($slide['subtitle']); ?></span>
-            <?php endif; ?>
+            <div class="hero-school-badge">
+              <span class="badge-dot"></span>
+              Zuvio Global School
+            </div>
             <h1 class="hero-title"><?php echo h($slide['title']); ?></h1>
             <p class="hero-description"><?php echo h($slide['description']); ?></p>
             
             <div class="hero-btn-row">
               <?php if (!empty($slide['primary_cta_text'])): ?>
-                <a href="<?php echo h($slide['primary_cta_url']); ?>" class="btn btn-primary"><?php echo h($slide['primary_cta_text']); ?></a>
+                <a href="<?php echo h($slide['primary_cta_url']); ?>" class="btn btn-primary" style="background-color: var(--color-navy); border-color: var(--color-navy); color: #fff;"><?php echo h($slide['primary_cta_text']); ?></a>
               <?php endif; ?>
-              <?php if (!empty($slide['secondary_cta_text'])): ?>
-                <a href="<?php echo h($slide['secondary_cta_url']); ?>" class="btn btn-outline" style="color: #FFF; border-color: #FFF;"><?php echo h($slide['secondary_cta_text']); ?></a>
-              <?php endif; ?>
+              <a href="javascript:void(0)" onclick="openCallbackModal()" class="btn btn-primary btn-demo" style="background-color: var(--color-teal); border-color: var(--color-teal); color: #fff;">Book a Demo</a>
             </div>
           </div>
         </div>
@@ -258,10 +376,13 @@ include_once dirname(__FILE__) . '/../includes/header.php';
 
       <!-- Right Column: Grid of Feature Cards -->
       <div class="why-zuvio-blocks" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
-        <?php foreach ($features as $feat): ?>
-          <div class="card" style="padding: 1.75rem;">
-            <h3 style="font-size: 1.2rem; color: var(--color-navy); margin-bottom: 0.75rem;"><?php echo h($feat['title']); ?></h3>
-            <p style="color: var(--color-muted); font-size: 0.85rem; line-height: 1.6;"><?php echo h($feat['description']); ?></p>
+        <?php foreach ($features as $feat): 
+          $bg = $feat['bg_color'] ?? 'var(--color-white)';
+          $border = $feat['border_color'] ?? 'var(--color-border)';
+        ?>
+          <div class="card" style="padding: 1.75rem; background-color: <?php echo $bg; ?>; border-color: <?php echo $border; ?>; box-shadow: var(--shadow-sm); transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='none'">
+            <h3 style="font-size: 1.2rem; color: var(--color-navy); margin-bottom: 0.75rem; font-family: var(--font-primary); font-weight: 700;"><?php echo h($feat['title']); ?></h3>
+            <p style="color: var(--color-text); font-size: 0.88rem; line-height: 1.6;"><?php echo h($feat['description']); ?></p>
           </div>
         <?php endforeach; ?>
       </div>
@@ -270,14 +391,53 @@ include_once dirname(__FILE__) . '/../includes/header.php';
   </div>
 </section>
 
-<!-- Section 4: Academic Statistics -->
-<section class="section text-center" style="background-color: var(--color-navy-dark); color: #FFFFFF;">
+<!-- Section: Global Partnerships (Oxford Quality, ISSO, IAO) -->
+<section class="section text-center" style="background-color: var(--pastel-blue); border-bottom: 1px solid var(--color-border); padding: 5.5rem 0;">
   <div class="container">
-    <div class="grid-4">
-      <?php foreach ($stats as $stat): ?>
-        <div style="padding: 1rem;">
-          <p style="font-size: 3rem; font-weight: 700; color: var(--color-gold); margin-bottom: 0.5rem; font-family: var(--font-primary);"><?php echo h($stat['value']); ?></p>
-          <p style="color: #E2E8F0; font-size: 0.95rem; font-weight: 500; text-transform: uppercase; letter-spacing: 1px;"><?php echo h($stat['label']); ?></p>
+    <span style="font-size: 0.85rem; font-weight: 600; color: var(--color-gold); text-transform: uppercase; letter-spacing: 2px; display: block; margin-bottom: 0.5rem;">Global Accreditations & Partnerships</span>
+    <h2 style="font-size: 2.25rem; color: var(--color-navy); margin-bottom: 3.5rem; font-family: var(--font-primary); font-weight: 700;">Recognised & Benchmarked Globally</h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem;">
+      <!-- Card 1: Oxford Quality -->
+      <div class="card" style="padding: 2.5rem 2rem; background-color: var(--color-white); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); border-top: 4px solid var(--color-teal); text-align: left; display: flex; flex-direction: column; gap: 1rem; border-left: none;">
+        <div style="font-size: 2.5rem; line-height: 1;">🎓</div>
+        <h3 style="font-size: 1.3rem; color: var(--color-navy); font-family: var(--font-primary); font-weight: 700; margin: 0;">Oxford Quality</h3>
+        <p style="color: var(--color-muted); font-size: 0.9rem; line-height: 1.6; margin: 0;">
+          Zuvio Global School collaborates with Oxford University Press to deliver top-tier education materials. [Placeholder: Approved wording pending]
+        </p>
+      </div>
+      <!-- Card 2: ISSO -->
+      <div class="card" style="padding: 2.5rem 2rem; background-color: var(--color-white); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); border-top: 4px solid var(--color-gold); text-align: left; display: flex; flex-direction: column; gap: 1rem; border-left: none;">
+        <div style="font-size: 2.5rem; line-height: 1;">🌍</div>
+        <h3 style="font-size: 1.3rem; color: var(--color-navy); font-family: var(--font-primary); font-weight: 700; margin: 0;">ISSO Partnership</h3>
+        <p style="color: var(--color-muted); font-size: 0.9rem; line-height: 1.6; margin: 0;">
+          Ensuring our digital homeschooling delivery meets globally benchmarked standards for learning development. [Placeholder: Approved wording pending]
+        </p>
+      </div>
+      <!-- Card 3: IAO -->
+      <div class="card" style="padding: 2.5rem 2rem; background-color: var(--color-white); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); border-top: 4px solid var(--color-teal); text-align: left; display: flex; flex-direction: column; gap: 1rem; border-left: none;">
+        <div style="font-size: 2.5rem; line-height: 1;">🏅</div>
+        <h3 style="font-size: 1.3rem; color: var(--color-navy); font-family: var(--font-primary); font-weight: 700; margin: 0;">IAO Accreditation</h3>
+        <p style="color: var(--color-muted); font-size: 0.9rem; line-height: 1.6; margin: 0;">
+          Accredited by the International Accreditation Organization, verifying our institutional quality and curriculum integrity. [Placeholder: Approved wording pending]
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Section 4: Academic Statistics -->
+<section class="section text-center" style="background: linear-gradient(135deg, var(--color-navy-dark) 0%, var(--color-navy) 100%); color: #FFFFFF; padding: 5rem 0;">
+  <div class="container">
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 2.5rem;">
+      <?php foreach ($stats as $stat): 
+        $id_attr = isset($stat['id_key']) ? 'id="' . h($stat['id_key']) . '"' : '';
+        $val = preg_replace('/[^0-9]/', '', $stat['value']);
+        $suffix = preg_replace('/[0-9]/', '', $stat['value']);
+        $data_attrs = ($stat['id_key'] === 'stat_students' || $stat['id_key'] === 'stat_educators') ? 'data-target="' . $val . '" data-suffix="' . $suffix . '"' : '';
+      ?>
+        <div class="stat-box" style="padding: 1.5rem 1rem; background: rgba(255,255,255,0.04); border-radius: var(--radius-md); border: 1px solid rgba(255,255,255,0.06); display: flex; flex-direction: column; gap: 0.5rem; justify-content: center; align-items: center;">
+          <p <?php echo $id_attr; ?> <?php echo $data_attrs; ?> style="font-size: 3rem; font-weight: 700; color: var(--color-gold); margin: 0; font-family: var(--font-primary); line-height: 1;"><?php echo h($stat['value']); ?></p>
+          <p style="color: #E2E8F0; font-size: 0.82rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; margin: 0; text-align: center;"><?php echo h($stat['label']); ?></p>
         </div>
       <?php endforeach; ?>
     </div>
@@ -310,14 +470,81 @@ include_once dirname(__FILE__) . '/../includes/header.php';
 </section>
 <?php endif; ?>
 
-<!-- Section 6: Final CTA Banner -->
-<section class="section text-center" style="background-color: var(--color-surface-warm); padding: 6rem 0;">
+<!-- Section 6: Enquiry Form -->
+<section id="enquiry-form-section" class="section" style="background-color: var(--pastel-yellow); border-bottom: 1px solid var(--color-border); padding: 5.5rem 0;">
+  <div class="container" style="max-width: 650px;">
+    <div class="text-center" style="margin-bottom: 3rem;">
+      <span style="font-size: 0.85rem; font-weight: 600; color: var(--color-gold); text-transform: uppercase; letter-spacing: 2px;">Enquire Today</span>
+      <h2 style="font-size: 2.25rem; color: var(--color-navy); margin-top: 0.5rem; font-family: var(--font-primary); font-weight: 700;">Admissions & Enquiries</h2>
+      <p style="color: var(--color-muted); font-size: 0.95rem; margin-top: 0.5rem;">Fill out the form below, and our academic counsellor will get in touch with you shortly.</p>
+    </div>
+    
+    <div class="card" style="padding: 2.5rem; background-color: var(--color-white); border-radius: var(--radius-lg); box-shadow: var(--shadow-md); border: 1px solid var(--color-border); border-left: none;">
+      <?php if ($form_status === 'success'): ?>
+        <div style="background-color: var(--pastel-green); color: var(--zuvio-teal); padding: 1rem; border-radius: var(--radius-sm); margin-bottom: 1.5rem; border: 1px solid rgba(10, 137, 152, 0.2); text-align: center; font-weight: 600; font-size: 0.95rem;">
+          Thank you! Your enquiry has been received successfully. Our team will contact you shortly.
+        </div>
+      <?php elseif ($form_status === 'error'): ?>
+        <div style="background-color: var(--pastel-red); color: #C0392B; padding: 1rem; border-radius: var(--radius-sm); margin-bottom: 1.5rem; border: 1px solid rgba(192, 57, 43, 0.2); text-align: center; font-weight: 600; font-size: 0.95rem;">
+          <?php echo h($error_message); ?>
+        </div>
+      <?php endif; ?>
+      
+      <form method="POST" action="#enquiry-form-section" style="display: flex; flex-direction: column; gap: 1.25rem;">
+        <input type="hidden" name="csrf_token" value="<?php echo get_csrf_token(); ?>">
+        <input type="hidden" name="submit_enquiry" value="1">
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+          <div style="display: flex; flex-direction: column; gap: 0.35rem;">
+            <label style="font-weight: 600; font-size: 0.85rem; color: var(--color-navy);">Parent Name *</label>
+            <input type="text" name="parent_name" required style="padding: 0.75rem; border: 1.5px solid var(--color-border); border-radius: var(--radius-sm); font-size: 0.9rem; outline: none; background: #fff; color: var(--color-text);">
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 0.35rem;">
+            <label style="font-weight: 600; font-size: 0.85rem; color: var(--color-navy);">Student Name (Optional)</label>
+            <input type="text" name="student_name" style="padding: 0.75rem; border: 1.5px solid var(--color-border); border-radius: var(--radius-sm); font-size: 0.9rem; outline: none; background: #fff; color: var(--color-text);">
+          </div>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+          <div style="display: flex; flex-direction: column; gap: 0.35rem;">
+            <label style="font-weight: 600; font-size: 0.85rem; color: var(--color-navy);">Email Address *</label>
+            <input type="email" name="email" required style="padding: 0.75rem; border: 1.5px solid var(--color-border); border-radius: var(--radius-sm); font-size: 0.9rem; outline: none; background: #fff; color: var(--color-text);">
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 0.35rem;">
+            <label style="font-weight: 600; font-size: 0.85rem; color: var(--color-navy);">Phone Number *</label>
+            <input type="tel" name="phone" required style="padding: 0.75rem; border: 1.5px solid var(--color-border); border-radius: var(--radius-sm); font-size: 0.9rem; outline: none; background: #fff; color: var(--color-text);">
+          </div>
+        </div>
+        
+        <div style="display: flex; flex-direction: column; gap: 0.35rem;">
+          <label style="font-weight: 600; font-size: 0.85rem; color: var(--color-navy);">Grade of Interest *</label>
+          <select name="grade" required style="padding: 0.75rem; border: 1.5px solid var(--color-border); border-radius: var(--radius-sm); font-size: 0.9rem; background: #fff; color: var(--color-text); outline: none;">
+            <option value="">Select Grade</option>
+            <option value="Early Years">Early Years (K)</option>
+            <option value="Grades 1-5">Primary (Grades 1-5)</option>
+            <option value="Grades 6-8">Middle School (Grades 6-8)</option>
+          </select>
+        </div>
+        
+        <div style="display: flex; flex-direction: column; gap: 0.35rem;">
+          <label style="font-weight: 600; font-size: 0.85rem; color: var(--color-navy);">Message / Question</label>
+          <textarea name="message" rows="3" style="padding: 0.75rem; border: 1.5px solid var(--color-border); border-radius: var(--radius-sm); font-size: 0.9rem; outline: none; resize: vertical; background: #fff; color: var(--color-text);"></textarea>
+        </div>
+        
+        <button type="submit" class="btn btn-primary" style="padding: 0.85rem; font-weight: 600; width: 100%; border-radius: var(--radius-sm); background-color: var(--color-navy); border-color: var(--color-navy); color: #fff; margin-top: 0.5rem;">Submit Enquiry</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- Section 7: Final CTA Banner -->
+<section class="section text-center" style="background-color: var(--color-surface-warm); padding: 6.5rem 0;">
   <div class="container" style="max-width: 700px;">
-    <h2 style="font-size: 2.5rem; color: var(--color-navy); margin-bottom: 1.5rem; font-family: var(--font-primary);">Ready to Experience Zuvio?</h2>
+    <h2 style="font-size: 2.5rem; color: var(--color-navy); margin-bottom: 1.5rem; font-family: var(--font-primary); font-weight: 700;">Ready to Experience Zuvio?</h2>
     <p style="color: var(--color-muted); font-size: 1.1rem; line-height: 1.8; margin-bottom: 2.5rem;">
       Register your enquiry today to discuss a customized learning timeline for your child with our academic counselors.
     </p>
-    <a href="/contact" class="btn btn-primary" style="padding: 1rem 3rem;">Begin Your Journey</a>
+    <a href="/contact" class="btn btn-primary" style="padding: 1rem 3.5rem; font-size: 1rem;">Begin Your Journey</a>
   </div>
 </section>
 
@@ -328,7 +555,7 @@ include_once dirname(__FILE__) . '/../includes/header.php';
     height: 80vh;
     min-height: 620px;
     overflow: hidden;
-    background-color: #000A42;
+    background-color: var(--pastel-blue);
     font-family: var(--font-secondary);
   }
   .hero-slide {
@@ -362,8 +589,8 @@ include_once dirname(__FILE__) . '/../includes/header.php';
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(to right, rgba(0, 10, 66, 0.9) 0%, rgba(0, 10, 66, 0.7) 50%, rgba(0, 10, 66, 0.2) 100%);
-    z-index: 1;
+    background: linear-gradient(to right, rgba(235, 245, 251, 0.96) 0%, rgba(235, 245, 251, 0.8) 50%, rgba(255, 255, 255, 0.15) 100%);
+    z-index: 3;
   }
   .hero-split-grid {
     display: flex;
@@ -380,25 +607,47 @@ include_once dirname(__FILE__) . '/../includes/header.php';
     max-width: 700px;
     text-align: left;
   }
-  .hero-subtitle {
+  .hero-school-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: var(--color-gold);
+    color: var(--color-navy-dark);
+    padding: 0.4rem 1rem;
+    border-radius: 30px;
     font-size: 0.85rem;
-    font-weight: 600;
+    font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 2.5px;
-    color: var(--color-gold);
-    margin-bottom: 1rem;
+    letter-spacing: 1.5px;
+    margin-bottom: 1.5rem;
+    box-shadow: var(--shadow-sm);
+  }
+  .badge-dot {
+    width: 8px;
+    height: 8px;
+    background-color: var(--color-teal);
+    border-radius: 50%;
     display: inline-block;
+    animation: badgePulse 1.5s infinite;
+  }
+  @keyframes badgePulse {
+    0% { transform: scale(0.95); opacity: 0.8; }
+    50% { transform: scale(1.25); opacity: 1; }
+    100% { transform: scale(0.95); opacity: 0.8; }
   }
   .hero-title {
     font-size: 3.5rem;
-    color: #FFFFFF;
+    color: var(--color-navy-dark);
     margin-bottom: 1.25rem;
     line-height: 1.2;
+    font-family: var(--font-primary);
+    font-weight: 700;
   }
   .hero-description {
-    font-size: 1.1rem;
-    color: #E2E8F0;
+    font-size: 1.15rem;
+    color: var(--color-text);
     margin-bottom: 2.5rem;
+    line-height: 1.6;
   }
   .hero-btn-row {
     display: flex;
@@ -418,7 +667,7 @@ include_once dirname(__FILE__) . '/../includes/header.php';
     height: 8px;
     border-radius: 50%;
     border: none;
-    background-color: rgba(255, 255, 255, 0.3);
+    background-color: rgba(6, 43, 99, 0.2);
     cursor: pointer;
     transition: all 0.3s ease;
   }
@@ -435,7 +684,7 @@ include_once dirname(__FILE__) . '/../includes/header.php';
       min-height: auto !important;
       display: flex !important;
       flex-direction: column !important;
-      background-color: var(--color-navy-dark) !important;
+      background-color: var(--pastel-blue) !important;
     }
     .hero-slide {
       position: relative !important;
@@ -446,7 +695,7 @@ include_once dirname(__FILE__) . '/../includes/header.php';
       opacity: 0 !important;
       display: none !important;
       transition: none !important;
-      background-color: var(--color-navy-dark) !important;
+      background-color: var(--pastel-blue) !important;
     }
     .hero-slide.active {
       opacity: 1 !important;
@@ -459,7 +708,8 @@ include_once dirname(__FILE__) . '/../includes/header.php';
       height: 380px !important;
     }
     .hero-overlay {
-      display: none !important;
+      display: block !important;
+      background: linear-gradient(to bottom, rgba(235, 245, 251, 0.4) 0%, rgba(235, 245, 251, 0.95) 90%) !important;
     }
     .hero-split-grid {
       padding: 3rem 1.25rem 2.5rem 1.25rem !important;
@@ -485,13 +735,14 @@ include_once dirname(__FILE__) . '/../includes/header.php';
 
   @media (max-width: 767px) {
     .hero-bg-img {
-      display: none !important; /* Hide video element/box on small mobile */
+      display: block !important;
+      height: 250px !important;
     }
     .hero-container {
-      background: linear-gradient(135deg, var(--color-navy) 0%, var(--color-navy-dark) 100%) !important;
+      background: var(--pastel-blue) !important;
     }
     .hero-split-grid {
-      padding: 3.5rem 1.25rem 3.5rem 1.25rem !important;
+      padding: 2.5rem 1.25rem 3.5rem 1.25rem !important;
     }
     .hero-title {
       font-size: 2rem !important;

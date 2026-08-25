@@ -93,10 +93,13 @@ if (empty($leadership)) {
 // Fallback arrays if database is offline
 $story = $sections['our_story'] ?? [
     'title' => 'Our Story',
-    'subtitle' => 'How Zuvio Began',
-    'content' => 'Zuvio Global School began from a question: “What if education was designed for the child instead of expecting the child to fit the system?” As technology, AI and global connectivity changed the world, education also needed to evolve. Zuvio was conceived to provide flexible, personalised, globally connected learning that nurtures creativity, critical thinking, communication and adaptability.',
-    'image' => '/assets/images/Hero image 2.png'
+    'subtitle' => 'Learning Beyond Boundaries',
+    'content' => "Zuvio Global School was born from a simple belief — every child deserves access to meaningful, world-class learning, no matter where they are.\n\nWe envisioned a school where learning adapts to the learner, not the other way around — combining strong academics with creativity, confidence, technology, life skills and global exposure.\n\nToday, Zuvio is building a learning community without geographical boundaries, where children are encouraged to explore boldly, think independently and grow into confident global citizens.\n\nDifferent Paths. One Purpose. Limitless Futures.",
+    'image' => '/assets/images/about_us_hero.jpg'
 ];
+$story['subtitle'] = 'Learning Beyond Boundaries'; // Enforce the required text revision
+$story['content'] = "Zuvio Global School was born from a simple belief — every child deserves access to meaningful, world-class learning, no matter where they are.\n\nWe envisioned a school where learning adapts to the learner, not the other way around — combining strong academics with creativity, confidence, technology, life skills and global exposure.\n\nToday, Zuvio is building a learning community without geographical boundaries, where children are encouraged to explore boldly, think independently and grow into confident global citizens.\n\nDifferent Paths. One Purpose. Limitless Futures."; // Enforce the required text revision
+$story['image'] = '/assets/images/about_us_hero.jpg'; // Enforce the new image
 
 $vision_mission = $sections['vision_mission'] ?? [
     'title' => 'Vision, Mission & Beliefs',
@@ -105,14 +108,14 @@ $vision_mission = $sections['vision_mission'] ?? [
 ];
 
 $philosophies = [
-    ['title' => 'Curiosity', 'desc' => 'Nurturing the natural desire to learn and explore.'],
-    ['title' => 'Creativity', 'desc' => 'Encouraging original thinking and problem solving.'],
-    ['title' => 'Critical Thinking', 'desc' => 'Evaluating information objectively to make decisions.'],
-    ['title' => 'Communication', 'desc' => 'Expressing ideas clearly and listening to others.'],
-    ['title' => 'Collaboration', 'desc' => 'Working effectively with diverse teams.'],
-    ['title' => 'Compassion', 'desc' => 'Understanding and sharing the feelings of others.'],
-    ['title' => 'Character', 'desc' => 'Building integrity, resilience, and ethical values.'],
-    ['title' => 'Citizenship', 'desc' => 'Fostering a sense of global responsibility and community.']
+    ['title' => 'Curiosity', 'desc' => 'Gives learners the freedom to explore questions and interests beyond textbooks.', 'bg' => 'var(--pastel-blue)', 'border' => 'rgba(10, 137, 152, 0.2)'],
+    ['title' => 'Creativity', 'desc' => 'Creates space to imagine, experiment and learn in individual ways.', 'bg' => 'var(--pastel-yellow)', 'border' => 'rgba(217, 164, 65, 0.2)'],
+    ['title' => 'Critical Thinking', 'desc' => 'Encourages learners to question, analyse and find solutions independently.', 'bg' => 'var(--pastel-orange)', 'border' => 'rgba(217, 164, 65, 0.2)'],
+    ['title' => 'Communication', 'desc' => 'Builds confidence to express ideas through conversations, presentations and real-world interactions.', 'bg' => 'var(--pastel-green)', 'border' => 'rgba(10, 137, 152, 0.2)'],
+    ['title' => 'Collaboration', 'desc' => 'Connects learners with peers, mentors and communities beyond geographical boundaries.', 'bg' => 'var(--pastel-purple)', 'border' => 'rgba(6, 43, 99, 0.1)'],
+    ['title' => 'Compassion', 'desc' => 'Nurtures empathy and kindness through meaningful family and community experiences.', 'bg' => 'var(--pastel-red)', 'border' => 'rgba(217, 70, 239, 0.2)'],
+    ['title' => 'Character', 'desc' => 'Develops independence, responsibility, resilience and self-discipline.', 'bg' => 'var(--pastel-blue)', 'border' => 'rgba(10, 137, 152, 0.2)'],
+    ['title' => 'Citizenship', 'desc' => 'Builds awareness of communities, cultures and the wider world through learning beyond classroom walls.', 'bg' => 'var(--pastel-yellow)', 'border' => 'rgba(217, 164, 65, 0.2)']
 ];
 
 $page_slug = 'about';
@@ -120,10 +123,10 @@ include_once dirname(__FILE__) . '/../includes/header.php';
 ?>
 
 <!-- Hero Banner Header -->
-<section class="about-hero" style="background-image: linear-gradient(rgba(0, 10, 66, 0.82), rgba(0, 10, 66, 0.88)), url('/assets/images/Hero image 2.png'); background-size: cover; background-position: center; color: #FFFFFF; padding: 6rem 2rem; text-align: center;">
+<section class="about-hero" style="background-color: var(--pastel-blue); color: var(--color-navy); padding: 6.5rem 2rem; text-align: center; border-bottom: 1px solid var(--color-border);">
   <div class="container" style="max-width: 800px;">
-    <h1 style="font-size: 3rem; font-family: var(--font-primary); margin-bottom: 1rem; color: #FFFFFF;">About Zuvio Global School</h1>
-    <p style="font-size: 1.15rem; font-weight: 300; line-height: 1.6; color: #E2E8F0; margin: 0;">
+    <h1 style="font-size: 3rem; font-family: var(--font-primary); margin-bottom: 1rem; color: var(--color-navy-dark); font-weight: 700;">About Zuvio Global School</h1>
+    <p style="font-size: 1.15rem; font-weight: 500; line-height: 1.6; color: var(--color-text); margin: 0;">
       Reimagining education for a world without boundaries—where every child has the freedom to learn, explore, and grow.
     </p>
   </div>
@@ -139,7 +142,7 @@ include_once dirname(__FILE__) . '/../includes/header.php';
         <p style="color: var(--color-text); font-size: 1.05rem; line-height: 1.8; white-space: pre-line;"><?php echo h($story['content']); ?></p>
       </div>
       <div style="border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-md); background-color: var(--color-navy); height: 350px;">
-        <img src="<?php echo h($story['image']); ?>" alt="Students studying online" style="width: 100%; height: 100%; object-fit: cover;">
+        <img src="/assets/images/about_us_hero.jpg" alt="Students studying online" style="width: 100%; height: 100%; object-fit: cover;">
       </div>
     </div>
   </div>
@@ -178,11 +181,14 @@ include_once dirname(__FILE__) . '/../includes/header.php';
       <h2 style="font-size: 2.25rem; color: var(--color-navy); margin-top: 0.5rem; font-family: var(--font-primary);">Our 8C Philosophy™</h2>
     </div>
 
-    <div class="grid-4">
-      <?php foreach ($philosophies as $phil): ?>
-        <div class="card" style="padding: 1.75rem;">
-          <h3 style="font-size: 1.15rem; color: var(--color-navy); margin-bottom: 0.75rem;"><?php echo h($phil['title']); ?></h3>
-          <p style="color: var(--color-muted); font-size: 0.8rem; line-height: 1.6;"><?php echo h($phil['desc']); ?></p>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem;">
+      <?php foreach ($philosophies as $phil): 
+        $bg = $phil['bg'] ?? 'var(--color-white)';
+        $border = $phil['border'] ?? 'var(--color-border)';
+      ?>
+        <div class="card" style="padding: 2.25rem 1.75rem; background-color: <?php echo $bg; ?>; border-color: <?php echo $border; ?>; box-shadow: var(--shadow-sm); border-left: none; border-top: 4px solid <?php echo $border; ?>; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='none'">
+          <h3 style="font-size: 1.25rem; color: var(--color-navy); margin-bottom: 0.75rem; font-family: var(--font-primary); font-weight: 700;"><?php echo h($phil['title']); ?></h3>
+          <p style="color: var(--color-text); font-size: 0.88rem; line-height: 1.6;"><?php echo h($phil['desc']); ?></p>
         </div>
       <?php endforeach; ?>
     </div>
@@ -238,30 +244,7 @@ include_once dirname(__FILE__) . '/../includes/header.php';
 </section>
 <?php endif; ?>
 
-<!-- Section 5: Timeline -->
-<?php if (!empty($timeline)): ?>
-<section class="section" style="background-color: var(--color-white);">
-  <div class="container">
-    <div class="text-center" style="margin-bottom: 4rem;">
-      <span style="font-size: 0.85rem; font-weight: 600; color: var(--color-gold); text-transform: uppercase; letter-spacing: 2px;">School History</span>
-      <h2 style="font-size: 2.25rem; color: var(--color-navy); margin-top: 0.5rem; font-family: var(--font-primary);">Our Growth Journey</h2>
-    </div>
-
-    <div style="max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; gap: 2rem;">
-      <?php foreach ($timeline as $item): ?>
-        <div style="display: flex; gap: 2.5rem; border-left: 3px solid var(--color-gold); padding-left: 2rem; position: relative;">
-          <div style="position: absolute; left: -10px; top: 0; width: 17px; height: 17px; border-radius: 50%; background-color: var(--color-gold);"></div>
-          <div>
-            <span style="font-size: 1.5rem; font-weight: 700; color: var(--color-navy); font-family: var(--font-primary); display: block; margin-bottom: 0.25rem;"><?php echo h($item['year']); ?></span>
-            <h3 style="font-size: 1.15rem; color: var(--color-navy); margin-bottom: 0.5rem;"><?php echo h($item['title']); ?></h3>
-            <p style="color: var(--color-muted); font-size: 0.9rem; line-height: 1.6;"><?php echo h($item['description']); ?></p>
-          </div>
-        </div>
-      <?php endforeach; ?>
-    </div>
-  </div>
-</section>
-<?php endif; ?>
+<!-- Timeline / School History removed completely as requested -->
 
 <style>
   .leadership-grid {

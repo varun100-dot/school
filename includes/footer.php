@@ -101,21 +101,24 @@ $social_linkedin = get_setting('social_linkedin', '#');
       gap: 1.25rem;
     }
     .footer-logo {
-      height: 60px;
+      height: 75px;
       width: auto;
       object-fit: contain;
       display: block;
       transition: height 0.3s ease;
     }
     .brand-tagline {
-      font-size: 0.9rem;
-      font-style: italic;
-      color: var(--color-muted);
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--color-navy);
+      margin-top: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
     .copyright-text {
       font-size: 0.8rem;
       color: var(--color-muted);
-      margin-top: auto;
+      margin-top: 1rem;
     }
     .footer-title {
       font-family: var(--font-primary);
@@ -203,19 +206,7 @@ $social_linkedin = get_setting('social_linkedin', '#');
     }
   </style>
 
-  <!-- Floating Request Callback Widget -->
-  <div class="callback-floating-widget">
-    <div class="callback-widget-pill">🔥 LIMITED SLOTS FOR THIS WEEK!</div>
-    <div class="callback-widget-card" onclick="openCallbackModal()">
-      <div class="callback-widget-text">
-        <span class="callback-widget-sub">START LEARNING TODAY</span>
-        <h4 class="callback-widget-title">Request Callback</h4>
-      </div>
-      <div class="callback-widget-icon-box">
-        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line><polyline points="8 14 10 16 16 10"></polyline></svg>
-      </div>
-    </div>
-  </div>
+  <!-- Floating Request Callback Widget Removed as requested -->
 
   <!-- Callback Modal Overlay -->
   <div class="callback-modal-overlay" id="callbackModalOverlay" onclick="closeCallbackModal(event)">
@@ -350,6 +341,108 @@ $social_linkedin = get_setting('social_linkedin', '#');
         submitBtn.disabled = false;
         submitBtn.innerText = 'Request Callback';
       });
+    }
+  </script>
+
+  <!-- Bottom Floating Admissions Announcement Bar -->
+  <div id="admissionsAnnouncementBar" class="admissions-announcement-bar">
+    <div class="announcement-content">
+      <span class="announcement-badge">Announcements</span>
+      <span class="announcement-text">Admissions ongoing for Mid-Session 2026–27 | Admissions open for Children with Learning Disabilities.</span>
+      <a href="/contact" class="announcement-btn">Apply Now</a>
+    </div>
+    <button class="announcement-close" onclick="closeAdmissionsBar()">&times;</button>
+  </div>
+
+  <style>
+    .admissions-announcement-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: linear-gradient(90deg, var(--color-navy-dark) 0%, var(--color-navy) 100%);
+      color: var(--color-white);
+      z-index: 9999;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem 2rem;
+      box-shadow: 0 -4px 20px rgba(6, 43, 99, 0.15);
+      font-family: var(--font-secondary);
+      transition: transform 0.3s ease;
+    }
+    .announcement-content {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      flex-wrap: wrap;
+      margin: 0 auto;
+    }
+    .announcement-badge {
+      background-color: var(--color-gold);
+      color: var(--color-navy-dark);
+      padding: 0.3rem 0.85rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .announcement-text {
+      font-size: 0.92rem;
+      font-weight: 500;
+      letter-spacing: 0.25px;
+    }
+    .announcement-btn {
+      background-color: var(--color-teal);
+      color: #fff;
+      padding: 0.4rem 1.15rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: background-color 0.2s ease;
+    }
+    .announcement-btn:hover {
+      background-color: #0b9ba9;
+    }
+    .announcement-close {
+      background: none;
+      border: none;
+      color: var(--color-white);
+      font-size: 1.6rem;
+      cursor: pointer;
+      opacity: 0.8;
+      transition: opacity 0.2s;
+      padding: 0 0.5rem;
+      line-height: 1;
+    }
+    .announcement-close:hover {
+      opacity: 1;
+    }
+    @media (max-width: 850px) {
+      .admissions-announcement-bar {
+        padding: 0.8rem 1rem;
+      }
+      .announcement-content {
+        gap: 0.5rem;
+        justify-content: center;
+        text-align: center;
+      }
+      .announcement-text {
+        font-size: 0.82rem;
+        width: 100%;
+      }
+    }
+  </style>
+
+  <script>
+    function closeAdmissionsBar() {
+      const bar = document.getElementById('admissionsAnnouncementBar');
+      if (bar) {
+        bar.style.transform = 'translateY(100%)';
+        setTimeout(() => bar.style.display = 'none', 300);
+      }
     }
   </script>
 </body>
