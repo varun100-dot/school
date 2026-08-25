@@ -334,10 +334,58 @@ include_once dirname(__FILE__) . '/../includes/header.php';
               <a href="javascript:void(0)" onclick="openCallbackModal()" class="btn btn-primary btn-demo" style="background-color: var(--color-teal); border-color: var(--color-teal); color: #fff;">Book a Demo</a>
             </div>
           </div>
+          <div class="hero-form-spacer"></div>
         </div>
       </div>
     <?php endforeach; ?>
   <?php endif; ?>
+
+  <!-- Absolute Form Overlay -->
+  <div class="hero-absolute-form">
+    <div class="hero-form-card">
+      <?php if ($form_status === 'success'): ?>
+        <div class="form-success-state">
+          <svg class="success-icon" xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--color-success); margin-bottom: 1rem;"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+          <h3>Enquiry Received</h3>
+          <p>Thank you. We will get in touch with you shortly to plan your child's roadmap.</p>
+        </div>
+      <?php else: ?>
+        <form method="POST" action="">
+          <input type="hidden" name="csrf_token" value="<?php echo get_csrf_token(); ?>">
+          <input type="hidden" name="submit_enquiry" value="1">
+          <h3>Enquire Now</h3>
+          <p class="form-tagline">Take the first step towards your child's learning journey.</p>
+          
+          <?php if ($form_status === 'error'): ?>
+            <div class="form-error-alert">
+              <span><?php echo h($error_message); ?></span>
+            </div>
+          <?php endif; ?>
+
+          <div class="form-grid-row">
+            <input type="text" name="parent_name" placeholder="Parent Name" required class="hero-input">
+            <input type="text" name="student_name" placeholder="Student Name (Opt)" class="hero-input">
+          </div>
+          
+          <div class="form-grid-row">
+            <input type="email" name="email" placeholder="Email Address" required class="hero-input">
+            <input type="tel" name="phone" placeholder="Phone Number" required class="hero-input">
+          </div>
+
+          <select name="grade" required class="hero-input" style="width: 100%; margin-bottom: 0.75rem;">
+            <option value="">Select Grade of Interest</option>
+            <option value="Early Years">Early Years (K)</option>
+            <option value="Grades 1-5">Primary (Grades 1-5)</option>
+            <option value="Grades 6-8">Middle School (Grades 6-8)</option>
+          </select>
+
+          <textarea name="message" placeholder="Message / Question (Optional)" rows="2" class="hero-input" style="resize: none; margin-bottom: 0.75rem;"></textarea>
+
+          <button type="submit" class="btn btn-primary" style="width: 100%; font-weight: 600; padding: 0.75rem; background-color: var(--color-navy); border-color: var(--color-navy); color: #fff;">Submit Enquiry</button>
+        </form>
+      <?php endif; ?>
+    </div>
+  </div>
 
   <!-- Carousel Indicators -->
   <div class="hero-indicators">
@@ -479,72 +527,6 @@ include_once dirname(__FILE__) . '/../includes/header.php';
 </section>
 <?php endif; ?>
 
-<!-- Section 6: Enquiry Form -->
-<section id="enquiry-form-section" class="section" style="background-color: var(--pastel-yellow); border-bottom: 1px solid var(--color-border); padding: 5.5rem 0;">
-  <div class="container" style="max-width: 650px;">
-    <div class="text-center" style="margin-bottom: 3rem;">
-      <span style="font-size: 0.85rem; font-weight: 600; color: var(--color-gold); text-transform: uppercase; letter-spacing: 2px;">Enquire Today</span>
-      <h2 style="font-size: 2.25rem; color: var(--color-navy); margin-top: 0.5rem; font-family: var(--font-primary); font-weight: 700;">Admissions & Enquiries</h2>
-      <p style="color: var(--color-muted); font-size: 0.95rem; margin-top: 0.5rem;">Fill out the form below, and our academic counsellor will get in touch with you shortly.</p>
-    </div>
-    
-    <div class="card" style="padding: 2.5rem; background-color: var(--color-white); border-radius: var(--radius-lg); box-shadow: var(--shadow-md); border: 1px solid var(--color-border); border-left: none;">
-      <?php if ($form_status === 'success'): ?>
-        <div style="background-color: var(--pastel-green); color: var(--zuvio-teal); padding: 1rem; border-radius: var(--radius-sm); margin-bottom: 1.5rem; border: 1px solid rgba(10, 137, 152, 0.2); text-align: center; font-weight: 600; font-size: 0.95rem;">
-          Thank you! Your enquiry has been received successfully. Our team will contact you shortly.
-        </div>
-      <?php elseif ($form_status === 'error'): ?>
-        <div style="background-color: var(--pastel-red); color: #C0392B; padding: 1rem; border-radius: var(--radius-sm); margin-bottom: 1.5rem; border: 1px solid rgba(192, 57, 43, 0.2); text-align: center; font-weight: 600; font-size: 0.95rem;">
-          <?php echo h($error_message); ?>
-        </div>
-      <?php endif; ?>
-      
-      <form method="POST" action="#enquiry-form-section" style="display: flex; flex-direction: column; gap: 1.25rem;">
-        <input type="hidden" name="csrf_token" value="<?php echo get_csrf_token(); ?>">
-        <input type="hidden" name="submit_enquiry" value="1">
-        
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
-          <div style="display: flex; flex-direction: column; gap: 0.35rem;">
-            <label style="font-weight: 600; font-size: 0.85rem; color: var(--color-navy);">Parent Name *</label>
-            <input type="text" name="parent_name" required style="padding: 0.75rem; border: 1.5px solid var(--color-border); border-radius: var(--radius-sm); font-size: 0.9rem; outline: none; background: #fff; color: var(--color-text);">
-          </div>
-          <div style="display: flex; flex-direction: column; gap: 0.35rem;">
-            <label style="font-weight: 600; font-size: 0.85rem; color: var(--color-navy);">Student Name (Optional)</label>
-            <input type="text" name="student_name" style="padding: 0.75rem; border: 1.5px solid var(--color-border); border-radius: var(--radius-sm); font-size: 0.9rem; outline: none; background: #fff; color: var(--color-text);">
-          </div>
-        </div>
-        
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
-          <div style="display: flex; flex-direction: column; gap: 0.35rem;">
-            <label style="font-weight: 600; font-size: 0.85rem; color: var(--color-navy);">Email Address *</label>
-            <input type="email" name="email" required style="padding: 0.75rem; border: 1.5px solid var(--color-border); border-radius: var(--radius-sm); font-size: 0.9rem; outline: none; background: #fff; color: var(--color-text);">
-          </div>
-          <div style="display: flex; flex-direction: column; gap: 0.35rem;">
-            <label style="font-weight: 600; font-size: 0.85rem; color: var(--color-navy);">Phone Number *</label>
-            <input type="tel" name="phone" required style="padding: 0.75rem; border: 1.5px solid var(--color-border); border-radius: var(--radius-sm); font-size: 0.9rem; outline: none; background: #fff; color: var(--color-text);">
-          </div>
-        </div>
-        
-        <div style="display: flex; flex-direction: column; gap: 0.35rem;">
-          <label style="font-weight: 600; font-size: 0.85rem; color: var(--color-navy);">Grade of Interest *</label>
-          <select name="grade" required style="padding: 0.75rem; border: 1.5px solid var(--color-border); border-radius: var(--radius-sm); font-size: 0.9rem; background: #fff; color: var(--color-text); outline: none;">
-            <option value="">Select Grade</option>
-            <option value="Early Years">Early Years (K)</option>
-            <option value="Grades 1-5">Primary (Grades 1-5)</option>
-            <option value="Grades 6-8">Middle School (Grades 6-8)</option>
-          </select>
-        </div>
-        
-        <div style="display: flex; flex-direction: column; gap: 0.35rem;">
-          <label style="font-weight: 600; font-size: 0.85rem; color: var(--color-navy);">Message / Question</label>
-          <textarea name="message" rows="3" style="padding: 0.75rem; border: 1.5px solid var(--color-border); border-radius: var(--radius-sm); font-size: 0.9rem; outline: none; resize: vertical; background: #fff; color: var(--color-text);"></textarea>
-        </div>
-        
-        <button type="submit" class="btn btn-primary" style="padding: 0.85rem; font-weight: 600; width: 100%; border-radius: var(--radius-sm); background-color: var(--color-navy); border-color: var(--color-navy); color: #fff; margin-top: 0.5rem;">Submit Enquiry</button>
-      </form>
-    </div>
-  </div>
-</section>
 
 <!-- Section 7: Final CTA Banner -->
 <section class="section text-center" style="background-color: var(--color-surface-warm); padding: 6.5rem 0;">
@@ -602,7 +584,9 @@ include_once dirname(__FILE__) . '/../includes/header.php';
     z-index: 3;
   }
   .hero-split-grid {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 4rem;
     align-items: center;
     height: 100%;
     position: relative;
@@ -611,6 +595,74 @@ include_once dirname(__FILE__) . '/../includes/header.php';
     margin: 0 auto;
     padding: 0 3rem;
     width: 100%;
+  }
+  .hero-form-spacer {
+    display: block;
+  }
+  
+  /* Absolute Form Overlay layout */
+  .hero-absolute-form {
+    position: absolute;
+    right: calc((100vw - var(--max-width)) / 2 + 3rem);
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 20;
+  }
+  .hero-form-card {
+    background-color: rgba(255, 255, 255, 0.98);
+    border-top: 4px solid var(--color-gold);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 20px 45px rgba(6, 43, 99, 0.18);
+    padding: 1.75rem;
+    width: 400px;
+    color: var(--color-navy);
+  }
+  .hero-form-card h3 {
+    font-size: 1.35rem;
+    margin: 0 0 0.25rem 0;
+    font-family: var(--font-secondary);
+    font-weight: 700;
+  }
+  .form-tagline {
+    font-size: 0.75rem;
+    color: var(--color-muted);
+    margin: 0 0 1rem 0;
+  }
+  .hero-input {
+    width: 100%;
+    padding: 0.55rem 0.75rem;
+    border: 1.5px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    font-size: 0.85rem;
+    outline: none;
+    background-color: #FFFFFF;
+    margin-bottom: 0.75rem;
+    transition: border-color var(--transition-fast);
+  }
+  .hero-input:focus {
+    border-color: var(--color-navy);
+  }
+  .form-grid-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+  }
+  .form-success-state {
+    text-align: center;
+    padding: 1.5rem 0;
+  }
+  .success-icon {
+    color: var(--color-success);
+    margin-bottom: 1rem;
+  }
+  .form-error-alert {
+    background-color: #FDF2F8;
+    border: 1px solid #FBCFE8;
+    padding: 0.5rem 0.75rem;
+    border-radius: var(--radius-sm);
+    color: #D946EF;
+    font-size: 0.75rem;
+    margin-bottom: 0.75rem;
   }
   .hero-content {
     max-width: 700px;
@@ -686,6 +738,12 @@ include_once dirname(__FILE__) . '/../includes/header.php';
     border-radius: 4px;
   }
 
+  @media (max-width: 1280px) {
+    .hero-absolute-form {
+      right: 3rem;
+    }
+  }
+
   /* Responsive Rules */
   @media (max-width: 1024px) {
     .hero-container {
@@ -721,7 +779,9 @@ include_once dirname(__FILE__) . '/../includes/header.php';
       background: linear-gradient(to bottom, rgba(235, 245, 251, 0.4) 0%, rgba(235, 245, 251, 0.95) 90%) !important;
     }
     .hero-split-grid {
-      padding: 3rem 1.25rem 2.5rem 1.25rem !important;
+      grid-template-columns: 1fr !important;
+      gap: 2rem !important;
+      padding: 3rem 1.25rem 2rem 1.25rem !important;
       height: auto !important;
     }
     .hero-content {
@@ -737,7 +797,21 @@ include_once dirname(__FILE__) . '/../includes/header.php';
     .hero-btn-row {
       justify-content: center !important;
     }
-    .hero-indicators {
+    .hero-absolute-form {
+      position: relative !important;
+      right: auto !important;
+      top: auto !important;
+      transform: none !important;
+      margin: 0 auto 3rem auto !important;
+      width: calc(100% - 2.5rem) !important;
+      display: flex !important;
+      justify-content: center !important;
+    }
+    .hero-form-card {
+      width: 100% !important;
+      max-width: 420px !important;
+    }
+    .hero-form-spacer, .hero-indicators {
       display: none !important;
     }
   }
