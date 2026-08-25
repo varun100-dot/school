@@ -182,7 +182,7 @@ $current_page = $page_slug ?? 'admin-dashboard';
       <?php if (has_permission('hero.view')): ?>
         <a href="/admin/hero" class="sidebar-item <?php echo $current_page === 'admin-hero' ? 'active' : ''; ?>">Homepage Hero</a>
       <?php endif; ?>
-      <?php if (has_permission('announcements.view') || !$db): ?>
+      <?php if (has_permission('announcements.view') || has_permission('hero.view') || has_permission('settings.view') || !$db): ?>
         <a href="/admin/announcements.php" class="sidebar-item <?php echo $current_page === 'admin-announcements' ? 'active' : ''; ?>">Announcements Bar</a>
       <?php endif; ?>
       <?php if (has_permission('enquiries.view')): ?>
