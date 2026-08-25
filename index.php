@@ -54,6 +54,11 @@ if (strpos($route, 'admin') === 0) {
             $page_slug = 'admin-hero';
             include dirname(__FILE__) . '/admin/hero.php';
             break;
+        case 'announcements':
+        case 'announcements.php':
+            $page_slug = 'admin-announcements';
+            include dirname(__FILE__) . '/admin/announcements.php';
+            break;
         case 'enquiries':
             $page_slug = 'admin-enquiries';
             include dirname(__FILE__) . '/admin/enquiries.php';

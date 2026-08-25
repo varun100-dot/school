@@ -344,15 +344,62 @@ $social_linkedin = get_setting('social_linkedin', '#');
     }
   </script>
 
+  <?php
+  // Fetch Active Announcements
+  $announcements = [];
+  if (isset($db) && $db) {
+      try {
+          $stmt = $db->query("SELECT * FROM `announcements` WHERE `is_active` = 1 ORDER BY `sort_order` ASC, `id` DESC");
+          $announcements = $stmt->fetchAll();
+      } catch (Exception $e) {
+          error_log("[Announcements Footer Error] " . $e->getMessage());
+      }
+  }
+
+  // Fallback if DB is offline or empty
+  if (empty($announcements)) {
+      $announcements = [
+          [
+              'id' => 1,
+              'text' => 'Admissions ongoing for Mid-Session 2026–27 | Admissions open for Children with Learning Disabilities.',
+              'button_text' => 'Apply Now',
+              'button_url' => '/contact'
+          ],
+          [
+              'id' => 2,
+              'text' => 'Unlock Future Skills: Enroll for Coding & AI Workshops at Zuvio Global School.',
+              'button_text' => 'Enquire Now',
+              'button_url' => '/contact'
+          ],
+          [
+              'id' => 3,
+              'text' => 'Zuvio is now an Oxford Quality Partner, delivering internationally benchmarked educational materials.',
+              'button_text' => 'Learn More',
+              'button_url' => '/about'
+          ]
+      ];
+  }
+  ?>
+
   <!-- Bottom Floating Admissions Announcement Bar -->
+  <?php if (!empty($announcements)): ?>
   <div id="admissionsAnnouncementBar" class="admissions-announcement-bar">
-    <div class="announcement-content">
-      <span class="announcement-badge">Announcements</span>
-      <span class="announcement-text">Admissions ongoing for Mid-Session 2026–27 | Admissions open for Children with Learning Disabilities.</span>
-      <a href="/contact" class="announcement-btn">Apply Now</a>
+    <div class="announcement-slider-container" style="flex-grow: 1; position: relative;">
+      <?php foreach ($announcements as $index => $ann): ?>
+        <div class="announcement-slide <?php echo $index === 0 ? 'active' : ''; ?>" style="display: <?php echo $index === 0 ? 'flex' : 'none'; ?>; align-items: center; justify-content: center; width: 100%; transition: opacity 0.5s ease; opacity: <?php echo $index === 0 ? '1' : '0'; ?>;">
+          <div class="announcement-content">
+            <span class="announcement-badge">Announcements</span>
+            <span class="announcement-text"><?php echo h($ann['text']); ?></span>
+            <?php if (!empty($ann['button_text'])): ?>
+              <a href="<?php echo h($ann['button_url'] ?: '/contact'); ?>" class="announcement-btn"><?php echo h($ann['button_text']); ?></a>
+            <?php endif; ?>
+          </div>
+        </div>
+      <?php endforeach; ?>
     </div>
     <button class="announcement-close" onclick="closeAdmissionsBar()">&times;</button>
   </div>
+  <?php endif; ?>
 
   <style>
     .admissions-announcement-bar {
@@ -370,6 +417,11 @@ $social_linkedin = get_setting('social_linkedin', '#');
       box-shadow: 0 -4px 20px rgba(6, 43, 99, 0.15);
       font-family: var(--font-secondary);
       transition: transform 0.3s ease;
+    }
+    .announcement-slider-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     .announcement-content {
       display: flex;
@@ -444,6 +496,28 @@ $social_linkedin = get_setting('social_linkedin', '#');
         setTimeout(() => bar.style.display = 'none', 300);
       }
     }
+
+    // Announcement slider fade loop
+    document.addEventListener('DOMContentLoaded', () => {
+      const slides = document.querySelectorAll('.announcement-slide');
+      if (slides.length > 1) {
+        let currentSlide = 0;
+        setInterval(() => {
+          const activeSlide = slides[currentSlide];
+          activeSlide.style.opacity = '0';
+          setTimeout(() => {
+            activeSlide.style.display = 'none';
+            
+            currentSlide = (currentSlide + 1) % slides.length;
+            const nextSlide = slides[currentSlide];
+            nextSlide.style.display = 'flex';
+            // Force reflow
+            nextSlide.offsetHeight;
+            nextSlide.style.opacity = '1';
+          }, 500);
+        }, 6000); // Rotates announcements every 6 seconds
+      }
+    });
   </script>
 </body>
 </html>

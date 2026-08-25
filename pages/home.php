@@ -394,31 +394,40 @@ include_once dirname(__FILE__) . '/../includes/header.php';
 <!-- Section: Global Partnerships (Oxford Quality, ISSO, IAO) -->
 <section class="section text-center" style="background-color: var(--pastel-blue); border-bottom: 1px solid var(--color-border); padding: 5.5rem 0;">
   <div class="container">
-    <span style="font-size: 0.85rem; font-weight: 600; color: var(--color-gold); text-transform: uppercase; letter-spacing: 2px; display: block; margin-bottom: 0.5rem;">Global Accreditations & Partnerships</span>
+    <span style="font-size: 0.85rem; font-weight: 600; color: var(--color-gold); text-transform: uppercase; letter-spacing: 2px; display: block; margin-bottom: 0.5rem;">Global Partnerships & Quality Associations</span>
     <h2 style="font-size: 2.25rem; color: var(--color-navy); margin-bottom: 3.5rem; font-family: var(--font-primary); font-weight: 700;">Recognised & Benchmarked Globally</h2>
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem;">
-      <!-- Card 1: Oxford Quality -->
-      <div class="card" style="padding: 2.5rem 2rem; background-color: var(--color-white); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); border-top: 4px solid var(--color-teal); text-align: left; display: flex; flex-direction: column; gap: 1rem; border-left: none;">
-        <div style="font-size: 2.5rem; line-height: 1;">🎓</div>
-        <h3 style="font-size: 1.3rem; color: var(--color-navy); font-family: var(--font-primary); font-weight: 700; margin: 0;">Oxford Quality</h3>
-        <p style="color: var(--color-muted); font-size: 0.9rem; line-height: 1.6; margin: 0;">
-          Zuvio Global School collaborates with Oxford University Press to deliver top-tier education materials. [Placeholder: Approved wording pending]
-        </p>
-      </div>
-      <!-- Card 2: ISSO -->
+      <!-- Card 1: ISSO -->
       <div class="card" style="padding: 2.5rem 2rem; background-color: var(--color-white); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); border-top: 4px solid var(--color-gold); text-align: left; display: flex; flex-direction: column; gap: 1rem; border-left: none;">
-        <div style="font-size: 2.5rem; line-height: 1;">🌍</div>
-        <h3 style="font-size: 1.3rem; color: var(--color-navy); font-family: var(--font-primary); font-weight: 700; margin: 0;">ISSO Partnership</h3>
+        <div style="height: 55px; display: flex; align-items: center; margin-bottom: 0.5rem;">
+          <img src="/assets/images/isso-logo.png" alt="ISSO Logo" style="height: 100%; max-width: 100%; object-fit: contain;">
+        </div>
+        <h3 style="font-size: 1.25rem; color: var(--color-navy); font-family: var(--font-primary); font-weight: 700; margin: 0;">ISSO — International Schools Sports Organisation</h3>
+        <h4 style="font-size: 0.9rem; color: var(--color-teal); font-family: var(--font-secondary); font-weight: 600; margin: 0;">Building Champions Beyond the Classroom</h4>
         <p style="color: var(--color-muted); font-size: 0.9rem; line-height: 1.6; margin: 0;">
-          Ensuring our digital homeschooling delivery meets globally benchmarked standards for learning development. [Placeholder: Approved wording pending]
+          Through its association with ISSO, Zuvio aims to provide learners access to a structured school-sports ecosystem that promotes competition, teamwork, discipline, resilience and sporting excellence. ISSO connects international-curriculum schools and student-athletes through organised multi-sport opportunities and competitive pathways.
         </p>
       </div>
-      <!-- Card 3: IAO -->
+      <!-- Card 2: IAO -->
       <div class="card" style="padding: 2.5rem 2rem; background-color: var(--color-white); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); border-top: 4px solid var(--color-teal); text-align: left; display: flex; flex-direction: column; gap: 1rem; border-left: none;">
-        <div style="font-size: 2.5rem; line-height: 1;">🏅</div>
-        <h3 style="font-size: 1.3rem; color: var(--color-navy); font-family: var(--font-primary); font-weight: 700; margin: 0;">IAO Accreditation</h3>
+        <div style="height: 55px; display: flex; align-items: center; margin-bottom: 0.5rem;">
+          <img src="/assets/images/iao-logo.png" alt="IAO Logo" style="height: 100%; max-width: 100%; object-fit: contain;">
+        </div>
+        <h3 style="font-size: 1.25rem; color: var(--color-navy); font-family: var(--font-primary); font-weight: 700; margin: 0;">IAO — International Accreditation Organization</h3>
+        <h4 style="font-size: 0.9rem; color: var(--color-teal); font-family: var(--font-secondary); font-weight: 600; margin: 0;">Committed to Global Quality Standards</h4>
         <p style="color: var(--color-muted); font-size: 0.9rem; line-height: 1.6; margin: 0;">
-          Accredited by the International Accreditation Organization, verifying our institutional quality and curriculum integrity. [Placeholder: Approved wording pending]
+          Zuvio’s association with IAO reflects our focus on quality, continuous improvement and internationally benchmarked educational practices. IAO provides quality-assurance and accreditation services to educational institutions, including online and distance-learning providers.
+        </p>
+      </div>
+      <!-- Card 3: Oxford Quality -->
+      <div class="card" style="padding: 2.5rem 2rem; background-color: var(--color-white); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); border-top: 4px solid var(--color-gold); text-align: left; display: flex; flex-direction: column; gap: 1rem; border-left: none;">
+        <div style="height: 55px; display: flex; align-items: center; margin-bottom: 0.5rem;">
+          <img src="/assets/images/oxford-logo.png" alt="Oxford Quality Logo" style="height: 100%; max-width: 100%; object-fit: contain;">
+        </div>
+        <h3 style="font-size: 1.25rem; color: var(--color-navy); font-family: var(--font-primary); font-weight: 700; margin: 0;">Oxford Quality</h3>
+        <h4 style="font-size: 0.9rem; color: var(--color-teal); font-family: var(--font-secondary); font-weight: 600; margin: 0;">Powered by the Excellence of Oxford University Press</h4>
+        <p style="color: var(--color-muted); font-size: 0.9rem; line-height: 1.6; margin: 0;">
+          As part of the Oxford Quality community, Zuvio strengthens learning through high-quality educational resources, teacher professional development and globally connected learning opportunities. Oxford Quality is an Oxford University Press programme designed to support institutions committed to continuously developing their teaching, learning methods and resources.
         </p>
       </div>
     </div>
