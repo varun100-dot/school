@@ -210,9 +210,12 @@ include dirname(__FILE__) . '/header.php';
   </div>
 
   <?php if ($migration_needed): ?>
-    <div style="background-color: #FEF3C7; border-left: 4px solid #D97706; padding: 0.75rem 1rem; border-radius: var(--radius-sm); color: #92400E; font-size: 0.85rem; margin-bottom: 1.5rem; font-weight: 500; line-height: 1.5;">
-      ⚠️ Table Missing: The database table <code>announcements</code> does not exist yet. Running in simulated preview mode.<br>
-      To enable live database storage, please execute the migration file on your SQL server: <code>database/migrations/phase4_announcements.sql</code>.
+    <div style="background-color: #FEF3C7; border-left: 4px solid #D97706; padding: 1rem 1.25rem; border-radius: var(--radius-sm); color: #92400E; font-size: 0.85rem; margin-bottom: 1.5rem; font-weight: 500; line-height: 1.6; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+      <div>
+        <strong>⚠️ Database Table Missing:</strong> The database table <code>announcements</code> does not exist yet. Running in simulated preview mode.<br>
+        To enable live database storage, you can run the SQL migration script using the button on the right.
+      </div>
+      <a href="/admin/migrate.php" class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.8rem; background-color: var(--color-gold); border-color: var(--color-gold); color: var(--color-navy-dark); font-weight: 700; text-decoration: none; border-radius: var(--radius-sm);">Run Migration Now</a>
     </div>
   <?php elseif (!$db): ?>
     <div style="background-color: #FEF3C7; border-left: 4px solid #D97706; padding: 0.75rem 1rem; border-radius: var(--radius-sm); color: #92400E; font-size: 0.85rem; margin-bottom: 1.5rem; font-weight: 500;">
@@ -220,7 +223,11 @@ include dirname(__FILE__) . '/header.php';
     </div>
   <?php endif; ?>
 
-  <?php if ($msg === 'added'): ?>
+  <?php if ($msg === 'migrated_success'): ?>
+    <div style="background-color: #D1FAE5; border-left: 4px solid var(--color-success); padding: 0.75rem 1rem; border-radius: var(--radius-sm); color: #065F46; font-size: 0.85rem; margin-bottom: 1.5rem;">
+      Database migrated successfully! Table <code>announcements</code> has been created and populated.
+    </div>
+  <?php elseif ($msg === 'added'): ?>
     <div style="background-color: #D1FAE5; border-left: 4px solid var(--color-success); padding: 0.75rem 1rem; border-radius: var(--radius-sm); color: #065F46; font-size: 0.85rem; margin-bottom: 1.5rem;">
       Announcement added successfully!
     </div>

@@ -59,6 +59,11 @@ if (strpos($route, 'admin') === 0) {
             $page_slug = 'admin-announcements';
             include dirname(__FILE__) . '/admin/announcements.php';
             break;
+        case 'migrate':
+        case 'migrate.php':
+            $page_slug = 'admin-migrate';
+            include dirname(__FILE__) . '/admin/migrate.php';
+            break;
         case 'enquiries':
             $page_slug = 'admin-enquiries';
             include dirname(__FILE__) . '/admin/enquiries.php';
