@@ -460,11 +460,14 @@ include_once dirname(__FILE__) . '/../includes/header.php';
       <!-- Card 2: IAO -->
       <div class="card quality-association-card iao-accreditation-card" style="padding: 2.5rem 2rem; background-color: var(--color-white); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); border-top: 4px solid var(--color-teal); text-align: left; display: flex; flex-direction: column; gap: 1rem; border-left: none;">
         <div class="quality-association-logo-container">
-           <a href="https://www.iao.org/India-Delhi/Zuvio-Global-School" target="_blank" rel="noopener noreferrer" class="iao-seal-link">
+          <img src="/assets/images/iao-logo.png" alt="IAO Logo" class="quality-association-logo iao-main-logo">
+        </div>
+        <div class="iao-accreditation-seal-container">
+          <span class="iao-accreditation-label">Fully Accredited Member</span>
+          <a href="https://www.iao.org/India-Delhi/Zuvio-Global-School" target="_blank" rel="noopener noreferrer" class="iao-seal-link">
             <img src="https://www.iao.org/assets/images/email/seal/iao-seal.png" alt="International Accreditation Organization - IAO Fully Accredited Member" class="iao-accreditation-seal">
           </a>
         </div>
-
         <h3 style="font-size: 1.25rem; color: var(--color-navy); font-family: var(--font-primary); font-weight: 700; margin: 0;">IAO — International Accreditation Organization</h3>
         <h4 style="font-size: 0.9rem; color: var(--color-teal); font-family: var(--font-secondary); font-weight: 600; margin: 0;">Committed to Global Quality Standards</h4>
         <p style="color: var(--color-muted); font-size: 0.9rem; line-height: 1.6; margin: 0;">
@@ -858,6 +861,10 @@ include_once dirname(__FILE__) . '/../includes/header.php';
     width: auto;
     height: auto;
     object-fit: contain;
+  }
+  .iao-main-logo {
+    transform: scale(1.35);
+    transform-origin: left center;
   }
   
   /* IAO Accreditation Seal */
