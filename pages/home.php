@@ -170,8 +170,8 @@ if (empty($features)) {
             'border_color' => 'rgba(217, 70, 239, 0.2)'
         ],
         [
-            'title' => 'Inclusive Learning',
-            'description' => 'A supportive environment with a special focus on special learners. [Placeholder: Client approved line pending]',
+            'title' => 'Futuristic Learning',
+            'description' => 'Empowering learners with future-ready skills, technology, creativity, and critical thinking to thrive in an ever-changing world.',
             'bg_color' => 'var(--pastel-blue)',
             'border_color' => 'rgba(10, 137, 152, 0.2)'
         ],
@@ -194,8 +194,9 @@ if (empty($features)) {
     foreach ($features as $idx => &$feat) {
         $feat['bg_color'] = $colors[$idx % count($colors)];
         $feat['border_color'] = $borders[$idx % count($borders)];
-        if ($feat['title'] === 'Inclusive Learning') {
-            $feat['description'] = 'A supportive environment with a special focus on special learners. [Placeholder: Client approved line pending]';
+        if ($feat['title'] === 'Inclusive Learning' || $feat['title'] === 'Futuristic Learning') {
+            $feat['title'] = 'Futuristic Learning';
+            $feat['description'] = 'Empowering learners with future-ready skills, technology, creativity, and critical thinking to thrive in an ever-changing world.';
         }
     }
 }
@@ -459,14 +460,11 @@ include_once dirname(__FILE__) . '/../includes/header.php';
       <!-- Card 2: IAO -->
       <div class="card quality-association-card iao-accreditation-card" style="padding: 2.5rem 2rem; background-color: var(--color-white); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); border-top: 4px solid var(--color-teal); text-align: left; display: flex; flex-direction: column; gap: 1rem; border-left: none;">
         <div class="quality-association-logo-container">
-          <img src="/assets/images/iao-logo.png" alt="IAO Logo" class="quality-association-logo">
-        </div>
-        <div class="iao-accreditation-seal-container">
-          <span class="iao-accreditation-label">Fully Accredited Member</span>
-          <a href="https://www.iao.org/India-Delhi/Zuvio-Global-School" target="_blank" rel="noopener noreferrer" class="iao-seal-link">
+           <a href="https://www.iao.org/India-Delhi/Zuvio-Global-School" target="_blank" rel="noopener noreferrer" class="iao-seal-link">
             <img src="https://www.iao.org/assets/images/email/seal/iao-seal.png" alt="International Accreditation Organization - IAO Fully Accredited Member" class="iao-accreditation-seal">
           </a>
         </div>
+
         <h3 style="font-size: 1.25rem; color: var(--color-navy); font-family: var(--font-primary); font-weight: 700; margin: 0;">IAO — International Accreditation Organization</h3>
         <h4 style="font-size: 0.9rem; color: var(--color-teal); font-family: var(--font-secondary); font-weight: 600; margin: 0;">Committed to Global Quality Standards</h4>
         <p style="color: var(--color-muted); font-size: 0.9rem; line-height: 1.6; margin: 0;">
