@@ -446,9 +446,9 @@ include_once dirname(__FILE__) . '/../includes/header.php';
     <h2 style="font-size: 2.25rem; color: var(--color-navy); margin-bottom: 3.5rem; font-family: var(--font-primary); font-weight: 700;">Recognised & Benchmarked Globally</h2>
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem;">
       <!-- Card 1: ISSO -->
-      <div class="card" style="padding: 2.5rem 2rem; background-color: var(--color-white); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); border-top: 4px solid var(--color-gold); text-align: left; display: flex; flex-direction: column; gap: 1rem; border-left: none;">
-        <div style="height: 55px; display: flex; align-items: center; margin-bottom: 0.5rem;">
-          <img src="/assets/images/isso-logo.png" alt="ISSO Logo" style="height: 100%; max-width: 100%; object-fit: contain;">
+      <div class="card quality-association-card" style="padding: 2.5rem 2rem; background-color: var(--color-white); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); border-top: 4px solid var(--color-gold); text-align: left; display: flex; flex-direction: column; gap: 1rem; border-left: none;">
+        <div class="quality-association-logo-container">
+          <img src="/assets/images/isso-logo.png" alt="ISSO Logo" class="quality-association-logo">
         </div>
         <h3 style="font-size: 1.25rem; color: var(--color-navy); font-family: var(--font-primary); font-weight: 700; margin: 0;">ISSO — International Schools Sports Organisation</h3>
         <h4 style="font-size: 0.9rem; color: var(--color-teal); font-family: var(--font-secondary); font-weight: 600; margin: 0;">Building Champions Beyond the Classroom</h4>
@@ -457,9 +457,15 @@ include_once dirname(__FILE__) . '/../includes/header.php';
         </p>
       </div>
       <!-- Card 2: IAO -->
-      <div class="card" style="padding: 2.5rem 2rem; background-color: var(--color-white); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); border-top: 4px solid var(--color-teal); text-align: left; display: flex; flex-direction: column; gap: 1rem; border-left: none;">
-        <div style="height: 55px; display: flex; align-items: center; margin-bottom: 0.5rem;">
-          <img src="/assets/images/iao-logo.png" alt="IAO Logo" style="height: 100%; max-width: 100%; object-fit: contain;">
+      <div class="card quality-association-card iao-accreditation-card" style="padding: 2.5rem 2rem; background-color: var(--color-white); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); border-top: 4px solid var(--color-teal); text-align: left; display: flex; flex-direction: column; gap: 1rem; border-left: none;">
+        <div class="quality-association-logo-container">
+          <img src="/assets/images/iao-logo.png" alt="IAO Logo" class="quality-association-logo">
+        </div>
+        <div class="iao-accreditation-seal-container">
+          <span class="iao-accreditation-label">Fully Accredited Member</span>
+          <a href="https://www.iao.org/India-Delhi/Zuvio-Global-School" target="_blank" rel="noopener noreferrer" class="iao-seal-link">
+            <img src="https://www.iao.org/assets/images/email/seal/iao-seal.png" alt="International Accreditation Organization - IAO Fully Accredited Member" class="iao-accreditation-seal">
+          </a>
         </div>
         <h3 style="font-size: 1.25rem; color: var(--color-navy); font-family: var(--font-primary); font-weight: 700; margin: 0;">IAO — International Accreditation Organization</h3>
         <h4 style="font-size: 0.9rem; color: var(--color-teal); font-family: var(--font-secondary); font-weight: 600; margin: 0;">Committed to Global Quality Standards</h4>
@@ -468,9 +474,9 @@ include_once dirname(__FILE__) . '/../includes/header.php';
         </p>
       </div>
       <!-- Card 3: Oxford Quality -->
-      <div class="card" style="padding: 2.5rem 2rem; background-color: var(--color-white); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); border-top: 4px solid var(--color-gold); text-align: left; display: flex; flex-direction: column; gap: 1rem; border-left: none;">
-        <div style="height: 55px; display: flex; align-items: center; margin-bottom: 0.5rem;">
-          <img src="/assets/images/oxford-logo.png" alt="Oxford Quality Logo" style="height: 100%; max-width: 100%; object-fit: contain;">
+      <div class="card quality-association-card" style="padding: 2.5rem 2rem; background-color: var(--color-white); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); border-top: 4px solid var(--color-gold); text-align: left; display: flex; flex-direction: column; gap: 1rem; border-left: none;">
+        <div class="quality-association-logo-container">
+          <img src="/assets/images/oxford-logo.png" alt="Oxford Quality Logo" class="quality-association-logo">
         </div>
         <h3 style="font-size: 1.25rem; color: var(--color-navy); font-family: var(--font-primary); font-weight: 700; margin: 0;">Oxford Quality</h3>
         <h4 style="font-size: 0.9rem; color: var(--color-teal); font-family: var(--font-secondary); font-weight: 600; margin: 0;">Powered by the Excellence of Oxford University Press</h4>
@@ -838,6 +844,71 @@ include_once dirname(__FILE__) . '/../includes/header.php';
     }
     .why-zuvio-blocks {
       grid-template-columns: 1fr !important; /* Single column stacking */
+    }
+  }
+  /* Quality Associations Logos */
+  .quality-association-logo-container {
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-bottom: 0.5rem;
+  }
+  .quality-association-logo {
+    max-height: 100%;
+    max-width: 220px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+  }
+  
+  /* IAO Accreditation Seal */
+  .iao-accreditation-seal-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+  .iao-accreditation-label {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--color-teal);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .iao-seal-link {
+    display: inline-block;
+  }
+  .iao-accreditation-seal {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+  }
+
+  @media (max-width: 1024px) {
+    .quality-association-logo-container {
+      height: 100px;
+    }
+    .quality-association-logo {
+      max-width: 180px;
+    }
+    .iao-accreditation-seal {
+      width: 70px;
+      height: 70px;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .quality-association-logo-container {
+      height: 90px;
+    }
+    .quality-association-logo {
+      max-width: 160px;
+    }
+    .iao-accreditation-seal {
+      width: 60px;
+      height: 60px;
     }
   }
 </style>
