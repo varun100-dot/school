@@ -464,9 +464,6 @@ include_once dirname(__FILE__) . '/../includes/header.php';
             <img src="/assets/images/iao-logo.png" alt="International Accreditation Organization - IAO Fully Accredited Member" class="quality-association-logo iao-main-logo">
           </a>
         </div>
-        <div class="iao-accreditation-seal-container">
-          <span class="iao-accreditation-label">Fully Accredited Member</span>
-        </div>
         <h3 style="font-size: 1.25rem; color: var(--color-navy); font-family: var(--font-primary); font-weight: 700; margin: 0;">IAO — International Accreditation Organization</h3>
         <h4 style="font-size: 0.9rem; color: var(--color-teal); font-family: var(--font-secondary); font-weight: 600; margin: 0;">Committed to Global Quality Standards</h4>
         <p style="color: var(--color-muted); font-size: 0.9rem; line-height: 1.6; margin: 0;">
@@ -860,9 +857,7 @@ include_once dirname(__FILE__) . '/../includes/header.php';
     width: auto;
     height: auto;
     object-fit: contain;
-  }
-  .iao-main-logo {
-    transform: scale(1.35);
+    transform: scale(1.25);
     transform-origin: left center;
   }
   
