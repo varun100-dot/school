@@ -73,7 +73,8 @@ $social_linkedin = get_setting('social_linkedin', '#');
             <a href="<?php echo h($social_linkedin); ?>" target="_blank" rel="noopener" class="social-icon-btn" aria-label="LinkedIn">LN</a>
           <?php endif; ?>
         </div>
-        <div style="margin-top: 0.5rem;">
+        <div style="margin-top: 0.75rem;">
+          <h4 class="footer-title" style="font-size: 1.15rem; margin-bottom: 0.85rem;">Accreditation</h4>
           <div style="background-color: #fff!important;padding: 5px!important;width: 120px!important;height: 120px!important;border-radius: 50%!important;box-shadow: 0 0 10px 5px rgba(0,0,0,.1) !important;z-index: 999!important;">
             <a href="https://www.iao.org/India-Delhi/Zuvio-Global-School" target="_blank" rel="noopener" title="International Accreditation Organization - IAO">
               <img src="https://www.iao.org/assets/images/email/seal/iao-seal.png" alt="International Accreditation Organization - IAO" width="110" height="110" style="width: 100%!important;height: 100%!important;display: block;">
