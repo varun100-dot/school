@@ -178,13 +178,62 @@ $phone_number = get_setting('phone', '7827262956');
       color: var(--color-navy);
     }
 
+    .header-brand-group {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+    }
+    .header-iao-badge {
+      background-color: #fff !important;
+      padding: 3px !important;
+      width: 58px !important;
+      height: 58px !important;
+      border-radius: 50% !important;
+      box-shadow: 0 0 8px 3px rgba(0,0,0,.08) !important;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: transform 0.2s ease;
+    }
+    .header-iao-badge:hover {
+      transform: scale(1.06);
+    }
+    .header-iao-badge a {
+      display: flex;
+      width: 100%;
+      height: 100%;
+      align-items: center;
+      justify-content: center;
+    }
+    .header-iao-badge img {
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: contain;
+      display: block;
+    }
+
+    @media (max-width: 1150px) {
+      .desktop-nav {
+        gap: 1.25rem;
+      }
+    }
+
     @media (max-width: 900px) {
       .site-header {
         position: sticky !important;
         top: 0;
       }
       .header-logo-img {
-        height: 52px;
+        height: 48px;
+      }
+      .header-brand-group {
+        gap: 0.75rem;
+      }
+      .header-iao-badge {
+        width: 44px !important;
+        height: 44px !important;
+        padding: 2px !important;
       }
       .desktop-nav {
         display: none;
@@ -200,9 +249,16 @@ $phone_number = get_setting('phone', '7827262956');
   <!-- Header Section -->
   <header class="site-header">
     <div class="header-container">
-      <a href="/">
-        <img src="<?php echo h($logo_path); ?>" alt="Zuvio Global School" class="header-logo-img">
-      </a>
+      <div class="header-brand-group">
+        <a href="/">
+          <img src="<?php echo h($logo_path); ?>" alt="Zuvio Global School" class="header-logo-img">
+        </a>
+        <div class="header-iao-badge">
+          <a href="https://www.iao.org/India-Delhi/Zuvio-Global-School" target="_blank" rel="noopener" title="International Accreditation Organization - IAO">
+            <img src="https://www.iao.org/assets/images/email/seal/iao-seal.png" alt="International Accreditation Organization - IAO" width="55" height="55">
+          </a>
+        </div>
+      </div>
       
       <!-- Desktop Navigation Menu -->
       <nav class="desktop-nav">
