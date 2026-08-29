@@ -2,6 +2,7 @@
 // Zuvio Global School - Admin Login Portal
 require_once dirname(__FILE__) . '/../includes/db.php';
 require_once dirname(__FILE__) . '/../includes/helper.php';
+require_once dirname(__FILE__) . '/../includes/auth.php';
 
 safe_session_start();
 
@@ -53,8 +54,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
                     $perm_stmt->execute([$user['role_id']]);
                     $_SESSION['permissions'] = $perm_stmt->fetchAll(PDO::FETCH_COLUMN);
                     
-                    // Log login action (errors silently ignored)
-                    log_audit('USER_LOGIN', 'auth', 'users', $user['id'], null, null, 'User logged in successfully');
+                    // Log login action (safely guarded)
+                    if (function_exists('log_audit')) {
+                        log_audit('USER_LOGIN', 'auth', 'users', $user['id'], null, null, 'User logged in successfully');
+                    }
                     
                     // Use meta-refresh redirect to bypass LiteSpeed caching and avoid
                     // session_write_close() conflicts on shared PHP handlers.
