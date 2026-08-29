@@ -70,7 +70,7 @@ $phone_number = get_setting('phone', '7827262956');
       z-index: 1000;
       background-color: var(--color-white);
       box-shadow: var(--shadow-sm);
-      border-bottom: 1px solid var(--color-border);
+      border-bottom: none;
       font-family: var(--font-secondary);
       transition: padding 0.3s ease;
     }
@@ -310,23 +310,23 @@ $phone_number = get_setting('phone', '7827262956');
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
       </button>
     </div>
-  </header>
 
-  <!-- Accreditation Ribbon Bar -->
-  <div class="accreditation-ribbon">
-    <div class="ribbon-container">
-      <div class="ribbon-content">
-        <span class="ribbon-badge-seal">
-          <img src="https://www.iao.org/assets/images/email/seal/iao-seal.png" alt="IAO Seal" width="26" height="26">
-        </span>
-        <span class="ribbon-text"><strong>IAO</strong> — International Accreditation Organization</span>
+    <!-- Accreditation Ribbon Bar -->
+    <div class="accreditation-ribbon">
+      <div class="ribbon-container">
+        <div class="ribbon-content">
+          <span class="ribbon-badge-seal">
+            <img src="https://www.iao.org/assets/images/email/seal/iao-seal.png" alt="IAO Seal" width="26" height="26">
+          </span>
+          <span class="ribbon-text"><strong>IAO</strong> — International Accreditation Organization</span>
+        </div>
+        <a href="https://www.iao.org/India-Delhi/Zuvio-Global-School" target="_blank" rel="noopener" class="ribbon-btn" title="View IAO Accreditation Certificate">
+          View Certificate
+          <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 5px;"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+        </a>
       </div>
-      <a href="https://www.iao.org/India-Delhi/Zuvio-Global-School" target="_blank" rel="noopener" class="ribbon-btn" title="View IAO Accreditation Certificate">
-        View Certificate
-        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 5px;"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
-      </a>
     </div>
-  </div>
+  </header>
 
   <!-- Mobile Drawer Overlay -->
   <div class="mobile-drawer-overlay" id="mobileDrawerOverlay" onclick="toggleMobileMenu(false)"></div>
