@@ -178,45 +178,80 @@ $phone_number = get_setting('phone', '7827262956');
       color: var(--color-navy);
     }
 
-    .header-brand-group {
-      display: flex;
-      align-items: center;
-      gap: 1.25rem;
+    /* Accreditation Ribbon Bar */
+    .accreditation-ribbon {
+      background: linear-gradient(90deg, #031B42 0%, #062B63 50%, #083777 100%);
+      color: #ffffff;
+      border-bottom: 1px solid rgba(217, 164, 65, 0.35);
+      font-family: var(--font-secondary);
+      padding: 0.45rem 0;
+      position: relative;
+      z-index: 990;
+      box-shadow: 0 2px 8px rgba(3, 27, 66, 0.08);
     }
-    .header-iao-badge {
-      background-color: #fff !important;
-      padding: 3px !important;
-      width: 58px !important;
-      height: 58px !important;
-      border-radius: 50% !important;
-      box-shadow: 0 0 8px 3px rgba(0,0,0,.08) !important;
+    .ribbon-container {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0 1.5rem;
       display: flex;
       align-items: center;
       justify-content: center;
-      flex-shrink: 0;
-      transition: transform 0.2s ease;
+      gap: 1.25rem;
+      flex-wrap: wrap;
     }
-    .header-iao-badge:hover {
-      transform: scale(1.06);
-    }
-    .header-iao-badge a {
+    .ribbon-content {
       display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .ribbon-badge-seal {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #ffffff;
+      border-radius: 50%;
+      padding: 2px;
+      width: 26px;
+      height: 26px;
+      box-shadow: 0 0 6px rgba(0,0,0,0.25);
+      flex-shrink: 0;
+    }
+    .ribbon-badge-seal img {
       width: 100%;
       height: 100%;
-      align-items: center;
-      justify-content: center;
-    }
-    .header-iao-badge img {
-      width: 100% !important;
-      height: 100% !important;
       object-fit: contain;
       display: block;
     }
-
-    @media (max-width: 1150px) {
-      .desktop-nav {
-        gap: 1.25rem;
-      }
+    .ribbon-text {
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.3px;
+      color: #F7F9FC;
+    }
+    .ribbon-text strong {
+      color: var(--color-gold);
+      font-weight: 700;
+    }
+    .ribbon-btn {
+      display: inline-flex;
+      align-items: center;
+      background-color: var(--color-gold);
+      color: var(--color-navy-dark);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.25rem 0.85rem;
+      border-radius: 20px;
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      transition: all var(--transition-fast);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    }
+    .ribbon-btn:hover {
+      background-color: #ffffff;
+      color: var(--color-navy);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.25);
     }
 
     @media (max-width: 900px) {
@@ -225,21 +260,24 @@ $phone_number = get_setting('phone', '7827262956');
         top: 0;
       }
       .header-logo-img {
-        height: 48px;
-      }
-      .header-brand-group {
-        gap: 0.75rem;
-      }
-      .header-iao-badge {
-        width: 44px !important;
-        height: 44px !important;
-        padding: 2px !important;
+        height: 52px;
       }
       .desktop-nav {
         display: none;
       }
       .mobile-menu-trigger {
         display: block;
+      }
+      .accreditation-ribbon {
+        padding: 0.45rem 0;
+      }
+      .ribbon-container {
+        gap: 0.6rem;
+        justify-content: center;
+        text-align: center;
+      }
+      .ribbon-text {
+        font-size: 0.78rem;
       }
     }
   </style>
@@ -249,16 +287,9 @@ $phone_number = get_setting('phone', '7827262956');
   <!-- Header Section -->
   <header class="site-header">
     <div class="header-container">
-      <div class="header-brand-group">
-        <a href="/">
-          <img src="<?php echo h($logo_path); ?>" alt="Zuvio Global School" class="header-logo-img">
-        </a>
-        <div class="header-iao-badge">
-          <a href="https://www.iao.org/India-Delhi/Zuvio-Global-School" target="_blank" rel="noopener" title="International Accreditation Organization - IAO">
-            <img src="https://www.iao.org/assets/images/email/seal/iao-seal.png" alt="International Accreditation Organization - IAO" width="55" height="55">
-          </a>
-        </div>
-      </div>
+      <a href="/">
+        <img src="<?php echo h($logo_path); ?>" alt="Zuvio Global School" class="header-logo-img">
+      </a>
       
       <!-- Desktop Navigation Menu -->
       <nav class="desktop-nav">
@@ -280,6 +311,22 @@ $phone_number = get_setting('phone', '7827262956');
       </button>
     </div>
   </header>
+
+  <!-- Accreditation Ribbon Bar -->
+  <div class="accreditation-ribbon">
+    <div class="ribbon-container">
+      <div class="ribbon-content">
+        <span class="ribbon-badge-seal">
+          <img src="https://www.iao.org/assets/images/email/seal/iao-seal.png" alt="IAO Seal" width="26" height="26">
+        </span>
+        <span class="ribbon-text"><strong>IAO</strong> — International Accreditation Organization</span>
+      </div>
+      <a href="https://www.iao.org/India-Delhi/Zuvio-Global-School" target="_blank" rel="noopener" class="ribbon-btn" title="View IAO Accreditation Certificate">
+        View Certificate
+        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 5px;"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+      </a>
+    </div>
+  </div>
 
   <!-- Mobile Drawer Overlay -->
   <div class="mobile-drawer-overlay" id="mobileDrawerOverlay" onclick="toggleMobileMenu(false)"></div>
