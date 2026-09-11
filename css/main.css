@@ -966,94 +966,410 @@ button, input, select, textarea {
 }
 .hero-stage-grid {
   display: grid;
-  grid-template-columns: minmax(0, 7fr) minmax(0, 3fr);
-  gap: 2.5rem;
-  align-items: start;
+  grid-template-columns: minmax(0, 1.85fr) minmax(0, 1.15fr);
+  gap: 2rem;
+  align-items: stretch;
 }
-.hero-banner-card {
+
+/* Left Column: Visual Banner Card */
+.hero-banner-column {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.hero-banner-visual-card {
+  background-color: #FFFFFF;
+  border-radius: 16px;
+  border: 1.5px solid rgba(6, 43, 99, 0.16) !important;
+  box-shadow: 0 10px 30px rgba(6, 43, 99, 0.08);
+  overflow: hidden;
   position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Top Yellow Ribbon */
+.banner-top-ribbon {
+  background: linear-gradient(90deg, #FBBF24 0%, #F59E0B 100%);
+  color: #062B63;
+  font-family: var(--font-secondary);
+  font-weight: 800;
+  font-size: 0.95rem;
+  letter-spacing: 0.5px;
+  text-align: center;
+  padding: 0.55rem 1.25rem;
+  border-bottom-left-radius: 18px;
+  border-bottom-right-radius: 18px;
+  width: 90%;
+  margin: 0 auto;
+  box-shadow: 0 4px 14px rgba(245, 158, 11, 0.25);
+  text-transform: uppercase;
   z-index: 5;
 }
-.hero-lead-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  background-color: var(--color-gold);
-  color: var(--color-navy-dark);
-  padding: 0.35rem 0.9rem;
-  border-radius: 30px;
-  font-size: 0.8rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-bottom: 1.25rem;
-}
-.hero-title-main {
-  font-size: 3.15rem;
-  color: var(--color-navy-dark);
-  font-family: var(--font-primary);
-  font-weight: 700;
-  line-height: 1.15;
-  margin-bottom: 1.25rem;
-}
-.hero-desc-main {
-  font-size: 1.1rem;
-  color: var(--color-text);
-  line-height: 1.7;
-  margin-bottom: 2rem;
-  max-width: 650px;
-}
-.hero-actions-row {
+
+/* Banner Slides */
+.banner-slides-track {
+  position: relative;
+  min-height: 380px;
   display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
 }
-.hero-slide-pane {
+
+.hero-banner-slide {
   display: none;
-  animation: fadeInHero 0.4s ease forwards;
+  width: 100%;
+  animation: fadeInBanner 0.4s ease forwards;
 }
-.hero-slide-pane.active {
-  display: block;
+
+.hero-banner-slide.active {
+  display: flex;
 }
-@keyframes fadeInHero {
-  from { opacity: 0; transform: translateY(6px); }
+
+@keyframes fadeInBanner {
+  from { opacity: 0; transform: translateY(4px); }
   to { opacity: 1; transform: translateY(0); }
 }
-.hero-carousel-dot {
-  width: 10px;
-  height: 10px;
+
+.banner-slide-inner {
+  display: flex;
+  width: 100%;
+  min-height: 380px;
+}
+
+.banner-photo-side {
+  flex: 0 0 42%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem 1rem 1.5rem 2rem;
+  position: relative;
+}
+
+.banner-circle-frame {
+  width: 215px;
+  height: 215px;
+  border-radius: 50%;
+  border: 4px solid #FFFFFF;
+  box-shadow: 0 0 0 4px #0284C7, 0 10px 25px rgba(6, 43, 99, 0.15);
+  overflow: hidden;
+  position: relative;
+  z-index: 2;
+  background-color: #F0F7FF;
+}
+
+.banner-circle-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.banner-content-side {
+  flex: 1;
+  background: linear-gradient(135deg, #0284C7 0%, #0369A1 100%);
+  border-top-left-radius: 130px;
+  border-bottom-left-radius: 130px;
+  padding: 2.25rem 2rem 2.25rem 3.25rem;
+  color: #FFFFFF;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  background-image: radial-gradient(circle at 85% 20%, rgba(255, 255, 255, 0.15) 0%, transparent 60%), linear-gradient(135deg, #0284C7 0%, #0369A1 100%);
+}
+
+.banner-headline {
+  color: #FFFFFF;
+  font-family: var(--font-primary);
+  margin-bottom: 1.25rem;
+  line-height: 1.1;
+}
+
+.banner-headline-sub {
+  font-size: 1.5rem;
+  font-weight: 500;
+  opacity: 0.95;
+  display: inline;
+}
+
+.banner-headline-main {
+  font-size: 2.75rem;
+  font-weight: 800;
+  display: block;
+  letter-spacing: -0.5px;
+}
+
+.banner-bullets {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.banner-bullet-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #FFFFFF;
+}
+
+.banner-bullet-diamond {
+  color: #FBBF24;
+  font-size: 0.85rem;
+}
+
+/* Banner Controls */
+.banner-nav-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(6, 43, 99, 0.12);
+  color: #062B63;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+  transition: all 0.2s ease;
+}
+
+.banner-nav-arrow:hover {
+  background: #FFFFFF;
+  color: #0284C7;
+  transform: translateY(-50%) scale(1.08);
+}
+
+.banner-nav-arrow.prev { left: 12px; }
+.banner-nav-arrow.next { right: 12px; }
+
+.banner-dots-nav {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  align-items: center;
+  padding: 0.75rem 0;
+  background: #FFFFFF;
+  border-top: 1px solid rgba(6, 43, 99, 0.06);
+}
+
+.banner-dot {
+  width: 9px;
+  height: 9px;
   border-radius: 50%;
   background-color: rgba(6, 43, 99, 0.25);
   cursor: pointer;
   transition: all 0.25s ease;
 }
-.hero-carousel-dot.active {
-  width: 28px;
+
+.banner-dot.active {
+  width: 26px;
   border-radius: 12px;
   background-color: var(--color-gold);
 }
 
-/* Hero Dedicated Enquiry Form (Standalone 30% Card) */
+/* Banner CTAs bar beneath the visual banner */
+.banner-cta-row {
+  display: flex;
+  gap: 0.85rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+/* Right Column: Standalone Counsellor Enquiry Form */
 .hero-enquiry-card {
   background-color: #FFFFFF;
-  border-radius: var(--radius-lg);
-  box-shadow: 0 12px 35px rgba(6, 43, 99, 0.12);
-  border: 1.5px solid rgba(6, 43, 99, 0.18) !important;
-  padding: 2rem 1.75rem;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(6, 43, 99, 0.08);
+  border: 1.5px solid rgba(6, 43, 99, 0.16) !important;
+  padding: 1.75rem 1.4rem;
   position: relative;
   z-index: 10;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
-.enquiry-card-header h3 {
-  font-size: 1.35rem;
-  color: var(--color-navy);
-  margin-bottom: 0.3rem;
+
+.counsellor-card-title {
+  font-size: 1.25rem;
+  color: #062B63;
+  margin-bottom: 0.2rem;
   font-family: var(--font-secondary);
-  font-weight: 700;
+  font-weight: 800;
+  text-transform: uppercase;
+  text-align: center;
+  letter-spacing: 0.5px;
 }
-.enquiry-card-header p {
-  color: var(--color-muted);
+
+.counsellor-card-sub {
+  color: #0284C7;
+  font-size: 1rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 1.15rem;
+}
+
+.counsellor-input {
+  width: 100%;
+  border: 1.5px solid #D1D5DB;
+  border-radius: 6px;
+  padding: 0.6rem 0.85rem;
+  font-size: 0.88rem;
+  color: #1F2937;
+  background-color: #FFFFFF;
+  outline: none;
+  margin-bottom: 0.65rem;
+  font-family: inherit;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.counsellor-input:focus {
+  border-color: #0284C7;
+  box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+}
+
+.counsellor-select {
+  appearance: auto;
+  cursor: pointer;
+}
+
+.counsellor-phone-group {
+  display: flex;
+  gap: 0.45rem;
+  margin-bottom: 0.65rem;
+}
+
+.counsellor-phone-prefix {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  border: 1.5px solid #D1D5DB;
+  border-radius: 6px;
+  padding: 0 0.65rem;
+  background-color: #F9FAFB;
   font-size: 0.85rem;
-  margin-bottom: 1.25rem;
+  font-weight: 600;
+  color: #374151;
+  white-space: nowrap;
+}
+
+.counsellor-phone-input {
+  margin-bottom: 0;
+  flex: 1;
+}
+
+.counsellor-captcha-group {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.counsellor-captcha-code {
+  background: #F3F4F6;
+  border: 1.5px solid #D1D5DB;
+  border-radius: 6px;
+  padding: 0.5rem 0.75rem;
+  font-family: monospace;
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: #1F2937;
+  text-decoration: line-through;
+  user-select: none;
+  background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(0,0,0,0.03) 10px, rgba(0,0,0,0.03) 20px);
+}
+
+.counsellor-captcha-refresh {
+  background: #FFFFFF;
+  border: 1.5px solid #D1D5DB;
+  border-radius: 6px;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #4B5563;
+  transition: all 0.2s ease;
+}
+
+.counsellor-captcha-refresh:hover {
+  background: #F3F4F6;
+  color: #0284C7;
+}
+
+.counsellor-captcha-input {
+  margin-bottom: 0;
+  flex: 1;
+}
+
+.counsellor-consent-label {
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-start;
+  font-size: 0.7rem;
+  color: #6B7280;
+  line-height: 1.35;
+  margin-bottom: 0.95rem;
+  cursor: pointer;
+}
+
+.counsellor-consent-label input[type="checkbox"] {
+  margin-top: 2px;
+  accent-color: #062B63;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.btn-counsellor-submit {
+  width: 100%;
+  background-color: #062B63;
+  color: #FFFFFF;
+  font-family: var(--font-secondary);
+  font-weight: 800;
+  font-size: 1rem;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  letter-spacing: 1px;
+  transition: background-color 0.2s ease, transform 0.15s ease;
+}
+
+.btn-counsellor-submit:hover {
+  background-color: #0284C7;
+}
+
+@media (max-width: 991px) {
+  .hero-stage-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  .banner-slide-inner {
+    flex-direction: column;
+  }
+  .banner-photo-side {
+    padding: 1.5rem 1rem 1rem 1rem;
+  }
+  .banner-content-side {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    padding: 1.75rem 1.5rem;
+    text-align: center;
+  }
+  .banner-bullet-item {
+    justify-content: center;
+  }
+  .banner-circle-frame {
+    width: 170px;
+    height: 170px;
+  }
 }
 
 /* Curriculum Pathways: Darker, Defined 4-Sided Card Borders & Premium Background */
@@ -1583,10 +1899,6 @@ button, input, select, textarea {
 
 /* Responsive Overrides for Phase 5 Layouts */
 @media (max-width: 1100px) {
-  .hero-stage-grid {
-    grid-template-columns: 1fr;
-    gap: 2.5rem;
-  }
   .stage-grid-4 {
     grid-template-columns: repeat(2, 1fr);
   }

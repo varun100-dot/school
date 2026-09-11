@@ -15,32 +15,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_enquiry'])) {
         $error_message = 'Security validation failed. Please refresh and try again.';
     } else {
         $parent_name = trim($_POST['parent_name'] ?? '');
-        $student_name = trim($_POST['student_name'] ?? '');
         $email = trim($_POST['email'] ?? '');
         $phone = trim($_POST['phone'] ?? '');
+        $country = trim($_POST['country'] ?? 'India');
+        $country_code = trim($_POST['country_code'] ?? '+91');
         $grade = trim($_POST['grade'] ?? '');
-        $message = trim($_POST['message'] ?? '');
+        $captcha_input = strtoupper(trim($_POST['captcha_input'] ?? ''));
+        $captcha_expected = strtoupper(trim($_POST['captcha_expected'] ?? ''));
         
         if (empty($parent_name) || empty($email) || empty($phone) || empty($grade)) {
             $form_status = 'error';
-            $error_message = 'Parent Name, Email, Phone Number, and Grade are required.';
+            $error_message = 'Full Name, Email, Mobile Number, and Class are required.';
         } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $form_status = 'error';
             $error_message = 'Please enter a valid email address.';
+        } elseif (!empty($captcha_expected) && $captcha_input !== $captcha_expected) {
+            $form_status = 'error';
+            $error_message = 'Incorrect captcha code. Please try again.';
         } else {
             try {
                 if ($db) {
                     $stmt = $db->prepare("
                         INSERT INTO `enquiries` (`parent_name`, `student_name`, `grade`, `phone`, `email`, `message`, `source`, `status_id`)
-                        VALUES (?, ?, ?, ?, ?, ?, 'Home Side Panel', 1)
+                        VALUES (?, ?, ?, ?, ?, ?, 'Talk to a School Counsellor', 1)
                     ");
                     $stmt->execute([
                         $parent_name,
-                        $student_name ?: ($parent_name . ' (Student)'),
+                        $parent_name . ' (Student)',
                         $grade,
-                        $phone,
+                        $country_code . ' ' . $phone,
                         $email,
-                        $message ?: 'Submitted via Homepage side enquiry form'
+                        'Country: ' . $country . ' | Submitted via Talk to a School Counsellor form'
                     ]);
                 }
                 $form_status = 'success';
@@ -336,137 +341,215 @@ include_once dirname(__FILE__) . '/../includes/header.php';
   <div class="container hero-stage">
     <div class="hero-stage-grid">
       
-      <!-- Left Column: 70% Hero Banner / Carousel -->
-      <div class="hero-banner-card" id="heroBannerCarousel">
-        <div class="hero-carousel-slides">
-          <!-- Slide 1: Primary Proposition (Verbatim Source Document) -->
-          <div class="hero-slide-pane active">
-            <div class="hero-lead-badge">
-              <span style="width: 8px; height: 8px; background-color: var(--color-teal); border-radius: 50%; display: inline-block;"></span>
-              100% Live Online Schooling
-            </div>
-            <h1 class="hero-title-main">Learning Without Boundaries. Growing With Purpose.</h1>
-            <p class="hero-desc-main">
-              Academic excellence meets personalised online learning. A structured, CBSE-mapped curriculum enriched with Oxford thematic learning, IBM-supported AI literacy, and caring small-group mentoring for grades K to 8.
-            </p>
-            <div class="hero-actions-row">
-              <a href="/admissions#enrol" class="btn btn-primary" style="background-color: var(--color-navy); border-color: var(--color-navy); color: #FFFFFF; font-weight: 700; padding: 0.85rem 1.8rem;">
-                Enrol Now
-              </a>
-              <a href="javascript:void(0)" onclick="openCallbackModal()" class="btn btn-primary btn-demo" style="background-color: var(--color-teal); border-color: var(--color-teal); color: #FFFFFF; font-weight: 700; padding: 0.85rem 1.8rem;">
-                Take a Demo
-              </a>
-              <a href="/assets/content/Zuvio_Beyond_Activity_Brochure_Revised_Grades_12 copy.pdf" target="_blank" class="btn btn-outline" style="border-color: var(--color-navy); color: var(--color-navy); font-weight: 600; padding: 0.85rem 1.5rem;">
-                Download Brochure &darr;
-              </a>
-            </div>
+      <!-- Left Column: Visual Banner Carousel + Primary CTAs -->
+      <div class="hero-banner-column">
+        <div class="hero-banner-visual-card" id="heroBannerVisualCard">
+          
+          <!-- Top Yellow Ribbon -->
+          <div class="banner-top-ribbon" id="heroTopRibbon">
+            ADMISSIONS OPEN FOR ACADEMIC YEAR 2026-2027
           </div>
 
-          <!-- Slide 2: Personalised Learning Paths -->
-          <div class="hero-slide-pane">
-            <div class="hero-lead-badge">
-              <span style="width: 8px; height: 8px; background-color: var(--color-gold); border-radius: 50%; display: inline-block;"></span>
-              Personalised Learning Paths
+          <!-- Carousel Slides Track -->
+          <div class="banner-slides-track">
+            
+            <!-- Slide 1: Global Standard Learning (Matching Source Reference Image) -->
+            <div class="hero-banner-slide active" data-ribbon="ADMISSIONS OPEN FOR ACADEMIC YEAR 2026-2027">
+              <div class="banner-slide-inner">
+                <div class="banner-photo-side">
+                  <div class="banner-circle-frame">
+                    <img src="/assets/images/Students learning in classroom.png" alt="Zuvio Global School Virtual Classroom">
+                  </div>
+                </div>
+                <div class="banner-content-side">
+                  <div class="banner-headline">
+                    <span class="banner-headline-sub">Global Standard</span>
+                    <span class="banner-headline-main">Learning</span>
+                  </div>
+                  <div class="banner-bullets">
+                    <div class="banner-bullet-item">
+                      <span class="banner-bullet-diamond">◆</span>
+                      <span>Virtual Learning</span>
+                    </div>
+                    <div class="banner-bullet-item">
+                      <span class="banner-bullet-diamond">◆</span>
+                      <span>Real Classroom Experience</span>
+                    </div>
+                    <div class="banner-bullet-item">
+                      <span class="banner-bullet-diamond">◆</span>
+                      <span>Recognized Affiliations & Accreditations</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-            <h2 class="hero-title-main">Classrooms That Adapt To Every Child's Pace.</h2>
-            <p class="hero-desc-main">
-              Every child learns differently. Our small-group live classrooms with a 15:1 student-teacher ratio adapt to your child’s pace, strengths, and unique potential with caring mentorship.
-            </p>
-            <div class="hero-actions-row">
-              <a href="/curriculum" class="btn btn-primary" style="background-color: var(--color-navy); border-color: var(--color-navy); color: #FFFFFF; font-weight: 700; padding: 0.85rem 1.8rem;">
-                Our Curriculum
-              </a>
-              <a href="javascript:void(0)" onclick="openCallbackModal()" class="btn btn-primary btn-demo" style="background-color: var(--color-teal); border-color: var(--color-teal); color: #FFFFFF; font-weight: 700; padding: 0.85rem 1.8rem;">
-                Take a Demo
-              </a>
-              <a href="/assets/content/Zuvio_Beyond_Activity_Brochure_Revised_Grades_12 copy.pdf" target="_blank" class="btn btn-outline" style="border-color: var(--color-navy); color: var(--color-navy); font-weight: 600; padding: 0.85rem 1.5rem;">
-                Download Brochure &darr;
-              </a>
+
+            <!-- Slide 2: Personalised Learning Pathways -->
+            <div class="hero-banner-slide" data-ribbon="100% LIVE INTERACTIVE ONLINE SCHOOLING">
+              <div class="banner-slide-inner">
+                <div class="banner-photo-side">
+                  <div class="banner-circle-frame">
+                    <img src="/assets/images/Teacher interacting with students.png" alt="Personalised Mentorship">
+                  </div>
+                </div>
+                <div class="banner-content-side">
+                  <div class="banner-headline">
+                    <span class="banner-headline-sub">Personalised</span>
+                    <span class="banner-headline-main">Pathways</span>
+                  </div>
+                  <div class="banner-bullets">
+                    <div class="banner-bullet-item">
+                      <span class="banner-bullet-diamond">◆</span>
+                      <span>15:1 Student-Teacher Ratio</span>
+                    </div>
+                    <div class="banner-bullet-item">
+                      <span class="banner-bullet-diamond">◆</span>
+                      <span>CBSE Mapped & Oxford Enriched</span>
+                    </div>
+                    <div class="banner-bullet-item">
+                      <span class="banner-bullet-diamond">◆</span>
+                      <span>Dedicated Academic Mentorship</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
+
+            <!-- Slide 3: Future Skills & Science Labs -->
+            <div class="hero-banner-slide" data-ribbon="FUTURE-READY K-8 DIGITAL SCHOOL">
+              <div class="banner-slide-inner">
+                <div class="banner-photo-side">
+                  <div class="banner-circle-frame">
+                    <img src="/assets/images/Hero image 2.png" alt="Science & Digital Labs">
+                  </div>
+                </div>
+                <div class="banner-content-side">
+                  <div class="banner-headline">
+                    <span class="banner-headline-sub">Science &</span>
+                    <span class="banner-headline-main">AI Labs</span>
+                  </div>
+                  <div class="banner-bullets">
+                    <div class="banner-bullet-item">
+                      <span class="banner-bullet-diamond">◆</span>
+                      <span>Virtual Experiments & Labs</span>
+                    </div>
+                    <div class="banner-bullet-item">
+                      <span class="banner-bullet-diamond">◆</span>
+                      <span>Coding, AI & Digital Literacy</span>
+                    </div>
+                    <div class="banner-bullet-item">
+                      <span class="banner-bullet-diamond">◆</span>
+                      <span>Global Sports Ecosystem via ISSO</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
           </div>
 
-          <!-- Slide 3: Future Skills & Science Labs -->
-          <div class="hero-slide-pane">
-            <div class="hero-lead-badge">
-              <span style="width: 8px; height: 8px; background-color: var(--color-teal); border-radius: 50%; display: inline-block;"></span>
-              Future Skills & Digital Labs
-            </div>
-            <h2 class="hero-title-main">Interactive Science, Coding & AI Literacy.</h2>
-            <p class="hero-desc-main">
-              Virtual experiments, coding logic, robotics engineering, and IBM-supported AI awareness integrated into daily schooling to empower young learners for tomorrow.
-            </p>
-            <div class="hero-actions-row">
-              <a href="/academics" class="btn btn-primary" style="background-color: var(--color-navy); border-color: var(--color-navy); color: #FFFFFF; font-weight: 700; padding: 0.85rem 1.8rem;">
-                Explore Academics
-              </a>
-              <a href="javascript:void(0)" onclick="openCallbackModal()" class="btn btn-primary btn-demo" style="background-color: var(--color-teal); border-color: var(--color-teal); color: #FFFFFF; font-weight: 700; padding: 0.85rem 1.8rem;">
-                Take a Demo
-              </a>
-              <a href="/assets/content/Zuvio_Beyond_Activity_Brochure_Revised_Grades_12 copy.pdf" target="_blank" class="btn btn-outline" style="border-color: var(--color-navy); color: var(--color-navy); font-weight: 600; padding: 0.85rem 1.5rem;">
-                Download Brochure &darr;
-              </a>
-            </div>
+          <!-- Carousel Controls: Previous and Next Arrows -->
+          <button type="button" class="banner-nav-arrow prev" onclick="changeBannerSlide(-1)" aria-label="Previous Slide">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"></path></svg>
+          </button>
+          <button type="button" class="banner-nav-arrow next" onclick="changeBannerSlide(1)" aria-label="Next Slide">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"></path></svg>
+          </button>
+
+          <!-- Carousel Dots Nav -->
+          <div class="banner-dots-nav">
+            <span class="banner-dot active" onclick="setBannerSlide(0)" title="Slide 1"></span>
+            <span class="banner-dot" onclick="setBannerSlide(1)" title="Slide 2"></span>
+            <span class="banner-dot" onclick="setBannerSlide(2)" title="Slide 3"></span>
           </div>
         </div>
 
-        <!-- Carousel Slide Indicators -->
-        <div class="hero-carousel-nav" style="display: flex; gap: 0.5rem; margin-top: 2rem; align-items: center;">
-          <span class="hero-carousel-dot active" onclick="setHeroSlide(0)" title="Slide 1"></span>
-          <span class="hero-carousel-dot" onclick="setHeroSlide(1)" title="Slide 2"></span>
-          <span class="hero-carousel-dot" onclick="setHeroSlide(2)" title="Slide 3"></span>
+        <!-- Primary CTAs Bar Immediately Beneath Banner -->
+        <div class="banner-cta-row">
+          <a href="/admissions#enrol" class="btn btn-primary" style="background-color: var(--color-navy); border-color: var(--color-navy); color: #FFFFFF; font-weight: 700; padding: 0.8rem 1.6rem;">
+            Enrol Now
+          </a>
+          <a href="javascript:void(0)" onclick="openCallbackModal()" class="btn btn-primary btn-demo" style="background-color: var(--color-teal); border-color: var(--color-teal); color: #FFFFFF; font-weight: 700; padding: 0.8rem 1.6rem;">
+            Take a Demo
+          </a>
+          <a href="/assets/content/Zuvio_Beyond_Activity_Brochure_Revised_Grades_12 copy.pdf" target="_blank" class="btn btn-outline" style="border-color: var(--color-navy); color: var(--color-navy); font-weight: 600; padding: 0.8rem 1.4rem;">
+            Download Brochure &darr;
+          </a>
         </div>
       </div>
 
-      <!-- Right Column: Section 5 Enquiry Form Beside Hero -->
+      <!-- Right Column: Standalone "TALK TO A SCHOOL COUNSELLOR" Form -->
       <div class="hero-enquiry-card">
-        <div class="enquiry-card-header">
-          <h3>Enquire Now</h3>
-          <p>Begin your child’s personalised schooling journey today.</p>
-        </div>
+        <h3 class="counsellor-card-title">TALK TO A SCHOOL COUNSELLOR</h3>
+        <div class="counsellor-card-sub">Enquire now</div>
 
         <?php if ($form_status === 'success'): ?>
-          <div style="background-color: #DEF7EC; border: 1px solid #31C48D; padding: 1.5rem; border-radius: var(--radius-md); text-align: center;">
+          <div style="background-color: #DEF7EC; border: 1px solid #31C48D; padding: 1.5rem; border-radius: 8px; text-align: center;">
             <svg style="width: 40px; height: 40px; color: #0E9F6E; margin: 0 auto 0.75rem auto;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-            <h4 style="color: #03543F; font-size: 1.15rem; margin-bottom: 0.35rem;">Enquiry Received</h4>
-            <p style="color: #046C4E; font-size: 0.85rem;">Thank you. Our academic counselors will get in touch with you shortly.</p>
+            <h4 style="color: #03543F; font-size: 1.15rem; margin-bottom: 0.35rem; font-weight: 700;">Enquiry Received</h4>
+            <p style="color: #046C4E; font-size: 0.85rem;">Thank you. Our school counsellor will get in touch with you shortly.</p>
           </div>
         <?php else: ?>
-          <form method="POST" action="">
+          <form method="POST" action="" id="heroCounsellorForm">
             <input type="hidden" name="csrf_token" value="<?php echo get_csrf_token(); ?>">
             <input type="hidden" name="submit_enquiry" value="1">
 
             <?php if ($form_status === 'error'): ?>
-              <div style="background-color: #FDE8E8; border: 1px solid #F98080; padding: 0.75rem; border-radius: var(--radius-sm); color: #9B1C1C; font-size: 0.8rem; margin-bottom: 1rem;">
+              <div style="background-color: #FDE8E8; border: 1px solid #F98080; padding: 0.65rem; border-radius: 6px; color: #9B1C1C; font-size: 0.8rem; margin-bottom: 0.85rem;">
                 <?php echo h($error_message); ?>
               </div>
             <?php endif; ?>
 
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.65rem; margin-bottom: 0.65rem;">
-              <input type="text" name="parent_name" placeholder="Parent Name *" required class="admin-input">
-              <input type="text" name="student_name" placeholder="Student Name" class="admin-input">
+            <input type="text" name="parent_name" placeholder="Enter Full Name*" required class="counsellor-input" value="<?php echo h($_POST['parent_name'] ?? ''); ?>">
+
+            <div class="counsellor-phone-group">
+              <div class="counsellor-phone-prefix">
+                <span style="font-size: 1.1rem; line-height: 1;">🇮🇳</span>
+                <span>+91</span>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"></path></svg>
+                <input type="hidden" name="country_code" value="+91">
+              </div>
+              <input type="tel" name="phone" placeholder="Enter Mobile No.*" required class="counsellor-input counsellor-phone-input" value="<?php echo h($_POST['phone'] ?? ''); ?>">
             </div>
 
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.65rem; margin-bottom: 0.65rem;">
-              <input type="email" name="email" placeholder="Email Address *" required class="admin-input">
-              <input type="tel" name="phone" placeholder="Phone Number *" required class="admin-input">
+            <input type="email" name="email" placeholder="Enter Email Id*" required class="counsellor-input" value="<?php echo h($_POST['email'] ?? ''); ?>">
+
+            <select name="country" class="counsellor-input counsellor-select">
+              <option value="">Select Country</option>
+              <option value="India" selected>India</option>
+              <option value="United Arab Emirates">United Arab Emirates</option>
+              <option value="United States">United States</option>
+              <option value="United Kingdom">United Kingdom</option>
+              <option value="Singapore">Singapore</option>
+              <option value="Canada">Canada</option>
+              <option value="Australia">Australia</option>
+              <option value="Other">Other</option>
+            </select>
+
+            <select name="grade" required class="counsellor-input counsellor-select">
+              <option value="">Select Class Opting For*</option>
+              <option value="Early Years (K-KG)">Early Years (K–KG)</option>
+              <option value="Foundation Stage (Grades 1-2)">Foundation Stage (Grades 1–2)</option>
+              <option value="Preparatory Stage (Grades 3-5)">Preparatory Stage (Grades 3–5)</option>
+              <option value="Middle School (Grades 6-8)">Middle School (Grades 6–8)</option>
+            </select>
+
+            <div class="counsellor-captcha-group">
+              <div class="counsellor-captcha-code" id="heroCaptchaCode">ZP9O</div>
+              <button type="button" class="counsellor-captcha-refresh" onclick="refreshHeroCaptcha()" title="Refresh Captcha" aria-label="Refresh Captcha">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M23 4v6h-6"></path><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
+              </button>
+              <input type="hidden" name="captcha_expected" id="heroCaptchaExpected" value="ZP9O">
+              <input type="text" name="captcha_input" placeholder="Enter Text*" required class="counsellor-input counsellor-captcha-input">
             </div>
 
-            <div style="margin-bottom: 0.65rem;">
-              <select name="grade" required class="admin-input" style="font-weight: 500;">
-                <option value="">Select Grade of Interest *</option>
-                <option value="Early Years (K-KG)">Early Years (K-KG)</option>
-                <option value="Primary (Grades 1-2)">Foundation (Grades 1–2)</option>
-                <option value="Primary (Grades 3-5)">Preparatory (Grades 3–5)</option>
-                <option value="Middle School (Grades 6-8)">Middle School (Grades 6–8)</option>
-              </select>
-            </div>
+            <label class="counsellor-consent-label">
+              <input type="checkbox" name="consent" required checked>
+              <span>I authorize Zuvio Global School and its representatives to contact me with updates/notifications via Email, SMS, WhatsApp and Voice Call. This consent overrides DND registration.</span>
+            </label>
 
-            <div style="margin-bottom: 1rem;">
-              <textarea name="message" placeholder="Brief note / questions (Optional)" rows="2" class="admin-input" style="resize: none;"></textarea>
-            </div>
-
-            <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.75rem; background-color: var(--color-navy); border-color: var(--color-navy); color: #FFFFFF; font-weight: 700;">
-              Submit Enquiry &rarr;
+            <button type="submit" class="btn-counsellor-submit">
+              SUBMIT
             </button>
           </form>
         <?php endif; ?>
@@ -1159,28 +1242,59 @@ include_once dirname(__FILE__) . '/../includes/header.php';
     });
   }
 
-  // Hero Carousel Slide Controller
-  let heroSlideIdx = 0;
-  function setHeroSlide(idx) {
-    const heroPanes = document.querySelectorAll('.hero-slide-pane');
-    const heroDots = document.querySelectorAll('.hero-carousel-dot');
-    if (!heroPanes.length) return;
-    heroSlideIdx = idx;
-    heroPanes.forEach((p, i) => {
-      p.classList.toggle('active', i === idx);
+  // Banner Visual Carousel Controller
+  let bannerSlideIdx = 0;
+  function setBannerSlide(idx) {
+    const slides = document.querySelectorAll('.hero-banner-slide');
+    const dots = document.querySelectorAll('.banner-dot');
+    const ribbon = document.getElementById('heroTopRibbon');
+    if (!slides.length) return;
+    bannerSlideIdx = idx;
+    slides.forEach((s, i) => {
+      s.classList.toggle('active', i === idx);
     });
-    heroDots.forEach((d, i) => {
+    dots.forEach((d, i) => {
       d.classList.toggle('active', i === idx);
+    });
+    if (ribbon && slides[idx]) {
+      const ribText = slides[idx].getAttribute('data-ribbon');
+      if (ribText) ribbon.textContent = ribText;
+    }
+  }
+
+  function changeBannerSlide(delta) {
+    const slides = document.querySelectorAll('.hero-banner-slide');
+    if (!slides.length) return;
+    let nextIdx = (bannerSlideIdx + delta + slides.length) % slides.length;
+    setBannerSlide(nextIdx);
+  }
+
+  let bannerAutoTimer = setInterval(() => {
+    changeBannerSlide(1);
+  }, 5000);
+
+  const bannerCardElem = document.getElementById('heroBannerVisualCard');
+  if (bannerCardElem) {
+    bannerCardElem.addEventListener('mouseenter', () => clearInterval(bannerAutoTimer));
+    bannerCardElem.addEventListener('mouseleave', () => {
+      clearInterval(bannerAutoTimer);
+      bannerAutoTimer = setInterval(() => changeBannerSlide(1), 5000);
     });
   }
 
-  setInterval(() => {
-    const heroPanes = document.querySelectorAll('.hero-slide-pane');
-    if (heroPanes.length > 1) {
-      heroSlideIdx = (heroSlideIdx + 1) % heroPanes.length;
-      setHeroSlide(heroSlideIdx);
+  // Captcha Generator for School Counsellor Form
+  function refreshHeroCaptcha() {
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    let code = '';
+    for (let i = 0; i < 4; i++) {
+      code += chars.charAt(Math.floor(Math.random() * chars.length));
     }
-  }, 6000);
+    const badge = document.getElementById('heroCaptchaCode');
+    const inputExpected = document.getElementById('heroCaptchaExpected');
+    if (badge) badge.textContent = code;
+    if (inputExpected) inputExpected.value = code;
+  }
+  document.addEventListener('DOMContentLoaded', refreshHeroCaptcha);
 
   // Featured In Responsive Slider
   let featuredIndex = 0;
