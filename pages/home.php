@@ -341,140 +341,33 @@ include_once dirname(__FILE__) . '/../includes/header.php';
   <div class="container hero-stage">
     <div class="hero-stage-grid">
       
-      <!-- Left Column: Visual Banner Carousel + Primary CTAs -->
-      <div class="hero-banner-column">
-        <div class="hero-banner-visual-card" id="heroBannerVisualCard">
-          
-          <!-- Top Yellow Ribbon -->
-          <div class="banner-top-ribbon" id="heroTopRibbon">
-            ADMISSIONS OPEN FOR ACADEMIC YEAR 2026-2027
+      <!-- Left Column: Full-Width Image Banner Carousel (No CTA buttons) -->
+      <div class="hero-banner-image-wrapper" id="heroBannerImageCarousel">
+        <div class="hero-banner-slides-track">
+          <div class="hero-banner-image-slide active">
+            <img src="/assets/images/zuvio_hero_banner_1.png" alt="Zuvio Global Standard Learning Banner" class="hero-banner-img">
           </div>
-
-          <!-- Carousel Slides Track -->
-          <div class="banner-slides-track">
-            
-            <!-- Slide 1: Global Standard Learning (Matching Source Reference Image) -->
-            <div class="hero-banner-slide active" data-ribbon="ADMISSIONS OPEN FOR ACADEMIC YEAR 2026-2027">
-              <div class="banner-slide-inner">
-                <div class="banner-photo-side">
-                  <div class="banner-circle-frame">
-                    <img src="/assets/images/Students learning in classroom.png" alt="Zuvio Global School Virtual Classroom">
-                  </div>
-                </div>
-                <div class="banner-content-side">
-                  <div class="banner-headline">
-                    <span class="banner-headline-sub">Global Standard</span>
-                    <span class="banner-headline-main">Learning</span>
-                  </div>
-                  <div class="banner-bullets">
-                    <div class="banner-bullet-item">
-                      <span class="banner-bullet-diamond">◆</span>
-                      <span>Virtual Learning</span>
-                    </div>
-                    <div class="banner-bullet-item">
-                      <span class="banner-bullet-diamond">◆</span>
-                      <span>Real Classroom Experience</span>
-                    </div>
-                    <div class="banner-bullet-item">
-                      <span class="banner-bullet-diamond">◆</span>
-                      <span>Recognized Affiliations & Accreditations</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Slide 2: Personalised Learning Pathways -->
-            <div class="hero-banner-slide" data-ribbon="100% LIVE INTERACTIVE ONLINE SCHOOLING">
-              <div class="banner-slide-inner">
-                <div class="banner-photo-side">
-                  <div class="banner-circle-frame">
-                    <img src="/assets/images/Teacher interacting with students.png" alt="Personalised Mentorship">
-                  </div>
-                </div>
-                <div class="banner-content-side">
-                  <div class="banner-headline">
-                    <span class="banner-headline-sub">Personalised</span>
-                    <span class="banner-headline-main">Pathways</span>
-                  </div>
-                  <div class="banner-bullets">
-                    <div class="banner-bullet-item">
-                      <span class="banner-bullet-diamond">◆</span>
-                      <span>15:1 Student-Teacher Ratio</span>
-                    </div>
-                    <div class="banner-bullet-item">
-                      <span class="banner-bullet-diamond">◆</span>
-                      <span>CBSE Mapped & Oxford Enriched</span>
-                    </div>
-                    <div class="banner-bullet-item">
-                      <span class="banner-bullet-diamond">◆</span>
-                      <span>Dedicated Academic Mentorship</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Slide 3: Future Skills & Science Labs -->
-            <div class="hero-banner-slide" data-ribbon="FUTURE-READY K-8 DIGITAL SCHOOL">
-              <div class="banner-slide-inner">
-                <div class="banner-photo-side">
-                  <div class="banner-circle-frame">
-                    <img src="/assets/images/Hero image 2.png" alt="Science & Digital Labs">
-                  </div>
-                </div>
-                <div class="banner-content-side">
-                  <div class="banner-headline">
-                    <span class="banner-headline-sub">Science &</span>
-                    <span class="banner-headline-main">AI Labs</span>
-                  </div>
-                  <div class="banner-bullets">
-                    <div class="banner-bullet-item">
-                      <span class="banner-bullet-diamond">◆</span>
-                      <span>Virtual Experiments & Labs</span>
-                    </div>
-                    <div class="banner-bullet-item">
-                      <span class="banner-bullet-diamond">◆</span>
-                      <span>Coding, AI & Digital Literacy</span>
-                    </div>
-                    <div class="banner-bullet-item">
-                      <span class="banner-bullet-diamond">◆</span>
-                      <span>Global Sports Ecosystem via ISSO</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
+          <div class="hero-banner-image-slide">
+            <img src="/assets/images/zuvio_hero_banner_2.png" alt="Zuvio Personalised Pathways Banner" class="hero-banner-img">
           </div>
-
-          <!-- Carousel Controls: Previous and Next Arrows -->
-          <button type="button" class="banner-nav-arrow prev" onclick="changeBannerSlide(-1)" aria-label="Previous Slide">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"></path></svg>
-          </button>
-          <button type="button" class="banner-nav-arrow next" onclick="changeBannerSlide(1)" aria-label="Next Slide">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"></path></svg>
-          </button>
-
-          <!-- Carousel Dots Nav -->
-          <div class="banner-dots-nav">
-            <span class="banner-dot active" onclick="setBannerSlide(0)" title="Slide 1"></span>
-            <span class="banner-dot" onclick="setBannerSlide(1)" title="Slide 2"></span>
-            <span class="banner-dot" onclick="setBannerSlide(2)" title="Slide 3"></span>
+          <div class="hero-banner-image-slide">
+            <img src="/assets/images/zuvio_hero_banner_3.png" alt="Zuvio Science and AI Labs Banner" class="hero-banner-img">
           </div>
         </div>
 
-        <!-- Primary CTAs Bar Immediately Beneath Banner -->
-        <div class="banner-cta-row">
-          <a href="/admissions#enrol" class="btn btn-primary" style="background-color: var(--color-navy); border-color: var(--color-navy); color: #FFFFFF; font-weight: 700; padding: 0.8rem 1.6rem;">
-            Enrol Now
-          </a>
-          <a href="javascript:void(0)" onclick="openCallbackModal()" class="btn btn-primary btn-demo" style="background-color: var(--color-teal); border-color: var(--color-teal); color: #FFFFFF; font-weight: 700; padding: 0.8rem 1.6rem;">
-            Take a Demo
-          </a>
-          <a href="/assets/content/Zuvio_Beyond_Activity_Brochure_Revised_Grades_12 copy.pdf" target="_blank" class="btn btn-outline" style="border-color: var(--color-navy); color: var(--color-navy); font-weight: 600; padding: 0.8rem 1.4rem;">
-            Download Brochure &darr;
-          </a>
+        <!-- Subtle Floating Carousel Arrows like screenshot -->
+        <button type="button" class="banner-img-arrow prev" onclick="changeImageBanner(-1)" aria-label="Previous Banner">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"></path></svg>
+        </button>
+        <button type="button" class="banner-img-arrow next" onclick="changeImageBanner(1)" aria-label="Next Banner">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"></path></svg>
+        </button>
+
+        <!-- Dots -->
+        <div class="banner-img-dots">
+          <span class="banner-img-dot active" onclick="setImageBanner(0)" title="Slide 1"></span>
+          <span class="banner-img-dot" onclick="setImageBanner(1)" title="Slide 2"></span>
+          <span class="banner-img-dot" onclick="setImageBanner(2)" title="Slide 3"></span>
         </div>
       </div>
 
@@ -1242,43 +1135,38 @@ include_once dirname(__FILE__) . '/../includes/header.php';
     });
   }
 
-  // Banner Visual Carousel Controller
-  let bannerSlideIdx = 0;
-  function setBannerSlide(idx) {
-    const slides = document.querySelectorAll('.hero-banner-slide');
-    const dots = document.querySelectorAll('.banner-dot');
-    const ribbon = document.getElementById('heroTopRibbon');
+  // Image Banner Carousel Controller
+  let imageBannerIdx = 0;
+  function setImageBanner(idx) {
+    const slides = document.querySelectorAll('.hero-banner-image-slide');
+    const dots = document.querySelectorAll('.banner-img-dot');
     if (!slides.length) return;
-    bannerSlideIdx = idx;
+    imageBannerIdx = idx;
     slides.forEach((s, i) => {
       s.classList.toggle('active', i === idx);
     });
     dots.forEach((d, i) => {
       d.classList.toggle('active', i === idx);
     });
-    if (ribbon && slides[idx]) {
-      const ribText = slides[idx].getAttribute('data-ribbon');
-      if (ribText) ribbon.textContent = ribText;
-    }
   }
 
-  function changeBannerSlide(delta) {
-    const slides = document.querySelectorAll('.hero-banner-slide');
+  function changeImageBanner(delta) {
+    const slides = document.querySelectorAll('.hero-banner-image-slide');
     if (!slides.length) return;
-    let nextIdx = (bannerSlideIdx + delta + slides.length) % slides.length;
-    setBannerSlide(nextIdx);
+    let nextIdx = (imageBannerIdx + delta + slides.length) % slides.length;
+    setImageBanner(nextIdx);
   }
 
-  let bannerAutoTimer = setInterval(() => {
-    changeBannerSlide(1);
+  let imageBannerTimer = setInterval(() => {
+    changeImageBanner(1);
   }, 5000);
 
-  const bannerCardElem = document.getElementById('heroBannerVisualCard');
-  if (bannerCardElem) {
-    bannerCardElem.addEventListener('mouseenter', () => clearInterval(bannerAutoTimer));
-    bannerCardElem.addEventListener('mouseleave', () => {
-      clearInterval(bannerAutoTimer);
-      bannerAutoTimer = setInterval(() => changeBannerSlide(1), 5000);
+  const bannerImgWrapper = document.getElementById('heroBannerImageCarousel');
+  if (bannerImgWrapper) {
+    bannerImgWrapper.addEventListener('mouseenter', () => clearInterval(imageBannerTimer));
+    bannerImgWrapper.addEventListener('mouseleave', () => {
+      clearInterval(imageBannerTimer);
+      imageBannerTimer = setInterval(() => changeImageBanner(1), 5000);
     });
   }
 

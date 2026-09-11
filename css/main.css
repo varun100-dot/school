@@ -962,170 +962,72 @@ button, input, select, textarea {
 }
 .hero-stage {
   width: 100%;
-  padding: 3.5rem 0;
+  padding: 1rem 0;
+}
+.hero-stage {
+  max-width: 100% !important;
+  width: 100% !important;
+  padding: 0 1.25rem !important;
+  margin: 0 !important;
 }
 .hero-stage-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1.85fr) minmax(0, 1.15fr);
-  gap: 2rem;
-  align-items: stretch;
-}
-
-/* Left Column: Visual Banner Card */
-.hero-banner-column {
-  display: flex;
-  flex-direction: column;
+  grid-template-columns: minmax(0, 1.95fr) minmax(350px, 1.05fr);
   gap: 1.25rem;
+  align-items: stretch;
+  width: 100%;
 }
 
-.hero-banner-visual-card {
-  background-color: #FFFFFF;
-  border-radius: 16px;
-  border: 1.5px solid rgba(6, 43, 99, 0.16) !important;
-  box-shadow: 0 10px 30px rgba(6, 43, 99, 0.08);
+/* Left Column: Full-Width Image Banner Carousel */
+.hero-banner-image-wrapper {
+  position: relative;
+  border-radius: 14px;
   overflow: hidden;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-}
-
-/* Top Yellow Ribbon */
-.banner-top-ribbon {
-  background: linear-gradient(90deg, #FBBF24 0%, #F59E0B 100%);
-  color: #062B63;
-  font-family: var(--font-secondary);
-  font-weight: 800;
-  font-size: 0.95rem;
-  letter-spacing: 0.5px;
-  text-align: center;
-  padding: 0.55rem 1.25rem;
-  border-bottom-left-radius: 18px;
-  border-bottom-right-radius: 18px;
-  width: 90%;
-  margin: 0 auto;
-  box-shadow: 0 4px 14px rgba(245, 158, 11, 0.25);
-  text-transform: uppercase;
-  z-index: 5;
-}
-
-/* Banner Slides */
-.banner-slides-track {
-  position: relative;
-  min-height: 380px;
-  display: flex;
-}
-
-.hero-banner-slide {
-  display: none;
-  width: 100%;
-  animation: fadeInBanner 0.4s ease forwards;
-}
-
-.hero-banner-slide.active {
-  display: flex;
-}
-
-@keyframes fadeInBanner {
-  from { opacity: 0; transform: translateY(4px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.banner-slide-inner {
-  display: flex;
-  width: 100%;
-  min-height: 380px;
-}
-
-.banner-photo-side {
-  flex: 0 0 42%;
+  border: 1.5px solid rgba(6, 43, 99, 0.16) !important;
+  box-shadow: 0 8px 25px rgba(6, 43, 99, 0.08);
+  background-color: #FFFFFF;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1.5rem 1rem 1.5rem 2rem;
+  height: 100%;
+}
+
+.hero-banner-slides-track {
+  width: 100%;
+  height: 100%;
   position: relative;
 }
 
-.banner-circle-frame {
-  width: 215px;
-  height: 215px;
-  border-radius: 50%;
-  border: 4px solid #FFFFFF;
-  box-shadow: 0 0 0 4px #0284C7, 0 10px 25px rgba(6, 43, 99, 0.15);
-  overflow: hidden;
-  position: relative;
-  z-index: 2;
-  background-color: #F0F7FF;
+.hero-banner-image-slide {
+  display: none;
+  width: 100%;
+  height: 100%;
+  animation: fadeInImgBanner 0.4s ease forwards;
 }
 
-.banner-circle-frame img {
+.hero-banner-image-slide.active {
+  display: block;
+}
+
+@keyframes fadeInImgBanner {
+  from { opacity: 0; transform: scale(0.99); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.hero-banner-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
 }
 
-.banner-content-side {
-  flex: 1;
-  background: linear-gradient(135deg, #0284C7 0%, #0369A1 100%);
-  border-top-left-radius: 130px;
-  border-bottom-left-radius: 130px;
-  padding: 2.25rem 2rem 2.25rem 3.25rem;
-  color: #FFFFFF;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  position: relative;
-  background-image: radial-gradient(circle at 85% 20%, rgba(255, 255, 255, 0.15) 0%, transparent 60%), linear-gradient(135deg, #0284C7 0%, #0369A1 100%);
-}
-
-.banner-headline {
-  color: #FFFFFF;
-  font-family: var(--font-primary);
-  margin-bottom: 1.25rem;
-  line-height: 1.1;
-}
-
-.banner-headline-sub {
-  font-size: 1.5rem;
-  font-weight: 500;
-  opacity: 0.95;
-  display: inline;
-}
-
-.banner-headline-main {
-  font-size: 2.75rem;
-  font-weight: 800;
-  display: block;
-  letter-spacing: -0.5px;
-}
-
-.banner-bullets {
-  display: flex;
-  flex-direction: column;
-  gap: 0.65rem;
-}
-
-.banner-bullet-item {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  font-size: 1rem;
-  font-weight: 600;
-  color: #FFFFFF;
-}
-
-.banner-bullet-diamond {
-  color: #FBBF24;
-  font-size: 0.85rem;
-}
-
-/* Banner Controls */
-.banner-nav-arrow {
+/* Subtle Floating Carousel Arrows on the Image Banner */
+.banner-img-arrow {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  width: 38px;
-  height: 38px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.92);
   border: 1px solid rgba(6, 43, 99, 0.12);
@@ -1135,50 +1037,42 @@ button, input, select, textarea {
   justify-content: center;
   cursor: pointer;
   z-index: 10;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
   transition: all 0.2s ease;
 }
 
-.banner-nav-arrow:hover {
+.banner-img-arrow:hover {
   background: #FFFFFF;
   color: #0284C7;
   transform: translateY(-50%) scale(1.08);
 }
 
-.banner-nav-arrow.prev { left: 12px; }
-.banner-nav-arrow.next { right: 12px; }
+.banner-img-arrow.prev { left: 12px; }
+.banner-img-arrow.next { right: 12px; }
 
-.banner-dots-nav {
+.banner-img-dots {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
-  gap: 0.5rem;
-  justify-content: center;
-  align-items: center;
-  padding: 0.75rem 0;
-  background: #FFFFFF;
-  border-top: 1px solid rgba(6, 43, 99, 0.06);
+  gap: 0.4rem;
+  z-index: 10;
 }
 
-.banner-dot {
-  width: 9px;
-  height: 9px;
+.banner-img-dot {
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
-  background-color: rgba(6, 43, 99, 0.25);
+  background-color: rgba(6, 43, 99, 0.35);
   cursor: pointer;
   transition: all 0.25s ease;
 }
 
-.banner-dot.active {
-  width: 26px;
-  border-radius: 12px;
-  background-color: var(--color-gold);
-}
-
-/* Banner CTAs bar beneath the visual banner */
-.banner-cta-row {
-  display: flex;
-  gap: 0.85rem;
-  flex-wrap: wrap;
-  align-items: center;
+.banner-img-dot.active {
+  width: 24px;
+  border-radius: 10px;
+  background-color: #F59E0B;
 }
 
 /* Right Column: Standalone Counsellor Enquiry Form */
