@@ -93,11 +93,7 @@ if (empty($nav_tree) || count($nav_tree) < 5 || empty($nav_tree[1]['children']))
         ],
         [
             'label' => 'Beyond', 'url' => '/beyond',
-            'children' => [
-                ['label' => 'Co-curricular / Clubs', 'url' => '/beyond#co-curricular'],
-                ['label' => 'Student Achievers', 'url' => '/beyond#achievers'],
-                ['label' => 'Gallery', 'url' => '/beyond#gallery']
-            ]
+            'children' => []
         ],
         ['label' => 'Contact Us', 'url' => '/contact', 'children' => []]
     ];
@@ -166,21 +162,40 @@ $social_linkedin = get_setting('social_linkedin', '#');
     .desktop-nav {
       display: flex;
       align-items: center;
-      gap: 2rem;
+      gap: 1.25rem;
     }
     .nav-link-item {
       font-size: 0.95rem;
       font-weight: 600;
       color: var(--color-navy);
-      padding: 0.5rem 0;
+      padding: 0.5rem 0.85rem;
+      border-radius: var(--radius-sm);
       display: inline-flex;
       align-items: center;
-      gap: 0.35rem;
-      transition: color var(--transition-fast);
+      gap: 0.4rem;
+      transition: all var(--transition-fast);
       text-decoration: none;
     }
-    .nav-link-item:hover, .nav-link-item.active {
-      color: var(--color-gold);
+    .nav-link-item:hover,
+    .nav-item-has-dropdown:hover > .nav-link-item,
+    .nav-item-has-dropdown:focus-within > .nav-link-item,
+    .nav-link-item.active {
+      background-color: var(--color-navy);
+      color: #FFFFFF !important;
+    }
+    .nav-item-has-dropdown:hover .nav-dropdown-arrow,
+    .nav-item-has-dropdown:focus-within .nav-dropdown-arrow,
+    .nav-link-item:hover .nav-dropdown-arrow {
+      border-color: #FFFFFF !important;
+      transform: rotate(-135deg) translateY(-2px);
+    }
+    .nav-cta-outline {
+      transition: all var(--transition-fast);
+    }
+    .nav-cta-outline:hover {
+      background-color: var(--color-navy) !important;
+      color: #FFFFFF !important;
+      border-color: var(--color-navy) !important;
     }
     .mobile-menu-trigger {
       display: none;
@@ -249,34 +264,35 @@ $social_linkedin = get_setting('social_linkedin', '#');
 </head>
 <body>
 
-  <!-- 1. Top Announcement Strip -->
+  <!-- 1. Top Utility Bar -->
   <div class="top-announcement-strip">
     <div class="announcement-container">
       <div class="announcement-left">
-        <span class="announcement-badge">Admissions 2026–27</span>
-        <span class="announcement-text"><?php echo h($top_announcement); ?></span>
-        <span style="opacity: 0.5;">|</span>
-        <span style="color: var(--color-gold); font-weight: 600;"><?php echo h($affiliation_info); ?></span>
+        <span class="top-bar-affiliation" style="font-weight: 600; color: #FFFFFF; font-size: 0.85rem; letter-spacing: 0.2px;">
+          Affiliation No: IA 4883 • IAO Accredited • ISSO Member
+        </span>
       </div>
       <div class="announcement-right">
-        <a href="tel:<?php echo h($phone_number); ?>" class="announcement-link">
+        <a href="tel:<?php echo h($phone_number); ?>" class="announcement-link" title="Call Us">
           <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
           +91 <?php echo h($phone_number); ?>
         </a>
-        <a href="mailto:<?php echo h($email_address); ?>" class="announcement-link">
+        <span class="announcement-divider" style="color: rgba(255,255,255,0.4); font-size: 0.8rem;">•</span>
+        <a href="mailto:<?php echo h($email_address); ?>" class="announcement-link" title="Email Us">
           <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
           <?php echo h($email_address); ?>
         </a>
+        <span class="announcement-divider" style="color: rgba(255,255,255,0.4); font-size: 0.8rem;">•</span>
         <div class="announcement-socials">
-          <?php if ($social_fb !== '#'): ?>
-            <a href="<?php echo h($social_fb); ?>" target="_blank" rel="noopener" class="announcement-social-icon" aria-label="Facebook">f</a>
-          <?php endif; ?>
-          <?php if ($social_insta !== '#'): ?>
-            <a href="<?php echo h($social_insta); ?>" target="_blank" rel="noopener" class="announcement-social-icon" aria-label="Instagram">ig</a>
-          <?php endif; ?>
-          <?php if ($social_linkedin !== '#'): ?>
-            <a href="<?php echo h($social_linkedin); ?>" target="_blank" rel="noopener" class="announcement-social-icon" aria-label="LinkedIn">in</a>
-          <?php endif; ?>
+          <a href="<?php echo h($social_fb); ?>" target="_blank" rel="noopener" class="announcement-social-icon" aria-label="Facebook" title="Facebook">
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          </a>
+          <a href="<?php echo h($social_insta); ?>" target="_blank" rel="noopener" class="announcement-social-icon" aria-label="Instagram" title="Instagram">
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+          </a>
+          <a href="<?php echo h($social_linkedin); ?>" target="_blank" rel="noopener" class="announcement-social-icon" aria-label="LinkedIn" title="LinkedIn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+          </a>
         </div>
       </div>
     </div>
@@ -353,7 +369,7 @@ $social_linkedin = get_setting('social_linkedin', '#');
           <?php endif; ?>
         <?php endforeach; ?>
 
-        <a href="/contact" class="btn btn-outline" style="padding: 0.55rem 1.25rem; font-size: 0.85rem; border-color: var(--color-navy); color: var(--color-navy); margin-left: 0.5rem;">Enquire Now</a>
+        <a href="/contact" class="btn btn-outline nav-cta-outline" style="padding: 0.55rem 1.25rem; font-size: 0.85rem; border-color: var(--color-navy); margin-left: 0.5rem;">Enquire Now</a>
         <a href="javascript:void(0)" onclick="openCallbackModal()" class="btn btn-primary btn-demo" style="padding: 0.55rem 1.25rem; font-size: 0.85rem; background-color: var(--color-teal); border-color: var(--color-teal); color: #fff;">Book a Demo</a>
       </nav>
       

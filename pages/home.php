@@ -336,28 +336,84 @@ include_once dirname(__FILE__) . '/../includes/header.php';
   <div class="container hero-stage">
     <div class="hero-stage-grid">
       
-      <!-- Left Column: Hero Carousel Presentation -->
-      <div class="hero-banner-card">
-        <div class="hero-lead-badge">
-          <span style="width: 8px; height: 8px; background-color: var(--color-teal); border-radius: 50%; display: inline-block;"></span>
-          100% Live Online Schooling
-        </div>
-        <h1 class="hero-title-main">Learning Without Boundaries. Growing With Purpose.</h1>
-        <p class="hero-desc-main">
-          Academic excellence meets personalised online learning. A structured, CBSE-mapped curriculum enriched with Oxford thematic learning, IBM-supported AI literacy, and caring small-group mentoring for grades K to 8.
-        </p>
+      <!-- Left Column: 70% Hero Banner / Carousel -->
+      <div class="hero-banner-card" id="heroBannerCarousel">
+        <div class="hero-carousel-slides">
+          <!-- Slide 1: Primary Proposition (Verbatim Source Document) -->
+          <div class="hero-slide-pane active">
+            <div class="hero-lead-badge">
+              <span style="width: 8px; height: 8px; background-color: var(--color-teal); border-radius: 50%; display: inline-block;"></span>
+              100% Live Online Schooling
+            </div>
+            <h1 class="hero-title-main">Learning Without Boundaries. Growing With Purpose.</h1>
+            <p class="hero-desc-main">
+              Academic excellence meets personalised online learning. A structured, CBSE-mapped curriculum enriched with Oxford thematic learning, IBM-supported AI literacy, and caring small-group mentoring for grades K to 8.
+            </p>
+            <div class="hero-actions-row">
+              <a href="/admissions#enrol" class="btn btn-primary" style="background-color: var(--color-navy); border-color: var(--color-navy); color: #FFFFFF; font-weight: 700; padding: 0.85rem 1.8rem;">
+                Enrol Now
+              </a>
+              <a href="javascript:void(0)" onclick="openCallbackModal()" class="btn btn-primary btn-demo" style="background-color: var(--color-teal); border-color: var(--color-teal); color: #FFFFFF; font-weight: 700; padding: 0.85rem 1.8rem;">
+                Take a Demo
+              </a>
+              <a href="/assets/content/Zuvio_Beyond_Activity_Brochure_Revised_Grades_12 copy.pdf" target="_blank" class="btn btn-outline" style="border-color: var(--color-navy); color: var(--color-navy); font-weight: 600; padding: 0.85rem 1.5rem;">
+                Download Brochure &darr;
+              </a>
+            </div>
+          </div>
 
-        <!-- Section 6: Enrol Now / Take a Demo / Download Brochure CTAs -->
-        <div class="hero-actions-row">
-          <a href="/admissions#enrol" class="btn btn-primary" style="background-color: var(--color-navy); border-color: var(--color-navy); color: #FFFFFF; font-weight: 700; padding: 0.85rem 1.8rem;">
-            Enrol Now
-          </a>
-          <a href="javascript:void(0)" onclick="openCallbackModal()" class="btn btn-primary btn-demo" style="background-color: var(--color-teal); border-color: var(--color-teal); color: #FFFFFF; font-weight: 700; padding: 0.85rem 1.8rem;">
-            Take a Demo
-          </a>
-          <a href="/assets/content/Zuvio_Beyond_Activity_Brochure_Revised_Grades_12 copy.pdf" target="_blank" class="btn btn-outline" style="border-color: var(--color-navy); color: var(--color-navy); font-weight: 600; padding: 0.85rem 1.5rem;">
-            Download Brochure &darr;
-          </a>
+          <!-- Slide 2: Personalised Learning Paths -->
+          <div class="hero-slide-pane">
+            <div class="hero-lead-badge">
+              <span style="width: 8px; height: 8px; background-color: var(--color-gold); border-radius: 50%; display: inline-block;"></span>
+              Personalised Learning Paths
+            </div>
+            <h2 class="hero-title-main">Classrooms That Adapt To Every Child's Pace.</h2>
+            <p class="hero-desc-main">
+              Every child learns differently. Our small-group live classrooms with a 15:1 student-teacher ratio adapt to your child’s pace, strengths, and unique potential with caring mentorship.
+            </p>
+            <div class="hero-actions-row">
+              <a href="/curriculum" class="btn btn-primary" style="background-color: var(--color-navy); border-color: var(--color-navy); color: #FFFFFF; font-weight: 700; padding: 0.85rem 1.8rem;">
+                Our Curriculum
+              </a>
+              <a href="javascript:void(0)" onclick="openCallbackModal()" class="btn btn-primary btn-demo" style="background-color: var(--color-teal); border-color: var(--color-teal); color: #FFFFFF; font-weight: 700; padding: 0.85rem 1.8rem;">
+                Take a Demo
+              </a>
+              <a href="/assets/content/Zuvio_Beyond_Activity_Brochure_Revised_Grades_12 copy.pdf" target="_blank" class="btn btn-outline" style="border-color: var(--color-navy); color: var(--color-navy); font-weight: 600; padding: 0.85rem 1.5rem;">
+                Download Brochure &darr;
+              </a>
+            </div>
+          </div>
+
+          <!-- Slide 3: Future Skills & Science Labs -->
+          <div class="hero-slide-pane">
+            <div class="hero-lead-badge">
+              <span style="width: 8px; height: 8px; background-color: var(--color-teal); border-radius: 50%; display: inline-block;"></span>
+              Future Skills & Digital Labs
+            </div>
+            <h2 class="hero-title-main">Interactive Science, Coding & AI Literacy.</h2>
+            <p class="hero-desc-main">
+              Virtual experiments, coding logic, robotics engineering, and IBM-supported AI awareness integrated into daily schooling to empower young learners for tomorrow.
+            </p>
+            <div class="hero-actions-row">
+              <a href="/academics" class="btn btn-primary" style="background-color: var(--color-navy); border-color: var(--color-navy); color: #FFFFFF; font-weight: 700; padding: 0.85rem 1.8rem;">
+                Explore Academics
+              </a>
+              <a href="javascript:void(0)" onclick="openCallbackModal()" class="btn btn-primary btn-demo" style="background-color: var(--color-teal); border-color: var(--color-teal); color: #FFFFFF; font-weight: 700; padding: 0.85rem 1.8rem;">
+                Take a Demo
+              </a>
+              <a href="/assets/content/Zuvio_Beyond_Activity_Brochure_Revised_Grades_12 copy.pdf" target="_blank" class="btn btn-outline" style="border-color: var(--color-navy); color: var(--color-navy); font-weight: 600; padding: 0.85rem 1.5rem;">
+                Download Brochure &darr;
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Carousel Slide Indicators -->
+        <div class="hero-carousel-nav" style="display: flex; gap: 0.5rem; margin-top: 2rem; align-items: center;">
+          <span class="hero-carousel-dot active" onclick="setHeroSlide(0)" title="Slide 1"></span>
+          <span class="hero-carousel-dot" onclick="setHeroSlide(1)" title="Slide 2"></span>
+          <span class="hero-carousel-dot" onclick="setHeroSlide(2)" title="Slide 3"></span>
         </div>
       </div>
 
@@ -421,29 +477,41 @@ include_once dirname(__FILE__) . '/../includes/header.php';
 </section>
 
 <!-- ========================================================================
-     SECTION 7: ABOUT ZUVIO (HOMEPAGE SHORT FORM)
+     SECTION 7: ABOUT ZUVIO (HOMEPAGE SHORT FORM WITH SUPPORTING GRAPHIC)
      ======================================================================== -->
 <section class="section" style="background-color: #FFFFFF; border-bottom: 1px solid var(--color-border);">
-  <div class="container" style="max-width: 960px;">
+  <div class="container" style="max-width: 1140px;">
     <div class="text-center" style="margin-bottom: 2.5rem;">
       <span style="font-size: 0.85rem; font-weight: 700; color: var(--color-gold); text-transform: uppercase; letter-spacing: 2px;">Who Are We & Why Zuvio</span>
       <h2 style="font-size: 2.5rem; color: var(--color-navy); margin-top: 0.5rem; font-family: var(--font-primary);">About Zuvio</h2>
       <div style="width: 60px; height: 3px; background-color: var(--color-gold); margin: 1rem auto 0 auto;"></div>
     </div>
 
-    <div style="background-color: var(--pastel-blue); border-radius: var(--radius-lg); padding: 3rem; border: 1px solid rgba(10, 137, 152, 0.15); box-shadow: var(--shadow-sm); text-align: center;">
-      <p style="font-size: 1.25rem; font-weight: 600; color: var(--color-navy); line-height: 1.7; margin-bottom: 1.5rem; font-family: var(--font-secondary);">
-        Zuvio Global School is an online school built on one belief: <span style="color: var(--color-teal); text-decoration: underline; text-underline-offset: 4px;">education should adapt to the child, not the child to the system.</span>
-      </p>
-      <p style="font-size: 1.05rem; color: var(--color-text); line-height: 1.8; margin-bottom: 1.75rem;">
-        We bring together a structured, curriculum-aligned programme, caring teachers and thoughtful technology to create a flexible, personalised learning experience your child can access from anywhere. Different ways of learning. One community. Equal opportunities.
-      </p>
-      <p style="font-size: 1.15rem; font-weight: 700; color: var(--color-navy-dark); margin-bottom: 2rem;">
-        That's what learning beyond boundaries means.
-      </p>
-      <a href="/about" class="btn btn-primary" style="background-color: var(--color-navy); border-color: var(--color-navy); color: #FFFFFF; font-weight: 600; padding: 0.75rem 2rem;">
-        Read Our Story &rarr;
-      </a>
+    <div class="about-zuvio-grid" style="display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 2.5rem; align-items: center;">
+      <!-- Content Box -->
+      <div style="background-color: var(--pastel-blue); border-radius: var(--radius-lg); padding: 2.75rem 2.25rem; border: 1.5px solid rgba(10, 137, 152, 0.2); box-shadow: var(--shadow-sm);">
+        <p style="font-size: 1.22rem; font-weight: 600; color: var(--color-navy); line-height: 1.7; margin-bottom: 1.5rem; font-family: var(--font-secondary);">
+          Zuvio Global School is an online school built on one belief: <span style="color: var(--color-teal); text-decoration: underline; text-underline-offset: 4px;">education should adapt to the child, not the child to the system.</span>
+        </p>
+        <p style="font-size: 1.05rem; color: var(--color-text); line-height: 1.8; margin-bottom: 1.75rem;">
+          We bring together a structured, curriculum-aligned programme, caring teachers and thoughtful technology to create a flexible, personalised learning experience your child can access from anywhere. Different ways of learning. One community. Equal opportunities.
+        </p>
+        <p style="font-size: 1.15rem; font-weight: 700; color: var(--color-navy-dark); margin-bottom: 2rem;">
+          That's what learning beyond boundaries means.
+        </p>
+        <a href="/about" class="btn btn-primary" style="background-color: var(--color-navy); border-color: var(--color-navy); color: #FFFFFF; font-weight: 600; padding: 0.75rem 2rem;">
+          Read Our Story &rarr;
+        </a>
+      </div>
+
+      <!-- Supporting Graphic Visual -->
+      <div class="about-zuvio-visual" style="border-radius: var(--radius-lg); overflow: hidden; border: 1.5px solid rgba(6, 43, 99, 0.16); box-shadow: var(--shadow-md); position: relative;">
+        <img src="/assets/images/Teacher interacting with students.png" alt="Teacher interacting with students at Zuvio Global School" style="width: 100%; height: 380px; object-fit: cover; display: block;">
+        <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(0deg, rgba(3,27,66,0.92) 0%, rgba(3,27,66,0) 100%); padding: 1.5rem 1.25rem 1rem 1.25rem; color: #FFFFFF;">
+          <p style="font-weight: 700; font-size: 1rem; margin: 0; color: var(--color-gold);">Learning Beyond Boundaries</p>
+          <p style="font-size: 0.82rem; margin: 0; color: #E2E8F0;">Personalised, 100% Live Online Schooling • K to Grade 8</p>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -463,42 +531,42 @@ include_once dirname(__FILE__) . '/../includes/header.php';
 
     <div class="grid-3" style="gap: 1.75rem;">
       <!-- Audience 1 -->
-      <div class="card" style="padding: 2rem; border-left: 4px solid var(--color-teal); background-color: #FFFFFF;">
+      <div class="card" style="padding: 2rem; border: 1.5px solid rgba(6, 43, 99, 0.16); background-color: #FFFFFF;">
         <h3 style="font-size: 1.2rem; color: var(--color-navy); margin-bottom: 0.75rem; font-family: var(--font-primary);">Globally Mobile Families</h3>
         <p style="color: var(--color-text); font-size: 0.95rem; line-height: 1.65;">
           Globally mobile families who move between cities or countries and want learning continuity without disruptions.
         </p>
       </div>
       <!-- Audience 2 -->
-      <div class="card" style="padding: 2rem; border-left: 4px solid var(--color-gold); background-color: #FFFFFF;">
+      <div class="card" style="padding: 2rem; border: 1.5px solid rgba(6, 43, 99, 0.16); background-color: #FFFFFF;">
         <h3 style="font-size: 1.2rem; color: var(--color-navy); margin-bottom: 0.75rem; font-family: var(--font-primary);">Homeschooling & Alternative Learners</h3>
         <p style="color: var(--color-text); font-size: 0.95rem; line-height: 1.65;">
           Homeschooling & alternative-learning families who want structure with freedom and teacher guidance.
         </p>
       </div>
       <!-- Audience 3 -->
-      <div class="card" style="padding: 2rem; border-left: 4px solid var(--color-teal); background-color: #FFFFFF;">
+      <div class="card" style="padding: 2rem; border: 1.5px solid rgba(6, 43, 99, 0.16); background-color: #FFFFFF;">
         <h3 style="font-size: 1.2rem; color: var(--color-navy); margin-bottom: 0.75rem; font-family: var(--font-primary);">Young Athletes, Artists & Performers</h3>
         <p style="color: var(--color-text); font-size: 0.95rem; line-height: 1.65;">
           Young athletes, artists & performers balancing demanding training and rehearsal schedules.
         </p>
       </div>
       <!-- Audience 4 -->
-      <div class="card" style="padding: 2rem; border-left: 4px solid var(--color-gold); background-color: #FFFFFF;">
+      <div class="card" style="padding: 2rem; border: 1.5px solid rgba(6, 43, 99, 0.16); background-color: #FFFFFF;">
         <h3 style="font-size: 1.2rem; color: var(--color-navy); margin-bottom: 0.75rem; font-family: var(--font-primary);">Children Who Thrive Online</h3>
         <p style="color: var(--color-text); font-size: 0.95rem; line-height: 1.65;">
           Children who thrive online and learn best in a digital environment with modern interactive tools.
         </p>
       </div>
       <!-- Audience 5 -->
-      <div class="card" style="padding: 2rem; border-left: 4px solid var(--color-teal); background-color: #FFFFFF;">
+      <div class="card" style="padding: 2rem; border: 1.5px solid rgba(6, 43, 99, 0.16); background-color: #FFFFFF;">
         <h3 style="font-size: 1.2rem; color: var(--color-navy); margin-bottom: 0.75rem; font-family: var(--font-primary);">Personalised Approach Seekers</h3>
         <p style="color: var(--color-text); font-size: 0.95rem; line-height: 1.65;">
           Learners who need a more personalised approach, pace or attention to reach their full potential.
         </p>
       </div>
       <!-- Audience 6 -->
-      <div class="card" style="padding: 2rem; border-left: 4px solid var(--color-gold); background-color: #FFFFFF;">
+      <div class="card" style="padding: 2rem; border: 1.5px solid rgba(6, 43, 99, 0.16); background-color: #FFFFFF;">
         <h3 style="font-size: 1.2rem; color: var(--color-navy); margin-bottom: 0.75rem; font-family: var(--font-primary);">Alternative Schooling Environment</h3>
         <p style="color: var(--color-text); font-size: 0.95rem; line-height: 1.65;">
           Children who need a different schooling environment when traditional school isn't the right fit.
@@ -520,7 +588,7 @@ include_once dirname(__FILE__) . '/../includes/header.php';
 <!-- ========================================================================
      SECTION 9: LEARNING PATH (4-STAGE LEARNING JOURNEY)
      ======================================================================== -->
-<section class="section" style="background-color: #FFFFFF; border-bottom: 1px solid var(--color-border);">
+<section class="section curriculum-pathways-section">
   <div class="container">
     <div class="text-center" style="max-width: 800px; margin: 0 auto 3rem auto;">
       <span style="font-size: 0.85rem; font-weight: 700; color: var(--color-gold); text-transform: uppercase; letter-spacing: 2px;">Curriculum Pathways</span>
@@ -626,21 +694,21 @@ include_once dirname(__FILE__) . '/../includes/header.php';
     </div>
 
     <div class="grid-3" style="gap: 2rem;">
-      <div class="card" style="padding: 2.5rem; border-left: 4px solid var(--color-gold); background-color: #FFFFFF;">
+      <div class="card" style="padding: 2.5rem; border: 1.5px solid rgba(6, 43, 99, 0.16); background-color: #FFFFFF; border-radius: var(--radius-md); box-shadow: var(--shadow-sm);">
         <h3 style="font-size: 1.35rem; color: var(--color-navy); margin-bottom: 1rem; font-family: var(--font-primary);">Assessment for Growth</h3>
         <p style="color: var(--color-text); font-size: 0.95rem; line-height: 1.7;">
           We measure progress and skills, not just marks — providing regular, meaningful qualitative insights and developmental analytics for parents.
         </p>
       </div>
 
-      <div class="card" style="padding: 2.5rem; border-left: 4px solid var(--color-teal); background-color: #FFFFFF;">
+      <div class="card" style="padding: 2.5rem; border: 1.5px solid rgba(6, 43, 99, 0.16); background-color: #FFFFFF; border-radius: var(--radius-md); box-shadow: var(--shadow-sm);">
         <h3 style="font-size: 1.35rem; color: var(--color-navy); margin-bottom: 1rem; font-family: var(--font-primary);">Personalised Learning</h3>
         <p style="color: var(--color-text); font-size: 0.95rem; line-height: 1.7;">
           Live teacher guidance, adaptive digital tools and targeted academic support that continuously adapt to each child’s pace and individual learning needs.
         </p>
       </div>
 
-      <div class="card" style="padding: 2.5rem; border-left: 4px solid var(--color-gold); background-color: #FFFFFF;">
+      <div class="card" style="padding: 2.5rem; border: 1.5px solid rgba(6, 43, 99, 0.16); background-color: #FFFFFF; border-radius: var(--radius-md); box-shadow: var(--shadow-sm);">
         <h3 style="font-size: 1.35rem; color: var(--color-navy); margin-bottom: 1rem; font-family: var(--font-primary);">Zuvio Beyond</h3>
         <p style="color: var(--color-text); font-size: 0.95rem; line-height: 1.7;">
           Rich co-curricular clubs, AI/coding modules, sports association, enrichment electives, and extra academic support matched to your child’s passions.
@@ -686,7 +754,7 @@ include_once dirname(__FILE__) . '/../includes/header.php';
     <!-- Inclusivity Statements Grid -->
     <div class="grid-3" style="gap: 1.75rem;">
       <?php foreach ($inclusivity_items as $item): ?>
-        <div class="card" style="padding: 2rem; border-left: 4px solid var(--color-teal); background-color: var(--color-surface);">
+        <div class="card" style="padding: 2rem; border: 1.5px solid rgba(6, 43, 99, 0.16); background-color: var(--color-surface); border-radius: var(--radius-md); box-shadow: var(--shadow-sm);">
           <h3 style="font-size: 1.2rem; color: var(--color-navy); margin-bottom: 0.5rem; font-family: var(--font-primary);"><?php echo h($item['title']); ?></h3>
           <p style="color: var(--color-text); font-size: 0.9rem; line-height: 1.6;"><?php echo h($item['content']); ?></p>
         </div>
@@ -694,7 +762,7 @@ include_once dirname(__FILE__) . '/../includes/header.php';
     </div>
 
     <!-- Co-Curricular Beyond Preview -->
-    <div style="margin-top: 4rem; padding: 2.5rem; background-color: var(--pastel-blue); border-radius: var(--radius-lg); border: 1px solid rgba(10, 137, 152, 0.2);">
+    <div style="margin-top: 4rem; padding: 2.5rem; background-color: var(--pastel-blue); border-radius: var(--radius-lg); border: 1.5px solid rgba(10, 137, 152, 0.25);">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.75rem; flex-wrap: wrap; gap: 1rem;">
         <div>
           <h3 style="font-size: 1.6rem; color: var(--color-navy); font-family: var(--font-primary); margin-bottom: 0.25rem;">Zuvio Beyond Co-Curricular Programmes</h3>
@@ -704,19 +772,19 @@ include_once dirname(__FILE__) . '/../includes/header.php';
       </div>
 
       <div class="grid-4" style="gap: 1.25rem;">
-        <div style="background: #FFFFFF; padding: 1.25rem; border-radius: var(--radius-md); box-shadow: var(--shadow-sm); border-top: 3px solid var(--color-gold);">
+        <div style="background: #FFFFFF; padding: 1.25rem; border-radius: var(--radius-md); box-shadow: var(--shadow-sm); border: 1.5px solid rgba(6, 43, 99, 0.16);">
           <strong style="color: var(--color-navy); font-size: 1.05rem;">AI Explorers</strong>
           <p style="font-size: 0.82rem; color: var(--color-muted); margin-top: 0.25rem;">Patterns, prompts, and responsible digital intelligence.</p>
         </div>
-        <div style="background: #FFFFFF; padding: 1.25rem; border-radius: var(--radius-md); box-shadow: var(--shadow-sm); border-top: 3px solid var(--color-teal);">
+        <div style="background: #FFFFFF; padding: 1.25rem; border-radius: var(--radius-md); box-shadow: var(--shadow-sm); border: 1.5px solid rgba(6, 43, 99, 0.16);">
           <strong style="color: var(--color-navy); font-size: 1.05rem;">Coding</strong>
           <p style="font-size: 0.82rem; color: var(--color-muted); margin-top: 0.25rem;">Block-based to text coding: games, logic, and apps.</p>
         </div>
-        <div style="background: #FFFFFF; padding: 1.25rem; border-radius: var(--radius-md); box-shadow: var(--shadow-sm); border-top: 3px solid var(--color-gold);">
+        <div style="background: #FFFFFF; padding: 1.25rem; border-radius: var(--radius-md); box-shadow: var(--shadow-sm); border: 1.5px solid rgba(6, 43, 99, 0.16);">
           <strong style="color: var(--color-navy); font-size: 1.05rem;">Robotics</strong>
           <p style="font-size: 0.82rem; color: var(--color-muted); margin-top: 0.25rem;">Hands-on engineering, sensor mechanics, and design.</p>
         </div>
-        <div style="background: #FFFFFF; padding: 1.25rem; border-radius: var(--radius-md); box-shadow: var(--shadow-sm); border-top: 3px solid var(--color-teal);">
+        <div style="background: #FFFFFF; padding: 1.25rem; border-radius: var(--radius-md); box-shadow: var(--shadow-sm); border: 1.5px solid rgba(6, 43, 99, 0.16);">
           <strong style="color: var(--color-navy); font-size: 1.05rem;">Financial Literacy</strong>
           <p style="font-size: 0.82rem; color: var(--color-muted); margin-top: 0.25rem;">Money habits, budgeting, and practical entrepreneurship.</p>
         </div>
@@ -773,7 +841,9 @@ include_once dirname(__FILE__) . '/../includes/header.php';
     </div>
 
     <div class="accreditation-card-grid">
-      <?php foreach ($accreditations as $acc): ?>
+      <?php foreach ($accreditations as $acc): 
+        $is_iao = (strpos($acc['name'], 'IAO') !== false);
+      ?>
         <div class="accreditation-feature-card">
           <div>
             <div class="accreditation-logo-wrapper">
@@ -784,9 +854,13 @@ include_once dirname(__FILE__) . '/../includes/header.php';
             <p style="color: var(--color-muted); font-size: 0.9rem; line-height: 1.65;"><?php echo h($acc['description']); ?></p>
           </div>
           
-          <?php if (!empty($acc['certificate_url'])): ?>
-            <a href="<?php echo h($acc['certificate_url']); ?>" target="_blank" rel="noopener noreferrer" class="certificate-verify-btn" title="View Official Certificate">
-              View & Verify Certificate
+          <?php if ($is_iao || !empty($acc['certificate_url'])): ?>
+            <?php 
+              $btn_label = $is_iao ? 'View Certificate' : 'Learn More &rarr;';
+              $cert_link = $acc['certificate_url'] ?: 'https://www.iao.org/India-Delhi/Zuvio-Global-School';
+            ?>
+            <a href="<?php echo h($cert_link); ?>" target="_blank" rel="noopener noreferrer" class="certificate-verify-btn" title="View Official Certificate">
+              <?php echo $btn_label; ?>
               <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
             </a>
           <?php endif; ?>
@@ -841,7 +915,7 @@ include_once dirname(__FILE__) . '/../includes/header.php';
 
     <div class="grid-3" style="gap: 2rem;">
       <?php foreach ($posts as $post): ?>
-        <div class="card" style="padding: 0; overflow: hidden; border-left: none; border-top: 4px solid var(--color-gold); background-color: #FFFFFF;">
+        <div class="card" style="padding: 0; overflow: hidden; border: 1.5px solid rgba(6, 43, 99, 0.16); background-color: #FFFFFF; border-radius: var(--radius-md); box-shadow: var(--shadow-sm);">
           <div style="height: 190px; background-image: url('<?php echo h($post['featured_image']); ?>'); background-size: cover; background-position: center;"></div>
           <div style="padding: 1.75rem; display: flex; flex-direction: column; flex-grow: 1;">
             <span style="font-size: 0.75rem; color: var(--color-gold); font-weight: 700; text-transform: uppercase; margin-bottom: 0.5rem;">
@@ -860,7 +934,7 @@ include_once dirname(__FILE__) . '/../includes/header.php';
 </section>
 
 <!-- ========================================================================
-     SECTION 18: FEATURED IN
+     SECTION 18: FEATURED IN (RESPONSIVE SLIDER / CAROUSEL)
      ======================================================================== -->
 <section class="section text-center" style="background-color: #FFFFFF; border-bottom: 1px solid var(--color-border); padding: 4.5rem 0;">
   <div class="container">
@@ -870,13 +944,34 @@ include_once dirname(__FILE__) . '/../includes/header.php';
       Zuvio Global School highlighted in leading educational publications for pioneering future-skills homeschooling.
     </p>
 
-    <div class="featured-in-strip">
-      <div class="featured-in-pill">Education World</div>
-      <div class="featured-in-pill">EdTech Review</div>
-      <div class="featured-in-pill">The Hindu Education</div>
-      <div class="featured-in-pill">Brainfeed Magazine</div>
-      <div class="featured-in-pill">Indian Express</div>
-      <div class="featured-in-pill">Hindustan Times</div>
+    <!-- Responsive Logo Carousel -->
+    <div class="featured-in-slider-container" id="featuredSliderContainer">
+      <div class="featured-in-slider-track" id="featuredSliderTrack">
+        <div class="featured-in-slide-item">
+          <div class="featured-in-card">Education World</div>
+        </div>
+        <div class="featured-in-slide-item">
+          <div class="featured-in-card">EdTech Review</div>
+        </div>
+        <div class="featured-in-slide-item">
+          <div class="featured-in-card">The Hindu Education</div>
+        </div>
+        <div class="featured-in-slide-item">
+          <div class="featured-in-card">Brainfeed Magazine</div>
+        </div>
+        <div class="featured-in-slide-item">
+          <div class="featured-in-card">Indian Express</div>
+        </div>
+        <div class="featured-in-slide-item">
+          <div class="featured-in-card">Hindustan Times</div>
+        </div>
+      </div>
+
+      <div class="featured-in-controls">
+        <button class="featured-in-nav-btn" onclick="prevFeaturedSlide()" aria-label="Previous publication">&larr;</button>
+        <div class="featured-in-dots" id="featuredSliderDots"></div>
+        <button class="featured-in-nav-btn" onclick="nextFeaturedSlide()" aria-label="Next publication">&rarr;</button>
+      </div>
     </div>
   </div>
 </section>
@@ -939,7 +1034,7 @@ include_once dirname(__FILE__) . '/../includes/header.php';
 </section>
 
 <!-- ========================================================================
-     SECTION 20: FAQ (ACCORDION WITH 18 QUESTIONS FROM PDF)
+     SECTION 20: FAQ (TWO-COLUMN ACCORDION LAYOUT WITH 18 QUESTIONS FROM PDF)
      ======================================================================== -->
 <section id="faq" class="section" style="background-color: var(--color-surface); border-bottom: 1px solid var(--color-border); padding: 5.5rem 0;">
   <div class="container">
@@ -957,22 +1052,47 @@ include_once dirname(__FILE__) . '/../includes/header.php';
       <!-- Live Search / Filter Input -->
       <input type="text" id="faqSearchInput" placeholder="Type a keyword to filter questions (e.g. CBSE, timings, screen time, assessment)..." class="faq-search-input" onkeyup="filterFaqs()">
 
-      <div id="faqAccordionList">
-        <?php foreach ($faqs as $idx => $faq): 
-          $is_first = ($idx === 0);
-        ?>
-          <div class="faq-accordion-item <?php echo $is_first ? 'open' : ''; ?>">
-            <button class="faq-accordion-btn" onclick="toggleFaq(this)">
-              <span><?php echo ($idx + 1) . '. ' . h($faq['question']); ?></span>
-              <span class="faq-accordion-icon">+</span>
-            </button>
-            <div class="faq-accordion-body" style="<?php echo $is_first ? 'max-height: 500px;' : ''; ?>">
-              <div class="faq-accordion-body-inner">
-                <?php echo nl2br(h($faq['answer'])); ?>
+      <?php 
+        $half = ceil(count($faqs) / 2);
+        $faqs_col1 = array_slice($faqs, 0, $half, true);
+        $faqs_col2 = array_slice($faqs, $half, null, true);
+      ?>
+      <div id="faqAccordionList" class="faq-accordion-grid-2col">
+        <!-- Column 1 -->
+        <div class="faq-col">
+          <?php foreach ($faqs_col1 as $idx => $faq): 
+            $is_first = ($idx === 0);
+          ?>
+            <div class="faq-accordion-item <?php echo $is_first ? 'open' : ''; ?>">
+              <button class="faq-accordion-btn" onclick="toggleFaq(this)">
+                <span><?php echo ($idx + 1) . '. ' . h($faq['question']); ?></span>
+                <span class="faq-accordion-icon">+</span>
+              </button>
+              <div class="faq-accordion-body" style="<?php echo $is_first ? 'max-height: 500px;' : ''; ?>">
+                <div class="faq-accordion-body-inner">
+                  <?php echo nl2br(h($faq['answer'])); ?>
+                </div>
               </div>
             </div>
-          </div>
-        <?php endforeach; ?>
+          <?php endforeach; ?>
+        </div>
+
+        <!-- Column 2 -->
+        <div class="faq-col">
+          <?php foreach ($faqs_col2 as $idx => $faq): ?>
+            <div class="faq-accordion-item">
+              <button class="faq-accordion-btn" onclick="toggleFaq(this)">
+                <span><?php echo ($idx + 1) . '. ' . h($faq['question']); ?></span>
+                <span class="faq-accordion-icon">+</span>
+              </button>
+              <div class="faq-accordion-body">
+                <div class="faq-accordion-body-inner">
+                  <?php echo nl2br(h($faq['answer'])); ?>
+                </div>
+              </div>
+            </div>
+          <?php endforeach; ?>
+        </div>
       </div>
 
       <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 2.5rem; flex-wrap: wrap; gap: 1rem;">
@@ -1009,7 +1129,7 @@ include_once dirname(__FILE__) . '/../includes/header.php';
   </div>
 </section>
 
-<!-- FAQ and Counter Scripts -->
+<!-- Interactive Scripts: FAQ, Featured In Slider, and Stats Counter -->
 <script>
   function toggleFaq(btn) {
     const item = btn.closest('.faq-accordion-item');
@@ -1038,6 +1158,103 @@ include_once dirname(__FILE__) . '/../includes/header.php';
       }
     });
   }
+
+  // Hero Carousel Slide Controller
+  let heroSlideIdx = 0;
+  function setHeroSlide(idx) {
+    const heroPanes = document.querySelectorAll('.hero-slide-pane');
+    const heroDots = document.querySelectorAll('.hero-carousel-dot');
+    if (!heroPanes.length) return;
+    heroSlideIdx = idx;
+    heroPanes.forEach((p, i) => {
+      p.classList.toggle('active', i === idx);
+    });
+    heroDots.forEach((d, i) => {
+      d.classList.toggle('active', i === idx);
+    });
+  }
+
+  setInterval(() => {
+    const heroPanes = document.querySelectorAll('.hero-slide-pane');
+    if (heroPanes.length > 1) {
+      heroSlideIdx = (heroSlideIdx + 1) % heroPanes.length;
+      setHeroSlide(heroSlideIdx);
+    }
+  }, 6000);
+
+  // Featured In Responsive Slider
+  let featuredIndex = 0;
+  const fTrack = document.getElementById('featuredSliderTrack');
+  const fItems = document.querySelectorAll('.featured-in-slide-item');
+  const fDotsContainer = document.getElementById('featuredSliderDots');
+
+  function getVisibleSlides() {
+    if (window.innerWidth <= 480) return 1;
+    if (window.innerWidth <= 768) return 2;
+    if (window.innerWidth <= 1024) return 3;
+    return 4;
+  }
+
+  function getMaxFeaturedIndex() {
+    return Math.max(0, fItems.length - getVisibleSlides());
+  }
+
+  function updateFeaturedDots() {
+    if (!fDotsContainer) return;
+    fDotsContainer.innerHTML = '';
+    const maxIdx = getMaxFeaturedIndex();
+    for (let i = 0; i <= maxIdx; i++) {
+      const dot = document.createElement('span');
+      dot.className = 'featured-in-dot' + (i === featuredIndex ? ' active' : '');
+      dot.onclick = () => goToFeaturedSlide(i);
+      fDotsContainer.appendChild(dot);
+    }
+  }
+
+  function updateFeaturedSlider() {
+    if (!fTrack || fItems.length === 0) return;
+    const maxIdx = getMaxFeaturedIndex();
+    if (featuredIndex > maxIdx) featuredIndex = maxIdx;
+    if (featuredIndex < 0) featuredIndex = 0;
+
+    const itemWidth = fItems[0].getBoundingClientRect().width;
+    const gap = 20; // 1.25rem gap
+    const offset = featuredIndex * (itemWidth + gap);
+    fTrack.style.transform = `translateX(-${offset}px)`;
+    updateFeaturedDots();
+  }
+
+  function nextFeaturedSlide() {
+    const maxIdx = getMaxFeaturedIndex();
+    featuredIndex = (featuredIndex >= maxIdx) ? 0 : featuredIndex + 1;
+    updateFeaturedSlider();
+  }
+
+  function prevFeaturedSlide() {
+    const maxIdx = getMaxFeaturedIndex();
+    featuredIndex = (featuredIndex <= 0) ? maxIdx : featuredIndex - 1;
+    updateFeaturedSlider();
+  }
+
+  function goToFeaturedSlide(idx) {
+    featuredIndex = idx;
+    updateFeaturedSlider();
+  }
+
+  let featuredTimer = setInterval(nextFeaturedSlide, 3500);
+  const fContainer = document.getElementById('featuredSliderContainer');
+  if (fContainer) {
+    fContainer.addEventListener('mouseenter', () => clearInterval(featuredTimer));
+    fContainer.addEventListener('mouseleave', () => {
+      clearInterval(featuredTimer);
+      featuredTimer = setInterval(nextFeaturedSlide, 3500);
+    });
+  }
+  window.addEventListener('resize', updateFeaturedSlider);
+  document.addEventListener('DOMContentLoaded', () => {
+    updateFeaturedDots();
+    updateFeaturedSlider();
+  });
 
   // Statistics Number Animation
   document.addEventListener('DOMContentLoaded', () => {
