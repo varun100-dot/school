@@ -1,0 +1,189 @@
+Zuvio Global School
+ACADEMICS — Changes, Audit & Reference Document
+Source scope: Pages 21–40 of “Home Page design changes(1).docx”
+1. Executive Summary
+This document defines the Academics implementation for the Zuvio Global School website and Admin Panel. It is based on the supplied source document Pages 21–40, including its reference visuals, and cross-checked against the current live website crawl.
+The source requires a structured Academics hub containing Technology, Curriculum, Special Education, Electives, NEP 2020 and Resources, rather than treating Curriculum as the only academic destination.
+2. Recommended Academics Information Architecture
+Item
+Suggested Route
+Scope
+ACADEMICS
+/academics
+Main hub
+Technology
+/academics/technology
+LMS, CRM, ERP, Student Tools, Teacher Tools, Parent Tools
+Curriculum
+/our-curriculum or /academics/curriculum
+Indian / British-Cambridge, routines, stage/class-wise information
+Special Education
+/academics/special-education
+Inclusive learning & support
+Electives
+/academics/electives
+Regional + foreign languages
+NEP 2020
+/academics/nep-2020
+Official PDF/resource
+Resources
+/academics/resources
+Learning, content books, digital resources, academic calendar
+3. Page-by-Page Changes from Source Document
+Page 21 — Curriculum Foundations
+Reference presentation for Cambridge, American and Indian Curriculum. Use the source visual and terminology as the design/content direction.
+Page 22 — Academics Hub + Technology Start
+Create the Academics hub. The source lists Technology (LMS/CRM/ERP/student, teacher and parent tools), Curriculum with routines/schedules, Special Education, Electives, NEP 2020 and Resources.
+Page 23 — LMS
+Technology → LMS. Build a feature-led LMS section using the reference structure: child-friendly experience, safety/security, all-in-one convenience, live interactive classes, digital library and diverse learning resources.
+Page 24 — CRM / ERP / Student Tools
+Create CRM and ERP destinations/sections, then Tools for Students. Use the reference parent-portal/device-specification visual where relevant.
+Page 25 — Teacher Tools
+Build Tools for Teachers with the supplied structure: interactive learning platforms, collaborative tools and game-based learning. Tool names shown in the reference include Nearpod, Pear Deck, Edpuzzle, Google Workspace, Microsoft 365, Padlet, Kahoot!, Quizizz and Gimkit.
+Page 26 — Parent Tools
+Build Tools for Parents covering content/presentation, assessment/quizzing, interactive learning/engagement and file storage/sharing.
+Page 27 — Parent Dashboard Tools
+Continue parent tools with grade/attendance tracking, progress reports & analytics, parental control/monitoring, study/organization, behavior/motivation tracking, special needs/accessibility and general parenting/educational resources.
+Page 28 — Curriculum Landing
+Use the current website curriculum content for now, as the source says to add from the website only at this stage. Create the landing hierarchy for British, Indian and American curriculum plus stage navigation.
+Page 29 — Subjects, Pedagogy, Assessment
+Create Subjects & Skills, Core Academic Subjects, Co-curricular & Beyond Academics, Future-Ready Skills, Life Skills/Personal Development, How We Teach/Pedagogy & LMS, AI-Powered LMS, Parent Portal, Small Batch Size, Live Interactive Classes, Recorded Sessions and Assessment & Progress Tracking.
+Page 30 — Stage/Class-wise Curriculum
+Support stage-wise/class-wise curriculum views with quick facts, grade information, timings/schedules, curriculum, learning days, batch options, class-size/ratio, fees/certification references and admissions information.
+Page 31 — Why Choose Online Primary School
+Add the supplied six-card “Why choose an online primary school for your child?” structure and grade exploration for Classes 1–5.
+Page 32 — Subjects + Skills / Co-curricular
+Add class-wise subjects table and Skills Classes & Co-Curricular Activities. Preserve the source hierarchy and visual direction.
+Page 33 — How Live Classes Work
+Create a visual explanation of live online classes for Classes 1–5: live teachers, small batches, parent visibility, and supporting items for Live Classes, Recorded Lessons, Worksheets, Learning Kit, LMS Access, Quiz, Progress Tracking and Parent Dashboard.
+Page 34 — Daily Schedule / Screen Time
+Add Daily Schedule Example, Class Timings & Screen Time with Morning, Afternoon and Evening options, a typical-day timetable and age-appropriate screen-time note.
+Pages 35–39 — Special Education
+Create a dedicated Special Education experience using the supplied content: Inclusive Learning & Special Education, school where differences are understood, personalised learning, individual attention, flexible learning, strength-based education, social/emotional development, family partnership, benefit profiles, Educational Needs Learning Framework, Special Educator support, support team, online inclusive learning, Learning Without Labels and final CTA.
+Page 39 — Electives + NEP 2020
+Create Electives for Regional Languages and Foreign Languages. Add the NEP 2020 PDF once supplied.
+Page 40 — Resources → Learning
+Use The Zuvio Approach — ZUVIO, Zoomed In as the first Learning resource, followed by Vision and A World of Opportunities. Preserve the Z-U-V-I-O structure and supplied wording.
+4. Current Website Audit — Academics
+Area
+Live-site finding
+Required action
+Current Curriculum page
+The live site already has a substantial Curriculum page: K–8 journey, stage-wise learning, Learning Framework, Learning Beyond the Textbook, Assessment, Personalised Learning, Zuvio Beyond and Graduate outcomes.
+KEEP + restructure into Academics hub/deeper navigation.
+Curriculum placeholders
+The live Curriculum page still exposes “Placeholder: Client approved graphics pending” in the Early Years area.
+REMOVE before launch and replace with approved graphics/content.
+Technology
+The public site references a US-based LMS, but the crawl did not surface dedicated public CRM/ERP/Student/Teacher/Parent tool pages.
+CREATE Technology architecture and CMS-controlled sections. Do not invent unsupported claims.
+Special Education
+The source requires a substantial dedicated Special Education experience; the current crawl did not surface it as a dedicated Academics destination.
+CREATE dedicated Special Education page using source content.
+Electives
+The source calls for Regional + Foreign Languages; a dedicated Electives page was not surfaced in the crawl.
+CREATE Academics → Electives and make it CMS-managed.
+NEP 2020
+The source calls for a PDF resource.
+CREATE CMS-managed NEP 2020 resource with download/view controls.
+Resources
+The new IA requires Resources as a structured sub-area; current content is spread through Curriculum.
+CREATE Resources → Learning and make future additions CMS-manageable.
+Live-site source note: The current public Curriculum page contains the K–8 curriculum journey and related learning sections, while the current public site also references a US-based LMS and shows the existing site-wide academic positioning. The crawl also surfaced the Early Years placeholder text that should be removed.
+5. Academics Content Map
+Parent section
+Subsection
+Implementation
+Technology
+LMS
+LMS overview, features and approved visual/video
+Technology
+CRM
+CRM overview / approved functionality
+Technology
+ERP
+ERP overview / approved functionality
+Technology
+Student Tools
+Student-facing digital tools
+Technology
+Teacher Tools
+Teaching, collaboration, assessment and game-based tools
+Technology
+Parent Tools
+Parent portal, analytics, attendance, monitoring, support
+Curriculum
+Indian Curriculum
+Use current website content initially; expand later
+Curriculum
+British/Cambridge Curriculum
+Use approved supplied content when available
+Curriculum
+Stage/Class-wise
+Grade/stage cards, quick facts, subjects and schedules
+Curriculum
+Teaching & LMS
+Pedagogy, AI-powered LMS, parent portal, live and recorded classes
+Curriculum
+Assessment
+Continuous/comprehensive assessment, unit/term tests, progress tracking
+Special Education
+Inclusive Learning
+Source pages 35–39
+Electives
+Regional Languages
+CMS-managed list
+Electives
+Foreign Languages
+CMS-managed list
+NEP 2020
+PDF
+Upload/download/view controls
+Resources
+Learning
+Approach, content books, digital resources, academic calendar
+6. Admin Panel / CMS Requirements
+Admin navigation must mirror the frontend Academics hierarchy exactly.
+Every maintainable section/card/item must support ADD, EDIT, DELETE, REORDER and PUBLISH/UNPUBLISH.
+Media management must support image/video/PDF upload, replace and delete.
+Curriculum must allow stage/class-wise items to be created and reordered without code changes.
+Technology tools should support name, logo/icon, description, category, URL and display order.
+NEP 2020 and academic calendar resources must support PDF management.
+Do not invent unapproved statistics, accreditations, fees, product claims or technology claims in CMS seed data.
+7. UI / UX Direction
+Use a consistent full 4-side card border across Academics cards.
+Keep the information hierarchy clear: Academics hub → subpage → subsection → cards/items.
+Use tables for class/grade quick facts and subject structures where the source reference uses tables.
+Use responsive content + image layouts where the supplied reference visuals indicate them.
+Use clear stage differentiation for curriculum cards without overcrowding.
+All pages must remain mobile responsive and accessible.
+8. Source Reference Images
+These are rendered directly from the supplied source DOCX. They are included so the developer can compare the implementation with the original design references. Images below are source-page snapshots, not newly designed replacements.
+Reference — Source Page 21
+Reference — Source Page 23
+Reference — Source Page 24
+Reference — Source Page 25
+Reference — Source Page 26
+Reference — Source Page 27
+Reference — Source Page 28
+Reference — Source Page 29
+Reference — Source Page 30
+Reference — Source Page 31
+Reference — Source Page 32
+Reference — Source Page 33
+Reference — Source Page 34
+Reference — Source Page 35
+9. Final Implementation Checklist
+Academics dropdown exists and matches the approved IA.
+Academics hub is created or the existing Curriculum hub is expanded into the approved structure.
+Technology → LMS / CRM / ERP / Student / Teacher / Parent tools are available or clearly marked pending where the source says later.
+Curriculum supports Indian + British/Cambridge pathways and stage/class-wise information.
+Special Education page is implemented from supplied source content.
+Electives supports regional and foreign languages.
+NEP 2020 PDF is CMS-managed when supplied.
+Resources → Learning is CMS-managed.
+All cards use full borders and consistent responsive styling.
+No “Client approved graphics pending” placeholders remain publicly.
+Admin Panel supports CRUD, reorder, publish/unpublish and media/PDF controls.
+No unapproved claims have been invented.
+Prepared for Zuvio Global School website redesign and CMS implementation
