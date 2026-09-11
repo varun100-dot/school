@@ -91,18 +91,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $action === 'replace' && $id > 0) {
             }
             
             $file = $_FILES['replace_file'];
-            $allowed_types = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+            $allowed_types = ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'application/pdf', 'video/mp4', 'video/webm', 'video/ogg'];
             
             $finfo = finfo_open(FILEINFO_MIME_TYPE);
             $mime = finfo_file($finfo, $file['tmp_name']);
             finfo_close($finfo);
             
             if (!in_array($mime, $allowed_types)) {
-                throw new Exception("Invalid image format. Only JPG, PNG, WEBP, and GIF are allowed.");
+                throw new Exception("Invalid file format. Allowed formats: JPG, PNG, WEBP, GIF, PDF, MP4, and WEBM.");
             }
             
-            if ($file['size'] > 5 * 1024 * 1024) {
-                throw new Exception("Maximum allowed image file size is 5MB.");
+            if ($file['size'] > 50 * 1024 * 1024) {
+                throw new Exception("Maximum allowed file size is 50MB.");
             }
             
             // Get current media record
@@ -134,13 +134,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $action === 'replace' && $id > 0) {
             
             // Atomic overwrite
             if (move_uploaded_file($file['tmp_name'], $target_live_path)) {
-                // Fetch new dimensions
+                // Fetch new dimensions for images
                 $width = null;
                 $height = null;
-                $sizes = getimagesize($target_live_path);
-                if ($sizes) {
-                    $width = $sizes[0];
-                    $height = $sizes[1];
+                if (strpos($mime, 'image/') === 0) {
+                    $sizes = @getimagesize($target_live_path);
+                    if ($sizes) {
+                        $width = $sizes[0];
+                        $height = $sizes[1];
+                    }
                 }
                 
                 $user_id = $_SESSION['user_id'] ?? null;
@@ -266,18 +268,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['upload_media'])) {
             }
             
             $file = $_FILES['media_file'];
-            $allowed_types = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+            $allowed_types = ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'application/pdf', 'video/mp4', 'video/webm', 'video/ogg'];
             
             $finfo = finfo_open(FILEINFO_MIME_TYPE);
             $mime = finfo_file($finfo, $file['tmp_name']);
             finfo_close($finfo);
             
             if (!in_array($mime, $allowed_types)) {
-                throw new Exception("Invalid file type. Only JPG, PNG, WEBP, and GIF images are allowed.");
+                throw new Exception("Invalid file type. Allowed formats: JPG, PNG, WEBP, GIF, PDF, MP4, and WEBM.");
             }
             
-            if ($file['size'] > 5 * 1024 * 1024) {
-                throw new Exception("Maximum allowed file size is 5MB.");
+            if ($file['size'] > 50 * 1024 * 1024) {
+                throw new Exception("Maximum allowed file size is 50MB.");
             }
             
             $ext = pathinfo($file['name'], PATHINFO_EXTENSION);
@@ -296,10 +298,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['upload_media'])) {
                 
                 $width = null;
                 $height = null;
-                $sizes = getimagesize($target_path);
-                if ($sizes) {
-                    $width = $sizes[0];
-                    $height = $sizes[1];
+                if (strpos($mime, 'image/') === 0) {
+                    $sizes = @getimagesize($target_path);
+                    if ($sizes) {
+                        $width = $sizes[0];
+                        $height = $sizes[1];
+                    }
                 }
                 
                 $alt_text = trim($_POST['alt_text'] ?? '');
@@ -381,10 +385,48 @@ if ($action === 'version_detail' && $version_id > 0) {
 // 8. Fetch general media files
 $media_files = [];
 if ($action === 'list') {
-    try {
-        $media_files = $db->query("SELECT * FROM `media` ORDER BY `created_at` DESC")->fetchAll();
-    } catch (Exception $e) {
-        $error = 'Database connection offline.';
+    if ($db) {
+        try {
+            $media_files = $db->query("SELECT * FROM `media` ORDER BY `created_at` DESC")->fetchAll();
+        } catch (Exception $e) {
+            $error = 'Database connection offline.';
+        }
+    }
+    if (empty($media_files)) {
+        // Fallback scan local files in assets/images/reference_docx/ and uploads/
+        $scan_dirs = [
+            'assets/images/reference_docx/' => '/assets/images/reference_docx/',
+            'uploads/' => '/uploads/'
+        ];
+        $fake_id = 1;
+        foreach ($scan_dirs as $rel_dir => $pub_base) {
+            $abs_dir = dirname(__FILE__) . '/../' . $rel_dir;
+            if (is_dir($abs_dir)) {
+                $scanned = scandir($abs_dir);
+                foreach ($scanned as $fn) {
+                    if ($fn === '.' || $fn === '..' || strpos($fn, '.') === 0) continue;
+                    $fp = $abs_dir . $fn;
+                    if (is_file($fp)) {
+                        $fsize = filesize($fp);
+                        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+                        $fmime = finfo_file($finfo, $fp);
+                        finfo_close($finfo);
+                        $sizes = strpos($fmime, 'image/') === 0 ? @getimagesize($fp) : null;
+                        $media_files[] = [
+                            'id' => $fake_id++,
+                            'file_name' => $fn,
+                            'storage_path' => $rel_dir . $fn,
+                            'public_url' => $pub_base . $fn,
+                            'mime_type' => $fmime,
+                            'file_size' => $fsize,
+                            'width' => $sizes ? $sizes[0] : null,
+                            'height' => $sizes ? $sizes[1] : null,
+                            'created_at' => date('Y-m-d H:i:s', filemtime($fp))
+                        ];
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -439,8 +481,25 @@ include_once dirname(__FILE__) . '/header.php';
           <?php foreach ($media_files as $file): ?>
             <!-- Add dynamic cache bust timestamp to preview -->
             <?php $cache_bust = file_exists(dirname(__FILE__) . '/../' . $file['storage_path']) ? filemtime(dirname(__FILE__) . '/../' . $file['storage_path']) : time(); ?>
-            <div style="background-color: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-sm); overflow: hidden; display: flex; flex-direction: column; height: 250px;">
-              <div style="height: 110px; background-color: var(--color-navy); background-image: url('<?php echo h($file['public_url']); ?>?v=<?php echo $cache_bust; ?>'); background-size: cover; background-position: center;"></div>
+            <div style="background-color: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-sm); overflow: hidden; display: flex; flex-direction: column; height: 260px;">
+              <?php if (strpos($file['mime_type'] ?? '', 'image/') === 0): ?>
+                <div style="height: 110px; background-color: var(--color-navy); background-image: url('<?php echo h($file['public_url']); ?>?v=<?php echo $cache_bust; ?>'); background-size: cover; background-position: center;"></div>
+              <?php elseif (($file['mime_type'] ?? '') === 'application/pdf'): ?>
+                <div style="height: 110px; background-color: #fee2e2; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #991b1b;">
+                  <span style="font-size: 2rem;">📄</span>
+                  <span style="font-weight: 700; font-size: 0.75rem; margin-top: 0.25rem;">PDF Document</span>
+                </div>
+              <?php elseif (strpos($file['mime_type'] ?? '', 'video/') === 0): ?>
+                <div style="height: 110px; background-color: #0f172a; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #f8fafc;">
+                  <span style="font-size: 2rem;">🎬</span>
+                  <span style="font-weight: 700; font-size: 0.75rem; margin-top: 0.25rem;">Video File</span>
+                </div>
+              <?php else: ?>
+                <div style="height: 110px; background-color: #f1f5f9; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #475569;">
+                  <span style="font-size: 2rem;">📁</span>
+                  <span style="font-weight: 700; font-size: 0.75rem; margin-top: 0.25rem;">File Asset</span>
+                </div>
+              <?php endif; ?>
               <div style="padding: 0.6rem; display: flex; flex-direction: column; justify-content: space-between; flex-grow: 1; font-size: 0.75rem;">
                 <div>
                   <span style="font-weight: 600; color: var(--color-navy); text-overflow: ellipsis; overflow: hidden; white-space: nowrap; display: block;" title="<?php echo h($file['file_name']); ?>">

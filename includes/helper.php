@@ -27,6 +27,10 @@ function get_csrf_token() {
     return $_SESSION['csrf_token'];
 }
 
+function generate_csrf_token() {
+    return get_csrf_token();
+}
+
 // Validate CSRF token
 function validate_csrf_token($token) {
     safe_session_start();

@@ -80,6 +80,46 @@ if (strpos($route, 'admin') === 0) {
             $page_slug = 'admin-media';
             include dirname(__FILE__) . '/admin/media.php';
             break;
+        case 'homepage':
+        case 'homepage.php':
+            $page_slug = 'admin-homepage';
+            include dirname(__FILE__) . '/admin/homepage.php';
+            break;
+        case 'faqs':
+        case 'faqs.php':
+            $page_slug = 'admin-faqs';
+            include dirname(__FILE__) . '/admin/faqs.php';
+            break;
+        case 'testimonials':
+        case 'testimonials.php':
+            $page_slug = 'admin-testimonials';
+            include dirname(__FILE__) . '/admin/testimonials.php';
+            break;
+        case 'accreditations':
+        case 'accreditations.php':
+            $page_slug = 'admin-accreditations';
+            include dirname(__FILE__) . '/admin/accreditations.php';
+            break;
+        case 'about-cms':
+        case 'about-cms.php':
+            $page_slug = 'admin-about-cms';
+            include dirname(__FILE__) . '/admin/about-cms.php';
+            break;
+        case 'academics-cms':
+        case 'academics-cms.php':
+            $page_slug = 'admin-academics-cms';
+            include dirname(__FILE__) . '/admin/academics-cms.php';
+            break;
+        case 'admissions-cms':
+        case 'admissions-cms.php':
+            $page_slug = 'admin-admissions-cms';
+            include dirname(__FILE__) . '/admin/admissions-cms.php';
+            break;
+        case 'beyond-cms':
+        case 'beyond-cms.php':
+            $page_slug = 'admin-beyond-cms';
+            include dirname(__FILE__) . '/admin/beyond-cms.php';
+            break;
         case 'profiles':
             $page_slug = 'admin-profiles';
             include dirname(__FILE__) . '/admin/profiles.php';
@@ -105,11 +145,34 @@ switch ($route) {
         $page_slug = 'about';
         include dirname(__FILE__) . '/pages/about.php';
         break;
+
+    case 'founder-message':
+    case 'founders-message':
+        $page_slug = 'founder-message';
+        include dirname(__FILE__) . '/pages/founder-message.php';
+        break;
+
+    case 'academics':
+        $page_slug = 'academics';
+        include dirname(__FILE__) . '/pages/academics.php';
+        break;
         
     case 'our-curriculum':
     case 'curriculum':
         $page_slug = 'our-curriculum';
         include dirname(__FILE__) . '/pages/curriculum.php';
+        break;
+
+    case 'admissions':
+    case 'admission':
+        $page_slug = 'admissions';
+        include dirname(__FILE__) . '/pages/admissions.php';
+        break;
+
+    case 'faq':
+    case 'faqs':
+        $page_slug = 'faq';
+        include dirname(__FILE__) . '/pages/faq.php';
         break;
         
     case 'zuvio-beyond':

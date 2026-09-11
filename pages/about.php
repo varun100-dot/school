@@ -132,8 +132,8 @@ include_once dirname(__FILE__) . '/../includes/header.php';
   </div>
 </section>
 
-<!-- Section 1: Our Story -->
-<section class="section" style="background-color: var(--color-white); border-bottom: 1px solid var(--color-border);">
+<!-- Section 1: Our Story / About Zuvio -->
+<section id="about-zuvio" class="section" style="background-color: var(--color-white); border-bottom: 1px solid var(--color-border);">
   <div class="container">
     <div class="grid-2" style="align-items: center; gap: 4rem;">
       <div>
@@ -195,12 +195,12 @@ include_once dirname(__FILE__) . '/../includes/header.php';
   </div>
 </section>
 
-<!-- Section 4: Leadership Team -->
+<!-- Section 4: Leadership Team / Our Team -->
 <?php if (!empty($leadership)): ?>
-<section class="section" style="background-color: var(--color-surface-warm); border-bottom: 1px solid var(--color-border);">
+<section id="leadership" class="section" style="background-color: var(--color-surface-warm); border-bottom: 1px solid var(--color-border);">
   <div class="container">
     <div class="text-center" style="margin-bottom: 4rem;">
-      <span style="font-size: 0.85rem; font-weight: 600; color: var(--color-gold); text-transform: uppercase; letter-spacing: 2px;">Academic Founders</span>
+      <span style="font-size: 0.85rem; font-weight: 600; color: var(--color-gold); text-transform: uppercase; letter-spacing: 2px;">Academic Leadership</span>
       <h2 style="font-size: 2.25rem; color: var(--color-navy); margin-top: 0.5rem; font-family: var(--font-primary);">Our Leadership Team</h2>
     </div>
 
@@ -244,7 +244,97 @@ include_once dirname(__FILE__) . '/../includes/header.php';
 </section>
 <?php endif; ?>
 
-<!-- Timeline / School History removed completely as requested -->
+<!-- Section 5: Founder's Message -->
+<section id="founder" class="founder-message-section" style="border-bottom: 1px solid var(--color-border);">
+  <div class="container">
+    <div class="founder-editorial-card">
+      <div class="founder-portrait-col">
+        <div class="founder-portrait-frame">
+          <img src="/assets/images/Profile_Images/Pragya_Professional_Profile.webp" alt="Founder of Zuvio Global School">
+        </div>
+        <h3 style="font-size: 1.35rem; color: var(--color-navy); font-family: var(--font-primary); margin-bottom: 0.25rem;">Founder</h3>
+        <p style="font-size: 0.85rem; color: var(--color-gold); font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Zuvio Global School</p>
+      </div>
+
+      <div class="founder-letter-col">
+        <span style="font-size: 0.85rem; font-weight: 700; color: var(--color-gold); text-transform: uppercase; letter-spacing: 2px; display: block; margin-bottom: 0.5rem;">Founder's Message</span>
+        <h2 style="font-size: 2.25rem; color: var(--color-navy); font-family: var(--font-primary); margin-bottom: 1.25rem; line-height: 1.25;">
+          Learning Without Boundaries. Growing With Purpose.
+        </h2>
+        <p style="color: var(--color-text); font-size: 0.95rem; line-height: 1.8; margin-bottom: 1rem;">
+          At Zuvio Global School, we believe that meaningful learning is not defined by the walls of a classroom. It is defined by curiosity, connection, opportunity and the confidence to explore beyond what is already known.
+        </p>
+        <p style="color: var(--color-text); font-size: 0.95rem; line-height: 1.8; margin-bottom: 1.5rem;">
+          Our vision is to create a 100% online, future-ready learning environment where every child has the opportunity to learn beyond geographical boundaries while receiving the guidance, structure and personal attention needed to thrive.
+        </p>
+        <a href="/founder-message" class="btn btn-primary" style="background-color: var(--color-navy); border-color: var(--color-navy); color: #FFFFFF; font-weight: 600;">
+          Read Complete Founder's Message &rarr;
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Section 6: Affiliations & Accreditations -->
+<section id="accreditations" class="section" style="background-color: var(--pastel-blue); border-bottom: 1px solid var(--color-border); padding: 5rem 0;">
+  <div class="container">
+    <div class="text-center" style="margin-bottom: 3.5rem;">
+      <span style="font-size: 0.85rem; font-weight: 700; color: var(--color-gold); text-transform: uppercase; letter-spacing: 2px;">Global Benchmarks</span>
+      <h2 style="font-size: 2.5rem; color: var(--color-navy); margin-top: 0.5rem; font-family: var(--font-primary);">Affiliations & Accreditations</h2>
+      <p style="color: var(--color-muted); font-size: 1.05rem; margin-top: 0.5rem;">Committed to world-class educational benchmarks and certified standards.</p>
+    </div>
+
+    <div class="accreditation-card-grid">
+      <!-- ISSO -->
+      <div class="accreditation-feature-card">
+        <div>
+          <div class="accreditation-logo-wrapper">
+            <img src="/assets/images/isso-logo.png" alt="ISSO Logo">
+          </div>
+          <h3 style="font-size: 1.25rem; color: var(--color-navy); font-family: var(--font-primary); margin-bottom: 0.35rem;">ISSO</h3>
+          <h4 style="font-size: 0.88rem; color: var(--color-teal); font-weight: 600; margin-bottom: 1rem;">International Schools Sports Organisation</h4>
+          <p style="color: var(--color-muted); font-size: 0.9rem; line-height: 1.65;">
+            Connecting international-curriculum schools and student-athletes through organised multi-sport opportunities and competitive pathways.
+          </p>
+        </div>
+        <a href="https://www.issosports.org/" target="_blank" rel="noopener" class="certificate-verify-btn">Learn More &rarr;</a>
+      </div>
+
+      <!-- IAO -->
+      <div class="accreditation-feature-card">
+        <div>
+          <div class="accreditation-logo-wrapper">
+            <img src="/assets/images/iao-logo.png" alt="IAO Logo">
+          </div>
+          <h3 style="font-size: 1.25rem; color: var(--color-navy); font-family: var(--font-primary); margin-bottom: 0.35rem;">IAO</h3>
+          <h4 style="font-size: 0.88rem; color: var(--color-teal); font-weight: 600; margin-bottom: 1rem;">International Accreditation Organization</h4>
+          <p style="color: var(--color-muted); font-size: 0.9rem; line-height: 1.65;">
+            Quality-assurance and international accreditation reflecting continuously benchmarked teaching practices.
+          </p>
+        </div>
+        <a href="https://www.iao.org/India-Delhi/Zuvio-Global-School" target="_blank" rel="noopener" class="certificate-verify-btn">
+          Verify Certificate
+          <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+        </a>
+      </div>
+
+      <!-- Oxford Quality -->
+      <div class="accreditation-feature-card">
+        <div>
+          <div class="accreditation-logo-wrapper">
+            <img src="/assets/images/oxford-logo.png" alt="Oxford Quality Logo">
+          </div>
+          <h3 style="font-size: 1.25rem; color: var(--color-navy); font-family: var(--font-primary); margin-bottom: 0.35rem;">Oxford Quality</h3>
+          <h4 style="font-size: 0.88rem; color: var(--color-teal); font-weight: 600; margin-bottom: 1rem;">Oxford University Press</h4>
+          <p style="color: var(--color-muted); font-size: 0.9rem; line-height: 1.65;">
+            Strengthening education through high-quality educational resources, thematic workbooks, and teacher professional development.
+          </p>
+        </div>
+        <a href="https://india.oup.com/" target="_blank" rel="noopener" class="certificate-verify-btn">Explore Oxford &rarr;</a>
+      </div>
+    </div>
+  </div>
+</section>
 
 <style>
   .leadership-grid {

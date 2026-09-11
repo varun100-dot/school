@@ -1,0 +1,503 @@
+ZUVIO GLOBAL SCHOOLHOMEPAGE CHANGES — IMPLEMENTATION REFERENCE
+
+Prepared from the supplied “Home Page design changes” document — Pages 1–9
+
+Purpose
+
+This document consolidates all homepage changes specified in the supplied source document into one implementation-ready checklist.
+
+Reference visuals embedded below are taken directly from the supplied source document, preserving the original visual direction.
+
+Scope is limited to Homepage requirements (source document pages 1–9).
+
+Homepage Change Summary
+
+#
+
+Homepage area
+
+Required change
+
+01
+
+Header / navigation
+
+Admission strip, affiliation number, contact/social links, moving USP strip, grade range, CTA-led header; remove “View Certificate” from header.
+
+02
+
+Hero section
+
+Carousel banner with enquiry form positioned beside the banner, plus Enrol Now / Take a Demo / Download Brochure CTAs.
+
+03
+
+About Zuvio
+
+Short-form About Zuvio introduction and “Who Should Choose Zuvio” summary.
+
+04
+
+Learning Path
+
+Four-stage learning journey + Learning Framework + Learning Beyond the Textbook + differentiation + graduate outcomes.
+
+05
+
+Inclusivity & Beyond
+
+Reuse Beyond co-curricular cards and add inclusive-learning value propositions.
+
+06
+
+Statistics & Accreditation
+
+Stats/numbers block and accreditation/affiliation showcase with certificate link embedded on homepage.
+
+07
+
+Testimonials
+
+Parent testimonials / reviews section with a structured review presentation.
+
+08
+
+News / Updates
+
+News, updates, blogs, awards/recognitions and Featured In structures.
+
+09
+
+CEO message
+
+CEO message as text and/or video.
+
+10
+
+FAQ
+
+Homepage FAQ section using the supplied FAQ reference/PDF structure.
+
+1. Header, Announcement Strip & Navigation
+
+Source reference: Pages 1–2 of the supplied document. The top-level menu is specified on page 1 and the homepage header treatment on page 2.
+
+1.1 Top announcement / information strip
+
+Add a strip line with “Admissions Open 2026-2027”.
+
+Show affiliation number.
+
+Show phone/call information, email and social-media options as clickable elements.
+
+Add a moving strip line for Zuvio benefits / USPs and grade range in the header.
+
+Reference image from supplied document — Page 2: announcement strip, moving USP strip and header pattern.
+
+Header implementation note
+
+The source reference is demonstrating the information hierarchy and placement pattern; it is not specifying that the Zuvio logo, labels or third-party brand names in the example should be copied.
+
+The final production header should use Zuvio’s own approved brand assets, labels and contact details.
+
+1.2 Navigation menu architecture
+
+Home
+
+About Us — About Zuvio (Story, Vision, Mission, Values, Our Approach, What Sets Us Apart, Who Should Use Zuvio); Our Team (Core Team, Leadership Team); Founder's Message (Her Message, Her Story, Her Expertise); Affiliations & Accreditations.
+
+Academics — Technology (LMS, Tools for Students, Teachers and Parents); Curriculum (Indian, British) with routine/schedules; Special Education; Electives (Regional Language, Foreign Language); NEP 2020; Resources (Learning, Community, Info & Support).
+
+Admissions — Enrol Now (Form + Process Steps + Requirements); Eligibility Criteria (including age-wise); Calendar; Fees Structure; FAQ.
+
+Beyond — Co-curricular; Student Achievers; Gallery.
+
+Contact Us.
+
+2. Hero / Banner + Enquiry Form
+
+Required change: Use a carousel hero banner and place the enquiry form beside the banner, not on top of it.
+
+Carousel banner should communicate the primary admission / school proposition.
+
+Position enquiry form in a dedicated right-side panel alongside the banner.
+
+Add primary CTAs: “Enrol Now”, “Take a Demo” and “Download Brochure”.
+
+Keep the form visually distinct from the banner to improve readability and conversion clarity.
+
+Reference image from supplied document — Page 2: carousel banner + side enquiry form composition.
+
+3. Accreditation Certificate Placement
+
+Remove “View Certificate” from the header.
+
+Place the certificate within the homepage “Affiliation and Accreditation” section.
+
+The certificate should contain an embedded link / clickable action to open or verify the certificate.
+
+Reference image from supplied document — Page 2: certificate treatment with “View Certificate” action.
+
+4. About Zuvio — Homepage Short Form
+
+Homepage heading: About Zuvio (who are we / why Zuvio / who should choose Zuvio)
+
+4.1 About Zuvio (short form)
+
+Zuvio Global School is an online school built on one belief: education should adapt to the child, not the child to the system.
+
+We bring together a structured, curriculum-aligned programme, caring teachers and thoughtful technology to create a flexible, personalised learning experience your child can access from anywhere. Different ways of learning. One community. Equal opportunities.
+
+That's what learning beyond boundaries means.
+
+4.2 Who Should Choose Zuvio (short form)
+
+Zuvio is for families who want learning to fit their life — not their life to revolve around a timetable.
+
+Globally mobile families who move between cities or countries
+
+Homeschooling & alternative-learning families who want structure with freedom
+
+Young athletes, artists & performers balancing demanding schedules
+
+Children who thrive online and learn best in a digital environment
+
+Learners who need a more personalised approach, pace or attention
+
+Children who need a different schooling environment when traditional school isn't the right fit
+
+If you believe education should adapt to the child, Zuvio may be the right choice.
+
+5. Learning Path
+
+5.1 Curriculum — Section Intro
+
+A Future-Ready Learning Journey — K to Grade 8
+
+Aligned with CBSE, NEP 2020 and NCF — strong academic foundations blended with creativity, communication, digital fluency and real-world learning.
+
+Every stage builds on the last: from stories, sounds and play in the Early Years to research, innovation and independent thinking in Middle School.
+
+5.2 The Zuvio Learning Journey — 4 Stage Cards
+
+Early Years · K–KG — Explore • Play • Discover
+
+Learning through stories, play, music and hands-on activities
+
+Early literacy, phonics and numeracy
+
+Communication, creativity and social-emotional growth
+
+Outcome: Confidence, curiosity and strong foundations
+
+Foundation Stage · Grades 1–2 — Build • Question • Create
+
+Strengthening reading, writing and maths
+
+Connecting classroom concepts to everyday life
+
+Art, life skills and digital literacy
+
+Outcome: Numeracy, communication and independent thinking
+
+Preparatory Stage · Grades 3–5 — Understand • Apply • Collaborate
+
+Interdisciplinary, application-led learning
+
+Science, coding and computational thinking
+
+Communication, financial awareness and creativity
+
+Outcome: Conceptual understanding, research and digital fluency
+
+Middle School · Grades 6–8 — Think • Apply • Innovate
+
+Deeper analysis, research and discussion
+
+Coding & AI awareness, entrepreneurship, design thinking
+
+Leadership, global citizenship and career exploration
+
+Outcome: Critical thinking, independence and real-world readiness
+
+Strong Foundations. Future Skills. Learning Without Boundaries.
+
+CTA: Explore the Full Curriculum →
+
+Reference image from supplied document — Page 6: stage/program card composition that can inform homepage learning-path card treatment.
+
+5.3 The Zuvio Learning Framework — From Knowing to Doing
+
+Know — Build the foundation of essential concepts and ideas
+
+Think — Question, analyse, reason and solve
+
+Create — Imagine, experiment, design and innovate
+
+Connect — Communicate, collaborate and understand other perspectives
+
+Apply — Use knowledge confidently in projects and real life
+
+Knowledge → Understanding → Application → Innovation
+
+5.4 Learning Beyond the Textbook
+
+Because the world is the real classroom.
+
+Projects & Experiments — learning by doing, testing and discovering
+
+Technology & Digital Learning — used creatively and responsibly
+
+Communication & Collaboration — presentations, teamwork, global interaction
+
+Life Skills — decision-making, independence and financial awareness
+
+Creativity & Innovation — art, coding and design thinking
+
+Global Exposure — cultures and ideas beyond boundaries
+
+5.5 What Makes Zuvio Different
+
+Assessment for Growth — We measure progress and skills, not just marks — with meaningful insights for parents.
+
+Personalised Learning — Teacher guidance, digital tools and targeted support that adapt to each child’s pace and needs.
+
+Zuvio Beyond — Co-curricular activities, enrichment and extra academic support, matched to your child’s interests.
+
+5.6 The Zuvio Graduate — by the end of Grade 8
+
+Academically Strong · Curious · Confident & Articulate · Creative · Digitally Fluent · Collaborative · Independent · Globally Aware · Future-Ready
+
+Not just ready for the next grade — ready to learn, adapt and grow in a changing world.
+
+6. Inclusivity & Beyond Section
+
+Use co-curricular cards from the Beyond page in this homepage area.
+
+Reference image from supplied document — Page 6: Learning Paths + co-curricular cards + inclusive-learning copy.
+
+6.1 Core inclusive-learning statements
+
+Inclusive by Design — Learning built around how your child learns — not the other way round.
+
+Learn From Anywhere — A complete school experience that moves with your family, across cities or countries.
+
+Personalised Attention — Teacher-led, small-group classes where every child is known, seen and supported.
+
+Flexible Pacing — Space to move ahead, slow down or revisit — without the pressure to keep up.
+
+Beyond Academics — Confidence, communication, creativity and life skills — not just marks.
+
+Special Education Support — A qualified Special Educator and personalised plans for diverse learning needs.
+
+7. Statistics & Affiliations / Accreditations
+
+7.1 Statistics / numbers
+
+Add a dedicated statistics / numbers strip or section. The source document marks this as a required homepage section but does not supply the final numeric values in the homepage text.
+
+7.2 Accreditations and affiliations
+
+Create a dedicated homepage accreditation / affiliation showcase.
+
+Place the certificate / verification link in this section rather than the header.
+
+The supplied visual reference shows a three-card accreditation layout with logos and labels.
+
+Reference image from supplied document — Page 7: futuristic-learning / stats lead-in and accreditation-card layout.
+
+8. Parent Testimonials / Reviews
+
+Required: create a structured parent testimonial/review section. The source specifically labels this as a structure to be made.
+
+Use testimonial cards with parent name, child/class context where approved, and review copy.
+
+Use a “View More Testimonials” style CTA when applicable.
+
+Reference image from supplied document — Page 8: parent testimonials carousel/card structure.
+
+9. News / Updates / Blogs / Awards & Recognition
+
+Create a homepage module for latest news and updates.
+
+Show selected blog/news cards with image, title, short summary and “Learn more” CTA.
+
+Use the same area or a related module to surface awards and recognition.
+
+The source document labels the final structure as “News/updates/blogs/awards and recognitions”.
+
+Reference image from supplied document — Page 8: “Latest News and Updates” three-card layout.
+
+10. Featured In
+
+Create a “Featured In” media-logo strip / carousel. The supplied reference shows publication logos displayed in rounded containers.
+
+Reference image from supplied document — Page 9: Featured In logo row and CEO/video presentation.
+
+Featured In implementation
+
+Use only verified publications / media brands approved by Zuvio.
+
+Logos should be clickable when the corresponding media article or feature is available and approved for linking.
+
+11. Founder's Message — Text / Video
+
+Approved Founder’s Message
+
+Learning Without Boundaries. Growing With Purpose.
+
+Dear Parents, Students and Members of the Zuvio Community,
+
+Education today must prepare children not only for examinations, but for a world that is constantly evolving.
+
+At Zuvio Global School, we believe that meaningful learning is not defined by the walls of a classroom. It is defined by curiosity, connection, opportunity and the confidence to explore beyond what is already known.
+
+Our vision is to create a 100% online, future-ready learning environment where every child has the opportunity to learn beyond geographical boundaries while receiving the guidance, structure and personal attention needed to thrive.
+
+At Zuvio, strong academics form the foundation, but learning goes much further. We encourage our students to question, think critically, communicate confidently, collaborate, create and apply their knowledge to real-world situations. Technology enables our classrooms, but teachers, relationships and meaningful human interaction remain at the heart of the learning experience.
+
+We recognise that every child is different. Their interests, abilities, pace and aspirations are unique. Our approach therefore aims to create a learning journey that gives students the flexibility to discover their strengths while developing the knowledge, skills and values required for the future.
+
+We also believe education is a partnership. Parents, educators and students must work together to create an environment in which children feel supported, inspired and empowered to take ownership of their learning.
+
+Zuvio Global School is not simply about bringing a traditional classroom online. We are reimagining how learning can happen when boundaries are removed and possibilities are expanded.
+
+Our aspiration is simple yet powerful: to nurture confident learners, independent thinkers, compassionate individuals and responsible global citizens who are prepared not just for the next grade, but for the world ahead.
+
+Welcome to Zuvio Global School — a global learning community where every child is encouraged to learn, explore, create and grow without boundaries.
+
+Warm regards,
+
+Founder
+
+Zuvio Global School
+
+Reference image from supplied document — Page 9: original video/message presentation reference; use for layout inspiration only.
+
+12. FAQ
+
+FAQ Source: “Zuvio Parent FAQ - Online Schooling” (3-page PDF supplied by the user).
+
+Homepage implementation: use an accordion UI with “View all” and “Contact us” actions, while keeping the complete answers available on the dedicated FAQ page.
+
+1. What are the timings of online classes?
+
+Zuvio follows age-appropriate class durations. Classes are scheduled within the 9:00 AM-1:00 PM window, depending on the grade. Pre-Primary: approximately 2 hours. Primary: approximately 2.5 hours. Middle School: approximately 3 hours. The timetable includes suitable breaks, interactive activities and a balanced mix of teacher-led and student-led learning.
+
+2. How does online schooling work at Zuvio?
+
+Zuvio Global School is a 100% online school where students attend structured live classes with teachers from home. Students follow a planned timetable and academic calendar and receive learning resources, assignments, projects, assessments and teacher support through the school's digital learning ecosystem.
+
+3. Is the Zuvio curriculum CBSE-mapped?
+
+Yes. Zuvio's academic curriculum is mapped to CBSE learning outcomes and designed with reference to NEP 2020 and NCF guidelines. This supports grade-appropriate concepts, competencies and structured academic progression.
+
+4. What is the Oxford theme-based curriculum approach?
+
+Zuvio incorporates an Oxford-based thematic learning approach, where concepts are connected through meaningful themes instead of always being taught as isolated topics. A theme can bring together language, environmental studies, creativity, research, communication and real-world applications, helping children understand connections across subjects.
+
+5. What is Project-Based Learning?
+
+Project-Based Learning allows students to learn by doing. Students explore a question, challenge or real-life topic and create a project, presentation, model, report or solution. This helps develop critical thinking, creativity, communication, research, collaboration and problem-solving skills.
+
+6. How is Artificial Intelligence integrated into the curriculum?
+
+AI learning is introduced in an age-appropriate manner as part of Zuvio's future-ready learning approach. Students gradually learn AI concepts, responsible use of technology, problem-solving and practical applications. Zuvio's AI learning approach uses IBM-supported/certified learning resources and frameworks, subject to the applicable programme and certification requirements.
+
+7. How are examinations and assessments conducted?
+
+Assessment includes formative assessments, projects, assignments, class participation, portfolios and summative assessments. Formal assessments are conducted online according to school examination guidelines. For Nursery-UKG, assessment is primarily activity- and observation-based rather than dependent on formal written examinations. Parents receive regular feedback and progress reports.
+
+8. Can parents speak directly with teachers?
+
+Yes. Parents can communicate with teachers and the academic team through WhatsApp groups, email, scheduled virtual meetings and Parent-Teacher Meetings (PTMs), depending on the requirement.
+
+9. What is NIOS, and how does it relate to online schooling?
+
+The National Institute of Open Schooling (NIOS) provides recognised open-schooling pathways in India. Where applicable, families seeking a formal open-schooling certification pathway can explore NIOS according to its prevailing eligibility, registration and examination requirements. Important: NIOS and a CBSE-mapped curriculum are not the same. Curriculum mapping describes what and how a student learns, while NIOS is an examination/certification pathway.
+
+10. Can my child move back to an offline school later?
+
+Yes, students can transition from online learning to an offline school. Admission is governed by the receiving school's admission policy, documentation, grade-level requirements and applicable board/regulatory rules. Zuvio can support parents with relevant academic records and progress documentation.
+
+11. Are co-curricular activities included in online schooling?
+
+Yes. Co-curricular learning is planned in sync with the academic curriculum. Activities may include art, communication, storytelling, STEM, innovation, digital skills, presentations, competitions, projects and other age-appropriate enrichment experiences. The aim is to support academic, creative, social and emotional development.
+
+12. Will children get enough interaction in an online school?
+
+Yes. Live classes can include discussions, quizzes, presentations, show-and-tell, collaborative activities, projects, peer interaction and teacher questioning. Students are encouraged to actively participate rather than simply watch a screen.
+
+13. How is student progress monitored?
+
+Teachers monitor progress through classroom participation, assignments, projects, quizzes, assessments and portfolios. Regular reviews help identify learning gaps and determine where additional academic support may be required.
+
+14. What happens if my child is struggling with a concept?
+
+Teachers can identify learning gaps through continuous assessment and classroom interaction. Students may receive additional clarification, practice material and academic support according to their learning needs.
+
+15. How much screen time will my child have?
+
+Zuvio follows grade-appropriate live-class durations. Online lessons are complemented by offline activities such as reading, writing, worksheets, projects, art, research, experiments and hands-on learning. The objective is not to keep children continuously in front of a screen.
+
+16. Is online schooling suitable for children living outside India?
+
+Online schooling can be particularly useful for NRI and internationally mobile families seeking continuity in learning while living abroad or moving between countries. Families should separately check compulsory-schooling and recognition requirements applicable in their country of residence.
+
+17. What support is provided to students joining in Term 2?
+
+Students joining mid-session can undergo a baseline/diagnostic assessment to understand their current learning level. Teachers can then identify gaps and provide a bridge learning plan to support a smooth transition into the ongoing curriculum.
+
+18. What makes Zuvio's online learning approach different?
+
+Zuvio combines structured academics, CBSE-mapped learning, thematic learning, project-based education, AI and digital skills, experiential learning, co-curricular activities and regular parent-teacher interaction in a flexible online environment. The focus is on developing confident, independent and future-ready learners.
+
+Source note: Programme, curriculum, certification, examination and progression details are subject to applicable school policies and external provider/regulatory requirements. Partnership and certification references should be read according to the specific programme applicable to the learner.
+
+Reference images from supplied FAQ PDF — Pages 1-3.
+
+13. Recommended Final Homepage Sequence (from the supplied changes)
+
+Announcement strip — Admissions Open 2026–2027 + affiliation/contact/social links
+
+Moving USP / benefits strip + grade range
+
+Primary header/navigation
+
+Hero carousel + side enquiry form + primary CTAs
+
+About Zuvio short form
+
+Who Should Choose Zuvio short form
+
+Learning Path / Curriculum journey
+
+Zuvio Learning Framework
+
+Learning Beyond the Textbook
+
+What Makes Zuvio Different
+
+Inclusivity & Beyond
+
+Statistics / numbers
+
+Affiliations & Accreditations + certificate link
+
+Parent Testimonials / Reviews
+
+News / Updates / Blogs / Awards & Recognition
+
+Featured In
+
+Founder's Message
+
+FAQ
+
+Final CTA / enquiry conversion area (where required by design system)
+
+Source-control note
+
+All copy and requirements in this document are transcribed or condensed from the supplied “Home Page design changes” document, with no outside content added to the required homepage specifications.
+
+The embedded images are reference visuals taken from the supplied document pages 2, 6, 7, 8 and 9.

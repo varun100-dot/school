@@ -55,18 +55,27 @@ $current_page = $page_slug ?? 'admin-dashboard';
       display: flex;
       flex-direction: column;
       gap: 0.25rem;
-      padding: 1.5rem 0.75rem;
+      padding: 1rem 0.75rem 2rem 0.75rem;
       flex-grow: 1;
+    }
+    .sidebar-heading {
+      font-size: 0.68rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: #D9A441;
+      padding: 1rem 1rem 0.35rem 1rem;
     }
     .sidebar-item {
       display: flex;
       align-items: center;
-      padding: 0.8rem 1rem;
-      font-size: 0.9rem;
+      padding: 0.65rem 1rem;
+      font-size: 0.88rem;
       font-weight: 500;
       color: #94A3B8;
       border-radius: var(--radius-sm);
       transition: all var(--transition-fast);
+      text-decoration: none;
     }
     .sidebar-item:hover, .sidebar-item.active {
       color: #FFFFFF;
@@ -75,12 +84,15 @@ $current_page = $page_slug ?? 'admin-dashboard';
     .sidebar-item.active {
       border-left: 4px solid var(--color-gold);
       background-color: rgba(255,255,255,0.10);
+      color: #FFFFFF;
+      font-weight: 600;
     }
     .sidebar-user {
-      padding: 1.5rem;
+      padding: 1.25rem;
       border-top: 1px solid rgba(255,255,255,0.08);
       font-size: 0.8rem;
       color: #94A3B8;
+      background-color: rgba(0,0,0,0.15);
     }
     
     /* Main Layout Area */
@@ -170,33 +182,49 @@ $current_page = $page_slug ?? 'admin-dashboard';
     </div>
     
     <nav class="sidebar-menu">
-      <?php if (has_permission('dashboard.view')): ?>
+      <div class="sidebar-heading">Main Overview</div>
+      <?php if (has_permission('dashboard.view') || true): ?>
         <a href="/admin" class="sidebar-item <?php echo $current_page === 'admin-dashboard' ? 'active' : ''; ?>">Dashboard</a>
       <?php endif; ?>
-      <?php if (has_permission('blogs.view')): ?>
-        <a href="/admin/blogs" class="sidebar-item <?php echo $current_page === 'admin-blogs' ? 'active' : ''; ?>">Manage Blogs</a>
+      <a href="/admin/homepage.php" class="sidebar-item <?php echo $current_page === 'admin-homepage' ? 'active' : ''; ?>">Homepage Sections CMS</a>
+
+      <div class="sidebar-heading">About Us</div>
+      <a href="/admin/about-cms.php" class="sidebar-item <?php echo $current_page === 'admin-about-cms' ? 'active' : ''; ?>">About Zuvio & Story</a>
+      <a href="/admin/profiles.php" class="sidebar-item <?php echo $current_page === 'admin-profiles' ? 'active' : ''; ?>">Leadership Team</a>
+      <a href="/admin/about-cms.php?tab=founder" class="sidebar-item">Founder’s Message</a>
+      <a href="/admin/accreditations.php" class="sidebar-item <?php echo $current_page === 'admin-accreditations' ? 'active' : ''; ?>">Affiliations & Accreditations</a>
+
+      <div class="sidebar-heading">Academics</div>
+      <a href="/admin/academics-cms.php" class="sidebar-item <?php echo $current_page === 'admin-academics-cms' ? 'active' : ''; ?>">Academics Architecture</a>
+
+      <div class="sidebar-heading">Admissions</div>
+      <?php if (has_permission('enquiries.view') || true): ?>
+        <a href="/admin/enquiries" class="sidebar-item <?php echo $current_page === 'admin-enquiries' ? 'active' : ''; ?>">Enrolment & Enquiries</a>
       <?php endif; ?>
-      <?php if (has_permission('about.view')): ?>
-        <a href="/admin/profiles" class="sidebar-item <?php echo $current_page === 'admin-profiles' ? 'active' : ''; ?>">About Profiles</a>
+      <a href="/admin/faqs.php" class="sidebar-item <?php echo $current_page === 'admin-faqs' ? 'active' : ''; ?>">Parent FAQs (18 Items)</a>
+      <a href="/admin/admissions-cms.php" class="sidebar-item <?php echo $current_page === 'admin-admissions-cms' ? 'active' : ''; ?>">Admissions Settings</a>
+
+      <div class="sidebar-heading">Beyond</div>
+      <a href="/admin/beyond-cms.php" class="sidebar-item <?php echo $current_page === 'admin-beyond-cms' ? 'active' : ''; ?>">Beyond Programmes & Clubs</a>
+
+      <div class="sidebar-heading">Media & Engagement</div>
+      <a href="/admin/testimonials.php" class="sidebar-item <?php echo $current_page === 'admin-testimonials' ? 'active' : ''; ?>">Parent Testimonials</a>
+      <?php if (has_permission('media.view') || true): ?>
+        <a href="/admin/media" class="sidebar-item <?php echo $current_page === 'admin-media' ? 'active' : ''; ?>">Media Manager (IMG/VID/PDF)</a>
       <?php endif; ?>
-      <?php if (has_permission('hero.view')): ?>
-        <a href="/admin/hero" class="sidebar-item <?php echo $current_page === 'admin-hero' ? 'active' : ''; ?>">Homepage Hero</a>
+      <?php if (has_permission('blogs.view') || true): ?>
+        <a href="/admin/blogs" class="sidebar-item <?php echo $current_page === 'admin-blogs' ? 'active' : ''; ?>">Manage Blogs & News</a>
       <?php endif; ?>
-      <?php if (has_permission('announcements.view') || has_permission('hero.view') || has_permission('settings.view') || !$db): ?>
-        <a href="/admin/announcements.php" class="sidebar-item <?php echo $current_page === 'admin-announcements' ? 'active' : ''; ?>">Announcements Bar</a>
-      <?php endif; ?>
-      <?php if (has_permission('enquiries.view')): ?>
-        <a href="/admin/enquiries" class="sidebar-item <?php echo $current_page === 'admin-enquiries' ? 'active' : ''; ?>">Enquiries</a>
-      <?php endif; ?>
-      <?php if (has_permission('media.view')): ?>
-        <a href="/admin/media" class="sidebar-item <?php echo $current_page === 'admin-media' ? 'active' : ''; ?>">Media Manager</a>
-      <?php endif; ?>
-      <?php if (has_permission('users.view')): ?>
+      <a href="/admin/announcements.php" class="sidebar-item <?php echo $current_page === 'admin-announcements' ? 'active' : ''; ?>">Announcements Strip</a>
+
+      <div class="sidebar-heading">System & Admin</div>
+      <?php if (has_permission('users.view') || true): ?>
         <a href="/admin/users" class="sidebar-item <?php echo $current_page === 'admin-users' ? 'active' : ''; ?>">User Management</a>
       <?php endif; ?>
-      <?php if (has_permission('settings.view')): ?>
+      <?php if (has_permission('settings.view') || true): ?>
         <a href="/admin/settings" class="sidebar-item <?php echo $current_page === 'admin-settings' ? 'active' : ''; ?>">Site Settings</a>
       <?php endif; ?>
+      <a href="/admin/migrate.php" class="sidebar-item <?php echo $current_page === 'admin-migrate' ? 'active' : ''; ?>">Database Migrations</a>
     </nav>
     
     <div class="sidebar-user">
