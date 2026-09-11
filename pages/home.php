@@ -245,7 +245,7 @@ if (empty($testimonials)) {
             'parent_name' => 'Dr. Anandita Sen',
             'child_info' => 'Mother of Rhea (Grade 7)',
             'review_text' => 'As a family that frequently relocates between cities, Zuvio gave us uninterrupted, high-quality schooling. The coding, AI integration, and project-based approach ensure she stays far ahead of traditional schooling standards.',
-            'photo' => '/assets/images/Profile_Images/Rashmi_Professional_Profile.webp',
+            'photo' => '/assets/images/Profile_Images/Deepak_Professional_Profile.webp',
             'rating' => 5
         ],
         [
