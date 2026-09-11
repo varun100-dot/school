@@ -56,8 +56,135 @@ include_once dirname(__FILE__) . '/../includes/header.php';
           Strong Foundations. Future Skills. Learning Without Boundaries.
         </p>
       </div>
+  <!-- CURRICULUM FOUNDATIONS (Indian, British-Cambridge, American) -->
+  <section class="curriculum-section" style="background-color: var(--color-surface-warm); border-top: 1px solid var(--color-border); border-bottom: 1px solid var(--color-border);">
+    <div class="curriculum-container">
+      <div class="curriculum-section-header" style="text-align: center;">
+        <span style="font-size: 13px; font-weight: 700; color: var(--color-gold); text-transform: uppercase; letter-spacing: 2px; display: block; margin-bottom: 8px;">Accredited Standards</span>
+        <h2 class="curriculum-section-title">Curriculum Foundations</h2>
+        <p class="curriculum-section-subtitle">Multi-Board Frameworks Preparing Learners for Global Success</p>
+      </div>
+
+      <div class="curriculum-grid curriculum-grid-3" style="gap: 24px; margin-bottom: 36px;">
+        <div class="curriculum-grid-cell" style="background: #FFFFFF; border-top: 4px solid var(--color-teal);">
+          <span style="display: inline-block; background: var(--pastel-blue); color: var(--color-teal); font-weight: 700; font-size: 12px; padding: 3px 8px; border-radius: 4px; text-transform: uppercase; margin-bottom: 10px;">Cambridge Pathway</span>
+          <h3 style="font-size: 20px; color: var(--color-navy); font-family: var(--font-primary); font-weight: 700; margin-bottom: 10px;">British-Cambridge</h3>
+          <p class="curriculum-grid-desc" style="line-height: 1.65; margin-bottom: 12px;">
+            The Cambridge Pathway helps learners be ready for the world, offering five stages from age 5 to 19 (Early Years, Primary, Lower Secondary, Upper Secondary, and Advanced). Schools select stages that meet their needs, fostering global perspective, critical thinking, and international university progression.
+          </p>
+          <span style="font-size: 12px; font-weight: 600; color: var(--color-navy);">Affiliated Online School Partner</span>
+        </div>
+
+        <div class="curriculum-grid-cell" style="background: #FFFFFF; border-top: 4px solid var(--color-gold);">
+          <span style="display: inline-block; background: var(--pastel-yellow); color: #B98721; font-weight: 700; font-size: 12px; padding: 3px 8px; border-radius: 4px; text-transform: uppercase; margin-bottom: 10px;">American Curriculum</span>
+          <h3 style="font-size: 20px; color: var(--color-navy); font-family: var(--font-primary); font-weight: 700; margin-bottom: 10px;">American High School</h3>
+          <p class="curriculum-grid-desc" style="line-height: 1.65; margin-bottom: 12px;">
+            A comprehensive American curriculum developing critical academic skills, creative thinking, and a global perspective. Aligned with WASC standards, providing a clear path for students to earn a recognized High School Diploma valued by leading universities worldwide.
+          </p>
+          <span style="font-size: 12px; font-weight: 600; color: var(--color-navy);">WASC Benchmark Aligned Standards</span>
+        </div>
+
+        <div class="curriculum-grid-cell" style="background: #FFFFFF; border-top: 4px solid var(--color-teal);">
+          <span style="display: inline-block; background: var(--pastel-green); color: #047857; font-weight: 700; font-size: 12px; padding: 3px 8px; border-radius: 4px; text-transform: uppercase; margin-bottom: 10px;">Indian Curriculum</span>
+          <h3 style="font-size: 20px; color: var(--color-navy); font-family: var(--font-primary); font-weight: 700; margin-bottom: 10px;">CBSE & NIOS Aligned</h3>
+          <p class="curriculum-grid-desc" style="line-height: 1.65; margin-bottom: 12px;">
+            In alignment with NEP 2020, Zuvio adheres to the National Curriculum Framework of India up to middle school. For senior grades, we support the recognized NIOS and CBSE streams, ensuring equivalency for premier higher education admissions.
+          </p>
+          <span style="font-size: 12px; font-weight: 600; color: var(--color-navy);">NEP 2020 & NCF Compliance</span>
+        </div>
+      </div>
+
+      <!-- Online Primary School Quick Facts Table -->
+      <div style="background: #FFFFFF; border: 1.5px solid rgba(6, 43, 99, 0.16); border-radius: var(--radius-md); padding: 32px; box-shadow: var(--shadow-sm); margin-bottom: 32px;">
+        <h3 style="font-size: 22px; color: var(--color-navy); font-family: var(--font-primary); margin-bottom: 16px;">
+          Online Primary School: Quick Facts (Classes 1 to 5)
+        </h3>
+        <div class="spec-table-wrap" style="margin: 0;">
+          <table class="spec-table">
+            <tbody>
+              <tr>
+                <td style="width: 25%;"><strong>Target Age Group</strong></td>
+                <td>Ages 6 to 11 (as of 1 April of the academic session)</td>
+              </tr>
+              <tr>
+                <td><strong>Curriculum Framework</strong></td>
+                <td>Mapped chapter-by-chapter to NCERT, NEP 2020 & NCF ready</td>
+              </tr>
+              <tr>
+                <td><strong>Live Class Hours</strong></td>
+                <td>3 to 4 engaging hours per day with short off-screen movement breaks</td>
+              </tr>
+              <tr>
+                <td><strong>Learning Days & Batches</strong></td>
+                <td>Monday to Friday. Morning, Afternoon, and Evening IST batch options</td>
+              </tr>
+              <tr>
+                <td><strong>Class Size / Ratio</strong></td>
+                <td>Strict maximum ratio of 1:20 students per qualified live subject teacher</td>
+              </tr>
+              <tr>
+                <td><strong>Certificates & Recognition</strong></td>
+                <td>Annual grade completion certificate + valid Transfer Certificate (TC)</td>
+              </tr>
+              <tr>
+                <td><strong>Accreditations</strong></td>
+                <td>IAO Accredited • ISSO Member • Oxford Quality Curriculum Partner</td>
+              </tr>
+              <tr>
+                <td><strong>Admissions Status</strong></td>
+                <td>Admissions open for 2026–27. Mid-term admissions accepted for Classes 1 to 5.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Daily Schedule Example & Screen Time -->
+      <div style="background: var(--pastel-blue); border: 1.5px solid rgba(6, 43, 99, 0.16); border-radius: var(--radius-md); padding: 32px;">
+        <h3 style="font-size: 22px; color: var(--color-navy); font-family: var(--font-primary); margin-bottom: 12px;">
+          A Typical Day in Classes 1–5 (Morning Batch Example)
+        </h3>
+        <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px;">
+          <div style="background: #FFFFFF; padding: 12px 16px; border-radius: 6px; border-left: 4px solid var(--color-teal); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+            <strong>8:30 AM — Morning Assembly</strong>
+            <span style="color: var(--color-text);">Live check-in, thought of the day, news-and-views moment & mindfulness</span>
+          </div>
+          <div style="background: #FFFFFF; padding: 12px 16px; border-radius: 6px; border-left: 4px solid var(--color-navy); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+            <strong>8:50 AM — Mathematics</strong>
+            <span style="color: var(--color-text);">Interactive concept teaching with on-screen practice and worksheet follow-up</span>
+          </div>
+          <div style="background: #FFFFFF; padding: 12px 16px; border-radius: 6px; border-left: 4px solid var(--color-gold); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+            <strong>10:15 AM — Rest & Movement Break</strong>
+            <span style="color: var(--color-text);">Off-screen healthy snack, physical stretch, hydration and recharge</span>
+          </div>
+          <div style="background: #FFFFFF; padding: 12px 16px; border-radius: 6px; border-left: 4px solid var(--color-teal); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+            <strong>10:35 AM — EVS / Science</strong>
+            <span style="color: var(--color-text);">Experiential learning, nature observations, simple STEM experiments</span>
+          </div>
+          <div style="background: #FFFFFF; padding: 12px 16px; border-radius: 6px; border-left: 4px solid var(--color-navy); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+            <strong>11:20 AM — Second Language / Art & Music</strong>
+            <span style="color: var(--color-text);">Hindi, regional/foreign language or rotating creative expression</span>
+          </div>
+          <div style="background: #FFFFFF; padding: 12px 16px; border-radius: 6px; border-left: 4px solid var(--color-teal); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+            <strong>12:00 PM — Reading Program</strong>
+            <span style="color: var(--color-text);">Guided Oxford reading, phonics, vocabulary building and creative writing</span>
+          </div>
+          <div style="background: #FFFFFF; padding: 12px 16px; border-radius: 6px; border-left: 4px solid var(--color-gold); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+            <strong>12:20 PM — Homework Review & Wrap-Up</strong>
+            <span style="color: var(--color-text);">Doubts cleared, assignments posted to the LMS and parent dashboard</span>
+          </div>
+        </div>
+
+        <div style="border-top: 1px solid rgba(6, 43, 99, 0.15); padding-top: 16px;">
+          <strong style="color: var(--color-navy); font-size: 15px;">Healthy Screen Time Guidelines:</strong>
+          <p style="font-size: 13.5px; color: var(--color-text); line-height: 1.65; margin: 6px 0 0 0;">
+            Screen time for online primary students is structured, not continuous. The 3–4 live hours are split into short, engaging periods with off-screen breaks in between plus movement and physical activities. Live, teacher-guided interactive learning is vastly different from passive video watching, and a large share of homework reading and project work happens completely off-screen with physical worksheets and Oxford learning kits.
+          </p>
+        </div>
+      </div>
     </div>
   </section>
+
 
   <!-- PAGE 2 — EARLY YEARS (Soft Blue Background) -->
   <section class="curriculum-section bg-soft-blue">
@@ -98,7 +225,6 @@ include_once dirname(__FILE__) . '/../includes/header.php';
               <span style="background: var(--color-white); color: var(--color-teal); padding: 4px 12px; border-radius: 20px; font-size: 13px; font-weight: 600; border: 1px solid rgba(10, 137, 152, 0.15);"><?php echo h($exp); ?></span>
             <?php endforeach; ?>
           </div>
-          <div style="font-size: 11px; font-style: italic; color: var(--color-muted); margin-top: auto; border-top: 1px dashed rgba(10, 137, 152, 0.15); padding-top: 8px;">[Placeholder: Client approved graphics pending]</div>
         </div>
         <div class="curriculum-grid-cell" style="background: var(--pastel-yellow); border-color: rgba(217, 164, 65, 0.2); border-top: 4px solid var(--color-gold); border-left: none; border-right: none; border-bottom: none;">
           <h4 class="curriculum-grid-title" style="border-bottom: 1.5px solid rgba(217, 164, 65, 0.15); padding-bottom: 10px; margin-bottom: 12px; text-transform: uppercase; display: flex; align-items: center; gap: 8px;">
@@ -109,7 +235,6 @@ include_once dirname(__FILE__) . '/../includes/header.php';
               <span style="background: var(--color-white); color: #B98721; padding: 4px 12px; border-radius: 20px; font-size: 13px; font-weight: 600; border: 1px solid rgba(217, 164, 65, 0.15);"><?php echo h($out); ?></span>
             <?php endforeach; ?>
           </div>
-          <div style="font-size: 11px; font-style: italic; color: var(--color-muted); margin-top: auto; border-top: 1px dashed rgba(217, 164, 65, 0.15); padding-top: 8px;">[Placeholder: Client approved graphics pending]</div>
         </div>
       </div>
 

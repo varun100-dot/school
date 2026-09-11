@@ -2146,3 +2146,209 @@ button, input, select, textarea {
     left: 11px;
   }
 }
+
+/* Academics Hub & Subsections Styling */
+.academics-subnav-sticky {
+  position: sticky;
+  top: 72px;
+  z-index: 990;
+  background: #FFFFFF;
+  border-bottom: 1.5px solid var(--color-border);
+  box-shadow: 0 2px 8px rgba(6, 43, 99, 0.06);
+  padding: 0.75rem 0;
+}
+
+.academics-subnav-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  overflow-x: auto;
+  white-space: nowrap;
+  padding: 0 1rem;
+}
+
+.academics-subnav-link {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--color-navy);
+  text-decoration: none;
+  padding: 0.5rem 1.1rem;
+  border-radius: 20px;
+  background: var(--pastel-blue);
+  border: 1px solid rgba(6, 43, 99, 0.12);
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.academics-subnav-link:hover,
+.academics-subnav-link.active {
+  background: var(--color-navy);
+  color: #FFFFFF;
+  border-color: var(--color-navy);
+}
+
+.tech-lms-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.tech-feature-card {
+  background: #FFFFFF;
+  border: 1.5px solid rgba(6, 43, 99, 0.16);
+  border-radius: var(--radius-md);
+  padding: 1.75rem;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.tech-feature-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}
+
+.tech-tools-category-card {
+  background: #FFFFFF;
+  border: 1.5px solid rgba(6, 43, 99, 0.16);
+  border-radius: var(--radius-md);
+  padding: 1.75rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.tool-chip-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.tool-chip {
+  background: #F8FAFC;
+  border: 1.5px solid rgba(6, 43, 99, 0.12);
+  border-radius: var(--radius-sm);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.spec-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  margin: 1.5rem 0;
+  border-radius: var(--radius-md);
+  border: 1.5px solid rgba(6, 43, 99, 0.16);
+  background: #FFFFFF;
+}
+
+.spec-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.92rem;
+}
+
+.spec-table th {
+  background: var(--color-navy);
+  color: #FFFFFF;
+  padding: 0.85rem 1.25rem;
+  font-weight: 600;
+  border-bottom: 1px solid rgba(6, 43, 99, 0.16);
+}
+
+.spec-table td {
+  padding: 0.85rem 1.25rem;
+  border-bottom: 1px solid rgba(6, 43, 99, 0.08);
+  color: var(--color-text);
+}
+
+.spec-table tr:last-child td {
+  border-bottom: none;
+}
+
+.spec-table tr:nth-child(even) td {
+  background-color: #F8FAFC;
+}
+
+.inclusive-pillar-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.inclusive-pillar-card {
+  background: #FFFFFF;
+  border: 1.5px solid rgba(6, 43, 99, 0.16);
+  border-radius: var(--radius-md);
+  padding: 1.75rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.electives-grid-wrap {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+}
+
+.elective-language-card {
+  background: #FFFFFF;
+  border: 1.5px solid rgba(6, 43, 99, 0.16);
+  border-radius: var(--radius-md);
+  padding: 2rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.language-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 1rem;
+}
+
+.lang-tag {
+  background: var(--pastel-blue);
+  color: var(--color-navy);
+  padding: 0.4rem 0.9rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border: 1px solid rgba(6, 43, 99, 0.1);
+}
+
+.resource-download-card {
+  background: #FFFFFF;
+  border: 1.5px solid rgba(6, 43, 99, 0.16);
+  border-radius: var(--radius-md);
+  padding: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  box-shadow: var(--shadow-sm);
+}
+
+@media (max-width: 1024px) {
+  .tech-lms-grid,
+  .inclusive-pillar-grid,
+  .electives-grid-wrap {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .tech-lms-grid,
+  .inclusive-pillar-grid,
+  .electives-grid-wrap {
+    grid-template-columns: 1fr;
+  }
+  .resource-download-card {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+

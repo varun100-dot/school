@@ -203,6 +203,15 @@ switch ($route) {
             $profile_slug = $parts[1];
             $page_slug = 'about';
             include dirname(__FILE__) . '/pages/about-detail.php';
+        } elseif ($parts[0] === 'academics' && isset($parts[1])) {
+            $academic_sub = $parts[1];
+            if ($academic_sub === 'curriculum') {
+                $page_slug = 'our-curriculum';
+                include dirname(__FILE__) . '/pages/curriculum.php';
+            } else {
+                $page_slug = 'academics';
+                include dirname(__FILE__) . '/pages/academics.php';
+            }
         } else {
             header('HTTP/1.1 404 Not Found');
             include dirname(__FILE__) . '/pages/404.php';
