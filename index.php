@@ -146,21 +146,63 @@ switch ($route) {
         include dirname(__FILE__) . '/pages/about.php';
         break;
 
+    case 'about-zuvio':
+        $page_slug = 'about-zuvio';
+        include dirname(__FILE__) . '/pages/about-zuvio.php';
+        break;
+
+    case 'our-team':
+    case 'team':
+        $page_slug = 'our-team';
+        include dirname(__FILE__) . '/pages/our-team.php';
+        break;
+
     case 'founder-message':
     case 'founders-message':
         $page_slug = 'founder-message';
         include dirname(__FILE__) . '/pages/founder-message.php';
         break;
 
+    case 'affiliations-accreditations':
+    case 'accreditations':
+        $page_slug = 'affiliations-accreditations';
+        include dirname(__FILE__) . '/pages/affiliations-accreditations.php';
+        break;
+
     case 'academics':
         $page_slug = 'academics';
         include dirname(__FILE__) . '/pages/academics.php';
+        break;
+
+    case 'technology':
+        $page_slug = 'technology';
+        include dirname(__FILE__) . '/pages/technology.php';
         break;
         
     case 'our-curriculum':
     case 'curriculum':
         $page_slug = 'our-curriculum';
         include dirname(__FILE__) . '/pages/curriculum.php';
+        break;
+
+    case 'special-education':
+        $page_slug = 'special-education';
+        include dirname(__FILE__) . '/pages/special-education.php';
+        break;
+
+    case 'electives':
+        $page_slug = 'electives';
+        include dirname(__FILE__) . '/pages/electives.php';
+        break;
+
+    case 'nep-2020':
+        $page_slug = 'nep-2020';
+        include dirname(__FILE__) . '/pages/nep-2020.php';
+        break;
+
+    case 'resources':
+        $page_slug = 'resources';
+        include dirname(__FILE__) . '/pages/resources.php';
         break;
 
     case 'admissions':
@@ -193,21 +235,51 @@ switch ($route) {
         break;
         
     default:
-        // Handle potential nested routing like blogs/{slug} or about/{slug}
+        // Handle potential nested routing like blogs/{slug}, about/{sub}, or academics/{sub}
         $parts = explode('/', $route);
         if ($parts[0] === 'blogs' && isset($parts[1])) {
             $blog_slug = $parts[1];
             $page_slug = 'blogs';
             include dirname(__FILE__) . '/pages/blog-detail.php';
         } elseif (($parts[0] === 'about' || $parts[0] === 'about-us') && isset($parts[1])) {
-            $profile_slug = $parts[1];
-            $page_slug = 'about';
-            include dirname(__FILE__) . '/pages/about-detail.php';
+            $sub = $parts[1];
+            if ($sub === 'about-zuvio') {
+                $page_slug = 'about-zuvio';
+                include dirname(__FILE__) . '/pages/about-zuvio.php';
+            } elseif ($sub === 'our-team' || $sub === 'team') {
+                $page_slug = 'our-team';
+                include dirname(__FILE__) . '/pages/our-team.php';
+            } elseif ($sub === 'founder-message' || $sub === 'founders-message') {
+                $page_slug = 'founder-message';
+                include dirname(__FILE__) . '/pages/founder-message.php';
+            } elseif ($sub === 'affiliations-accreditations' || $sub === 'accreditations') {
+                $page_slug = 'affiliations-accreditations';
+                include dirname(__FILE__) . '/pages/affiliations-accreditations.php';
+            } else {
+                $profile_slug = $sub;
+                $page_slug = 'about';
+                include dirname(__FILE__) . '/pages/about-detail.php';
+            }
         } elseif ($parts[0] === 'academics' && isset($parts[1])) {
-            $academic_sub = $parts[1];
-            if ($academic_sub === 'curriculum') {
+            $sub = $parts[1];
+            if ($sub === 'technology') {
+                $page_slug = 'technology';
+                include dirname(__FILE__) . '/pages/technology.php';
+            } elseif ($sub === 'curriculum' || $sub === 'our-curriculum') {
                 $page_slug = 'our-curriculum';
                 include dirname(__FILE__) . '/pages/curriculum.php';
+            } elseif ($sub === 'special-education') {
+                $page_slug = 'special-education';
+                include dirname(__FILE__) . '/pages/special-education.php';
+            } elseif ($sub === 'electives') {
+                $page_slug = 'electives';
+                include dirname(__FILE__) . '/pages/electives.php';
+            } elseif ($sub === 'nep-2020') {
+                $page_slug = 'nep-2020';
+                include dirname(__FILE__) . '/pages/nep-2020.php';
+            } elseif ($sub === 'resources') {
+                $page_slug = 'resources';
+                include dirname(__FILE__) . '/pages/resources.php';
             } else {
                 $page_slug = 'academics';
                 include dirname(__FILE__) . '/pages/academics.php';

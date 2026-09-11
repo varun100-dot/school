@@ -173,6 +173,11 @@ $seo = [
 ];
 
 include_once dirname(__FILE__) . '/../includes/header.php';
+
+render_breadcrumbs([
+    ['label' => 'Home', 'url' => '/'],
+    ['label' => 'Academics']
+]);
 ?>
 
 <!-- 1. Hero Banner -->
@@ -193,22 +198,22 @@ include_once dirname(__FILE__) . '/../includes/header.php';
 <!-- 2. Sticky Academics In-Page Navigation Strip -->
 <nav class="academics-subnav-sticky">
   <div class="academics-subnav-container">
-    <a href="#technology" class="academics-subnav-link">
+    <a href="/technology" class="academics-subnav-link">
       <span>💻</span> Technology & LMS
     </a>
-    <a href="#curriculum" class="academics-subnav-link">
+    <a href="/curriculum" class="academics-subnav-link">
       <span>📖</span> Curriculum Pathways
     </a>
-    <a href="#special-education" class="academics-subnav-link">
+    <a href="/special-education" class="academics-subnav-link">
       <span>🤝</span> Special Education
     </a>
-    <a href="#electives" class="academics-subnav-link">
+    <a href="/electives" class="academics-subnav-link">
       <span>🌐</span> Electives & Languages
     </a>
-    <a href="#nep-2020" class="academics-subnav-link">
+    <a href="/nep-2020" class="academics-subnav-link">
       <span>📜</span> NEP 2020
     </a>
-    <a href="#resources" class="academics-subnav-link">
+    <a href="/resources" class="academics-subnav-link">
       <span>📁</span> Resources & Calendar
     </a>
     <a href="/curriculum" class="academics-subnav-link" style="background: var(--color-gold); color: var(--color-navy-dark); font-weight: 700;">

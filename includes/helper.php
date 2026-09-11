@@ -86,3 +86,21 @@ function get_page_seo($page_slug) {
     }
     return $default;
 }
+
+// Render standardized breadcrumbs navigation
+function render_breadcrumbs(array $crumbs) {
+    if (empty($crumbs)) return;
+    echo '<div class="site-breadcrumbs" style="background-color: var(--pastel-blue); padding: 0.85rem 0; border-bottom: 1px solid var(--color-border);">';
+    echo '<div class="container" style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; color: var(--color-muted); flex-wrap: wrap;">';
+    $total = count($crumbs);
+    foreach ($crumbs as $i => $crumb) {
+        $is_last = ($i === $total - 1);
+        if ($is_last || empty($crumb['url'])) {
+            echo '<span style="color: var(--color-navy); font-weight: 700;">' . h($crumb['label']) . '</span>';
+        } else {
+            echo '<a href="' . h($crumb['url']) . '" style="color: var(--color-teal); text-decoration: none; font-weight: 500; transition: color 0.2s;" onmouseover="this.style.color=\'var(--color-navy)\'" onmouseout="this.style.color=\'var(--color-teal)\'">' . h($crumb['label']) . '</a>';
+            echo '<span style="color: var(--color-gold); font-weight: bold; font-size: 0.75rem;">&rsaquo;</span>';
+        }
+    }
+    echo '</div></div>';
+}

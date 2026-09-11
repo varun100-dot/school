@@ -422,6 +422,11 @@ $seo = [
 ];
 
 include_once dirname(__FILE__) . '/../includes/header.php';
+
+render_breadcrumbs([
+    ['label' => 'Home', 'url' => '/'],
+    ['label' => 'About Us']
+]);
 ?>
 
 <!-- 1. Hero Banner Header -->

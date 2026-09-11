@@ -64,21 +64,21 @@ if (empty($nav_tree) || count($nav_tree) < 5 || empty($nav_tree[1]['children']))
         [
             'label' => 'About Us', 'url' => '/about',
             'children' => [
-                ['label' => 'About Zuvio', 'url' => '/about#about-zuvio'],
-                ['label' => 'Our Team', 'url' => '/about#leadership'],
-                ['label' => 'Founder’s Message', 'url' => '/founder-message'],
-                ['label' => 'Affiliations & Accreditations', 'url' => '/about#accreditations']
+                ['label' => 'About Zuvio', 'url' => '/about-zuvio'],
+                ['label' => 'Our Team', 'url' => '/our-team'],
+                ['label' => 'Founder’s Message', 'url' => '/founders-message'],
+                ['label' => 'Affiliations & Accreditations', 'url' => '/affiliations-accreditations']
             ]
         ],
         [
             'label' => 'Academics', 'url' => '/academics',
             'children' => [
-                ['label' => 'Technology', 'url' => '/academics#technology'],
+                ['label' => 'Technology', 'url' => '/technology'],
                 ['label' => 'Curriculum', 'url' => '/curriculum'],
-                ['label' => 'Special Education', 'url' => '/academics#special-education'],
-                ['label' => 'Electives', 'url' => '/academics#electives'],
-                ['label' => 'NEP 2020', 'url' => '/academics#nep-2020'],
-                ['label' => 'Resources', 'url' => '/academics#resources']
+                ['label' => 'Special Education', 'url' => '/special-education'],
+                ['label' => 'Electives', 'url' => '/electives'],
+                ['label' => 'NEP 2020', 'url' => '/nep-2020'],
+                ['label' => 'Resources', 'url' => '/resources']
             ]
         ],
         [

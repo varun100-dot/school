@@ -7,12 +7,18 @@ safe_session_start();
 
 $page_slug = 'our-curriculum';
 include_once dirname(__FILE__) . '/../includes/header.php';
+
+render_breadcrumbs([
+    ['label' => 'Home', 'url' => '/'],
+    ['label' => 'Academics', 'url' => '/academics'],
+    ['label' => 'Curriculum']
+]);
 ?>
 
 <div class="curriculum-page">
 
   <!-- PAGE 1 — HERO & THE ZUVIO LEARNING JOURNEY (White Background) -->
-  <section class="curriculum-section bg-white" style="padding-top: 110px;">
+  <section class="curriculum-section bg-white" style="padding-top: 40px;">
     <div class="curriculum-container">
       <div class="curriculum-section-header" style="text-align: center;">
         <h1 class="curriculum-hero-title">CURRICULUM INSIGHTS</h1>

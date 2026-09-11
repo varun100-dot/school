@@ -189,13 +189,18 @@ $current_page = $page_slug ?? 'admin-dashboard';
       <a href="/admin/homepage.php" class="sidebar-item <?php echo $current_page === 'admin-homepage' ? 'active' : ''; ?>">Homepage Sections CMS</a>
 
       <div class="sidebar-heading">About Us</div>
-      <a href="/admin/about-cms.php" class="sidebar-item <?php echo $current_page === 'admin-about-cms' ? 'active' : ''; ?>">About Zuvio & Story</a>
-      <a href="/admin/profiles.php" class="sidebar-item <?php echo $current_page === 'admin-profiles' ? 'active' : ''; ?>">Leadership Team</a>
-      <a href="/admin/about-cms.php?tab=founder" class="sidebar-item">Founder’s Message</a>
+      <a href="/admin/about-cms.php" class="sidebar-item <?php echo $current_page === 'admin-about-cms' && empty($_GET['tab']) ? 'active' : ''; ?>">About Zuvio</a>
+      <a href="/admin/profiles.php" class="sidebar-item <?php echo $current_page === 'admin-profiles' ? 'active' : ''; ?>">Our Team</a>
+      <a href="/admin/about-cms.php?tab=founder" class="sidebar-item <?php echo ($current_page === 'admin-about-cms' && ($_GET['tab'] ?? '') === 'founder') ? 'active' : ''; ?>">Founder’s Message</a>
       <a href="/admin/accreditations.php" class="sidebar-item <?php echo $current_page === 'admin-accreditations' ? 'active' : ''; ?>">Affiliations & Accreditations</a>
 
       <div class="sidebar-heading">Academics</div>
-      <a href="/admin/academics-cms.php" class="sidebar-item <?php echo $current_page === 'admin-academics-cms' ? 'active' : ''; ?>">Academics Architecture</a>
+      <a href="/admin/academics-cms.php?tab=technology" class="sidebar-item <?php echo ($current_page === 'admin-academics-cms' && ($_GET['tab'] ?? '') === 'technology') ? 'active' : ''; ?>">Technology</a>
+      <a href="/curriculum" target="_blank" class="sidebar-item">Curriculum &nearr;</a>
+      <a href="/admin/academics-cms.php?tab=special_ed" class="sidebar-item <?php echo ($current_page === 'admin-academics-cms' && ($_GET['tab'] ?? '') === 'special_ed') ? 'active' : ''; ?>">Special Education</a>
+      <a href="/admin/academics-cms.php?tab=electives" class="sidebar-item <?php echo ($current_page === 'admin-academics-cms' && ($_GET['tab'] ?? '') === 'electives') ? 'active' : ''; ?>">Electives</a>
+      <a href="/admin/academics-cms.php?tab=nep_2020" class="sidebar-item <?php echo ($current_page === 'admin-academics-cms' && ($_GET['tab'] ?? '') === 'nep_2020') ? 'active' : ''; ?>">NEP 2020</a>
+      <a href="/admin/academics-cms.php?tab=resources" class="sidebar-item <?php echo ($current_page === 'admin-academics-cms' && ($_GET['tab'] ?? '') === 'resources') ? 'active' : ''; ?>">Resources</a>
 
       <div class="sidebar-heading">Admissions</div>
       <?php if (has_permission('enquiries.view') || true): ?>
