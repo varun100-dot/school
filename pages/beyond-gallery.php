@@ -142,15 +142,11 @@ $breadcrumbs = [
 
 $page_slug = 'beyond-gallery';
 include_once dirname(__FILE__) . '/../includes/header.php';
+
+render_breadcrumbs($breadcrumbs);
 ?>
 
 <main class="page-main">
-  <!-- Breadcrumbs -->
-  <div class="breadcrumb-container" style="background-color: var(--color-surface); border-bottom: 1px solid var(--color-border); padding: 0.85rem 0;">
-    <div class="container">
-      <?php render_breadcrumbs($breadcrumbs); ?>
-    </div>
-  </div>
 
   <!-- Hero Section -->
   <section class="section" style="background: linear-gradient(135deg, var(--color-navy-dark) 0%, var(--color-navy) 100%); color: #FFFFFF; padding: 5rem 0 4.5rem 0; position: relative; overflow: hidden;">

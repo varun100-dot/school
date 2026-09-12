@@ -8,6 +8,11 @@ safe_session_start();
 $page_slug = 'zuvio-beyond';
 include_once dirname(__FILE__) . '/../includes/header.php';
 
+render_breadcrumbs([
+    ['label' => 'Home', 'url' => '/'],
+    ['label' => 'Beyond']
+]);
+
 // Verbatim copy structured from the official brochure PDF
 $programmes = [
     [
@@ -916,13 +921,6 @@ html {
   }
 }
 </style>
-
-<!-- Breadcrumbs -->
-<div class="breadcrumb-container" style="background-color: var(--color-surface); border-bottom: 1px solid var(--color-border); padding: 0.85rem 0;">
-  <div class="container">
-    <?php render_breadcrumbs([['label' => 'Home', 'url' => '/'], ['label' => 'Beyond']]); ?>
-  </div>
-</div>
 
 <!-- Hero Section (Page 1 Content) -->
 <section class="beyond-hero">
