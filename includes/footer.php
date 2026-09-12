@@ -5,7 +5,10 @@ require_once dirname(__FILE__) . '/helper.php';
 $phone = get_setting('phone', '7827262956');
 $email = get_setting('general_email', 'info@zuvioglobalschool.com');
 $address = get_setting('address', "B-09, Lower Ground Floor,\nITL Twin Tower,\nNetaji Subhash Place,\nPitampura,\nDelhi - 110034");
-$office_timings = get_setting('office_timings', '10-7');
+$office_timings = get_setting('office_timings', 'Monday–Saturday, 10:00 AM–7:00 PM');
+if ($office_timings === '10-7' || $office_timings === '10-7 AM - PM') {
+    $office_timings = 'Monday–Saturday, 10:00 AM–7:00 PM';
+}
 $copyright = get_setting('copyright', '© 2026 Zuvio Global School. All rights reserved.');
 $logo_path = get_setting('logo_url', '/assets/images/logo.png');
 

@@ -203,15 +203,18 @@ $current_page = $page_slug ?? 'admin-dashboard';
       <a href="/admin/academics-cms.php?tab=resources" class="sidebar-item <?php echo ($current_page === 'admin-academics-cms' && ($_GET['tab'] ?? '') === 'resources') ? 'active' : ''; ?>">Resources</a>
 
       <div class="sidebar-heading">Admissions</div>
-      <?php if (has_permission('enquiries.view') || true): ?>
-        <a href="/admin/enquiries" class="sidebar-item <?php echo $current_page === 'admin-enquiries' ? 'active' : ''; ?>">Enrolment Leads CRM</a>
-      <?php endif; ?>
       <a href="/admin/admissions-cms.php?tab=overview" class="sidebar-item <?php echo ($current_page === 'admin-admissions-cms' && (empty($_GET['tab']) || $_GET['tab'] === 'overview')) ? 'active' : ''; ?>">Admissions Overview</a>
       <a href="/admin/admissions-cms.php?tab=enrol" class="sidebar-item <?php echo ($current_page === 'admin-admissions-cms' && ($_GET['tab'] ?? '') === 'enrol') ? 'active' : ''; ?>">Enrol Now (5 Steps)</a>
       <a href="/admin/admissions-cms.php?tab=eligibility" class="sidebar-item <?php echo ($current_page === 'admin-admissions-cms' && ($_GET['tab'] ?? '') === 'eligibility') ? 'active' : ''; ?>">Eligibility Matrix</a>
       <a href="/admin/admissions-cms.php?tab=calendar" class="sidebar-item <?php echo ($current_page === 'admin-admissions-cms' && ($_GET['tab'] ?? '') === 'calendar') ? 'active' : ''; ?>">Academic Calendar</a>
       <a href="/admin/admissions-cms.php?tab=fees" class="sidebar-item <?php echo ($current_page === 'admin-admissions-cms' && ($_GET['tab'] ?? '') === 'fees') ? 'active' : ''; ?>">Fees Structure</a>
       <a href="/admin/faqs.php" class="sidebar-item <?php echo $current_page === 'admin-faqs' ? 'active' : ''; ?>">Parent FAQs (18 Items)</a>
+
+      <div class="sidebar-heading">Contact & Enquiries</div>
+      <a href="/admin/contact-cms.php" class="sidebar-item <?php echo $current_page === 'admin-contact-cms' ? 'active' : ''; ?>">Contact Us CMS</a>
+      <?php if (has_permission('enquiries.view') || true): ?>
+        <a href="/admin/enquiries" class="sidebar-item <?php echo $current_page === 'admin-enquiries' ? 'active' : ''; ?>">Enrolment Leads CRM</a>
+      <?php endif; ?>
 
       <div class="sidebar-heading">Beyond</div>
       <a href="/admin/beyond-cms.php?tab=cocurricular" class="sidebar-item <?php echo ($current_page === 'admin-beyond-cms' && ($_GET['tab'] ?? 'cocurricular') === 'cocurricular') ? 'active' : ''; ?>">Co-curricular / Clubs</a>

@@ -6,8 +6,8 @@ require_once dirname(__FILE__) . '/../includes/auth.php';
 
 safe_session_start();
 
-// Redirect if already logged in
-if (isset($_SESSION['user_id']) && isset($_SESSION['role_name']) && in_array($_SESSION['role_name'], ['admin', 'super_admin', 'editor'])) {
+// Redirect if already logged in with valid permissions
+if (isset($_SESSION['user_id']) && isset($_SESSION['role_name']) && in_array($_SESSION['role_name'], ['admin', 'super_admin', 'editor']) && has_permission('dashboard.view')) {
     header('Location: /admin');
     exit;
 }
@@ -32,8 +32,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
                         $_SESSION['username'] = 'admin';
                         $_SESSION['role_name'] = 'super_admin';
                         $_SESSION['permissions'] = [
-                            'media.view', 'media.upload', 'media.replace', 'media.restore', 'media.delete',
-                            'settings.view', 'settings.edit', 'users.manage', 'leads.manage'
+                            'dashboard.view', 'media.view', 'media.upload', 'media.replace', 'media.restore', 'media.delete',
+                            'settings.view', 'settings.edit', 'users.manage', 'leads.manage', 'enquiries.view'
                         ];
                         header('Location: /admin/');
                         exit;

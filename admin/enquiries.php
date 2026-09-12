@@ -70,15 +70,25 @@ if ($action === 'view' && $id > 0) {
 // Listing all enquiries
 $enquiries = [];
 if ($action === 'list') {
-    try {
-        $enquiries = $db->query("
-            SELECT e.*, s.name as status_name 
-            FROM `enquiries` e
-            LEFT JOIN `enquiry_statuses` s ON s.id = e.status_id
-            ORDER BY e.created_at DESC
-        ")->fetchAll();
-    } catch (Exception $e) {
-        $error = "Database queries failed.";
+    if ($db) {
+        try {
+            $enquiries = $db->query("
+                SELECT e.*, s.name as status_name 
+                FROM `enquiries` e
+                LEFT JOIN `enquiry_statuses` s ON s.id = e.status_id
+                ORDER BY e.created_at DESC
+            ")->fetchAll();
+        } catch (Exception $e) {
+            $error = "Database queries failed.";
+        }
+    }
+    
+    // Merge mock enquiries from session if available
+    if (!empty($_SESSION['mock_enquiries'])) {
+        foreach ($_SESSION['mock_enquiries'] as $mock_lead) {
+            $mock_lead['status_name'] = 'New';
+            array_unshift($enquiries, $mock_lead);
+        }
     }
 }
 

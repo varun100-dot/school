@@ -120,6 +120,11 @@ if (strpos($route, 'admin') === 0) {
             $page_slug = 'admin-beyond-cms';
             include dirname(__FILE__) . '/admin/beyond-cms.php';
             break;
+        case 'contact-cms':
+        case 'contact-cms.php':
+            $page_slug = 'admin-contact-cms';
+            include dirname(__FILE__) . '/admin/contact-cms.php';
+            break;
         case 'profiles':
             $page_slug = 'admin-profiles';
             include dirname(__FILE__) . '/admin/profiles.php';
