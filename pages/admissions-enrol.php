@@ -15,7 +15,7 @@ $enrol_data = $adm_cms['enrol'] ?? [
     'title' => 'Simple 5-Step Admissions Journey',
     'subtitle' => 'From initial enquiry to your child’s very first live classroom session.',
     'steps' => [
-        ['step' => 1, 'title' => 'Connect with Counsellor', 'desc' => 'Speak with an expert academic advisor to understand curriculum mapping, live class timings, and technological setup.'],
+        ['step' => 1, 'title' => 'Connect with Admission Counselor', 'desc' => 'Speak with an expert admission counselor to understand curriculum mapping, live class timings, and technological setup.'],
         ['step' => 2, 'title' => 'Fill Out Admission Form', 'desc' => 'Complete the online application with student details, previous academic background, and preferred curriculum track.'],
         ['step' => 3, 'title' => 'Pay the Fees', 'desc' => 'Secure your seat through transparent quarterly tuition payment via encrypted online payment gateway or bank transfer.'],
         ['step' => 4, 'title' => 'Receive Login Credentials', 'desc' => 'Get dedicated student LMS access, parent portal onboarding credentials, digital timetables, and orientation pack.'],

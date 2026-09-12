@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_enquiry'])) {
                 if ($db) {
                     $stmt = $db->prepare("
                         INSERT INTO `enquiries` (`parent_name`, `student_name`, `grade`, `phone`, `email`, `message`, `source`, `status_id`)
-                        VALUES (?, ?, ?, ?, ?, ?, 'Talk to a School Counsellor', 1)
+                        VALUES (?, ?, ?, ?, ?, ?, 'Talk to an Admission Counselor', 1)
                     ");
                     $stmt->execute([
                         $parent_name,
@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_enquiry'])) {
                         $grade,
                         $country_code . ' ' . $phone,
                         $email,
-                        'Country: ' . $country . ' | Submitted via Talk to a School Counsellor form'
+                        'Country: ' . $country . ' | Submitted via Talk to an Admission Counselor form'
                     ]);
                 }
                 $form_status = 'success';
@@ -93,9 +93,9 @@ if (empty($slides)) {
             'media_type' => 'video'
         ],
         [
-            'title' => 'Interactive Science & Digital Labs',
+            'title' => 'Interactive STEM & Digital Learning',
             'subtitle' => 'ZUVIO GLOBAL SCHOOL',
-            'description' => 'Virtual experiments, coding, AI awareness, and hands-on projects integrated into daily schooling.',
+            'description' => 'Interactive simulations, coding, AI awareness, and hands-on projects integrated into daily schooling.',
             'primary_cta_text' => 'Explore Academics',
             'primary_cta_url' => '/academics',
             'secondary_cta_text' => 'Enrol Now',
@@ -187,7 +187,7 @@ $inclusivity_items = $cards_by_section['inclusivity'] ?? [
     ['title' => 'Personalised Attention', 'content' => 'Teacher-led, small-group classes where every child is known, seen and supported.'],
     ['title' => 'Flexible Pacing', 'content' => 'Space to move ahead, slow down or revisit — without the pressure to keep up.'],
     ['title' => 'Beyond Academics', 'content' => 'Confidence, communication, creativity and life skills — not just examination marks.'],
-    ['title' => 'Special Education Support', 'content' => 'A qualified Special Educator and personalised plans for diverse learning needs.']
+    ['title' => 'Inclusive Learning for Students with Special Needs', 'content' => 'A qualified Special Educator and personalised plans for diverse learning needs.']
 ];
 
 // 4. Fetch Accreditations (Section 15)
@@ -371,16 +371,16 @@ include_once dirname(__FILE__) . '/../includes/header.php';
         </div>
       </div>
 
-      <!-- Right Column: Standalone "TALK TO A SCHOOL COUNSELLOR" Form -->
+      <!-- Right Column: Standalone "TALK TO AN ADMISSION COUNSELOR" Form -->
       <div class="hero-enquiry-card">
-        <h3 class="counsellor-card-title">TALK TO A SCHOOL COUNSELLOR</h3>
+        <h3 class="counsellor-card-title">TALK TO AN ADMISSION COUNSELOR</h3>
         <div class="counsellor-card-sub">Enquire now</div>
 
         <?php if ($form_status === 'success'): ?>
           <div style="background-color: #DEF7EC; border: 1px solid #31C48D; padding: 1.5rem; border-radius: 8px; text-align: center;">
             <svg style="width: 40px; height: 40px; color: #0E9F6E; margin: 0 auto 0.75rem auto;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
             <h4 style="color: #03543F; font-size: 1.15rem; margin-bottom: 0.35rem; font-weight: 700;">Enquiry Received</h4>
-            <p style="color: #046C4E; font-size: 0.85rem;">Thank you. Our school counsellor will get in touch with you shortly.</p>
+            <p style="color: #046C4E; font-size: 0.85rem;">Thank you. Our admission counselor will get in touch with you shortly.</p>
           </div>
         <?php else: ?>
           <form method="POST" action="" id="heroCounsellorForm">
@@ -485,7 +485,7 @@ include_once dirname(__FILE__) . '/../includes/header.php';
         <img src="/assets/images/Teacher interacting with students.png" alt="Teacher interacting with students at Zuvio Global School" style="width: 100%; height: 380px; object-fit: cover; display: block;">
         <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(0deg, rgba(3,27,66,0.92) 0%, rgba(3,27,66,0) 100%); padding: 1.5rem 1.25rem 1rem 1.25rem; color: #FFFFFF;">
           <p style="font-weight: 700; font-size: 1rem; margin: 0; color: var(--color-gold);">Learning Beyond Boundaries</p>
-          <p style="font-size: 0.82rem; margin: 0; color: #E2E8F0;">Personalised, 100% Live Online Schooling • K to Grade 8</p>
+          <p style="font-size: 0.82rem; margin: 0; color: #E2E8F0;">Personalised, 100% Live Online Schooling • Kindergarten to Grade 8th</p>
         </div>
       </div>
     </div>
@@ -568,9 +568,9 @@ include_once dirname(__FILE__) . '/../includes/header.php';
   <div class="container">
     <div class="text-center" style="max-width: 800px; margin: 0 auto 3rem auto;">
       <span style="font-size: 0.85rem; font-weight: 700; color: var(--color-gold); text-transform: uppercase; letter-spacing: 2px;">Curriculum Pathways</span>
-      <h2 style="font-size: 2.5rem; color: var(--color-navy); margin-top: 0.5rem; font-family: var(--font-primary);">A Future-Ready Learning Journey — K to Grade 8</h2>
+      <h2 style="font-size: 2.5rem; color: var(--color-navy); margin-top: 0.5rem; font-family: var(--font-primary);">A Future-Ready Learning Journey — Kindergarten to Grade 8th</h2>
       <p style="color: var(--color-muted); font-size: 1.05rem; line-height: 1.7; margin-top: 1rem;">
-        Aligned with CBSE, NEP 2020 and NCF — strong academic foundations blended with creativity, communication, digital fluency and real-world learning. Every stage builds on the last: from stories, sounds and play in the Early Years to research, innovation and independent thinking in Middle School.
+        Mapped to CBSE, NEP 2020 and NCF — strong academic foundations blended with creativity, communication, digital fluency and real-world learning. Every stage builds on the last: from stories, sounds and play in the Early Years to research, innovation and independent thinking in Middle School.
       </p>
     </div>
 
@@ -777,7 +777,7 @@ include_once dirname(__FILE__) . '/../includes/header.php';
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1.5rem;">
       
       <div class="stat-box" style="padding: 1.75rem 1rem; background: rgba(255,255,255,0.04); border-radius: var(--radius-md); border: 1px solid rgba(255,255,255,0.08);">
-        <p style="font-size: 2.75rem; font-weight: 700; color: var(--color-gold); margin: 0; font-family: var(--font-primary); line-height: 1;">K–8</p>
+        <p style="font-size: 1.85rem; font-weight: 700; color: var(--color-gold); margin: 0; font-family: var(--font-primary); line-height: 1.1;">KG to 8th</p>
         <p style="color: #E2E8F0; font-size: 0.82rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; margin-top: 0.5rem;">Grade Spectrum</p>
       </div>
 
@@ -1170,7 +1170,7 @@ include_once dirname(__FILE__) . '/../includes/header.php';
     });
   }
 
-  // Captcha Generator for School Counsellor Form
+  // Captcha Generator for Admission Counselor Form
   function refreshHeroCaptcha() {
     const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
     let code = '';

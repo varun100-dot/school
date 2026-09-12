@@ -302,32 +302,36 @@ $social_linkedin = get_setting('social_linkedin', '#');
   <div class="usp-ticker-strip">
     <div class="ticker-wrap">
       <div class="ticker-track">
-        <div class="ticker-item"><span class="ticker-grade-pill">K to Grade 8</span> 100% Online Schooling</div>
+        <div class="ticker-item"><span class="ticker-grade-pill">Kindergarten to Grade 8th</span> 100% Online Schooling</div>
         <span class="ticker-dot"></span>
-        <div class="ticker-item">CBSE & NEP 2020 Aligned Curriculum</div>
+        <div class="ticker-item">CBSE Mapped Curriculum</div>
+        <span class="ticker-dot"></span>
+        <div class="ticker-item">Inclusive Learning for Students with Special Needs</div>
+        <span class="ticker-dot"></span>
+        <div class="ticker-item">Dedicated Admission Counselor</div>
         <span class="ticker-dot"></span>
         <div class="ticker-item">Oxford Thematic Learning Approach</div>
         <span class="ticker-dot"></span>
-        <div class="ticker-item">IBM-Supported AI & Future Skills</div>
+        <div class="ticker-item">IBM-Supported AI &amp; Future Skills</div>
         <span class="ticker-dot"></span>
         <div class="ticker-item">Live Interactive Small-Group Classes</div>
-        <span class="ticker-dot"></span>
-        <div class="ticker-item">Personalised Academic & Special Ed Support</div>
         <span class="ticker-dot"></span>
         <div class="ticker-item">Global Exposure Beyond Boundaries</div>
         <span class="ticker-dot"></span>
         <!-- Duplicate items for seamless continuous marquee loop -->
-        <div class="ticker-item"><span class="ticker-grade-pill">K to Grade 8</span> 100% Online Schooling</div>
+        <div class="ticker-item"><span class="ticker-grade-pill">Kindergarten to Grade 8th</span> 100% Online Schooling</div>
         <span class="ticker-dot"></span>
-        <div class="ticker-item">CBSE & NEP 2020 Aligned Curriculum</div>
+        <div class="ticker-item">CBSE Mapped Curriculum</div>
+        <span class="ticker-dot"></span>
+        <div class="ticker-item">Inclusive Learning for Students with Special Needs</div>
+        <span class="ticker-dot"></span>
+        <div class="ticker-item">Dedicated Admission Counselor</div>
         <span class="ticker-dot"></span>
         <div class="ticker-item">Oxford Thematic Learning Approach</div>
         <span class="ticker-dot"></span>
-        <div class="ticker-item">IBM-Supported AI & Future Skills</div>
+        <div class="ticker-item">IBM-Supported AI &amp; Future Skills</div>
         <span class="ticker-dot"></span>
         <div class="ticker-item">Live Interactive Small-Group Classes</div>
-        <span class="ticker-dot"></span>
-        <div class="ticker-item">Personalised Academic & Special Ed Support</div>
         <span class="ticker-dot"></span>
         <div class="ticker-item">Global Exposure Beyond Boundaries</div>
       </div>

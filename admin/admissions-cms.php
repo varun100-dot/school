@@ -32,7 +32,7 @@ if (!isset($adm_cms['enrol'])) {
         'title' => 'Simple 5-Step Admissions Journey',
         'subtitle' => 'From initial enquiry to your child’s very first live classroom session.',
         'steps' => [
-            ['id' => 1, 'step' => 1, 'title' => 'Connect with Counsellor', 'desc' => 'Speak with an expert academic advisor to understand curriculum mapping, live timings, and technological setup.', 'sort_order' => 1, 'is_published' => 1],
+            ['id' => 1, 'step' => 1, 'title' => 'Connect with Admission Counselor', 'desc' => 'Speak with an expert admission counselor to understand curriculum mapping, live timings, and technological setup.', 'sort_order' => 1, 'is_published' => 1],
             ['id' => 2, 'step' => 2, 'title' => 'Fill Out Admission Form', 'desc' => 'Complete the online application with student details, previous academic background, and preferred curriculum track.', 'sort_order' => 2, 'is_published' => 1],
             ['id' => 3, 'step' => 3, 'title' => 'Pay the Fees', 'desc' => 'Secure your seat through transparent quarterly tuition payment via encrypted online payment gateway or bank transfer.', 'sort_order' => 3, 'is_published' => 1],
             ['id' => 4, 'step' => 4, 'title' => 'Receive Login Credentials', 'desc' => 'Get dedicated student LMS access, parent portal onboarding credentials, digital timetables, and orientation pack.', 'sort_order' => 4, 'is_published' => 1],

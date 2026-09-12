@@ -156,7 +156,7 @@ render_breadcrumbs([
           Interactive Exploration
         </span>
         <h2 style="font-size: 2.35rem; color: var(--color-navy); margin-top: 0.5rem; font-family: var(--font-primary);">
-          Digital Labs &amp; Online Simulations
+          Interactive Simulations &amp; Digital Tools
         </h2>
         <p style="color: var(--color-muted); font-size: 1rem; margin-top: 0.5rem;">
           Bridging abstract concepts through hands-on virtual modeling and visual discovery.
@@ -167,7 +167,7 @@ render_breadcrumbs([
         
         <div style="background: var(--color-surface-warm); border-radius: var(--radius-md); padding: 2rem; border: 1.5px solid rgba(6, 43, 99, 0.16); box-shadow: var(--shadow-sm);">
           <div style="font-size: 1.8rem; margin-bottom: 0.75rem;">🧪</div>
-          <h4 style="font-size: 1.15rem; color: var(--color-navy); font-family: var(--font-primary); margin-bottom: 0.5rem;">PhET Science Labs</h4>
+          <h4 style="font-size: 1.15rem; color: var(--color-navy); font-family: var(--font-primary); margin-bottom: 0.5rem;">PhET Interactive Simulations</h4>
           <p style="color: var(--color-text); font-size: 0.9rem; line-height: 1.6; margin: 0;">
             Interactive simulations for circuit building, molecular structures, solar system gravity, and light refraction.
           </p>

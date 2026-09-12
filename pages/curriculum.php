@@ -22,7 +22,7 @@ render_breadcrumbs([
     <div class="curriculum-container">
       <div class="curriculum-section-header" style="text-align: center;">
         <h1 class="curriculum-hero-title">CURRICULUM INSIGHTS</h1>
-        <p class="curriculum-section-subtitle">A Future-Ready Learning Journey | K to Grade 8</p>
+        <p class="curriculum-section-subtitle">A Future-Ready Learning Journey | Kindergarten to Grade 8th</p>
       </div>
 
       <div class="curriculum-body">
@@ -30,7 +30,7 @@ render_breadcrumbs([
           At <strong>Zuvio Global School</strong>, learning is designed to grow with every child. From stories, sounds, numbers and discovery in the Early Years to research, innovation, technology and independent thinking in Middle School, every stage builds upon the previous one.
         </p>
         <p style="margin: 0;">
-          Our curriculum is <strong>designed in alignment with CBSE, NEP 2020 and NCF principles</strong>, combining strong academic foundations with creativity, communication, digital fluency, life skills and real-world learning.
+          Our curriculum is <strong>mapped to CBSE, NEP 2020 and NCF principles</strong>, combining strong academic foundations with creativity, communication, digital fluency, life skills and real-world learning.
         </p>
       </div>
 
@@ -92,7 +92,7 @@ render_breadcrumbs([
 
         <div class="curriculum-grid-cell" style="background: #FFFFFF; border-top: 4px solid var(--color-teal);">
           <span style="display: inline-block; background: var(--pastel-green); color: #047857; font-weight: 700; font-size: 12px; padding: 3px 8px; border-radius: 4px; text-transform: uppercase; margin-bottom: 10px;">Indian Curriculum</span>
-          <h3 style="font-size: 20px; color: var(--color-navy); font-family: var(--font-primary); font-weight: 700; margin-bottom: 10px;">CBSE & NIOS Aligned</h3>
+          <h3 style="font-size: 20px; color: var(--color-navy); font-family: var(--font-primary); font-weight: 700; margin-bottom: 10px;">CBSE Mapped &amp; NIOS Framework</h3>
           <p class="curriculum-grid-desc" style="line-height: 1.65; margin-bottom: 12px;">
             In alignment with NEP 2020, Zuvio adheres to the National Curriculum Framework of India up to middle school. For senior grades, we support the recognized NIOS and CBSE streams, ensuring equivalency for premier higher education admissions.
           </p>

@@ -457,7 +457,7 @@ render_breadcrumbs([
           Indian Curriculum
         </span>
         <h3 style="font-size: 1.35rem; color: var(--color-navy); font-family: var(--font-primary); font-weight: 700; margin-bottom: 0.75rem;">
-          CBSE & NIOS Aligned
+          CBSE Mapped &amp; NIOS Framework
         </h3>
         <p style="color: var(--color-text); font-size: 0.9rem; line-height: 1.65; margin-bottom: 1rem;">
           Structured according to the National Curriculum Framework of India under NEP 2020. Combines NCERT syllabus rigor with experiential, interactive live classrooms.
@@ -514,7 +514,7 @@ render_breadcrumbs([
     <!-- CTA to Deep Curriculum Page -->
     <div style="text-align: center;">
       <a href="/curriculum" class="btn btn-primary" style="background-color: var(--color-navy); border-color: var(--color-navy); color: #FFFFFF; font-weight: 700; padding: 0.85rem 2.5rem;">
-        Explore Full Stage-Wise Curriculum Guide (K to Grade 8) &rarr;
+        Explore Full Stage-Wise Curriculum Guide (Kindergarten to Grade 8th) &rarr;
       </a>
     </div>
 
