@@ -1,0 +1,192 @@
+
+ZUVIO GLOBAL SCHOOL
+ADMISSIONS PAGE — CHANGES, AUDIT & REFERENCE
+Source: Home Page design changes(1).docx • Live-site audit • Dedicated-page + CMS implementation
+
+Primary source pages: Source document Page 56 defines Admissions → Enrol Now, eligibility/age criteria, calendar, fees and an enrolment process with requirements. Page 57 contains the fee-structure references and an FAQ reference.
+
+Current live page audited: https://www.zuvioglobalschool.com/admissions
+
+Implementation principle: Each Admissions submenu item should open its own dedicated page; do not use same-page anchor sections for the submenu.
+
+
+1. Admissions Information Architecture
+The Admissions pillar should become a parent navigation item with dedicated child pages.
+Main Item
+Dedicated Page
+Purpose
+Admissions
+/admissions
+Admissions overview / conversion hub
+Enrol Now
+/admissions/enrol-now
+Application form + process + requirements
+Eligibility
+/admissions/eligibility
+Age-wise eligibility and placement criteria
+Calendar
+/admissions/calendar
+Academic year, terms and key dates
+Fees
+/admissions/fees
+Approved fee structure / downloadable schedule
+FAQ
+/faq
+Parent FAQ; can cross-link from Admissions
+
+Navigation rule: Admissions submenu clicks must open these dedicated pages. Avoid #eligibility, #calendar, #fees or similar anchor-only destinations.
+
+2. Source Document Requirements — Pages 56–57
+The source document specifies the following Admissions content and references:
+Enrol Now: form + process steps + requirements.
+Eligibility criteria, including age-wise criteria.
+Academic Calendar.
+Fees structure.
+Admissions criteria & process visual reference.
+Required Documents section.
+Fee references for Indian Curriculum and Cambridge Curriculum.
+Zuvio fee-structure visual reference.
+FAQ is referenced as the supplied FAQ PDF.
+
+
+
+Reference image — Source Document Page 56 (Admissions)
+
+
+Reference image — Source Document Page 57 (Fees + FAQ reference)
+
+3. Live Website Audit — Current Admissions Page
+Audit basis: live page at https://www.zuvioglobalschool.com/admissions, checked against the supplied Admissions references.
+Area
+Status
+Current observation
+Action
+Admissions overview
+Present
+Current page already contains Admissions & Enrolment, CTA buttons and an overview flow.
+Retain, but redesign to match the approved structure.
+Enrolment process
+Present
+Current page has a 4-step journey: enquiry, demo, baseline assessment, onboarding.
+Retain where compatible; source reference shows a 5-step visual and a required-documents block, so align the final flow to the approved document.
+Eligibility
+Present
+Current page has an eligibility/age table for Early Years, Foundation, Preparatory and Middle School.
+Move to its own dedicated Eligibility page.
+Calendar
+Present
+Current page contains Term 1 and Term 2 information.
+Move to dedicated Calendar page and make dates CMS-editable.
+Fees
+Incomplete
+Current page describes fee philosophy and asks visitors to request a detailed fee schedule; exact approved fee table is not fully exposed as a dedicated fee page.
+Create dedicated Fees page using only approved fee data. Do not invent figures.
+FAQ
+Present by link
+Current page links users to the full FAQ.
+Keep FAQ as dedicated page; Admissions can include an FAQ preview/link.
+Request Callback
+Present
+Current page includes callback form with parent, email, phone, grade, preferred callback time and message.
+Retain and connect to lead handling/CRM.
+Dedicated submenu routing
+Needs change
+Current content is consolidated on one Admissions page rather than a dedicated page per submenu item.
+Create separate routes/pages.
+Placeholder / wording QA
+Needs change
+Current site shows 'Office Hours: 10-7 AM - PM' in footer/contact blocks.
+Correct to clear time format when editing shared footer content.
+
+Current live Admissions page currently presents the following: Academic Year 2026–2027; a 4-step enrolment journey; grade/age guidelines; a two-term calendar; a fee-structure philosophy; FAQ link; contact/callback form.
+4. Dedicated Admissions Page Specifications
+4.1 Admissions Overview — /admissions
+Hero: Admissions & Enrolment.
+Academic year clearly displayed.
+Short value proposition focused on a seamless onboarding journey.
+Primary CTAs: Enrol Now, Check Eligibility, Book a Demo.
+Quick overview cards linking to Enrol Now, Eligibility, Calendar, Fees and FAQ.
+Keep shared contact/callback CTA at the bottom.
+4.2 Enrol Now — /admissions/enrol-now
+Dedicated enquiry/enrolment form.
+Admission process steps.
+Requirements / Required Documents block.
+Clear next-step CTA after form submission.
+Do not hide critical requirements inside an accordion if the source design shows them prominently.
+Connect form submissions to the existing lead/CRM workflow.
+4.3 Eligibility — /admissions/eligibility
+Age-wise eligibility criteria.
+Stage-wise / grade-wise table.
+Early Years, Foundation, Preparatory and Middle School where applicable.
+Include mid-session / Term 2 admission note where approved.
+Any additional age policy must come from approved source content; do not invent.
+4.4 Calendar — /admissions/calendar
+Academic year 2026–27 / approved current session.
+Term 1 and Term 2 structure.
+Important academic dates, assessments, project milestones and holidays when provided.
+Make calendar entries CMS-editable and downloadable if a PDF is supplied.
+4.5 Fees — /admissions/fees
+Dedicated fee-structure page.
+Separate curriculum/stream tables where approved.
+Use exact approved fee values only.
+Provide downloadable/printable fee schedule when a final PDF is supplied.
+Clearly explain one-time fees, quarterly tuition, annual total and payment notes where approved.
+4.6 FAQ — /faq
+Use the supplied Parent FAQ as the source of truth.
+Admissions should link to the complete FAQ page.
+Do not create contradictory admissions answers outside the approved FAQ.
+5. Fee Data — Critical Content Rule
+Source status: The source document explicitly says “Fees (to send)” and includes reference fee graphics. Treat those graphics as references until the final approved fee schedule is supplied/confirmed.
+
+Do not publish unapproved or inferred fee figures.
+Do not copy figures from unrelated schools used only as references.
+The current live page describes the fee philosophy but requests the detailed fee schedule; this gap should be resolved through the dedicated Fees page.
+When the final fee PDF/table is approved, make it CMS-manageable and keep the visible webpage table synchronized with it.
+6. UI / UX Direction
+Use the same global Zuvio header, navigation and footer as the approved homepage.
+Use complete 4-side card borders consistently, matching the homepage UI rule.
+Use clear visual hierarchy for sections, with enough whitespace and strong table readability.
+Use a conversion-focused hero with a clear primary CTA.
+On mobile, stack tables/cards without horizontal overflow where possible.
+Forms should have clear labels, validation, success state and error state.
+Keep breadcrumbs: Home → Admissions → [Current Page].
+Every submenu destination must be a real route, not an anchor-only link.
+7. Admin Panel / CMS Requirements
+Create an Admissions CMS that mirrors the dedicated frontend page structure.
+CMS Module
+Editable Content
+Required Actions
+Admissions Overview
+Hero copy, CTA labels/URLs, overview cards, academic year
+ADD • EDIT • DELETE • REORDER • PUBLISH/UNPUBLISH
+Enrol Now
+Form fields, process steps, requirements, confirmation text
+ADD • EDIT • DELETE • REORDER • PUBLISH/UNPUBLISH
+Eligibility
+Grade/stage rows, age ranges, notes, status, order
+ADD • EDIT • DELETE • REORDER • PUBLISH/UNPUBLISH
+Calendar
+Events/dates, term data, downloadable PDF, status, order
+ADD • EDIT • DELETE • REORDER • PUBLISH/UNPUBLISH
+Fees
+Fee tables, notes, downloadable schedule, payment instructions
+ADD • EDIT • DELETE • REORDER • PUBLISH/UNPUBLISH
+FAQ
+Link/featured questions; full FAQ remains in FAQ manager
+ADD • EDIT • DELETE • REORDER • PUBLISH/UNPUBLISH
+
+Media management: Allow approved images/PDFs to be uploaded, replaced and removed without code changes.
+
+8. Final Acceptance Checklist
+Admissions submenu opens dedicated pages, not section anchors.
+All five core destinations work: Enrol Now, Eligibility, Calendar, Fees, FAQ.
+No broken internal links or old anchor-only URLs remain in the Admissions navigation.
+All source-required sections are present.
+Fee figures are approved before publication.
+Form submits successfully and reaches the intended lead/CRM flow.
+Breadcrumbs and page titles are correct.
+Desktop, tablet and mobile layouts are tested.
+CMS changes are reflected on the frontend.
+No invented statistics, credentials, prices or policy language.
+9. Source / Audit Notes
+Source-derived requirements are based on the supplied Home Page design changes(1).docx, especially the Admissions material on Pages 56–57. The live-site observations are based on the current public Admissions page at the URL listed above. Where the source is incomplete (for example, final fee data), this document flags the gap rather than filling it with assumptions.

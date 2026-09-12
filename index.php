@@ -211,6 +211,27 @@ switch ($route) {
         include dirname(__FILE__) . '/pages/admissions.php';
         break;
 
+    case 'enrol-now':
+    case 'enrol':
+        $page_slug = 'admissions-enrol';
+        include dirname(__FILE__) . '/pages/admissions-enrol.php';
+        break;
+
+    case 'eligibility':
+        $page_slug = 'admissions-eligibility';
+        include dirname(__FILE__) . '/pages/admissions-eligibility.php';
+        break;
+
+    case 'calendar':
+        $page_slug = 'admissions-calendar';
+        include dirname(__FILE__) . '/pages/admissions-calendar.php';
+        break;
+
+    case 'fees':
+        $page_slug = 'admissions-fees';
+        include dirname(__FILE__) . '/pages/admissions-fees.php';
+        break;
+
     case 'faq':
     case 'faqs':
         $page_slug = 'faq';
@@ -235,7 +256,7 @@ switch ($route) {
         break;
         
     default:
-        // Handle potential nested routing like blogs/{slug}, about/{sub}, or academics/{sub}
+        // Handle potential nested routing like blogs/{slug}, about/{sub}, academics/{sub}, or admissions/{sub}
         $parts = explode('/', $route);
         if ($parts[0] === 'blogs' && isset($parts[1])) {
             $blog_slug = $parts[1];
@@ -283,6 +304,24 @@ switch ($route) {
             } else {
                 $page_slug = 'academics';
                 include dirname(__FILE__) . '/pages/academics.php';
+            }
+        } elseif (($parts[0] === 'admissions' || $parts[0] === 'admission') && isset($parts[1])) {
+            $sub = $parts[1];
+            if ($sub === 'enrol-now' || $sub === 'enrol') {
+                $page_slug = 'admissions-enrol';
+                include dirname(__FILE__) . '/pages/admissions-enrol.php';
+            } elseif ($sub === 'eligibility') {
+                $page_slug = 'admissions-eligibility';
+                include dirname(__FILE__) . '/pages/admissions-eligibility.php';
+            } elseif ($sub === 'calendar') {
+                $page_slug = 'admissions-calendar';
+                include dirname(__FILE__) . '/pages/admissions-calendar.php';
+            } elseif ($sub === 'fees' || $sub === 'fee-structure') {
+                $page_slug = 'admissions-fees';
+                include dirname(__FILE__) . '/pages/admissions-fees.php';
+            } else {
+                $page_slug = 'admissions';
+                include dirname(__FILE__) . '/pages/admissions.php';
             }
         } else {
             header('HTTP/1.1 404 Not Found');

@@ -55,7 +55,7 @@ $social_linkedin = get_setting('social_linkedin', '#');
           <a href="mailto:<?php echo h($email); ?>" class="contact-anchor"><?php echo h($email); ?></a>
         </p>
         <p class="contact-info-line">
-          <strong>Office Hours:</strong> <?php echo h($office_timings); ?> AM - PM
+          <strong>Office Hours:</strong> <?php echo h($office_timings); ?>
         </p>
       </div>
 

@@ -14,7 +14,7 @@ if (!isset($seo)) {
 // Fetch Active Announcement if available
 $top_announcement = 'Admissions Open 2026–2027';
 $announcement_btn_text = 'Enrol Now';
-$announcement_btn_url = '/admissions#enrol';
+$announcement_btn_url = '/admissions/enrol-now';
 
 if ($db) {
     try {
@@ -84,10 +84,10 @@ if (empty($nav_tree) || count($nav_tree) < 5 || empty($nav_tree[1]['children']))
         [
             'label' => 'Admissions', 'url' => '/admissions',
             'children' => [
-                ['label' => 'Enrol Now', 'url' => '/admissions#enrol'],
-                ['label' => 'Eligibility', 'url' => '/admissions#eligibility'],
-                ['label' => 'Calendar', 'url' => '/admissions#calendar'],
-                ['label' => 'Fees', 'url' => '/admissions#fees'],
+                ['label' => 'Enrol Now', 'url' => '/admissions/enrol-now'],
+                ['label' => 'Eligibility', 'url' => '/admissions/eligibility'],
+                ['label' => 'Calendar', 'url' => '/admissions/calendar'],
+                ['label' => 'Fees', 'url' => '/admissions/fees'],
                 ['label' => 'FAQ', 'url' => '/faq']
             ]
         ],
