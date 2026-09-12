@@ -1,0 +1,169 @@
+ZUVIO GLOBAL SCHOOL
+BEYOND — CHANGES, AUDIT & REFERENCE
+Main Beyond page retained • Dedicated sub-pages added • CMS-ready structure
+Primary source: Home Page design changes(1).docx, Pages 58–64. Page 59 defines Co-curricular/Clubs, Page 60 shows Hybrid Experiential Campus, Pages 61–62 define Student Achievers, Page 63 defines Gallery, and Page 64 shows Inside the Virtual Classroom.
+Current live page audited: https://www.zuvioglobalschool.com/beyond
+Core decision: KEEP / RESTORE the established main Beyond page and existing programme catalogue. Do not replace it with the recent anchor-based restructuring. Add dedicated sub-pages around it.
+1. Final Beyond Information Architecture
+Navigation
+Destination
+Action
+Beyond
+/beyond
+KEEP / RESTORE previous main page and programme catalogue
+Co-curricular / Clubs
+/beyond/co-curricular
+NEW dedicated page
+Student Achievers
+/beyond/student-achievers
+NEW dedicated page
+Gallery
+/beyond/gallery
+NEW dedicated page
+Inside the Virtual Classroom
+/beyond/virtual-classroom
+Recommended dedicated page / media experience
+Routing rule: Each Beyond submenu item must open its own dedicated page. Do not send Co-curricular, Student Achievers and Gallery to the same homepage anchor.
+2. Main Beyond Page — KEEP / RESTORE
+Restore the previous main Beyond page version/layout/content that existed before the recent restructuring.
+Retain the established programme catalogue and category structure.
+Retain existing programme cards, descriptions, images and interactions unless a specific content correction is separately approved.
+Do not turn the main Beyond page into only a three-card landing page.
+Do not delete existing programme content merely to create the new sub-pages.
+The new sub-pages should complement the main Beyond page, not replace it.
+Current live content: The live Beyond page currently includes Tech & Innovation, Mind & Numeracy, Life, Leadership & Support, and Creative Expression, with programmes such as AI Explorers, Coding, Robotics, Digital Media & Arts, Rubik's Cube, Abacus, Vedic Maths, Chess, Financial Literacy, Entrepreneurship, Academic Support, Dance and Art & Craft.
+3. Source Document — Pages 58–64
+Page 58: Beyond section begins.
+Page 59: Co-curricular / Clubs (class/stage wise).
+Page 60: Hybrid Experiential Campus reference.
+Page 61: Student achievers section.
+Page 62: Student achievement card reference.
+Page 63: Gallery reference.
+Page 64: Inside the Virtual Classroom video-card reference.
+Reference image — Source Document Page 59
+Reference image — Source Document Page 60
+Reference image — Source Document Page 61
+Reference image — Source Document Page 62
+Reference image — Source Document Page 63
+Reference image — Source Document Page 64
+4. New Dedicated Sub-Pages
+4.1 Co-curricular / Clubs — /beyond/co-curricular
+Create a dedicated Co-curricular & Clubs page.
+Use Page 59 'Global Clubs' as the primary source/reference structure.
+Organise activities by class/stage where applicable.
+Show club/activity title, concise description, applicable stage/grade, schedule/frequency when approved, media and CTA.
+The club experience should be distinct from the main Beyond programme catalogue.
+Use the Page 60 Hybrid Experiential Campus reference as an additional experiential section within this page where appropriate.
+Only use programme/club information actually available or approved by the school.
+4.2 Student Achievers — /beyond/student-achievers
+Create a dedicated achievements showcase.
+Use the Page 61–62 visual direction: image + student name + achievement/category.
+Support filters or categories where useful.
+Include year/competition only when verified.
+Do not invent medals, ranks, awards, competitions or student claims.
+Keep this separate from the main Beyond programme cards.
+4.3 Gallery — /beyond/gallery
+Create a dedicated responsive gallery page.
+Use Page 63 as the visual reference.
+Support student work, projects, creative work and activity imagery where content is available.
+Use categories/filters only when backed by actual content.
+Use a clean image grid and lightbox/full-view interaction where appropriate.
+Captions must remain factual and concise.
+4.4 Inside the Virtual Classroom — /beyond/virtual-classroom
+Recommended dedicated media page based on the Page 64 reference.
+Use video thumbnails with clear play controls.
+Show live classes, student activities, co-curricular sessions, events, performances and learning experiences.
+Each video item should support title, category, thumbnail and video URL/upload.
+Keep this page visually connected to Beyond but independently editable.
+5. Current vs Required Content Audit
+Area
+Current State
+Source Requirement
+Action
+Main Beyond page
+Established programme catalogue
+Beyond is a main pillar; keep existing structure
+KEEP / RESTORE
+Tech & Innovation
+Present
+Core Beyond programme content
+KEEP
+Mind & Numeracy
+Present
+Core Beyond programme content
+KEEP
+Life, Leadership & Support
+Present
+Core Beyond programme content
+KEEP
+Creative Expression
+Present
+Core Beyond programme content
+KEEP
+Co-curricular / Clubs
+No dedicated page
+Page 59
+ADD
+Hybrid Experiential Campus
+Not clearly separated
+Page 60
+ADD to Co-curricular
+Student Achievers
+No dedicated page
+Pages 61–62
+ADD
+Gallery
+No dedicated page
+Page 63
+ADD
+Virtual Classroom
+No dedicated page
+Page 64 reference
+ADD recommended
+6. Admin Panel / CMS Requirements
+CMS rule: Admin Panel must retain management of the existing main Beyond catalogue and add dedicated CMS modules for the new sub-pages.
+CMS Module
+Editable Data
+Actions
+Main Beyond
+Existing categories/programmes/cards/media
+ADD • EDIT • DELETE • REORDER • PUBLISH/UNPUBLISH
+Co-curricular / Clubs
+Club title, grade/stage, description, image, schedule, CTA
+ADD • EDIT • DELETE • REORDER • PUBLISH/UNPUBLISH
+Student Achievers
+Photo, name, achievement, category, year, description
+ADD • EDIT • DELETE • REORDER • PUBLISH/UNPUBLISH
+Gallery
+Image, caption, category, order
+ADD • EDIT • DELETE • REORDER • PUBLISH/UNPUBLISH
+Virtual Classroom
+Video/URL, thumbnail, title, category, order
+ADD • EDIT • DELETE • REORDER • PUBLISH/UNPUBLISH
+7. UI / UX Rules
+Main Beyond page should visually match its previous established design after restoration.
+Dedicated pages should use the same global header/footer and breadcrumb pattern as Home, About, Academics and Admissions.
+All cards should follow the site-wide rule of a complete 4-side visible border.
+Do not force all Beyond content into one page; use dedicated pages for the three main requested areas.
+Use responsive grids; avoid horizontal scrolling on mobile.
+Use real school-supplied imagery/video wherever possible.
+Maintain consistent typography, spacing, button treatment and hover states with the rest of the site.
+8. What NOT to Change
+Do not delete the existing Beyond programme catalogue.
+Do not replace the established main Beyond page with the recent anchor-based version.
+Do not make Co-curricular, Student Achievers and Gallery all load the same page/section.
+Do not invent student achievements or award statistics.
+Do not invent programme schedules, grades or claims where the source does not provide them.
+9. Final Acceptance Checklist
+Main /beyond page is restored to the previous version and retains the existing programme catalogue.
+Co-curricular / Clubs opens its own dedicated page.
+Student Achievers opens its own dedicated page.
+Gallery opens its own dedicated page.
+Virtual Classroom is implemented if approved.
+Pages 59–64 requirements are represented.
+All new content is independently manageable in Admin Panel.
+No old Beyond submenu anchor-only routing remains.
+Desktop, tablet and mobile layouts are tested.
+No broken links, placeholders or invented claims remain.
+10. Source Note
+This document is based on the supplied Home Page design changes(1).docx, especially Pages 58–64, combined with the current public Zuvio Global School Beyond page audit. The source document is authoritative for the requested additions; where it does not supply final content, this document explicitly avoids inventing it.

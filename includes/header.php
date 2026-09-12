@@ -93,7 +93,13 @@ if (empty($nav_tree) || count($nav_tree) < 5 || empty($nav_tree[1]['children']))
         ],
         [
             'label' => 'Beyond', 'url' => '/beyond',
-            'children' => []
+            'children' => [
+                ['label' => 'Overview & Programmes', 'url' => '/beyond'],
+                ['label' => 'Co-curricular / Clubs', 'url' => '/beyond/co-curricular'],
+                ['label' => 'Student Achievers', 'url' => '/beyond/student-achievers'],
+                ['label' => 'Gallery', 'url' => '/beyond/gallery'],
+                ['label' => 'Inside the Virtual Classroom', 'url' => '/beyond/virtual-classroom']
+            ]
         ],
         ['label' => 'Contact Us', 'url' => '/contact', 'children' => []]
     ];

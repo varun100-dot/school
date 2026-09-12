@@ -608,7 +608,7 @@ html {
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-md);
   padding: 4rem;
-  border: 1px solid var(--color-border);
+  border: 1.5px solid rgba(6, 43, 99, 0.16);
   position: relative;
   overflow: hidden;
 }
@@ -917,6 +917,13 @@ html {
 }
 </style>
 
+<!-- Breadcrumbs -->
+<div class="breadcrumb-container" style="background-color: var(--color-surface); border-bottom: 1px solid var(--color-border); padding: 0.85rem 0;">
+  <div class="container">
+    <?php render_breadcrumbs([['label' => 'Home', 'url' => '/'], ['label' => 'Beyond']]); ?>
+  </div>
+</div>
+
 <!-- Hero Section (Page 1 Content) -->
 <section class="beyond-hero">
   <div class="beyond-hero-inner">
@@ -927,6 +934,22 @@ html {
       A vibrant enrichment space for future-ready skills, creative expression and meaningful interests.
     </p>
     <div class="beyond-hero-grades">NURSERY - GRADE 12</div>
+
+    <!-- Dedicated Sub-Pages Gateway Links -->
+    <div style="display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; margin-top: 2rem;">
+      <a href="/beyond/co-curricular" style="background: rgba(255,255,255,0.12); border: 1.5px solid rgba(255,255,255,0.3); color: #FFFFFF; font-size: 0.88rem; font-weight: 700; padding: 0.6rem 1.25rem; border-radius: 25px; text-decoration: none; transition: all 0.2s;">
+        Global Clubs &amp; Co-Curricular &rarr;
+      </a>
+      <a href="/beyond/student-achievers" style="background: rgba(255,255,255,0.12); border: 1.5px solid rgba(255,255,255,0.3); color: #FFFFFF; font-size: 0.88rem; font-weight: 700; padding: 0.6rem 1.25rem; border-radius: 25px; text-decoration: none; transition: all 0.2s;">
+        Student Achievers &rarr;
+      </a>
+      <a href="/beyond/gallery" style="background: rgba(255,255,255,0.12); border: 1.5px solid rgba(255,255,255,0.3); color: #FFFFFF; font-size: 0.88rem; font-weight: 700; padding: 0.6rem 1.25rem; border-radius: 25px; text-decoration: none; transition: all 0.2s;">
+        Photo Gallery &rarr;
+      </a>
+      <a href="/beyond/virtual-classroom" style="background: rgba(255,255,255,0.12); border: 1.5px solid rgba(255,255,255,0.3); color: #FFFFFF; font-size: 0.88rem; font-weight: 700; padding: 0.6rem 1.25rem; border-radius: 25px; text-decoration: none; transition: all 0.2s;">
+        Inside Virtual Classroom &rarr;
+      </a>
+    </div>
   </div>
 </section>
 

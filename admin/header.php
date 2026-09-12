@@ -214,7 +214,11 @@ $current_page = $page_slug ?? 'admin-dashboard';
       <a href="/admin/faqs.php" class="sidebar-item <?php echo $current_page === 'admin-faqs' ? 'active' : ''; ?>">Parent FAQs (18 Items)</a>
 
       <div class="sidebar-heading">Beyond</div>
-      <a href="/admin/beyond-cms.php" class="sidebar-item <?php echo $current_page === 'admin-beyond-cms' ? 'active' : ''; ?>">Beyond Programmes & Clubs</a>
+      <a href="/admin/beyond-cms.php?tab=cocurricular" class="sidebar-item <?php echo ($current_page === 'admin-beyond-cms' && ($_GET['tab'] ?? 'cocurricular') === 'cocurricular') ? 'active' : ''; ?>">Co-curricular / Clubs</a>
+      <a href="/admin/beyond-cms.php?tab=hybrid" class="sidebar-item <?php echo ($current_page === 'admin-beyond-cms' && ($_GET['tab'] ?? '') === 'hybrid') ? 'active' : ''; ?>">Hybrid Campus</a>
+      <a href="/admin/beyond-cms.php?tab=achievers" class="sidebar-item <?php echo ($current_page === 'admin-beyond-cms' && ($_GET['tab'] ?? '') === 'achievers') ? 'active' : ''; ?>">Student Achievers</a>
+      <a href="/admin/beyond-cms.php?tab=gallery" class="sidebar-item <?php echo ($current_page === 'admin-beyond-cms' && ($_GET['tab'] ?? '') === 'gallery') ? 'active' : ''; ?>">Photo Gallery</a>
+      <a href="/admin/beyond-cms.php?tab=classroom" class="sidebar-item <?php echo ($current_page === 'admin-beyond-cms' && ($_GET['tab'] ?? '') === 'classroom') ? 'active' : ''; ?>">Virtual Classroom</a>
 
       <div class="sidebar-heading">Media & Engagement</div>
       <a href="/admin/testimonials.php" class="sidebar-item <?php echo $current_page === 'admin-testimonials' ? 'active' : ''; ?>">Parent Testimonials</a>

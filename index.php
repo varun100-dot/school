@@ -243,6 +243,29 @@ switch ($route) {
         $page_slug = 'zuvio-beyond';
         include dirname(__FILE__) . '/pages/beyond.php';
         break;
+
+    case 'co-curricular':
+    case 'clubs':
+        $page_slug = 'beyond-cocurricular';
+        include dirname(__FILE__) . '/pages/beyond-cocurricular.php';
+        break;
+
+    case 'student-achievers':
+    case 'achievers':
+        $page_slug = 'beyond-achievers';
+        include dirname(__FILE__) . '/pages/beyond-achievers.php';
+        break;
+
+    case 'gallery':
+        $page_slug = 'beyond-gallery';
+        include dirname(__FILE__) . '/pages/beyond-gallery.php';
+        break;
+
+    case 'virtual-classroom':
+    case 'inside-virtual-classroom':
+        $page_slug = 'beyond-virtual-classroom';
+        include dirname(__FILE__) . '/pages/beyond-virtual-classroom.php';
+        break;
         
     case 'contact':
     case 'contact-us':
@@ -322,6 +345,24 @@ switch ($route) {
             } else {
                 $page_slug = 'admissions';
                 include dirname(__FILE__) . '/pages/admissions.php';
+            }
+        } elseif (($parts[0] === 'beyond' || $parts[0] === 'zuvio-beyond') && isset($parts[1])) {
+            $sub = $parts[1];
+            if ($sub === 'co-curricular' || $sub === 'clubs') {
+                $page_slug = 'beyond-cocurricular';
+                include dirname(__FILE__) . '/pages/beyond-cocurricular.php';
+            } elseif ($sub === 'student-achievers' || $sub === 'achievers') {
+                $page_slug = 'beyond-achievers';
+                include dirname(__FILE__) . '/pages/beyond-achievers.php';
+            } elseif ($sub === 'gallery') {
+                $page_slug = 'beyond-gallery';
+                include dirname(__FILE__) . '/pages/beyond-gallery.php';
+            } elseif ($sub === 'virtual-classroom' || $sub === 'inside-virtual-classroom') {
+                $page_slug = 'beyond-virtual-classroom';
+                include dirname(__FILE__) . '/pages/beyond-virtual-classroom.php';
+            } else {
+                $page_slug = 'zuvio-beyond';
+                include dirname(__FILE__) . '/pages/beyond.php';
             }
         } else {
             header('HTTP/1.1 404 Not Found');
