@@ -238,21 +238,18 @@ if (empty($testimonials)) {
             'parent_name' => 'Priya & Rajesh Sharma',
             'child_info' => 'Parents of Aarav (Grade 4)',
             'review_text' => 'Transitioning to Zuvio Global School was the best decision for our son. The live teachers are incredibly engaging, and the Oxford theme-based curriculum connects concepts in a way that actually makes sense to him. He loves waking up for his classes!',
-            'photo' => '/assets/images/Profile_Images/Pragya_Professional_Profile.webp',
             'rating' => 5
         ],
         [
             'parent_name' => 'Dr. Anandita Sen',
             'child_info' => 'Mother of Rhea (Grade 7)',
             'review_text' => 'As a family that frequently relocates between cities, Zuvio gave us uninterrupted, high-quality schooling. The coding, AI integration, and project-based approach ensure she stays far ahead of traditional schooling standards.',
-            'photo' => '/assets/images/Profile_Images/Deepak_Professional_Profile.webp',
             'rating' => 5
         ],
         [
             'parent_name' => 'Kavita & Vikram Mehta',
             'child_info' => 'Parents of Kabir (Kindergarten)',
             'review_text' => 'The Early Years programme is simply fantastic. The teachers use stories, music, and interactive activities that keep our 5-year-old engaged without excessive screen fatigue. Highly recommended for alternative learning!',
-            'photo' => '/assets/images/Profile_Images/Sharmin_Professional_Profile.webp',
             'rating' => 5
         ]
     ];
@@ -865,12 +862,9 @@ include_once dirname(__FILE__) . '/../includes/header.php';
           </div>
           <p class="testimonial-quote">"<?php echo h($test['review_text']); ?>"</p>
           <div class="testimonial-author-row">
-            <?php if (!empty($test['photo'])): ?>
-              <img src="<?php echo h($test['photo']); ?>" alt="<?php echo h($test['parent_name']); ?>" class="testimonial-avatar">
-            <?php endif; ?>
             <div>
               <div class="testimonial-author-name"><?php echo h($test['parent_name']); ?></div>
-              <div class="testimonial-author-meta"><?php echo h($test['child_info']); ?></div>
+              <div class="testimonial-author-meta"><?php echo h($test['child_info'] ?? ($test['student_name'] ?? '')); ?></div>
             </div>
           </div>
         </div>

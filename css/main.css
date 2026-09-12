@@ -1551,12 +1551,10 @@ button, input, select, textarea {
   border-top: 1px solid var(--color-border);
   padding-top: 1rem;
 }
-.testimonial-avatar {
-  width: 46px;
-  height: 46px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid var(--color-gold);
+.testimonial-avatar,
+.testimonial-card img,
+.testimonial-author-row img {
+  display: none !important;
 }
 .testimonial-author-name {
   font-size: 0.95rem;
