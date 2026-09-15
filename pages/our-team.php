@@ -126,9 +126,8 @@ render_breadcrumbs([
         <?php foreach ($board_members as $member): ?>
           <div style="background: #FFFFFF; border-radius: var(--radius-lg); border: 1.5px solid rgba(6, 43, 99, 0.16); box-shadow: var(--shadow-sm); overflow: hidden; display: flex; flex-direction: column; transition: transform 0.25s ease, box-shadow 0.25s ease;">
             
-            <div style="height: 320px; background-color: var(--pastel-blue); position: relative; overflow: hidden;">
-              <img src="<?php echo h($member['image']); ?>" alt="<?php echo h($member['name']); ?>" style="width: 100%; height: 100%; object-fit: cover; object-position: top center;">
-              <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(10,37,64,0.7) 0%, transparent 100%); height: 80px;"></div>
+            <div style="height: 360px; background-color: var(--pastel-blue); position: relative; overflow: hidden;">
+              <img src="<?php echo h($member['image']); ?>" alt="<?php echo h($member['name']); ?>" style="width: 100%; height: 100%; object-fit: cover; object-position: center 12%;">
             </div>
 
             <div style="padding: 2rem; display: flex; flex-direction: column; flex-grow: 1; justify-content: space-between;">
@@ -184,9 +183,8 @@ render_breadcrumbs([
             <?php foreach ($academic_members as $member): ?>
               <div style="background: #FFFFFF; border-radius: var(--radius-lg); border: 1.5px solid rgba(6, 43, 99, 0.16); box-shadow: var(--shadow-sm); overflow: hidden; display: flex; flex-direction: column; transition: transform 0.25s ease, box-shadow 0.25s ease;">
                 
-                <div style="height: 320px; background-color: var(--pastel-blue); position: relative; overflow: hidden;">
-                  <img src="<?php echo h($member['image']); ?>" alt="<?php echo h($member['name']); ?>" style="width: 100%; height: 100%; object-fit: cover; object-position: top center;">
-                  <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(10,37,64,0.7) 0%, transparent 100%); height: 80px;"></div>
+                <div style="height: 360px; background-color: var(--pastel-blue); position: relative; overflow: hidden;">
+                  <img src="<?php echo h($member['image']); ?>" alt="<?php echo h($member['name']); ?>" style="width: 100%; height: 100%; object-fit: cover; object-position: center 12%;">
                 </div>
 
                 <div style="padding: 2rem; display: flex; flex-direction: column; flex-grow: 1; justify-content: space-between;">

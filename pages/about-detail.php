@@ -144,7 +144,7 @@ render_breadcrumbs([
         
         <!-- Avatar Photo Frame -->
         <div style="width: 180px; height: 180px; border-radius: 50%; overflow: hidden; border: 4px solid var(--color-gold); box-shadow: var(--shadow-lg); background-color: var(--pastel-blue); flex-shrink: 0;">
-          <img src="<?php echo h($leader['image']); ?>" alt="<?php echo h($leader['name']); ?>" style="width: 100%; height: 100%; object-fit: cover; object-position: top center;">
+          <img src="<?php echo h($leader['image']); ?>" alt="<?php echo h($leader['name']); ?>" style="width: 100%; height: 100%; object-fit: cover; object-position: center 15%;">
         </div>
 
         <!-- Meta Text Column -->

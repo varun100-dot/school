@@ -705,9 +705,9 @@ render_breadcrumbs([
         if (empty($leader['is_published'])) continue;
       ?>
         <div class="card" style="background-color: #FFFFFF; border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-sm); display: flex; flex-direction: column;">
-          <div style="height: 320px; background-color: var(--color-navy); display: flex; justify-content: center; align-items: center; color: #FFFFFF;">
+          <div style="height: 360px; background-color: var(--pastel-blue); display: flex; justify-content: center; align-items: center; overflow: hidden;">
             <?php if (!empty($leader['image'])): ?>
-              <img src="<?php echo h($leader['image']); ?>" alt="<?php echo h($leader['name']); ?>" style="width: 100%; height: 100%; object-fit: cover;">
+              <img src="<?php echo h($leader['image']); ?>" alt="<?php echo h($leader['name']); ?>" style="width: 100%; height: 100%; object-fit: cover; object-position: center 12%;">
             <?php else: ?>
               <span style="font-size: 1.5rem; font-weight: 700; font-family: var(--font-primary);"><?php echo h($leader['name']); ?></span>
             <?php endif; ?>
