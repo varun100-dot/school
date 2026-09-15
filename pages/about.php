@@ -235,11 +235,12 @@ $audiences = $cms['audiences'] ?? $default_audiences;
 // 7. Leadership Team - STRICT RULE: Rashmi Bhasin removed
 $default_team = [
     [
-        'name' => 'Sharmin Habib',
-        'slug' => 'sharmin-habib',
+        'name' => 'Pragya Jain',
+        'slug' => 'pragya-jain',
         'designation' => 'Co-Founder & Director',
-        'image' => '/assets/images/Profile_Images/Sharmin_Professional_Profile.webp',
-        'short_description' => 'Sharmin Habib is a seasoned educationist and edtech growth expert with over 18 years of experience. She has successfully founded and scaled preschools and digital K–8 learning models in domestic and international markets.',
+        'category' => 'Board of Directors',
+        'image' => '/assets/images/Profile_Images/Pragya_Professional_Profile.webp',
+        'short_description' => 'Pragya Jain is an educationist dedicated to child-centric learning that prepares students for life. She conceptualized Zuvio to merge academic rigor with personalization, creativity, and future-ready skills.',
         'sort_order' => 1,
         'is_published' => 1
     ],
@@ -247,17 +248,19 @@ $default_team = [
         'name' => 'Deepak Jain',
         'slug' => 'deepak-jain',
         'designation' => 'Co-Founder & Director',
+        'category' => 'Board of Directors',
         'image' => '/assets/images/Profile_Images/Deepak_Professional_Profile.webp',
         'short_description' => 'Deepak Jain is an entrepreneur and business professional who brings a practical, growth-oriented perspective to Zuvio Global School. He oversees Zuvio’s strategic direction, operations, and partnerships.',
         'sort_order' => 2,
         'is_published' => 1
     ],
     [
-        'name' => 'Pragya Jain',
-        'slug' => 'pragya-jain',
-        'designation' => 'Co-Founder & Director',
-        'image' => '/assets/images/Profile_Images/Pragya_Professional_Profile.webp',
-        'short_description' => 'Pragya Jain is an educationist dedicated to child-centric learning that prepares students for life. She conceptualized Zuvio to merge academic rigor with personalization, creativity, and future-ready skills.',
+        'name' => 'Sharmin Habib',
+        'slug' => 'sharmin-habib',
+        'designation' => 'Head of Business and Operations',
+        'category' => 'Academic Leadership',
+        'image' => '/assets/images/Profile_Images/Sharmin_Professional_Profile.webp',
+        'short_description' => 'Sharmin Habib is the Head of Business and Operations at Zuvio Global School with over 18 years of experience across online schooling, EdTech growth, operations, and scalable digital learning models.',
         'sort_order' => 3,
         'is_published' => 1
     ]
@@ -267,6 +270,15 @@ $team = $cms['team'] ?? $default_team;
 $team = array_values(array_filter($team, function($member) {
     return stripos($member['name'] ?? '', 'Rashmi') === false && ($member['slug'] ?? '') !== 'rashmi-bhasin';
 }));
+
+// Ensure Sharmin Habib has correct designation and category if coming from session
+foreach ($team as &$m) {
+    if (($m['slug'] ?? '') === 'sharmin-habib') {
+        $m['designation'] = 'Head of Business and Operations';
+        $m['category'] = 'Academic Leadership';
+    }
+}
+unset($m);
 
 // 8. Founder's Message
 $founder_message = $cms['founder_message_data'] ?? [
@@ -702,6 +714,9 @@ render_breadcrumbs([
           </div>
           <div style="padding: 1.75rem; text-align: center; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between;">
             <div>
+              <div style="display: inline-block; background: var(--pastel-blue); color: var(--color-teal); font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; padding: 0.25rem 0.65rem; border-radius: 4px; margin-bottom: 0.65rem;">
+                <?php echo h($leader['category'] ?? (($leader['slug'] ?? '') === 'sharmin-habib' ? 'Academic Leadership' : 'Board of Directors')); ?>
+              </div>
               <h3 style="font-size: 1.35rem; color: var(--color-navy); margin-bottom: 0.25rem; font-family: var(--font-primary);">
                 <?php echo h($leader['name']); ?>
               </h3>
