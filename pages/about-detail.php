@@ -78,38 +78,73 @@ $seo = [
     'index_status' => 'index, follow'
 ];
 
-$page_slug = 'about';
+function format_profile_biography($text) {
+    if (empty($text)) return '';
+    $lines = preg_split("/\r\n|\n|\r/", trim($text));
+    $html = "";
+    $in_list = false;
+    
+    foreach ($lines as $line) {
+        $trimmed = trim($line);
+        if ($trimmed === '') continue;
+        
+        // Detect bullet points: lines starting with •, -, or *
+        if (preg_match("/^[•\-\*]\s*(.*)$/u", $trimmed, $matches)) {
+            if (!$in_list) {
+                $html .= "<ul class=\"bio-expertise-list\" style=\"margin: 1.25rem 0 1.75rem 0; padding-left: 0; list-style: none; display: flex; flex-direction: column; gap: 0.65rem;\">\n";
+                $in_list = true;
+            }
+            $content = htmlspecialchars($matches[1], ENT_QUOTES, "UTF-8");
+            // Bold title if structured with en-dash, em-dash, or hyphen
+            if (preg_match("/^([^–—\-]+)\s*([–—\-])\s*(.*)$/u", $content, $c_matches)) {
+                $content = "<strong style=\"color: var(--color-navy); font-weight: 700;\">" . trim($c_matches[1]) . "</strong> " . $c_matches[2] . " " . trim($c_matches[3]);
+            }
+            $html .= "  <li style=\"position: relative; padding-left: 1.6rem; line-height: 1.6; color: var(--color-text); font-size: 0.98rem;\"><span style=\"position: absolute; left: 0.2rem; top: 0.55rem; width: 6px; height: 6px; border-radius: 50%; background: var(--color-gold); display: inline-block;\"></span>" . $content . "</li>\n";
+        } else {
+            if ($in_list) {
+                $html .= "</ul>\n";
+                $in_list = false;
+            }
+            $html .= "<p style=\"margin-bottom: 1.25rem; line-height: 1.75; color: var(--color-text); font-size: 1.02rem;\">" . htmlspecialchars($trimmed, ENT_QUOTES, "UTF-8") . "</p>\n";
+        }
+    }
+    if ($in_list) {
+        $html .= "</ul>\n";
+    }
+    return $html;
+}
+
 include_once dirname(__FILE__) . '/../includes/header.php';
+
+// Standardized full-width breadcrumbs
+render_breadcrumbs([
+    ['label' => 'Home', 'url' => '/'],
+    ['label' => 'About Us', 'url' => '/about-zuvio'],
+    ['label' => 'Our Team', 'url' => '/our-team'],
+    ['label' => $leader['name']]
+]);
 ?>
 
 <!-- Profile Detail Layout -->
 <section class="about-detail-wrapper" style="background-color: var(--color-bg); min-height: 80vh; font-family: var(--font-secondary); padding: 4rem 1.5rem;">
   <div class="container" style="max-width: 1000px; margin: 0 auto;">
     
-    <!-- Breadcrumbs / Back button -->
-    <div style="margin-bottom: 2.5rem;">
-      <a href="/about" class="btn btn-outline" style="padding: 0.6rem 1.5rem; display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none; font-size: 0.9rem;">
-        &larr; Back to About Us
+    <!-- Top Back button -->
+    <div style="margin-bottom: 2rem;">
+      <a href="/our-team" class="btn btn-outline" style="padding: 0.55rem 1.35rem; display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none; font-size: 0.85rem; font-weight: 600;">
+        &larr; Back to Our Team
       </a>
     </div>
 
-    <!-- Main Content Card -->
-    <div style="background-color: #FFFFFF; border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-md); border: 1px solid var(--color-border); display: flex; flex-direction: column;">
+    <!-- Main Profile Card Container with Full 4-sided Border -->
+    <div class="card" style="background: #FFFFFF; border-radius: var(--radius-lg); border: 1px solid var(--color-border); box-shadow: var(--shadow-md); overflow: hidden; padding: 0;">
       
-      <!-- Split Banner / Profile Summary -->
-      <div style="background-color: var(--color-navy-dark); color: #FFFFFF; padding: 3rem 2.5rem; display: flex; flex-wrap: wrap; gap: 3rem; align-items: center;">
+      <!-- Profile Header Hero Banner -->
+      <div style="background: linear-gradient(135deg, var(--color-navy-dark) 0%, var(--color-navy) 100%); padding: 3.5rem 3rem; display: flex; gap: 3rem; align-items: center; flex-wrap: wrap;">
         
-        <!-- Image Column -->
-        <div style="flex: 1 1 280px; display: flex; justify-content: center;">
-          <div style="width: 260px; height: 260px; border-radius: 50%; overflow: hidden; border: 4px solid var(--color-gold); box-shadow: var(--shadow-sm); background-color: var(--color-navy);">
-            <?php if (!empty($leader['image'])): ?>
-              <img src="<?php echo h($leader['image']); ?>" alt="<?php echo h($leader['name']); ?>" style="width: 100%; height: 100%; object-fit: cover;">
-            <?php else: ?>
-              <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; font-weight: bold; color: #FFFFFF; font-family: var(--font-primary);">
-                <?php echo h(substr($leader['name'], 0, 1)); ?>
-              </div>
-            <?php endif; ?>
-          </div>
+        <!-- Avatar Photo Frame -->
+        <div style="width: 180px; height: 180px; border-radius: 50%; overflow: hidden; border: 4px solid var(--color-gold); box-shadow: var(--shadow-lg); background-color: var(--pastel-blue); flex-shrink: 0;">
+          <img src="<?php echo h($leader['image']); ?>" alt="<?php echo h($leader['name']); ?>" style="width: 100%; height: 100%; object-fit: cover; object-position: top center;">
         </div>
 
         <!-- Meta Text Column -->
@@ -134,15 +169,15 @@ include_once dirname(__FILE__) . '/../includes/header.php';
       </div>
 
       <!-- Long Form Biography Details -->
-      <div style="padding: 3.5rem 3rem; color: var(--color-text); font-size: 1.05rem; line-height: 1.8;">
+      <div style="padding: 3.5rem 3rem; color: var(--color-text);">
         
         <!-- Full Biography -->
         <div>
           <h2 style="font-size: 1.75rem; color: var(--color-navy); font-family: var(--font-primary); margin-bottom: 1.5rem; border-bottom: 2px solid var(--color-border); padding-bottom: 0.5rem;">
             Professional Biography
           </h2>
-          <div style="white-space: pre-line;">
-            <?php echo nl2br(h($leader['bio'])); ?>
+          <div class="bio-content-body">
+            <?php echo format_profile_biography($leader['bio']); ?>
           </div>
         </div>
 
@@ -167,7 +202,7 @@ include_once dirname(__FILE__) . '/../includes/header.php';
 
     <!-- Back to listings button at bottom -->
     <div style="margin-top: 3rem; text-align: center;">
-      <a href="/about" class="btn btn-primary" style="padding: 0.75rem 2.5rem;">
+      <a href="/our-team" class="btn btn-primary" style="padding: 0.75rem 2.5rem; font-weight: 600;">
         &larr; Back to Leadership Listings
       </a>
     </div>
