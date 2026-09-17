@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS `announcements` (
 
 -- 2. Seed Initial Announcements
 INSERT IGNORE INTO `announcements` (`id`, `text`, `button_text`, `button_url`, `sort_order`, `is_active`) VALUES
-(1, 'Admissions ongoing for Mid-Session 2026–27 | Admissions open for Children with Learning Disabilities.', 'Apply Now', '/contact', 1, 1);
+(1, 'Admissions ongoing for Mid-Session 2026–27', 'Apply Now', '/contact', 1, 1);
 
 -- 3. Seed Permissions for Announcements
 INSERT IGNORE INTO `permissions` (`name`, `description`) VALUES

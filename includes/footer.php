@@ -364,7 +364,7 @@ $social_linkedin = get_setting('social_linkedin', '#');
       $announcements = [
           [
               'id' => 1,
-              'text' => 'Admissions ongoing for Mid-Session 2026–27 | Admissions open for Children with Learning Disabilities.',
+              'text' => 'Admissions ongoing for Mid-Session 2026–27',
               'button_text' => 'Apply Now',
               'button_url' => '/contact'
           ],
@@ -389,10 +389,15 @@ $social_linkedin = get_setting('social_linkedin', '#');
   <div id="admissionsAnnouncementBar" class="admissions-announcement-bar">
     <div class="announcement-slider-container" style="flex-grow: 1; position: relative;">
       <?php foreach ($announcements as $index => $ann): ?>
+        <?php 
+          $ann_text = $ann['text'];
+          $ann_text = preg_replace('/\s*\|\s*Admissions open for Children with Learning Disabilities\.?/i', '', $ann_text);
+          $ann_text = str_replace(['2026–28', '2026-28'], '2026–27', $ann_text);
+        ?>
         <div class="announcement-slide <?php echo $index === 0 ? 'active' : ''; ?>" style="display: <?php echo $index === 0 ? 'flex' : 'none'; ?>; align-items: center; justify-content: center; width: 100%; transition: opacity 0.5s ease; opacity: <?php echo $index === 0 ? '1' : '0'; ?>;">
           <div class="announcement-content">
             <span class="announcement-badge">Announcements</span>
-            <span class="announcement-text"><?php echo h($ann['text']); ?></span>
+            <span class="announcement-text"><?php echo h($ann_text); ?></span>
             <?php if (!empty($ann['button_text'])): ?>
               <a href="<?php echo h($ann['button_url'] ?: '/contact'); ?>" class="announcement-btn"><?php echo h($ann['button_text']); ?></a>
             <?php endif; ?>

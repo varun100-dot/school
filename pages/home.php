@@ -1133,9 +1133,13 @@ include_once dirname(__FILE__) . '/../includes/header.php';
   let imageBannerIdx = 0;
   function setImageBanner(idx) {
     const slides = document.querySelectorAll('.hero-banner-image-slide');
+    const track = document.querySelector('.hero-banner-slides-track');
     const dots = document.querySelectorAll('.banner-img-dot');
     if (!slides.length) return;
     imageBannerIdx = idx;
+    if (track) {
+      track.style.transform = `translateX(-${imageBannerIdx * 100}%)`;
+    }
     slides.forEach((s, i) => {
       s.classList.toggle('active', i === idx);
     });
@@ -1153,14 +1157,14 @@ include_once dirname(__FILE__) . '/../includes/header.php';
 
   let imageBannerTimer = setInterval(() => {
     changeImageBanner(1);
-  }, 5000);
+  }, 3000);
 
   const bannerImgWrapper = document.getElementById('heroBannerImageCarousel');
   if (bannerImgWrapper) {
     bannerImgWrapper.addEventListener('mouseenter', () => clearInterval(imageBannerTimer));
     bannerImgWrapper.addEventListener('mouseleave', () => {
       clearInterval(imageBannerTimer);
-      imageBannerTimer = setInterval(() => changeImageBanner(1), 5000);
+      imageBannerTimer = setInterval(() => changeImageBanner(1), 3000);
     });
   }
 

@@ -26,7 +26,7 @@ if ($use_mock) {
         $_SESSION['mock_announcements'] = [
             [
                 'id' => 1,
-                'text' => 'Admissions ongoing for Mid-Session 2026–27 | Admissions open for Children with Learning Disabilities.',
+                'text' => 'Admissions ongoing for Mid-Session 2026–27',
                 'button_text' => 'Apply Now',
                 'button_url' => '/contact',
                 'sort_order' => 1,
