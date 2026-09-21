@@ -139,6 +139,27 @@ include_once dirname(__FILE__) . '/../includes/header.php';
 </style>
 
 <script>
+  function toggleFaq(btn) {
+    const item = btn.closest('.faq-accordion-item');
+    if (!item) return;
+    const body = item.querySelector('.faq-accordion-body');
+    if (!body) return;
+    const isOpen = item.classList.contains('open');
+
+    if (isOpen) {
+      item.classList.remove('open');
+      body.style.maxHeight = '0px';
+      setTimeout(() => {
+        if (!item.classList.contains('open')) {
+          body.style.removeProperty('max-height');
+        }
+      }, 350);
+    } else {
+      item.classList.add('open');
+      body.style.maxHeight = body.scrollHeight + 'px';
+    }
+  }
+
   let activeCategory = 'All';
 
   function filterByCategory(cat, btn) {

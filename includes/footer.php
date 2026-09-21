@@ -12,9 +12,10 @@ if ($office_timings === '10-7' || $office_timings === '10-7 AM - PM') {
 $copyright = get_setting('copyright', '© 2026 Zuvio Global School. All rights reserved.');
 $logo_path = get_setting('logo_url', '/assets/images/logo.png');
 
-$social_insta = get_setting('social_instagram', '#');
-$social_fb = get_setting('social_facebook', '#');
-$social_linkedin = get_setting('social_linkedin', '#');
+$social_insta = get_setting('social_instagram', 'https://www.instagram.com/thezuvio/');
+$social_fb = get_setting('social_facebook', 'https://www.facebook.com/share/1XsYWDm3rt/');
+$social_linkedin = get_setting('social_linkedin', 'https://www.linkedin.com/company/zuvio-global-school/');
+$social_youtube = get_setting('social_youtube', 'https://www.youtube.com/@zuvioglobalschool');
 ?>
 
   <!-- Footer Section -->
@@ -67,13 +68,16 @@ $social_linkedin = get_setting('social_linkedin', '#');
         <h4 class="footer-title">Follow Us</h4>
         <div class="social-links-row">
           <?php if ($social_fb !== '#'): ?>
-            <a href="<?php echo h($social_fb); ?>" target="_blank" rel="noopener" class="social-icon-btn" aria-label="Facebook">FB</a>
+            <a href="<?php echo h($social_fb); ?>" target="_blank" rel="noopener" class="social-icon-btn" aria-label="Facebook" title="Facebook">FB</a>
           <?php endif; ?>
           <?php if ($social_insta !== '#'): ?>
-            <a href="<?php echo h($social_insta); ?>" target="_blank" rel="noopener" class="social-icon-btn" aria-label="Instagram">IG</a>
+            <a href="<?php echo h($social_insta); ?>" target="_blank" rel="noopener" class="social-icon-btn" aria-label="Instagram" title="Instagram">IG</a>
           <?php endif; ?>
           <?php if ($social_linkedin !== '#'): ?>
-            <a href="<?php echo h($social_linkedin); ?>" target="_blank" rel="noopener" class="social-icon-btn" aria-label="LinkedIn">LN</a>
+            <a href="<?php echo h($social_linkedin); ?>" target="_blank" rel="noopener" class="social-icon-btn" aria-label="LinkedIn" title="LinkedIn">LN</a>
+          <?php endif; ?>
+          <?php if (!empty($social_youtube) && $social_youtube !== '#'): ?>
+            <a href="<?php echo h($social_youtube); ?>" target="_blank" rel="noopener" class="social-icon-btn" aria-label="YouTube" title="YouTube">YT</a>
           <?php endif; ?>
         </div>
       </div>
@@ -497,6 +501,30 @@ $social_linkedin = get_setting('social_linkedin', '#');
   </style>
 
   <script>
+    // Global FAQ accordion toggle handler
+    if (typeof window.toggleFaq !== 'function') {
+      window.toggleFaq = function(btn) {
+        const item = btn.closest('.faq-accordion-item');
+        if (!item) return;
+        const body = item.querySelector('.faq-accordion-body');
+        if (!body) return;
+        const isOpen = item.classList.contains('open');
+
+        if (isOpen) {
+          item.classList.remove('open');
+          body.style.maxHeight = '0px';
+          setTimeout(() => {
+            if (!item.classList.contains('open')) {
+              body.style.removeProperty('max-height');
+            }
+          }, 350);
+        } else {
+          item.classList.add('open');
+          body.style.maxHeight = body.scrollHeight + 'px';
+        }
+      };
+    }
+
     function closeAdmissionsBar() {
       const bar = document.getElementById('admissionsAnnouncementBar');
       if (bar) {

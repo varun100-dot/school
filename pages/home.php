@@ -1107,12 +1107,19 @@ include_once dirname(__FILE__) . '/../includes/header.php';
 <script>
   function toggleFaq(btn) {
     const item = btn.closest('.faq-accordion-item');
+    if (!item) return;
     const body = item.querySelector('.faq-accordion-body');
+    if (!body) return;
     const isOpen = item.classList.contains('open');
 
     if (isOpen) {
       item.classList.remove('open');
-      body.style.maxHeight = null;
+      body.style.maxHeight = '0px';
+      setTimeout(() => {
+        if (!item.classList.contains('open')) {
+          body.style.removeProperty('max-height');
+        }
+      }, 350);
     } else {
       item.classList.add('open');
       body.style.maxHeight = body.scrollHeight + 'px';
@@ -1170,6 +1177,24 @@ include_once dirname(__FILE__) . '/../includes/header.php';
       clearInterval(imageBannerTimer);
       imageBannerTimer = setInterval(() => changeImageBanner(1), 3000);
     });
+
+    // Touch / Swipe support for mobile devices
+    let touchStartX = 0;
+    let touchEndX = 0;
+    bannerImgWrapper.addEventListener('touchstart', (e) => {
+      clearInterval(imageBannerTimer);
+      touchStartX = e.changedTouches[0].screenX;
+    }, {passive: true});
+    bannerImgWrapper.addEventListener('touchend', (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      if (touchStartX - touchEndX > 50) {
+        changeImageBanner(1); // Swipe left -> next
+      } else if (touchEndX - touchStartX > 50) {
+        changeImageBanner(-1); // Swipe right -> prev
+      }
+      clearInterval(imageBannerTimer);
+      imageBannerTimer = setInterval(() => changeImageBanner(1), 3000);
+    }, {passive: true});
   }
 
   // Captcha Generator for Admission Counselor Form

@@ -91,7 +91,7 @@ function format_profile_biography($text) {
         // Detect bullet points: lines starting with •, -, or *
         if (preg_match("/^[•\-\*]\s*(.*)$/u", $trimmed, $matches)) {
             if (!$in_list) {
-                $html .= "<ul class=\"bio-expertise-list\" style=\"margin: 1.25rem 0 1.75rem 0; padding-left: 0; list-style: none; display: flex; flex-direction: column; gap: 0.65rem;\">\n";
+                $html .= "<ul class=\"bio-expertise-list\" style=\"margin: 0.85rem 0 1.15rem 0; padding-left: 0; list-style: none; display: flex; flex-direction: column; gap: 0.55rem;\">\n";
                 $in_list = true;
             }
             $content = htmlspecialchars($matches[1], ENT_QUOTES, "UTF-8");
@@ -105,7 +105,7 @@ function format_profile_biography($text) {
                 $html .= "</ul>\n";
                 $in_list = false;
             }
-            $html .= "<p style=\"margin-bottom: 1.25rem; line-height: 1.75; color: var(--color-text); font-size: 1.02rem;\">" . htmlspecialchars($trimmed, ENT_QUOTES, "UTF-8") . "</p>\n";
+            $html .= "<p style=\"margin-bottom: 0.75rem; line-height: 1.7; color: var(--color-text); font-size: 1.02rem;\">" . htmlspecialchars($trimmed, ENT_QUOTES, "UTF-8") . "</p>\n";
         }
     }
     if ($in_list) {

@@ -350,9 +350,10 @@ WhatsApp: The e-card displays the same phone number but does not separately labe
 Google Maps: No map link is visible in the provided e-card.
 Source: ZUVIO ECARD, page 1
 Social media links
-https://www.instagram.com/thezuvio?igsh=cmUwZGV1YWI3eXc=
-https://www.facebook.com/share/1F77iQS86d/
-https://www.linkedin.com/company/142914253/admin/dashboard/
+https://www.instagram.com/thezuvio/
+https://www.facebook.com/share/1XsYWDm3rt/
+https://www.linkedin.com/company/zuvio-global-school/
+https://www.youtube.com/@zuvioglobalschool
 
 Image Requirements
 Image

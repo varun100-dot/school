@@ -139,9 +139,15 @@ render_breadcrumbs([
                   <?php echo h($member['designation']); ?>
                 </div>
 
-                <p style="color: var(--color-text); font-size: 0.95rem; line-height: 1.7; margin-bottom: 1.5rem;">
-                  <?php echo h($member['short_description']); ?>
-                </p>
+                <div class="team-member-bio">
+                  <?php 
+                    $raw_bio = $member['short_description'] ?? '';
+                    $paras = array_filter(array_map('trim', explode("\n\n", str_replace(["\r\n", "\r"], "\n", $raw_bio))));
+                    if (empty($paras)) $paras = [$raw_bio];
+                    foreach ($paras as $p): ?>
+                      <p style="color: var(--color-text); font-size: 0.95rem; line-height: 1.65; margin-bottom: 0.65rem;"><?php echo h($p); ?></p>
+                  <?php endforeach; ?>
+                </div>
 
                 <?php if (!empty($member['badges'])): ?>
                   <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.5rem;">
@@ -196,9 +202,15 @@ render_breadcrumbs([
                       <?php echo h($member['designation']); ?>
                     </div>
 
-                    <p style="color: var(--color-text); font-size: 0.95rem; line-height: 1.7; margin-bottom: 1.5rem;">
-                      <?php echo h($member['short_description']); ?>
-                    </p>
+                    <div class="team-member-bio">
+                      <?php 
+                        $raw_bio = $member['short_description'] ?? '';
+                        $paras = array_filter(array_map('trim', explode("\n\n", str_replace(["\r\n", "\r"], "\n", $raw_bio))));
+                        if (empty($paras)) $paras = [$raw_bio];
+                        foreach ($paras as $p): ?>
+                          <p style="color: var(--color-text); font-size: 0.95rem; line-height: 1.65; margin-bottom: 0.65rem;"><?php echo h($p); ?></p>
+                      <?php endforeach; ?>
+                    </div>
 
                     <?php if (!empty($member['badges'])): ?>
                       <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.5rem;">

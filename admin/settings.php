@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_settings'])) {
             
             $keys_to_update = [
                 'phone', 'general_email', 'address', 'office_timings', 
-                'logo_url', 'copyright', 'social_instagram', 'social_facebook', 'social_linkedin'
+                'logo_url', 'copyright', 'social_instagram', 'social_facebook', 'social_linkedin', 'social_youtube'
             ];
             
             $db->beginTransaction();
@@ -124,18 +124,22 @@ include_once dirname(__FILE__) . '/header.php';
       <input type="text" name="copyright" class="admin-input" value="<?php echo h($settings['copyright'] ?? ''); ?>">
     </div>
 
-    <div class="grid-3" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;">
+    <div class="grid-4" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem;">
       <div class="admin-form-group">
         <label class="admin-label">Instagram Link URL</label>
-        <input type="text" name="social_instagram" class="admin-input" value="<?php echo h($settings['social_instagram'] ?? ''); ?>">
+        <input type="text" name="social_instagram" class="admin-input" value="<?php echo h($settings['social_instagram'] ?? 'https://www.instagram.com/thezuvio/'); ?>">
       </div>
       <div class="admin-form-group">
         <label class="admin-label">Facebook Link URL</label>
-        <input type="text" name="social_facebook" class="admin-input" value="<?php echo h($settings['social_facebook'] ?? ''); ?>">
+        <input type="text" name="social_facebook" class="admin-input" value="<?php echo h($settings['social_facebook'] ?? 'https://www.facebook.com/share/1XsYWDm3rt/'); ?>">
       </div>
       <div class="admin-form-group">
         <label class="admin-label">LinkedIn Link URL</label>
-        <input type="text" name="social_linkedin" class="admin-input" value="<?php echo h($settings['social_linkedin'] ?? ''); ?>">
+        <input type="text" name="social_linkedin" class="admin-input" value="<?php echo h($settings['social_linkedin'] ?? 'https://www.linkedin.com/company/zuvio-global-school/'); ?>">
+      </div>
+      <div class="admin-form-group">
+        <label class="admin-label">YouTube Link URL</label>
+        <input type="text" name="social_youtube" class="admin-input" value="<?php echo h($settings['social_youtube'] ?? 'https://www.youtube.com/@zuvioglobalschool'); ?>">
       </div>
     </div>
 

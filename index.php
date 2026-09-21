@@ -1,5 +1,12 @@
 <?php
 // Zuvio Global School - PHP Front Controller / Router
+if (php_sapi_name() === 'cli-server') {
+    $filePath = dirname(__FILE__) . urldecode(parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH));
+    if (is_file($filePath)) {
+        return false;
+    }
+}
+
 require_once dirname(__FILE__) . '/includes/db.php';
 require_once dirname(__FILE__) . '/includes/helper.php';
 

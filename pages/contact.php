@@ -40,7 +40,7 @@ if (!isset($contact_cms['social_links'])) {
             'id' => 2,
             'platform' => 'Instagram',
             'icon' => 'instagram',
-            'url' => 'https://www.instagram.com/zuvioglobalschool/',
+            'url' => 'https://www.instagram.com/thezuvio/',
             'sort_order' => 2,
             'is_published' => 1
         ],
@@ -48,7 +48,7 @@ if (!isset($contact_cms['social_links'])) {
             'id' => 3,
             'platform' => 'Facebook',
             'icon' => 'facebook',
-            'url' => 'https://www.facebook.com/zuvioglobalschool',
+            'url' => 'https://www.facebook.com/share/1XsYWDm3rt/',
             'sort_order' => 3,
             'is_published' => 1
         ],
@@ -69,6 +69,15 @@ if (!isset($contact_cms['social_links'])) {
             'is_published' => 1
         ]
     ];
+} else {
+    foreach ($contact_cms['social_links'] as &$s_link) {
+        $plat = strtolower($s_link['platform'] ?? '');
+        if ($plat === 'instagram') $s_link['url'] = 'https://www.instagram.com/thezuvio/';
+        elseif ($plat === 'facebook') $s_link['url'] = 'https://www.facebook.com/share/1XsYWDm3rt/';
+        elseif ($plat === 'linkedin') $s_link['url'] = 'https://www.linkedin.com/company/zuvio-global-school/';
+        elseif ($plat === 'youtube') $s_link['url'] = 'https://www.youtube.com/@zuvioglobalschool';
+    }
+    unset($s_link);
 }
 
 // 3. Map Settings Defaults
