@@ -407,18 +407,30 @@ button, input, select, textarea {
   margin: 0;
 }
 
-/* Global Request Callback Conversion Widget (Screenshot Aligned) */
+/* Global Request Callback Conversion Widget (Sticky on Scroll) */
 .callback-floating-widget {
   position: fixed;
-  right: 40px;
-  top: 120px;
-  z-index: 9999;
+  right: 30px;
+  bottom: 75px;
+  top: auto;
+  z-index: 9990;
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 290px;
-  pointer-events: auto;
+  width: 280px;
   font-family: var(--font-secondary);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px);
+  transition: opacity 0.35s ease, transform 0.35s ease, visibility 0.35s ease;
+  pointer-events: none;
+}
+
+.callback-floating-widget.is-sticky {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  pointer-events: auto;
 }
 
 .callback-widget-pill {
@@ -648,6 +660,18 @@ button, input, select, textarea {
     border-top: 3px solid var(--color-gold);
     padding: 0;
     box-shadow: 0 -4px 15px rgba(6, 43, 99, 0.15);
+    z-index: 9995;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(100%);
+    transition: opacity 0.35s ease, transform 0.35s ease, visibility 0.35s ease;
+    pointer-events: none;
+  }
+  .callback-floating-widget.is-sticky {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    pointer-events: auto;
   }
   .callback-widget-pill {
     display: none;
@@ -658,15 +682,110 @@ button, input, select, textarea {
     border-right: none;
     border-bottom: none;
     border-top: 2px solid #FFFFFF;
-    padding: 0.75rem 1.5rem;
+    padding: 0.65rem 1.25rem;
   }
   .callback-widget-title {
-    font-size: 1.1rem;
+    font-size: 1.05rem;
   }
   .callback-widget-icon-box {
-    width: 38px;
-    height: 38px;
+    width: 36px;
+    height: 36px;
     border-radius: 8px;
+  }
+}
+
+/* Global Floating WhatsApp & Call CTA */
+.floating-contact-actions {
+  position: fixed;
+  left: 24px;
+  bottom: 75px;
+  z-index: 9992;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+}
+
+.floating-action-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(6, 43, 99, 0.22);
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease;
+  position: relative;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.floating-action-btn:hover {
+  transform: scale(1.1) translateY(-2px);
+  box-shadow: 0 8px 22px rgba(6, 43, 99, 0.3);
+}
+
+.floating-action-btn.floating-wa-btn {
+  background-color: #25D366;
+  color: #FFFFFF;
+}
+
+.floating-action-btn.floating-call-btn {
+  background-color: var(--color-navy, #062B63);
+  color: #FFFFFF;
+  border: 2px solid #FFFFFF;
+}
+
+/* Tooltip on Hover */
+.floating-action-tooltip {
+  position: absolute;
+  left: calc(100% + 12px);
+  top: 50%;
+  transform: translateY(-50%) translateX(-8px);
+  background-color: #062B63;
+  color: #FFFFFF;
+  font-size: 0.8rem;
+  font-weight: 600;
+  white-space: nowrap;
+  padding: 0.35rem 0.75rem;
+  border-radius: 6px;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  font-family: var(--font-secondary);
+}
+
+.floating-action-tooltip::before {
+  content: "";
+  position: absolute;
+  right: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent #062B63 transparent transparent;
+}
+
+.floating-action-btn:hover .floating-action-tooltip {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(-50%) translateX(0);
+}
+
+@media (max-width: 768px) {
+  .floating-contact-actions {
+    left: 16px;
+    bottom: 80px;
+    gap: 10px;
+  }
+  .floating-action-btn {
+    width: 44px;
+    height: 44px;
+  }
+  .floating-action-tooltip {
+    display: none;
   }
 }
 
