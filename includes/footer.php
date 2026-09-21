@@ -23,66 +23,141 @@ $social_youtube = get_setting('social_youtube', 'https://www.youtube.com/@zuviog
   <footer class="site-footer">
     <div class="footer-container">
       
-      <!-- Column 1: Brand Anchor -->
+      <!-- Column 1: Brand Anchor & Accreditation -->
       <div class="footer-col brand-col">
-        <a href="/">
+        <a href="/" title="Zuvio Global School">
           <img src="<?php echo h($logo_path); ?>" alt="Zuvio Global School" class="footer-logo">
         </a>
         <p class="brand-tagline">Learning Beyond Boundaries</p>
-        <p class="copyright-text"><?php echo h($copyright); ?></p>
+        <p class="footer-accreditation-text">
+          <strong>Affiliation No: IA 4883 &bull; IAO Accredited &bull; ISSO Member</strong><br>
+          Empowering learners worldwide through interactive, personalized, and globally accredited online education from Kindergarten to Grade 8th.
+        </p>
+        
+        <div class="footer-social-wrapper">
+          <span class="footer-social-title">Connect With Us</span>
+          <div class="footer-social-links">
+            <?php if ($social_fb !== '#'): ?>
+              <a href="<?php echo h($social_fb); ?>" target="_blank" rel="noopener" class="footer-social-icon social-facebook" aria-label="Facebook" title="Follow us on Facebook">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+              </a>
+            <?php endif; ?>
+            <?php if ($social_insta !== '#'): ?>
+              <a href="<?php echo h($social_insta); ?>" target="_blank" rel="noopener" class="footer-social-icon social-instagram" aria-label="Instagram" title="Follow us on Instagram">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+              </a>
+            <?php endif; ?>
+            <?php if ($social_linkedin !== '#'): ?>
+              <a href="<?php echo h($social_linkedin); ?>" target="_blank" rel="noopener" class="footer-social-icon social-linkedin" aria-label="LinkedIn" title="Connect on LinkedIn">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+              </a>
+            <?php endif; ?>
+            <?php if (!empty($social_youtube) && $social_youtube !== '#'): ?>
+              <a href="<?php echo h($social_youtube); ?>" target="_blank" rel="noopener" class="footer-social-icon social-youtube" aria-label="YouTube" title="Subscribe on YouTube">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+              </a>
+            <?php endif; ?>
+          </div>
+        </div>
       </div>
 
-      <!-- Column 2: Quick Links -->
-      <div class="footer-col Links-col">
-        <h4 class="footer-title">Quick Navigation</h4>
+      <!-- Column 2: About Us -->
+      <div class="footer-col links-col">
+        <h4 class="footer-title">About Zuvio</h4>
         <ul class="footer-links-list">
-          <li><a href="/about" class="footer-link">About Zuvio</a></li>
-          <li><a href="/our-curriculum" class="footer-link">Academic Stages</a></li>
-          <li><a href="/zuvio-beyond" class="footer-link">Beyond Academics</a></li>
-          <li><a href="/blogs" class="footer-link">Blogs & Articles</a></li>
+          <li><a href="/about-zuvio" class="footer-link">About Zuvio</a></li>
+          <li><a href="/our-team" class="footer-link">Leadership & Team</a></li>
+          <li><a href="/founders-message" class="footer-link">Founder’s Message</a></li>
+          <li><a href="/affiliations-accreditations" class="footer-link">Affiliations & Accreditations</a></li>
           <li><a href="/contact" class="footer-link">Contact & Enquiries</a></li>
         </ul>
       </div>
 
-      <!-- Column 3: Verified Contact Info -->
+      <!-- Column 3: Academics -->
+      <div class="footer-col links-col">
+        <h4 class="footer-title">Academics</h4>
+        <ul class="footer-links-list">
+          <li><a href="/curriculum" class="footer-link">Curriculum Framework</a></li>
+          <li><a href="/technology" class="footer-link">Technology & AI Labs</a></li>
+          <li><a href="/special-education" class="footer-link">Special Education</a></li>
+          <li><a href="/electives" class="footer-link">Electives & Languages</a></li>
+          <li><a href="/nep-2020" class="footer-link">NEP 2020 Guidelines</a></li>
+          <li><a href="/resources" class="footer-link">Academic Resources</a></li>
+        </ul>
+      </div>
+
+      <!-- Column 4: Admissions & Beyond -->
+      <div class="footer-col links-col">
+        <h4 class="footer-title">Admissions & Beyond</h4>
+        <ul class="footer-links-list">
+          <li><a href="/admissions/enrol-now" class="footer-link">Enrol Now</a></li>
+          <li><a href="/admissions/eligibility" class="footer-link">Eligibility Criteria</a></li>
+          <li><a href="/admissions/calendar" class="footer-link">Academic Calendar</a></li>
+          <li><a href="/admissions/fees" class="footer-link">Fee Structure</a></li>
+          <li><a href="/faq" class="footer-link">Frequently Asked Questions</a></li>
+          <li><a href="/beyond/co-curricular" class="footer-link">Co-Curricular & Clubs</a></li>
+          <li><a href="/beyond/student-achievers" class="footer-link">Student Achievers</a></li>
+          <li><a href="/beyond/virtual-classroom" class="footer-link">Virtual Classroom</a></li>
+        </ul>
+      </div>
+
+      <!-- Column 5: Contact Info -->
       <div class="footer-col contact-col">
         <h4 class="footer-title">Contact Us</h4>
-        <p class="contact-info-line">
-          <strong>Address:</strong><br>
-          <?php echo nl2br(h($address)); ?>
-        </p>
-        <p class="contact-info-line">
-          <strong>Phone / WhatsApp:</strong><br>
-          <a href="tel:<?php echo h($phone); ?>" class="contact-anchor">+91 <?php echo h($phone); ?></a>
-        </p>
-        <p class="contact-info-line">
-          <strong>Email:</strong><br>
-          <a href="mailto:<?php echo h($email); ?>" class="contact-anchor"><?php echo h($email); ?></a>
-        </p>
-        <p class="contact-info-line">
-          <strong>Office Hours:</strong> <?php echo h($office_timings); ?>
-        </p>
+        <div class="footer-contact-item">
+          <div class="contact-info-content">
+            <strong>Campus / Office:</strong>
+            <span>B-09, Lower Ground Floor, ITL Twin Tower, Netaji Subhash Place, Pitampura, Delhi - 110034</span>
+          </div>
+        </div>
+
+        <div class="footer-contact-item">
+          <div class="contact-info-content">
+            <strong>Phone / Call:</strong>
+            <a href="tel:<?php echo h($phone); ?>" class="contact-anchor">+91 <?php echo h($phone); ?></a>
+          </div>
+        </div>
+
+        <div class="footer-contact-item">
+          <div class="contact-info-content">
+            <strong>WhatsApp:</strong>
+            <a href="https://wa.me/91<?php echo h($whatsapp); ?>" target="_blank" rel="noopener" class="contact-anchor" style="color: #16A34A; font-weight: 600;">+91 <?php echo h($whatsapp); ?></a>
+          </div>
+        </div>
+
+        <div class="footer-contact-item">
+          <div class="contact-info-content">
+            <strong>Email:</strong>
+            <a href="mailto:<?php echo h($email); ?>" class="contact-anchor"><?php echo h($email); ?></a>
+          </div>
+        </div>
+
+        <div class="footer-contact-item">
+          <div class="contact-info-content">
+            <strong>Office Hours:</strong>
+            <span><?php echo h($office_timings); ?></span>
+          </div>
+        </div>
+
+        <button type="button" onclick="openCallbackModal()" class="btn btn-outline footer-callback-btn">Book a Demo</button>
       </div>
 
-      <!-- Column 4: Institutional Handles -->
-      <div class="footer-col social-col">
-        <h4 class="footer-title">Follow Us</h4>
-        <div class="social-links-row">
-          <?php if ($social_fb !== '#'): ?>
-            <a href="<?php echo h($social_fb); ?>" target="_blank" rel="noopener" class="social-icon-btn" aria-label="Facebook" title="Facebook">FB</a>
-          <?php endif; ?>
-          <?php if ($social_insta !== '#'): ?>
-            <a href="<?php echo h($social_insta); ?>" target="_blank" rel="noopener" class="social-icon-btn" aria-label="Instagram" title="Instagram">IG</a>
-          <?php endif; ?>
-          <?php if ($social_linkedin !== '#'): ?>
-            <a href="<?php echo h($social_linkedin); ?>" target="_blank" rel="noopener" class="social-icon-btn" aria-label="LinkedIn" title="LinkedIn">LN</a>
-          <?php endif; ?>
-          <?php if (!empty($social_youtube) && $social_youtube !== '#'): ?>
-            <a href="<?php echo h($social_youtube); ?>" target="_blank" rel="noopener" class="social-icon-btn" aria-label="YouTube" title="YouTube">YT</a>
-          <?php endif; ?>
+    </div>
+
+    <!-- Sub-Footer Bottom Bar -->
+    <div class="footer-bottom-wrap">
+      <div class="footer-bottom-container">
+        <p class="copyright-text"><?php echo h($copyright); ?></p>
+        <div class="footer-bottom-links">
+          <a href="/contact">Admissions Enquiry</a>
+          <span class="sep">&bull;</span>
+          <a href="/faq">FAQs</a>
+          <span class="sep">&bull;</span>
+          <a href="/affiliations-accreditations">Accreditations</a>
+          <span class="sep">&bull;</span>
+          <a href="javascript:void(0)" onclick="openCallbackModal()">Request Callback</a>
         </div>
       </div>
-
     </div>
   </footer>
 
@@ -91,7 +166,7 @@ $social_youtube = get_setting('social_youtube', 'https://www.youtube.com/@zuviog
     .site-footer {
       background-color: var(--color-surface);
       border-top: 1px solid var(--color-border);
-      padding: 5rem 0 3rem 0;
+      padding: 4.5rem 0 0 0;
       color: var(--color-text);
       font-family: var(--font-secondary);
     }
@@ -100,48 +175,105 @@ $social_youtube = get_setting('social_youtube', 'https://www.youtube.com/@zuviog
       margin: 0 auto;
       padding: 0 1.5rem;
       display: grid;
-      grid-template-columns: 1.2fr 0.8fr 1.2fr 0.8fr;
-      gap: 3.5rem;
+      grid-template-columns: 1.35fr 0.95fr 1fr 1.1fr 1.25fr;
+      gap: 2.25rem;
     }
     .footer-col {
       display: flex;
       flex-direction: column;
-      gap: 1.25rem;
+      gap: 1rem;
     }
     .footer-logo {
-      height: 75px;
+      height: 70px;
       width: auto;
       object-fit: contain;
       display: block;
       transition: height 0.3s ease;
     }
     .brand-tagline {
-      font-size: 1.05rem;
+      font-size: 1rem;
       font-weight: 700;
       color: var(--color-navy);
-      margin-top: 0.5rem;
+      margin-top: 0.25rem;
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
-    .copyright-text {
-      font-size: 0.8rem;
+    .footer-accreditation-text {
+      font-size: 0.85rem;
       color: var(--color-muted);
-      margin-top: 1rem;
+      line-height: 1.55;
     }
+    .footer-social-wrapper {
+      margin-top: 0.5rem;
+    }
+    .footer-social-title {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--color-navy);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 0.5rem;
+    }
+    .footer-social-links {
+      display: flex;
+      gap: 0.65rem;
+      align-items: center;
+    }
+    .footer-social-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background-color: #FFFFFF;
+      border: 1.5px solid var(--color-border);
+      color: var(--color-navy);
+      box-shadow: 0 2px 6px rgba(6, 43, 99, 0.06);
+      transition: all 0.25s ease;
+      text-decoration: none;
+    }
+    .footer-social-icon:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 14px rgba(6, 43, 99, 0.16);
+    }
+    .footer-social-icon.social-facebook:hover {
+      background-color: #1877F2;
+      border-color: #1877F2;
+      color: #FFFFFF;
+    }
+    .footer-social-icon.social-instagram:hover {
+      background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
+      border-color: transparent;
+      color: #FFFFFF;
+    }
+    .footer-social-icon.social-linkedin:hover {
+      background-color: #0A66C2;
+      border-color: #0A66C2;
+      color: #FFFFFF;
+    }
+    .footer-social-icon.social-youtube:hover {
+      background-color: #FF0000;
+      border-color: #FF0000;
+      color: #FFFFFF;
+    }
+
     .footer-title {
       font-family: var(--font-primary);
-      font-size: 1.25rem;
+      font-size: 1.15rem;
       color: var(--color-navy);
       font-weight: 700;
       position: relative;
       padding-bottom: 0.5rem;
+      margin-bottom: 0.25rem;
     }
     .footer-title::after {
       content: '';
       position: absolute;
       bottom: 0;
       left: 0;
-      width: 40px;
+      width: 32px;
       height: 2px;
       background-color: var(--color-gold);
     }
@@ -149,82 +281,154 @@ $social_youtube = get_setting('social_youtube', 'https://www.youtube.com/@zuviog
       list-style: none;
       display: flex;
       flex-direction: column;
-      gap: 0.65rem;
+      gap: 0.55rem;
     }
     .footer-link {
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       color: var(--color-text);
-      transition: color var(--transition-fast);
+      transition: color var(--transition-fast), padding-left var(--transition-fast);
+      text-decoration: none;
     }
     .footer-link:hover {
       color: var(--color-gold);
       padding-left: 4px;
     }
-    .contact-info-line {
-      font-size: 0.9rem;
-      color: var(--color-text);
+
+    .footer-contact-item {
+      display: flex;
+      gap: 0.5rem;
+      font-size: 0.88rem;
       line-height: 1.5;
+    }
+    .contact-info-content {
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+    }
+    .contact-info-content strong {
+      color: var(--color-navy);
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+    .contact-info-content span,
+    .contact-info-content a {
+      color: var(--color-text);
+      font-size: 0.88rem;
     }
     .contact-anchor {
       color: var(--color-navy);
       font-weight: 600;
       transition: color var(--transition-fast);
+      text-decoration: none;
     }
     .contact-anchor:hover {
       color: var(--color-gold);
     }
-    .social-links-row {
-      display: flex;
-      gap: 1rem;
-    }
-    .social-icon-btn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      border: 1.5px solid var(--color-navy);
+    .footer-callback-btn {
+      margin-top: 0.5rem;
+      font-size: 0.85rem;
+      padding: 0.5rem 1.25rem;
+      border-color: var(--color-navy);
       color: var(--color-navy);
-      font-size: 0.8rem;
+      border-radius: 4px;
       font-weight: 700;
-      transition: all var(--transition-fast);
+      cursor: pointer;
+      width: fit-content;
+      transition: all 0.2s ease;
     }
-    .social-icon-btn:hover {
+    .footer-callback-btn:hover {
       background-color: var(--color-navy);
-      color: var(--color-white);
-      transform: translateY(-2px);
+      color: #FFFFFF;
     }
 
-    /* Footer Mobile Responsiveness */
-    @media (max-width: 900px) {
+    /* Sub-Footer Bottom Bar */
+    .footer-bottom-wrap {
+      margin-top: 3.5rem;
+      border-top: 1px solid var(--color-border);
+      background-color: rgba(6, 43, 99, 0.02);
+      padding: 1.25rem 0;
+    }
+    .footer-bottom-container {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .copyright-text {
+      font-size: 0.82rem;
+      color: var(--color-muted);
+      margin: 0;
+    }
+    .footer-bottom-links {
+      display: flex;
+      gap: 0.65rem;
+      align-items: center;
+      font-size: 0.82rem;
+    }
+    .footer-bottom-links a {
+      color: var(--color-muted);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+    .footer-bottom-links a:hover {
+      color: var(--color-navy);
+    }
+    .footer-bottom-links .sep {
+      color: var(--color-border);
+    }
+
+    /* Responsive Grid */
+    @media (max-width: 1100px) {
       .footer-container {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 2.5rem;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2.25rem;
+      }
+      .brand-col {
+        grid-column: span 3;
       }
     }
-    @media (max-width: 580px) {
+    @media (max-width: 768px) {
+      .footer-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
+      }
+      .brand-col {
+        grid-column: span 2;
+      }
+      .contact-col {
+        grid-column: span 2;
+      }
+      .footer-bottom-container {
+        flex-direction: column;
+        text-align: center;
+        gap: 0.75rem;
+      }
+    }
+    @media (max-width: 520px) {
       .footer-container {
         grid-template-columns: 1fr;
         gap: 2rem;
       }
-      .copyright-text {
-        margin-top: 1rem;
+      .brand-col, .contact-col {
+        grid-column: span 1;
       }
     }
   </style>
 
   <!-- Sticky Enquiry / Book a Free Demo CTA on Scroll -->
-  <div class="callback-floating-widget" id="stickyCallbackWidget">
-    <div class="callback-widget-pill">Free Consultation</div>
-    <div class="callback-widget-card" onclick="openCallbackModal()">
-      <div class="callback-widget-text">
-        <span class="callback-widget-sub">Start Learning Today</span>
-        <h4 class="callback-widget-title">Book a Free Demo</h4>
-      </div>
-      <div class="callback-widget-icon-box">
-        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line><polyline points="8 14 10 16 16 10"></polyline></svg>
-      </div>
+  <div class="callback-floating-widget" id="stickyCallbackWidget" onclick="openCallbackModal()" role="button" aria-label="Book a Free Demo">
+    <div class="sticky-demo-badge">FREE</div>
+    <div class="sticky-demo-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line><polyline points="8 14 10 16 16 10"></polyline></svg>
+    </div>
+    <div class="sticky-demo-text">
+      <span class="sticky-demo-label">Book a Free Demo</span>
+      <span class="sticky-demo-sub">Talk to Advisor &rarr;</span>
     </div>
   </div>
 
@@ -559,7 +763,10 @@ $social_youtube = get_setting('social_youtube', 'https://www.youtube.com/@zuviog
       const bar = document.getElementById('admissionsAnnouncementBar');
       if (bar) {
         bar.style.transform = 'translateY(100%)';
-        setTimeout(() => bar.style.display = 'none', 300);
+        setTimeout(() => {
+          bar.style.display = 'none';
+          document.body.classList.add('announcement-bar-closed');
+        }, 300);
       }
     }
 
