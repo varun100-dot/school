@@ -342,9 +342,6 @@ include_once dirname(__FILE__) . '/../includes/header.php';
       <div class="hero-banner-image-wrapper" id="heroBannerImageCarousel">
         <div class="hero-banner-slides-track">
           <div class="hero-banner-image-slide active">
-            <img src="/assets/images/Collab banner.png" alt="Zuvio Academic & Global Partnerships Collaboration Banner" class="hero-banner-img">
-          </div>
-          <div class="hero-banner-image-slide">
             <img src="/assets/images/zuvio_hero_banner_1.png" alt="Zuvio Global Standard Learning Banner" class="hero-banner-img">
           </div>
           <div class="hero-banner-image-slide">
@@ -368,7 +365,6 @@ include_once dirname(__FILE__) . '/../includes/header.php';
           <span class="banner-img-dot active" onclick="setImageBanner(0)" title="Slide 1"></span>
           <span class="banner-img-dot" onclick="setImageBanner(1)" title="Slide 2"></span>
           <span class="banner-img-dot" onclick="setImageBanner(2)" title="Slide 3"></span>
-          <span class="banner-img-dot" onclick="setImageBanner(3)" title="Slide 4"></span>
         </div>
       </div>
 
