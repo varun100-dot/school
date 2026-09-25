@@ -90,12 +90,14 @@ if (!isset($contact_cms['social_links'])) {
 if (!isset($contact_cms['map'])) {
     $contact_cms['map'] = [
         'is_visible' => 1,
-        'title' => 'Our Academic & Admissions Office',
+        'title' => 'Our Headquarter Office',
         'subtitle' => 'Located at ITL Twin Tower, Netaji Subhash Place (NSP), Pitampura — easily accessible via Delhi Metro (Red & Pink Lines).',
         'embed_url' => 'https://maps.google.com/maps?q=ITL+Twin+Tower,+Netaji+Subhash+Place,+Pitampura,+Delhi+110034&t=&z=15&ie=UTF8&iwloc=&output=embed',
         'directions_url' => 'https://www.google.com/maps/search/?api=1&query=ITL+Twin+Tower,+Netaji+Subhash+Place,+Pitampura,+Delhi+110034',
         'height' => 420
     ];
+} elseif (isset($contact_cms['map']['title']) && $contact_cms['map']['title'] === 'Our Academic & Admissions Office') {
+    $contact_cms['map']['title'] = 'Our Headquarter Office';
 }
 
 // 4. Defaults for Form Settings

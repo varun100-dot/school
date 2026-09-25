@@ -340,31 +340,41 @@ include_once dirname(__FILE__) . '/../includes/header.php';
       
       <!-- Left Column: Full-Width Image Banner Carousel (No CTA buttons) -->
       <div class="hero-banner-image-wrapper" id="heroBannerImageCarousel">
+        <h1 class="visually-hidden">Global Standard Learning - Zuvio Global School</h1>
         <div class="hero-banner-slides-track">
           <div class="hero-banner-image-slide active">
-            <img src="/assets/images/zuvio_hero_banner_1.png" alt="Zuvio Global Standard Learning Banner" class="hero-banner-img">
+            <picture>
+              <source srcset="/assets/images/zuvio_hero_banner_1.webp" type="image/webp">
+              <img src="/assets/images/zuvio_hero_banner_1.png" alt="Zuvio Global Standard Learning Banner" class="hero-banner-img" width="1400" height="680">
+            </picture>
           </div>
           <div class="hero-banner-image-slide">
-            <img src="/assets/images/zuvio_hero_banner_2.png" alt="Zuvio Personalised Pathways Banner" class="hero-banner-img">
+            <picture>
+              <source srcset="/assets/images/zuvio_hero_banner_2.webp" type="image/webp">
+              <img src="/assets/images/zuvio_hero_banner_2.png" alt="Zuvio Personalised Pathways Banner" class="hero-banner-img" width="1400" height="680">
+            </picture>
           </div>
           <div class="hero-banner-image-slide">
-            <img src="/assets/images/zuvio_hero_banner_3.png" alt="Zuvio Science and AI Labs Banner" class="hero-banner-img">
+            <picture>
+              <source srcset="/assets/images/zuvio_hero_banner_3.webp" type="image/webp">
+              <img src="/assets/images/zuvio_hero_banner_3.png" alt="Zuvio Science and AI Labs Banner" class="hero-banner-img" width="1400" height="680">
+            </picture>
           </div>
         </div>
 
-        <!-- Subtle Floating Carousel Arrows like screenshot -->
-        <button type="button" class="banner-img-arrow prev" onclick="changeImageBanner(-1)" aria-label="Previous Banner">
+        <!-- Floating Carousel Navigation Controls -->
+        <button type="button" class="banner-img-arrow prev" onclick="changeImageBanner(-1)" aria-label="Previous Slide">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"></path></svg>
         </button>
-        <button type="button" class="banner-img-arrow next" onclick="changeImageBanner(1)" aria-label="Next Banner">
+        <button type="button" class="banner-img-arrow next" onclick="changeImageBanner(1)" aria-label="Next Slide">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"></path></svg>
         </button>
 
         <!-- Dots -->
         <div class="banner-img-dots">
-          <span class="banner-img-dot active" onclick="setImageBanner(0)" title="Slide 1"></span>
-          <span class="banner-img-dot" onclick="setImageBanner(1)" title="Slide 2"></span>
-          <span class="banner-img-dot" onclick="setImageBanner(2)" title="Slide 3"></span>
+          <button type="button" class="banner-img-dot active" onclick="setImageBanner(0)" aria-label="Slide 1: Global Standard Learning"></button>
+          <button type="button" class="banner-img-dot" onclick="setImageBanner(1)" aria-label="Slide 2: Education That Adapts to Your Child"></button>
+          <button type="button" class="banner-img-dot" onclick="setImageBanner(2)" aria-label="Slide 3: Skills for Tomorrow"></button>
         </div>
       </div>
 
@@ -390,7 +400,10 @@ include_once dirname(__FILE__) . '/../includes/header.php';
               </div>
             <?php endif; ?>
 
-            <input type="text" name="parent_name" placeholder="Enter Full Name*" required class="counsellor-input" value="<?php echo h($_POST['parent_name'] ?? ''); ?>">
+            <div class="counsellor-field-group">
+              <label for="hero_parent_name" class="visually-hidden">Parent Full Name</label>
+              <input type="text" id="hero_parent_name" name="parent_name" placeholder="Enter Full Name*" required class="counsellor-input" value="<?php echo h($_POST['parent_name'] ?? ''); ?>">
+            </div>
 
             <div class="counsellor-phone-group">
               <div class="counsellor-phone-prefix">
@@ -399,30 +412,40 @@ include_once dirname(__FILE__) . '/../includes/header.php';
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"></path></svg>
                 <input type="hidden" name="country_code" value="+91">
               </div>
-              <input type="tel" name="phone" placeholder="Enter Mobile No.*" required class="counsellor-input counsellor-phone-input" value="<?php echo h($_POST['phone'] ?? ''); ?>">
+              <label for="hero_phone" class="visually-hidden">Mobile Number</label>
+              <input type="tel" id="hero_phone" name="phone" placeholder="Enter Mobile No.*" required class="counsellor-input counsellor-phone-input" value="<?php echo h($_POST['phone'] ?? ''); ?>">
             </div>
 
-            <input type="email" name="email" placeholder="Enter Email Id*" required class="counsellor-input" value="<?php echo h($_POST['email'] ?? ''); ?>">
+            <div class="counsellor-field-group">
+              <label for="hero_email" class="visually-hidden">Email ID</label>
+              <input type="email" id="hero_email" name="email" placeholder="Enter Email Id*" required class="counsellor-input" value="<?php echo h($_POST['email'] ?? ''); ?>">
+            </div>
 
-            <select name="country" class="counsellor-input counsellor-select">
-              <option value="">Select Country</option>
-              <option value="India" selected>India</option>
-              <option value="United Arab Emirates">United Arab Emirates</option>
-              <option value="United States">United States</option>
-              <option value="United Kingdom">United Kingdom</option>
-              <option value="Singapore">Singapore</option>
-              <option value="Canada">Canada</option>
-              <option value="Australia">Australia</option>
-              <option value="Other">Other</option>
-            </select>
+            <div class="counsellor-field-group">
+              <label for="hero_country" class="visually-hidden">Select Country</label>
+              <select name="country" id="hero_country" class="counsellor-input counsellor-select">
+                <option value="">Select Country</option>
+                <option value="India" selected>India</option>
+                <option value="United Arab Emirates">United Arab Emirates</option>
+                <option value="United States">United States</option>
+                <option value="United Kingdom">United Kingdom</option>
+                <option value="Singapore">Singapore</option>
+                <option value="Canada">Canada</option>
+                <option value="Australia">Australia</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
 
-            <select name="grade" required class="counsellor-input counsellor-select">
-              <option value="">Select Class Opting For*</option>
-              <option value="Early Years (K-KG)">Early Years (K–KG)</option>
-              <option value="Foundation Stage (Grades 1-2)">Foundation Stage (Grades 1–2)</option>
-              <option value="Preparatory Stage (Grades 3-5)">Preparatory Stage (Grades 3–5)</option>
-              <option value="Middle School (Grades 6-8)">Middle School (Grades 6–8)</option>
-            </select>
+            <div class="counsellor-field-group">
+              <label for="hero_grade" class="visually-hidden">Select Class Opting For</label>
+              <select name="grade" id="hero_grade" required class="counsellor-input counsellor-select">
+                <option value="">Select Class Opting For*</option>
+                <option value="Early Years (K-KG)">Early Years (K–KG)</option>
+                <option value="Foundation Stage (Grades 1-2)">Foundation Stage (Grades 1–2)</option>
+                <option value="Preparatory Stage (Grades 3-5)">Preparatory Stage (Grades 3–5)</option>
+                <option value="Middle School (Grades 6-8)">Middle School (Grades 6–8)</option>
+              </select>
+            </div>
 
             <div class="counsellor-captcha-group">
               <div class="counsellor-captcha-code" id="heroCaptchaCode">ZP9O</div>
@@ -430,11 +453,12 @@ include_once dirname(__FILE__) . '/../includes/header.php';
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M23 4v6h-6"></path><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
               </button>
               <input type="hidden" name="captcha_expected" id="heroCaptchaExpected" value="ZP9O">
-              <input type="text" name="captcha_input" placeholder="Enter Text*" required class="counsellor-input counsellor-captcha-input">
+              <label for="hero_captcha" class="visually-hidden">Enter Captcha</label>
+              <input type="text" id="hero_captcha" name="captcha_input" placeholder="Enter Text*" required class="counsellor-input counsellor-captcha-input">
             </div>
 
-            <label class="counsellor-consent-label">
-              <input type="checkbox" name="consent" required checked>
+            <label class="counsellor-consent-label" for="hero_consent">
+              <input type="checkbox" id="hero_consent" name="consent" required>
               <span>I authorize Zuvio Global School and its representatives to contact me with updates/notifications via Email, SMS, WhatsApp and Voice Call. This consent overrides DND registration.</span>
             </label>
 
@@ -479,7 +503,7 @@ include_once dirname(__FILE__) . '/../includes/header.php';
 
       <!-- Supporting Graphic Visual -->
       <div class="about-zuvio-visual" style="border-radius: var(--radius-lg); overflow: hidden; border: 1.5px solid rgba(6, 43, 99, 0.16); box-shadow: var(--shadow-md); position: relative;">
-        <img src="/assets/images/Teacher interacting with students.png" alt="Teacher interacting with students at Zuvio Global School" style="width: 100%; height: 380px; object-fit: cover; display: block;">
+        <img src="/assets/images/Teacher interacting with students.webp" alt="Teacher interacting with students at Zuvio Global School" loading="lazy" style="width: 100%; height: 380px; object-fit: cover; display: block;">
         <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(0deg, rgba(3,27,66,0.92) 0%, rgba(3,27,66,0) 100%); padding: 1.5rem 1.25rem 1rem 1.25rem; color: #FFFFFF;">
           <p style="font-weight: 700; font-size: 1rem; margin: 0; color: var(--color-gold);">Learning Beyond Boundaries</p>
           <p style="font-size: 0.82rem; margin: 0; color: #E2E8F0;">Personalised, 100% Live Online Schooling • Kindergarten to Grade 8th</p>
@@ -820,7 +844,7 @@ include_once dirname(__FILE__) . '/../includes/header.php';
         <div class="accreditation-feature-card">
           <div>
             <div class="accreditation-logo-wrapper">
-              <img src="<?php echo h($acc['logo']); ?>" alt="<?php echo h($acc['name']); ?> Logo">
+              <img src="<?php echo h($acc['logo']); ?>" alt="<?php echo h($acc['name']); ?> Logo" loading="lazy">
             </div>
             <h3 style="font-size: 1.25rem; color: var(--color-navy); font-family: var(--font-primary); margin-bottom: 0.35rem;"><?php echo h($acc['name']); ?></h3>
             <h4 style="font-size: 0.88rem; color: var(--color-teal); font-weight: 600; margin-bottom: 1rem;"><?php echo h($acc['subtitle']); ?></h4>
@@ -956,7 +980,7 @@ include_once dirname(__FILE__) . '/../includes/header.php';
       <!-- Founder Portrait & Metadata -->
       <div class="founder-portrait-col">
         <div class="founder-portrait-frame">
-          <img src="/assets/images/Profile_Images/Pragya_Professional_Profile.webp" alt="Founder of Zuvio Global School">
+          <img src="/assets/images/Profile_Images/Pragya_Professional_Profile.webp" alt="Founder of Zuvio Global School" loading="lazy">
         </div>
         <h3 style="font-size: 1.35rem; color: var(--color-navy); font-family: var(--font-primary); margin-bottom: 0.25rem;">Founder</h3>
         <p style="font-size: 0.85rem; color: var(--color-gold); font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Zuvio Global School</p>
@@ -1136,17 +1160,13 @@ include_once dirname(__FILE__) . '/../includes/header.php';
     });
   }
 
-  // Image Banner Carousel Controller
+  // Image Banner Carousel Controller (Cross-Fade, No Slide Peeking)
   let imageBannerIdx = 0;
   function setImageBanner(idx) {
-    const slides = document.querySelectorAll('.hero-banner-image-slide');
-    const track = document.querySelector('.hero-banner-slides-track');
+    const slides = document.querySelectorAll('.hero-live-slide, .hero-banner-image-slide');
     const dots = document.querySelectorAll('.banner-img-dot');
     if (!slides.length) return;
     imageBannerIdx = idx;
-    if (track) {
-      track.style.transform = `translateX(-${imageBannerIdx * 100}%)`;
-    }
     slides.forEach((s, i) => {
       s.classList.toggle('active', i === idx);
     });
@@ -1156,7 +1176,7 @@ include_once dirname(__FILE__) . '/../includes/header.php';
   }
 
   function changeImageBanner(delta) {
-    const slides = document.querySelectorAll('.hero-banner-image-slide');
+    const slides = document.querySelectorAll('.hero-live-slide, .hero-banner-image-slide');
     if (!slides.length) return;
     let nextIdx = (imageBannerIdx + delta + slides.length) % slides.length;
     setImageBanner(nextIdx);

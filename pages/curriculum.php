@@ -476,7 +476,7 @@ render_breadcrumbs([
   </section>
 
   <!-- Separating Visual Banner to Break Monotony -->
-  <section class="curriculum-visual-banner" style="background-image: linear-gradient(rgba(235, 245, 251, 0.4), rgba(235, 245, 251, 0.45)), url('/assets/images/curriculum_hero.jpg'); background-size: cover; background-position: center; height: 350px; border-top: 1.5px solid var(--color-border); border-bottom: 1.5px solid var(--color-border);">
+  <section class="curriculum-visual-banner" style="background-image: linear-gradient(rgba(235, 245, 251, 0.4), rgba(235, 245, 251, 0.45)), url('/assets/images/curriculum_hero.webp'); background-size: cover; background-position: center; height: 350px; border-top: 1.5px solid var(--color-border); border-bottom: 1.5px solid var(--color-border);">
   </section>
 
   <!-- PAGE 6 — THE ZUVIO LEARNING FRAMEWORK (Soft Blue Background) -->

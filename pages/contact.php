@@ -84,12 +84,14 @@ if (!isset($contact_cms['social_links'])) {
 if (!isset($contact_cms['map'])) {
     $contact_cms['map'] = [
         'is_visible' => 1,
-        'title' => 'Our Academic & Admissions Office',
+        'title' => 'Our Headquarter Office',
         'subtitle' => 'Located at ITL Twin Tower, Netaji Subhash Place (NSP), Pitampura — easily accessible via Delhi Metro (Red & Pink Lines).',
         'embed_url' => 'https://maps.google.com/maps?q=ITL+Twin+Tower,+Netaji+Subhash+Place,+Pitampura,+Delhi+110034&t=&z=15&ie=UTF8&iwloc=&output=embed',
         'directions_url' => 'https://www.google.com/maps/search/?api=1&query=ITL+Twin+Tower,+Netaji+Subhash+Place,+Pitampura,+Delhi+110034',
         'height' => 420
     ];
+} elseif (isset($contact_cms['map']['title']) && $contact_cms['map']['title'] === 'Our Academic & Admissions Office') {
+    $contact_cms['map']['title'] = 'Our Headquarter Office';
 }
 
 // 4. Form Settings Defaults
@@ -284,7 +286,7 @@ render_breadcrumbs([
             </a>
 
             <!-- Phone Item -->
-            <a href="tel:<?php echo h($details['phone']); ?>" class="contact-direct-item" style="display: flex; align-items: center; gap: 1rem; padding: 0.85rem 1.15rem; background-color: var(--color-surface, #F8FAFC); border: 1px solid var(--color-border, #E2E8F0); border-radius: var(--radius-md, 10px); text-decoration: none; color: var(--color-navy, #062B63); transition: all 0.25s ease;">
+            <a href="tel:+91<?php echo preg_replace('/[^0-9]/', '', $details['phone']); ?>" class="contact-direct-item" style="display: flex; align-items: center; gap: 1rem; padding: 0.85rem 1.15rem; background-color: var(--color-surface, #F8FAFC); border: 1px solid var(--color-border, #E2E8F0); border-radius: var(--radius-md, 10px); text-decoration: none; color: var(--color-navy, #062B63); transition: all 0.25s ease;">
               <div style="width: 42px; height: 42px; border-radius: 50%; background-color: #E0F2FE; color: #0284C7; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
@@ -321,7 +323,7 @@ render_breadcrumbs([
                 </svg>
               </div>
               <h3 style="font-size: 1.15rem; color: var(--color-navy, #062B63); margin: 0; font-family: var(--font-primary); font-weight: 700;">
-                Our Academic Office
+                Our Headquarter Office
               </h3>
             </div>
             <p style="color: var(--color-text, #334155); font-size: 0.9rem; line-height: 1.65; margin: 0 0 0.85rem 0;">
@@ -373,7 +375,7 @@ render_breadcrumbs([
                     elseif (strpos($p, 'linkedin') !== false) $icon_color = '#0A66C2';
                     elseif (strpos($p, 'youtube') !== false) $icon_color = '#FF0000';
                   ?>
-                  <a href="<?php echo h($item['url']); ?>" target="_blank" rel="noopener" title="<?php echo h($item['platform']); ?>" class="contact-social-btn" style="width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--color-border, #E2E8F0); background-color: #FFFFFF; display: flex; align-items: center; justify-content: center; text-decoration: none; color: <?php echo $icon_color; ?>; box-shadow: var(--shadow-sm); transition: all 0.25s ease;">
+                  <a href="<?php echo h($item['url']); ?>" target="_blank" rel="noopener" title="<?php echo h($item['platform']); ?>" aria-label="Connect with Zuvio on <?php echo h($item['platform']); ?>" class="contact-social-btn" style="width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--color-border, #E2E8F0); background-color: #FFFFFF; display: flex; align-items: center; justify-content: center; text-decoration: none; color: <?php echo $icon_color; ?>; box-shadow: var(--shadow-sm); transition: all 0.25s ease;">
                     <?php if (strpos($p, 'whatsapp') !== false): ?>
                       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
                     <?php elseif (strpos($p, 'instagram') !== false): ?>
@@ -439,10 +441,10 @@ render_breadcrumbs([
 
               <!-- School Type Preference (Page 65: "Are you looking for Online or Offline School?") -->
               <div style="margin-bottom: 1.25rem;">
-                <label style="font-size: 0.82rem; font-weight: 700; color: var(--color-navy, #062B63); margin-bottom: 0.4rem; display: block;">
+                <label for="contact_school_type" style="font-size: 0.85rem; font-weight: 700; color: var(--color-navy, #062B63); margin-bottom: 0.4rem; display: block;">
                   Are you looking for Online or Hybrid School? <span style="color: #EF4444;">*</span>
                 </label>
-                <select name="school_type" class="contact-input" required style="width: 100%; padding: 0.75rem 0.95rem; border: 1px solid var(--color-border, #CBD5E1); border-radius: var(--radius-sm, 6px); outline: none; background-color: #FFFFFF; font-size: 0.9rem; color: var(--color-navy, #062B63); height: 44px;">
+                <select id="contact_school_type" name="school_type" class="contact-input" required style="width: 100%; padding: 0.75rem 0.95rem; border: 1px solid var(--color-border, #CBD5E1); border-radius: var(--radius-sm, 6px); outline: none; background-color: #FFFFFF; font-size: 0.9rem; color: var(--color-navy, #062B63); height: 44px;">
                   <option value="Online Schooling" <?php echo (($submitted_data['school_type'] ?? '') === 'Online Schooling') ? 'selected' : ''; ?>>Online Schooling (CBSE Aligned K–8)</option>
                   <option value="Hybrid Experiential Campus" <?php echo (($submitted_data['school_type'] ?? '') === 'Hybrid Experiential Campus') ? 'selected' : ''; ?>>Hybrid Experiential Learning Campus</option>
                   <option value="Exploring Both Options" <?php echo (($submitted_data['school_type'] ?? '') === 'Exploring Both Options') ? 'selected' : ''; ?>>Exploring Both Options</option>
@@ -452,36 +454,44 @@ render_breadcrumbs([
               <!-- Full Name & Student Name Row -->
               <div class="contact-form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.25rem;">
                 <div>
-                  <label style="font-size: 0.82rem; font-weight: 700; color: var(--color-navy, #062B63); margin-bottom: 0.4rem; display: block;">
+                  <label for="contact_parent_name" style="font-size: 0.85rem; font-weight: 700; color: var(--color-navy, #062B63); margin-bottom: 0.4rem; display: block;">
                     Parent Full Name <span style="color: #EF4444;">*</span>
                   </label>
-                  <input type="text" name="parent_name" value="<?php echo h($submitted_data['parent_name'] ?? ''); ?>" required placeholder="Enter full name" class="contact-input" style="width: 100%; padding: 0.75rem 0.95rem; border: 1px solid var(--color-border, #CBD5E1); border-radius: var(--radius-sm, 6px); outline: none; font-size: 0.9rem;">
+                  <input type="text" id="contact_parent_name" name="parent_name" value="<?php echo h($submitted_data['parent_name'] ?? ''); ?>" required placeholder="Enter full name" class="contact-input" style="width: 100%; padding: 0.75rem 0.95rem; border: 1px solid var(--color-border, #CBD5E1); border-radius: var(--radius-sm, 6px); outline: none; font-size: 0.9rem; height: 44px; box-sizing: border-box;">
                 </div>
                 <div>
-                  <label style="font-size: 0.82rem; font-weight: 700; color: var(--color-navy, #062B63); margin-bottom: 0.4rem; display: block;">
+                  <label for="contact_student_name" style="font-size: 0.85rem; font-weight: 700; color: var(--color-navy, #062B63); margin-bottom: 0.4rem; display: block;">
                     Student Name (Optional)
                   </label>
-                  <input type="text" name="student_name" value="<?php echo h($submitted_data['student_name'] ?? ''); ?>" placeholder="Enter child's name" class="contact-input" style="width: 100%; padding: 0.75rem 0.95rem; border: 1px solid var(--color-border, #CBD5E1); border-radius: var(--radius-sm, 6px); outline: none; font-size: 0.9rem;">
+                  <input type="text" id="contact_student_name" name="student_name" value="<?php echo h($submitted_data['student_name'] ?? ''); ?>" placeholder="Enter child's name" class="contact-input" style="width: 100%; padding: 0.75rem 0.95rem; border: 1px solid var(--color-border, #CBD5E1); border-radius: var(--radius-sm, 6px); outline: none; font-size: 0.9rem; height: 44px; box-sizing: border-box;">
                 </div>
               </div>
 
               <!-- Email Address & Phone Number Row -->
               <div class="contact-form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.25rem;">
                 <div>
-                  <label style="font-size: 0.82rem; font-weight: 700; color: var(--color-navy, #062B63); margin-bottom: 0.4rem; display: block;">
+                  <label for="contact_email" style="font-size: 0.85rem; font-weight: 700; color: var(--color-navy, #062B63); margin-bottom: 0.4rem; display: block;">
                     Email Address <span style="color: #EF4444;">*</span>
                   </label>
-                  <input type="email" name="email" value="<?php echo h($submitted_data['email'] ?? ''); ?>" required placeholder="parent@example.com" class="contact-input" style="width: 100%; padding: 0.75rem 0.95rem; border: 1px solid var(--color-border, #CBD5E1); border-radius: var(--radius-sm, 6px); outline: none; font-size: 0.9rem;">
+                  <input type="email" id="contact_email" name="email" value="<?php echo h($submitted_data['email'] ?? ''); ?>" required placeholder="parent@example.com" class="contact-input" style="width: 100%; padding: 0.75rem 0.95rem; border: 1px solid var(--color-border, #CBD5E1); border-radius: var(--radius-sm, 6px); outline: none; font-size: 0.9rem; height: 44px; box-sizing: border-box;">
                 </div>
                 <div>
-                  <label style="font-size: 0.82rem; font-weight: 700; color: var(--color-navy, #062B63); margin-bottom: 0.4rem; display: block;">
+                  <label for="contact_phone" style="font-size: 0.85rem; font-weight: 700; color: var(--color-navy, #062B63); margin-bottom: 0.4rem; display: block;">
                     Phone Number <span style="color: #EF4444;">*</span>
                   </label>
-                  <div style="display: flex; align-items: center; border: 1px solid var(--color-border, #CBD5E1); border-radius: var(--radius-sm, 6px); overflow: hidden; background-color: #FFFFFF;">
-                    <span style="padding: 0 0.75rem; font-size: 0.85rem; font-weight: 700; background-color: var(--color-surface, #F8FAFC); border-right: 1px solid var(--color-border, #CBD5E1); color: var(--color-navy, #062B63); height: 44px; display: flex; align-items: center;">
-                      +91
-                    </span>
-                    <input type="tel" name="phone" value="<?php echo h($submitted_data['phone'] ?? ''); ?>" required placeholder="98765 43210" class="contact-input" style="width: 100%; padding: 0.75rem 0.95rem; border: none; outline: none; font-size: 0.9rem;">
+                  <div style="display: flex; align-items: center; border: 1px solid var(--color-border, #CBD5E1); border-radius: var(--radius-sm, 6px); overflow: hidden; background-color: #FFFFFF; height: 44px; box-sizing: border-box;">
+                    <select name="country_code" id="contact_country_code" style="padding: 0 0.5rem; font-size: 0.85rem; font-weight: 600; background-color: var(--color-surface, #F8FAFC); border: none; border-right: 1px solid var(--color-border, #CBD5E1); color: var(--color-navy, #062B63); height: 100%; outline: none; cursor: pointer;" aria-label="Country Code">
+                      <option value="+91" selected>🇮🇳 +91</option>
+                      <option value="+971">🇦🇪 +971</option>
+                      <option value="+1">🇺🇸 +1</option>
+                      <option value="+44">🇬🇧 +44</option>
+                      <option value="+65">🇸🇬 +65</option>
+                      <option value="+1">🇨🇦 +1</option>
+                      <option value="+61">🇦🇺 +61</option>
+                      <option value="+966">🇸🇦 +966</option>
+                      <option value="+974">🇶🇦 +974</option>
+                    </select>
+                    <input type="tel" id="contact_phone" name="phone" value="<?php echo h($submitted_data['phone'] ?? ''); ?>" required placeholder="98765 43210" class="contact-input" style="width: 100%; padding: 0.75rem 0.95rem; border: none; outline: none; font-size: 0.9rem; height: 100%;">
                   </div>
                 </div>
               </div>
@@ -489,10 +499,10 @@ render_breadcrumbs([
               <!-- Grade Level & City Row -->
               <div class="contact-form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.25rem;">
                 <div>
-                  <label style="font-size: 0.82rem; font-weight: 700; color: var(--color-navy, #062B63); margin-bottom: 0.4rem; display: block;">
+                  <label for="contact_grade" style="font-size: 0.85rem; font-weight: 700; color: var(--color-navy, #062B63); margin-bottom: 0.4rem; display: block;">
                     Grade Level <span style="color: #EF4444;">*</span>
                   </label>
-                  <select name="grade" required class="contact-input" style="width: 100%; padding: 0.75rem 0.95rem; border: 1px solid var(--color-border, #CBD5E1); border-radius: var(--radius-sm, 6px); outline: none; background-color: #FFFFFF; font-size: 0.9rem; color: var(--color-navy, #062B63); height: 44px;">
+                  <select id="contact_grade" name="grade" required class="contact-input" style="width: 100%; padding: 0.75rem 0.95rem; border: 1px solid var(--color-border, #CBD5E1); border-radius: var(--radius-sm, 6px); outline: none; background-color: #FFFFFF; font-size: 0.9rem; color: var(--color-navy, #062B63); height: 44px; box-sizing: border-box;">
                     <option value="">- Choose Grade -</option>
                     <option value="Early Years (Nursery, LKG, UKG)" <?php echo (($submitted_data['grade'] ?? '') === 'Early Years (Nursery, LKG, UKG)') ? 'selected' : ''; ?>>Early Years (Nursery, LKG, UKG)</option>
                     <option value="Grade 1" <?php echo (($submitted_data['grade'] ?? '') === 'Grade 1') ? 'selected' : ''; ?>>Grade 1</option>
@@ -506,19 +516,19 @@ render_breadcrumbs([
                   </select>
                 </div>
                 <div>
-                  <label style="font-size: 0.82rem; font-weight: 700; color: var(--color-navy, #062B63); margin-bottom: 0.4rem; display: block;">
+                  <label for="contact_city" style="font-size: 0.85rem; font-weight: 700; color: var(--color-navy, #062B63); margin-bottom: 0.4rem; display: block;">
                     City / Location
                   </label>
-                  <input type="text" name="city" value="<?php echo h($submitted_data['city'] ?? ''); ?>" placeholder="Enter your city" class="contact-input" style="width: 100%; padding: 0.75rem 0.95rem; border: 1px solid var(--color-border, #CBD5E1); border-radius: var(--radius-sm, 6px); outline: none; font-size: 0.9rem;">
+                  <input type="text" id="contact_city" name="city" value="<?php echo h($submitted_data['city'] ?? ''); ?>" placeholder="Enter your city" class="contact-input" style="width: 100%; padding: 0.75rem 0.95rem; border: 1px solid var(--color-border, #CBD5E1); border-radius: var(--radius-sm, 6px); outline: none; font-size: 0.9rem; height: 44px; box-sizing: border-box;">
                 </div>
               </div>
 
               <!-- Message / Queries (Optional) -->
               <div style="margin-bottom: 1.5rem;">
-                <label style="font-size: 0.82rem; font-weight: 700; color: var(--color-navy, #062B63); margin-bottom: 0.4rem; display: block;">
+                <label for="contact_message" style="font-size: 0.85rem; font-weight: 700; color: var(--color-navy, #062B63); margin-bottom: 0.4rem; display: block;">
                   Message / Questions for Counselor
                 </label>
-                <textarea name="message" rows="3" placeholder="Tell us about your child’s learning style, questions on CBSE curriculum, or schedule preference..." class="contact-input" style="width: 100%; padding: 0.75rem 0.95rem; border: 1px solid var(--color-border, #CBD5E1); border-radius: var(--radius-sm, 6px); outline: none; resize: vertical; font-size: 0.9rem; font-family: inherit; line-height: 1.5;"><?php echo h($submitted_data['raw_message'] ?? ''); ?></textarea>
+                <textarea id="contact_message" name="message" rows="3" placeholder="Tell us about your child’s learning style, questions on CBSE curriculum, or schedule preference..." class="contact-input" style="width: 100%; padding: 0.75rem 0.95rem; border: 1px solid var(--color-border, #CBD5E1); border-radius: var(--radius-sm, 6px); outline: none; resize: vertical; font-size: 0.9rem; font-family: inherit; line-height: 1.5; box-sizing: border-box;"><?php echo h($submitted_data['raw_message'] ?? ''); ?></textarea>
               </div>
 
               <!-- Consent notice -->

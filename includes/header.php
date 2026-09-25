@@ -107,11 +107,15 @@ if (empty($nav_tree) || count($nav_tree) < 5 || empty($nav_tree[1]['children']))
 
 $logo_path = get_setting('logo_url', '/assets/images/logo.png');
 $phone_number = get_setting('phone', '7827262956');
+$phone_tel = '+91' . preg_replace('/[^0-9]/', '', $phone_number);
 $email_address = get_setting('general_email', 'info@zuvioglobalschool.com');
 $affiliation_info = 'Affiliation No: IA 4883 • IAO Accredited • ISSO Member';
 $social_fb = get_setting('social_facebook', 'https://www.facebook.com/share/1XsYWDm3rt/');
 $social_insta = get_setting('social_instagram', 'https://www.instagram.com/thezuvio/');
 $social_linkedin = get_setting('social_linkedin', 'https://www.linkedin.com/company/zuvio-global-school/');
+if (empty($social_linkedin) || strpos($social_linkedin, 'admin/dashboard') !== false || strpos($social_linkedin, '142914253') !== false) {
+    $social_linkedin = 'https://www.linkedin.com/company/zuvio-global-school/';
+}
 $social_youtube = get_setting('social_youtube', 'https://www.youtube.com/@zuvioglobalschool');
 ?>
 <!DOCTYPE html>
@@ -271,84 +275,76 @@ $social_youtube = get_setting('social_youtube', 'https://www.youtube.com/@zuviog
 </head>
 <body>
 
-  <!-- 1. Top Utility Bar -->
+  <!-- 1. Unified Top Utility Bar (Affiliation + Moving USPs + Contact) -->
   <div class="top-announcement-strip">
-    <div class="announcement-container">
+    <div class="announcement-container unified-top-bar">
       <div class="announcement-left">
-        <span class="top-bar-affiliation" style="font-weight: 600; color: #FFFFFF; font-size: 0.85rem; letter-spacing: 0.2px;">
+        <span class="top-bar-affiliation" title="IAO Accredited & ISSO Member">
           Affiliation No: IA 4883 • IAO Accredited • ISSO Member
         </span>
       </div>
+
+      <div class="announcement-center ticker-wrap">
+        <div class="ticker-track">
+          <div class="ticker-item"><span class="ticker-grade-pill">Nursery to Grade 8th</span> 100% Online Schooling</div>
+          <span class="ticker-dot"></span>
+          <div class="ticker-item">CBSE Mapped Curriculum</div>
+          <span class="ticker-dot"></span>
+          <div class="ticker-item">Inclusive Learning &amp; SEN Support</div>
+          <span class="ticker-dot"></span>
+          <div class="ticker-item">Live Small-Group Interactive Classes</div>
+          <span class="ticker-dot"></span>
+          <div class="ticker-item">Oxford Quality Curriculum Partner</div>
+          <span class="ticker-dot"></span>
+          <div class="ticker-item"><span class="ticker-grade-pill">Nursery to Grade 8th</span> 100% Online Schooling</div>
+          <span class="ticker-dot"></span>
+          <div class="ticker-item">CBSE Mapped Curriculum</div>
+          <span class="ticker-dot"></span>
+          <div class="ticker-item">Inclusive Learning &amp; SEN Support</div>
+          <span class="ticker-dot"></span>
+          <div class="ticker-item">Live Small-Group Interactive Classes</div>
+          <span class="ticker-dot"></span>
+          <div class="ticker-item">Oxford Quality Curriculum Partner</div>
+        </div>
+      </div>
+
       <div class="announcement-right">
-        <a href="tel:<?php echo h($phone_number); ?>" class="announcement-link" title="Call Us">
-          <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+        <a href="tel:<?php echo h($phone_tel); ?>" class="announcement-link" title="Call Us: +91 <?php echo h($phone_number); ?>" aria-label="Call +91 <?php echo h($phone_number); ?>">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
           +91 <?php echo h($phone_number); ?>
         </a>
         <span class="announcement-divider" style="color: rgba(255,255,255,0.4); font-size: 0.8rem;">•</span>
-        <a href="mailto:<?php echo h($email_address); ?>" class="announcement-link" title="Email Us">
-          <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-          <?php echo h($email_address); ?>
+        <a href="mailto:<?php echo h($email_address); ?>" class="announcement-link" title="Email Us: <?php echo h($email_address); ?>" aria-label="Email Us: <?php echo h($email_address); ?>">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+          <span class="hide-mobile-compact"><?php echo h($email_address); ?></span>
         </a>
         <span class="announcement-divider" style="color: rgba(255,255,255,0.4); font-size: 0.8rem;">•</span>
         <div class="announcement-socials">
           <a href="<?php echo h($social_fb); ?>" target="_blank" rel="noopener" class="announcement-social-icon" aria-label="Facebook" title="Facebook">
-            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
           </a>
           <a href="<?php echo h($social_insta); ?>" target="_blank" rel="noopener" class="announcement-social-icon" aria-label="Instagram" title="Instagram">
-            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
           </a>
           <a href="<?php echo h($social_linkedin); ?>" target="_blank" rel="noopener" class="announcement-social-icon" aria-label="LinkedIn" title="LinkedIn">
-            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
           </a>
           <a href="<?php echo h($social_youtube); ?>" target="_blank" rel="noopener" class="announcement-social-icon" aria-label="YouTube" title="YouTube">
-            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
           </a>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- 2. Moving USP Strip -->
-  <div class="usp-ticker-strip">
-    <div class="ticker-wrap">
-      <div class="ticker-track">
-        <div class="ticker-item"><span class="ticker-grade-pill">Kindergarten to Grade 8th</span> 100% Online Schooling</div>
-        <span class="ticker-dot"></span>
-        <div class="ticker-item">CBSE Mapped Curriculum</div>
-        <span class="ticker-dot"></span>
-        <div class="ticker-item">Inclusive Learning for Students with Special Needs</div>
-        <span class="ticker-dot"></span>
-        <div class="ticker-item">Dedicated Admission Counselor</div>
-        <span class="ticker-dot"></span>
-        <div class="ticker-item">Oxford Thematic Learning Approach</div>
-        <span class="ticker-dot"></span>
-        <div class="ticker-item">Live Interactive Small-Group Classes</div>
-        <span class="ticker-dot"></span>
-        <div class="ticker-item">Global Exposure Beyond Boundaries</div>
-        <span class="ticker-dot"></span>
-        <!-- Duplicate items for seamless continuous marquee loop -->
-        <div class="ticker-item"><span class="ticker-grade-pill">Kindergarten to Grade 8th</span> 100% Online Schooling</div>
-        <span class="ticker-dot"></span>
-        <div class="ticker-item">CBSE Mapped Curriculum</div>
-        <span class="ticker-dot"></span>
-        <div class="ticker-item">Inclusive Learning for Students with Special Needs</div>
-        <span class="ticker-dot"></span>
-        <div class="ticker-item">Dedicated Admission Counselor</div>
-        <span class="ticker-dot"></span>
-        <div class="ticker-item">Oxford Thematic Learning Approach</div>
-        <span class="ticker-dot"></span>
-        <div class="ticker-item">Live Interactive Small-Group Classes</div>
-        <span class="ticker-dot"></span>
-        <div class="ticker-item">Global Exposure Beyond Boundaries</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- 3. Primary Header with Multi-Level Dropdown Navigation -->
+  <!-- 2. Primary Header with Multi-Level Dropdown Navigation -->
   <header class="site-header">
     <div class="header-container">
       <a href="/" title="Zuvio Global School Home">
-        <img src="<?php echo h($logo_path); ?>" alt="Zuvio Global School" class="header-logo-img">
+        <picture>
+          <source srcset="/assets/images/logo.webp" type="image/webp">
+          <img src="<?php echo h($logo_path); ?>" alt="Zuvio Global School" class="header-logo-img" width="180" height="64">
+        </picture>
       </a>
       
       <!-- Desktop Dropdown Navigation Menu -->
@@ -435,7 +431,7 @@ $social_youtube = get_setting('social_youtube', 'https://www.youtube.com/@zuviog
     </div>
 
     <div style="margin-top: auto; padding-top: 1.5rem; border-top: 1px solid var(--color-border); font-size: 0.82rem; color: var(--color-muted);">
-      <p style="margin-bottom: 0.25rem;"><strong>Phone:</strong> <a href="tel:<?php echo h($phone_number); ?>" style="color: var(--color-navy);">+91 <?php echo h($phone_number); ?></a></p>
+      <p style="margin-bottom: 0.25rem;"><strong>Phone:</strong> <a href="tel:<?php echo h($phone_tel); ?>" style="color: var(--color-navy);">+91 <?php echo h($phone_number); ?></a></p>
       <p style="margin-bottom: 0.75rem;"><strong>Email:</strong> <a href="mailto:<?php echo h($email_address); ?>" style="color: var(--color-navy);"><?php echo h($email_address); ?></a></p>
       <div style="display: flex; gap: 0.85rem; align-items: center; padding-top: 0.5rem;">
         <a href="<?php echo h($social_fb); ?>" target="_blank" rel="noopener" style="color: #1877F2; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background: #EFF6FF;" aria-label="Facebook" title="Facebook">

@@ -20,7 +20,7 @@ $programmes = [
         'title' => 'AI EXPLORERS',
         'category' => 'TECH & INNOVATION',
         'tagline' => 'Think Smart, Create Smartly',
-        'grades' => 'Nursery - Grade 12',
+        'grades' => 'Nursery – Grade 8',
         'format' => 'Live Classes',
         'level' => 'Progressive by age',
         'purpose' => 'A hands-on introduction to artificial intelligence through stories, patterns, creative tools and age-appropriate projects.',
@@ -50,7 +50,7 @@ $programmes = [
         'title' => 'CODING',
         'category' => 'TECH & INNOVATION',
         'tagline' => 'From ideas to working creations.',
-        'grades' => 'Nursery - Grade 12',
+        'grades' => 'Nursery – Grade 8',
         'format' => 'Live Classes',
         'level' => 'Progressive by age',
         'purpose' => 'Learners build computational thinking by sequencing, testing and improving their own interactive digital projects.',
@@ -80,7 +80,7 @@ $programmes = [
         'title' => 'ROBOTICS',
         'category' => 'TECH & INNOVATION',
         'tagline' => 'Build. Code. Test. Innovate.',
-        'grades' => 'Nursery - Grade 12',
+        'grades' => 'Nursery – Grade 8',
         'format' => 'Live Classes',
         'level' => 'Progressive by age',
         'purpose' => 'A practical robotics journey where learners combine mechanics, electronics and coding to design solutions and bring ideas to life.',
@@ -110,7 +110,7 @@ $programmes = [
         'title' => 'RUBIK\'S CUBE',
         'category' => 'MIND & NUMERACY',
         'tagline' => 'Focus, patterns and the joy of solving.',
-        'grades' => 'Nursery - Grade 12',
+        'grades' => 'Nursery – Grade 8',
         'format' => 'Live Classes',
         'level' => 'Progressive by age',
         'purpose' => 'Step-by-step cube-solving develops concentration, spatial intelligence and a calm approach to complex challenges.',
@@ -140,7 +140,7 @@ $programmes = [
         'title' => 'ABACUS',
         'category' => 'MIND & NUMERACY',
         'tagline' => 'See numbers. Feel numbers. Love numbers.',
-        'grades' => 'Nursery - Grade 12',
+        'grades' => 'Nursery – Grade 8',
         'format' => 'Live Classes',
         'level' => 'Progressive by age',
         'purpose' => 'A visual and tactile maths programme that strengthens number sense before progressing towards mental calculation.',
@@ -170,7 +170,7 @@ $programmes = [
         'title' => 'VEDIC MATHS',
         'category' => 'MIND & NUMERACY',
         'tagline' => 'Faster strategies, deeper number sense.',
-        'grades' => 'Nursery - Grade 12',
+        'grades' => 'Nursery – Grade 8',
         'format' => 'Live Classes',
         'level' => 'Progressive by age',
         'purpose' => 'Learners discover flexible mental-maths techniques that make calculations quicker, clearer and more enjoyable.',
@@ -200,7 +200,7 @@ $programmes = [
         'title' => 'FINANCIAL LITERACY',
         'category' => 'LIFE, LEADERSHIP & SUPPORT',
         'tagline' => 'Smart money habits start early.',
-        'grades' => 'Nursery - Grade 12',
+        'grades' => 'Nursery – Grade 8',
         'format' => 'Live Classes',
         'level' => 'Progressive by age',
         'purpose' => 'Real-life, age-appropriate activities help learners understand money, choices, planning and responsible decision-making.',
@@ -230,7 +230,7 @@ $programmes = [
         'title' => 'ENTREPRENEURSHIP',
         'category' => 'LIFE, LEADERSHIP & SUPPORT',
         'tagline' => 'Turn curiosity into meaningful ideas.',
-        'grades' => 'Nursery - Grade 12',
+        'grades' => 'Nursery – Grade 8',
         'format' => 'Live Classes',
         'level' => 'Progressive by age',
         'purpose' => 'Learners identify problems, develop solutions and present ideas while understanding the basics of building value.',
@@ -260,7 +260,7 @@ $programmes = [
         'title' => 'CHESS',
         'category' => 'MIND & NUMERACY',
         'tagline' => 'Plan ahead. Decide with confidence.',
-        'grades' => 'Nursery - Grade 12',
+        'grades' => 'Nursery – Grade 8',
         'format' => 'Live Classes',
         'level' => 'Progressive by age',
         'purpose' => 'A progressive chess journey from piece movement to tactics, strategy and thoughtful competitive play.',
@@ -290,7 +290,7 @@ $programmes = [
         'title' => 'DIGITAL MEDIA & ARTS',
         'category' => 'TECH & INNOVATION',
         'tagline' => 'Create, communicate and publish with purpose.',
-        'grades' => 'Nursery - Grade 12',
+        'grades' => 'Nursery – Grade 8',
         'format' => 'Live Classes',
         'level' => 'Progressive by age',
         'purpose' => 'Learners combine art and technology to design visual stories and build confident, responsible creator skills.',
@@ -320,7 +320,7 @@ $programmes = [
         'title' => 'DANCE',
         'category' => 'CREATIVE EXPRESSION',
         'tagline' => 'Move with joy, rhythm and confidence.',
-        'grades' => 'Nursery - Grade 12',
+        'grades' => 'Nursery – Grade 8',
         'format' => 'Live Classes',
         'level' => 'Progressive by age',
         'purpose' => 'Age-appropriate movement experiences develop expression, coordination and appreciation of varied dance forms.',
@@ -351,7 +351,7 @@ $programmes = [
         'title' => 'ART & CRAFT',
         'category' => 'CREATIVE EXPRESSION',
         'tagline' => 'Imagine freely. Make confidently.',
-        'grades' => 'Nursery - Grade 12',
+        'grades' => 'Nursery – Grade 8',
         'format' => 'Live Classes',
         'level' => 'Progressive by age',
         'purpose' => 'Open-ended and guided projects encourage experimentation with materials, techniques, ideas and personal expression.',
@@ -381,7 +381,7 @@ $programmes = [
         'title' => 'ACADEMIC SUPPORT & ENRICHMENT',
         'category' => 'LIFE, LEADERSHIP & SUPPORT',
         'tagline' => 'Stronger concepts. Greater confidence.',
-        'grades' => 'Nursery - Grade 12',
+        'grades' => 'Nursery – Grade 8',
         'format' => 'Live Classes',
         'level' => 'Progressive by age',
         'purpose' => 'Personalised academic guidance helps learners strengthen core concepts, close learning gaps and progress confidently at their own pace.',
@@ -920,6 +920,29 @@ html {
     font-size: 2.25rem;
   }
 }
+@media (max-width: 480px) {
+  .beyond-category-card-outer {
+    padding: 1.5rem 1rem;
+  }
+  .beyond-program-card {
+    padding: 1.5rem 1rem;
+  }
+  .beyond-navy-panel {
+    padding: 1.5rem 1rem;
+  }
+  .beyond-category-section,
+  .beyond-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+    box-sizing: border-box !important;
+  }
+  .beyond-hero-inner {
+    padding: 0 1rem;
+    box-sizing: border-box;
+  }
+}
 </style>
 
 <!-- Hero Section (Page 1 Content) -->
@@ -931,7 +954,7 @@ html {
     <p class="beyond-hero-desc">
       A vibrant enrichment space for future-ready skills, creative expression and meaningful interests.
     </p>
-    <div class="beyond-hero-grades">NURSERY - GRADE 12</div>
+    <div class="beyond-hero-grades">NURSERY – GRADE 8</div>
 
     <!-- Dedicated Sub-Pages Gateway Links -->
     <div style="display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; margin-top: 2rem;">

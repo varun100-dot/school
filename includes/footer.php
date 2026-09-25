@@ -16,6 +16,9 @@ $logo_path = get_setting('logo_url', '/assets/images/logo.png');
 $social_insta = get_setting('social_instagram', 'https://www.instagram.com/thezuvio/');
 $social_fb = get_setting('social_facebook', 'https://www.facebook.com/share/1XsYWDm3rt/');
 $social_linkedin = get_setting('social_linkedin', 'https://www.linkedin.com/company/zuvio-global-school/');
+if (empty($social_linkedin) || strpos($social_linkedin, 'admin/dashboard') !== false || strpos($social_linkedin, '142914253') !== false) {
+    $social_linkedin = 'https://www.linkedin.com/company/zuvio-global-school/';
+}
 $social_youtube = get_setting('social_youtube', 'https://www.youtube.com/@zuvioglobalschool');
 ?>
 
@@ -26,7 +29,10 @@ $social_youtube = get_setting('social_youtube', 'https://www.youtube.com/@zuviog
       <!-- Column 1: Brand Anchor & Accreditation -->
       <div class="footer-col brand-col">
         <a href="/" title="Zuvio Global School">
-          <img src="<?php echo h($logo_path); ?>" alt="Zuvio Global School" class="footer-logo">
+          <picture>
+            <source srcset="/assets/images/logo.webp" type="image/webp">
+            <img src="<?php echo h($logo_path); ?>" alt="Zuvio Global School" class="footer-logo" loading="lazy" width="160" height="58">
+          </picture>
         </a>
         <p class="brand-tagline">Learning Beyond Boundaries</p>
         <p class="footer-accreditation-text">
@@ -114,7 +120,7 @@ $social_youtube = get_setting('social_youtube', 'https://www.youtube.com/@zuviog
         <div class="footer-contact-item">
           <div class="contact-info-content">
             <strong>Phone / Call:</strong>
-            <a href="tel:<?php echo h($phone); ?>" class="contact-anchor">+91 <?php echo h($phone); ?></a>
+            <a href="tel:+91<?php echo preg_replace('/[^0-9]/', '', $phone); ?>" class="contact-anchor">+91 <?php echo h($phone); ?></a>
           </div>
         </div>
 
@@ -224,8 +230,10 @@ $social_youtube = get_setting('social_youtube', 'https://www.youtube.com/@zuviog
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 38px;
-      height: 38px;
+      width: 44px;
+      height: 44px;
+      min-width: 44px;
+      min-height: 44px;
       border-radius: 50%;
       background-color: #FFFFFF;
       border: 1.5px solid var(--color-border);
@@ -281,13 +289,18 @@ $social_youtube = get_setting('social_youtube', 'https://www.youtube.com/@zuviog
       list-style: none;
       display: flex;
       flex-direction: column;
-      gap: 0.55rem;
+      gap: 0.25rem;
     }
     .footer-link {
-      font-size: 0.88rem;
+      font-size: 0.9rem;
       color: var(--color-text);
       transition: color var(--transition-fast), padding-left var(--transition-fast);
       text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      min-height: 38px;
+      padding: 0.2rem 0;
+      line-height: 1.4;
     }
     .footer-link:hover {
       color: var(--color-gold);
@@ -434,7 +447,7 @@ $social_youtube = get_setting('social_youtube', 'https://www.youtube.com/@zuviog
 
   <!-- Global Floating WhatsApp & Call CTA -->
   <div class="floating-contact-actions" id="floatingContactActions">
-    <a href="tel:<?php echo h($phone); ?>" class="floating-action-btn floating-call-btn" title="Call Us: +91 <?php echo h($phone); ?>" aria-label="Call Zuvio Global School">
+    <a href="tel:+91<?php echo preg_replace('/[^0-9]/', '', $phone); ?>" class="floating-action-btn floating-call-btn" title="Call Us: +91 <?php echo h($phone); ?>" aria-label="Call Zuvio Global School">
       <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
       </svg>
@@ -643,7 +656,7 @@ $social_youtube = get_setting('social_youtube', 'https://www.youtube.com/@zuviog
         </div>
       <?php endforeach; ?>
     </div>
-    <button class="announcement-close" onclick="closeAdmissionsBar()">&times;</button>
+    <button class="announcement-close" onclick="closeAdmissionsBar()" aria-label="Close Announcements" title="Close Announcements">&times;</button>
   </div>
   <?php endif; ?>
 
@@ -659,15 +672,18 @@ $social_youtube = get_setting('social_youtube', 'https://www.youtube.com/@zuviog
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 0.75rem 2rem;
+      padding: 0.65rem 1.5rem;
       box-shadow: 0 -4px 20px rgba(6, 43, 99, 0.15);
       font-family: var(--font-secondary);
       transition: transform 0.3s ease;
+      box-sizing: border-box;
     }
     .announcement-slider-container {
       display: flex;
       align-items: center;
       justify-content: center;
+      flex-grow: 1;
+      min-width: 0;
     }
     .announcement-content {
       display: flex;
@@ -685,6 +701,7 @@ $social_youtube = get_setting('social_youtube', 'https://www.youtube.com/@zuviog
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.5px;
+      flex-shrink: 0;
     }
     .announcement-text {
       font-size: 0.92rem;
@@ -694,12 +711,16 @@ $social_youtube = get_setting('social_youtube', 'https://www.youtube.com/@zuviog
     .announcement-btn {
       background-color: var(--color-teal);
       color: #fff;
-      padding: 0.4rem 1.15rem;
+      padding: 0.45rem 1.15rem;
       border-radius: var(--radius-sm);
-      font-size: 0.8rem;
+      font-size: 0.82rem;
       font-weight: 600;
       text-decoration: none;
       transition: background-color 0.2s ease;
+      white-space: nowrap;
+      min-height: 36px;
+      display: inline-flex;
+      align-items: center;
     }
     .announcement-btn:hover {
       background-color: #0b9ba9;
@@ -708,33 +729,72 @@ $social_youtube = get_setting('social_youtube', 'https://www.youtube.com/@zuviog
       background: none;
       border: none;
       color: var(--color-white);
-      font-size: 1.6rem;
+      font-size: 1.8rem;
       cursor: pointer;
-      opacity: 0.8;
+      opacity: 0.85;
       transition: opacity 0.2s;
-      padding: 0 0.5rem;
+      padding: 0;
+      width: 44px;
+      height: 44px;
+      min-width: 44px;
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       line-height: 1;
+      border-radius: 50%;
+      flex-shrink: 0;
     }
     .announcement-close:hover {
       opacity: 1;
+      background: rgba(255, 255, 255, 0.1);
+    }
+    body:not(.announcement-bar-closed) {
+      padding-bottom: 60px;
     }
     @media (max-width: 850px) {
       .admissions-announcement-bar {
-        padding: 0.8rem 1rem;
+        padding: 0.45rem 0.75rem;
       }
       .announcement-content {
-        gap: 0.5rem;
+        gap: 0.4rem;
         justify-content: center;
         text-align: center;
       }
       .announcement-text {
-        font-size: 0.82rem;
+        font-size: 0.8rem;
         width: 100%;
+        line-height: 1.35;
+      }
+      .announcement-badge {
+        font-size: 0.68rem;
+        padding: 0.2rem 0.6rem;
+      }
+      .announcement-btn {
+        padding: 0.35rem 0.85rem;
+        font-size: 0.75rem;
+        min-height: 32px;
+      }
+    }
+    @media (max-width: 768px) {
+      body:not(.announcement-bar-closed) {
+        padding-bottom: 75px;
       }
     }
   </style>
 
   <script>
+    // Check if announcement was previously dismissed
+    (function() {
+      try {
+        if (localStorage.getItem('zuvio_announcement_dismissed') === '1') {
+          const bar = document.getElementById('admissionsAnnouncementBar');
+          if (bar) bar.style.display = 'none';
+          document.body.classList.add('announcement-bar-closed');
+        }
+      } catch(e) {}
+    })();
+
     // Global FAQ accordion toggle handler
     if (typeof window.toggleFaq !== 'function') {
       window.toggleFaq = function(btn) {
@@ -766,6 +826,9 @@ $social_youtube = get_setting('social_youtube', 'https://www.youtube.com/@zuviog
         setTimeout(() => {
           bar.style.display = 'none';
           document.body.classList.add('announcement-bar-closed');
+          try {
+            localStorage.setItem('zuvio_announcement_dismissed', '1');
+          } catch(e) {}
         }, 300);
       }
     }

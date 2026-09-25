@@ -16,7 +16,7 @@ $story = $cms['story'] ?? [
     'title' => 'Learning Without Boundaries, Growing With Purpose',
     'subtitle' => 'About Zuvio',
     'content' => "Zuvio began with a simple observation: too many children are asked to fit into a system, rather than the system being designed to fit the child.\n\nTraditional schooling often requires conformity over curiosity, rigid schedules over natural rhythms, and a one-size-fits-all approach that leaves many students underserved — whether they need more time to master a concept, more room to run ahead, or simply an environment where they feel safe and understood.\n\nZuvio Global School was founded to offer an alternative — not an alternative that compromises on quality, but one that raises the bar for what education can be.\n\nWe bring together a structured, curriculum-aligned programme, caring teachers, and thoughtful technology to create a flexible, personalised learning experience your child can access from anywhere in the world.",
-    'image' => '/assets/images/about_us_hero.jpg'
+    'image' => '/assets/images/about_us_hero.webp'
 ];
 
 // 2. Vision & Mission
@@ -480,7 +480,7 @@ render_breadcrumbs([
       </div>
       <div>
         <div style="border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-md); border: 1.5px solid rgba(6, 43, 99, 0.16); background-color: var(--color-navy); height: 420px;">
-          <img src="<?php echo h($story['image']); ?>" alt="Zuvio Global School Students" style="width: 100%; height: 100%; object-fit: cover;">
+          <img src="<?php echo h($story['image']); ?>" alt="Zuvio Global School Students" loading="lazy" style="width: 100%; height: 100%; object-fit: cover;">
         </div>
       </div>
     </div>
@@ -707,7 +707,7 @@ render_breadcrumbs([
         <div class="card" style="background-color: #FFFFFF; border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-sm); display: flex; flex-direction: column;">
           <div style="height: 360px; background-color: var(--pastel-blue); display: flex; justify-content: center; align-items: center; overflow: hidden;">
             <?php if (!empty($leader['image'])): ?>
-              <img src="<?php echo h($leader['image']); ?>" alt="<?php echo h($leader['name']); ?>" style="width: 100%; height: 100%; object-fit: cover; object-position: center 12%;">
+              <img src="<?php echo h($leader['image']); ?>" alt="<?php echo h($leader['name']); ?>" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; object-position: center 12%;">
             <?php else: ?>
               <span style="font-size: 1.5rem; font-weight: 700; font-family: var(--font-primary);"><?php echo h($leader['name']); ?></span>
             <?php endif; ?>
@@ -742,11 +742,11 @@ render_breadcrumbs([
 <!-- 8. Section: Founder’s Message (Official) -->
 <section id="founders-message" class="founder-message-section" style="background-color: var(--color-surface-warm); border-bottom: 1px solid var(--color-border); padding: 5rem 0;">
   <div class="container">
-    <div class="founder-editorial-card" style="background-color: #FFFFFF; border: 1.5px solid rgba(6, 43, 99, 0.16); border-radius: var(--radius-lg); padding: 3.5rem; display: grid; grid-template-columns: 280px 1fr; gap: 3.5rem; box-shadow: var(--shadow-sm);">
+    <div class="founder-editorial-card">
       
       <div class="founder-portrait-col" style="text-align: center;">
         <div class="founder-portrait-frame" style="width: 220px; height: 280px; border-radius: var(--radius-md); overflow: hidden; margin: 0 auto 1.25rem auto; border: 3px solid var(--color-gold); box-shadow: var(--shadow-sm);">
-          <img src="<?php echo h($founder_message['image']); ?>" alt="Founder of Zuvio Global School" style="width: 100%; height: 100%; object-fit: cover;">
+          <img src="<?php echo h($founder_message['image']); ?>" alt="Founder of Zuvio Global School" loading="lazy" style="width: 100%; height: 100%; object-fit: cover;">
         </div>
         <h3 style="font-size: 1.35rem; color: var(--color-navy); font-family: var(--font-primary); margin-bottom: 0.25rem;">
           <?php echo h($founder_message['signoff_name']); ?>
@@ -807,7 +807,7 @@ render_breadcrumbs([
     <div class="founder-profile-banner">
       <div style="text-align: center;">
         <div style="width: 200px; height: 250px; border-radius: var(--radius-md); overflow: hidden; margin: 0 auto 1.25rem auto; border: 3px solid var(--color-gold); box-shadow: var(--shadow-md);">
-          <img src="/assets/images/Profile_Images/Pragya_Professional_Profile.webp" alt="<?php echo h($founder_story['name']); ?>" style="width: 100%; height: 100%; object-fit: cover;">
+          <img src="/assets/images/Profile_Images/Pragya_Professional_Profile.webp" alt="<?php echo h($founder_story['name']); ?>" loading="lazy" style="width: 100%; height: 100%; object-fit: cover;">
         </div>
         <h3 style="font-size: 1.4rem; color: #FFFFFF; font-family: var(--font-primary); margin-bottom: 0.25rem;">
           <?php echo h($founder_story['name']); ?>
@@ -969,7 +969,7 @@ render_breadcrumbs([
       <div class="accreditation-feature-card">
         <div>
           <div class="accreditation-logo-wrapper">
-            <img src="/assets/images/isso-logo.png" alt="ISSO Logo">
+            <img src="/assets/images/isso-logo.png" alt="ISSO Logo" loading="lazy">
           </div>
           <h3 style="font-size: 1.25rem; color: var(--color-navy); font-family: var(--font-primary); margin-bottom: 0.35rem;">ISSO</h3>
           <h4 style="font-size: 0.88rem; color: var(--color-teal); font-weight: 600; margin-bottom: 1rem;">International Schools Sports Organisation</h4>
@@ -984,7 +984,7 @@ render_breadcrumbs([
       <div class="accreditation-feature-card">
         <div>
           <div class="accreditation-logo-wrapper">
-            <img src="/assets/images/iao-logo.png" alt="IAO Logo">
+            <img src="/assets/images/iao-logo.png" alt="IAO Logo" loading="lazy">
           </div>
           <h3 style="font-size: 1.25rem; color: var(--color-navy); font-family: var(--font-primary); margin-bottom: 0.35rem;">IAO</h3>
           <h4 style="font-size: 0.88rem; color: var(--color-teal); font-weight: 600; margin-bottom: 1rem;">International Accreditation Organization</h4>
@@ -1002,7 +1002,7 @@ render_breadcrumbs([
       <div class="accreditation-feature-card">
         <div>
           <div class="accreditation-logo-wrapper">
-            <img src="/assets/images/oxford-logo.png" alt="Oxford Quality Logo">
+            <img src="/assets/images/oxford-logo.png" alt="Oxford Quality Logo" loading="lazy">
           </div>
           <h3 style="font-size: 1.25rem; color: var(--color-navy); font-family: var(--font-primary); margin-bottom: 0.35rem;">Oxford Quality</h3>
           <h4 style="font-size: 0.88rem; color: var(--color-teal); font-weight: 600; margin-bottom: 1rem;">Oxford University Press</h4>
