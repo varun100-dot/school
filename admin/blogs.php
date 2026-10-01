@@ -120,8 +120,14 @@ if ($action === 'add_category' && $_SERVER['REQUEST_METHOD'] === 'POST') {
         $cat_desc = trim($_POST['cat_desc'] ?? '');
         if ($cat_name && $db) {
             try {
-                $stmt = $db->prepare("INSERT INTO `blog_categories` (`name`, `slug`, `description`) VALUES (?, ?, ?)");
-                $stmt->execute([$cat_name, $cat_slug, $cat_desc]);
+                try {
+                    $stmt = $db->prepare("INSERT INTO `blog_categories` (`name`, `slug`, `description`) VALUES (?, ?, ?)");
+                    $stmt->execute([$cat_name, $cat_slug, $cat_desc]);
+                } catch (PDOException $pe) {
+                    // Fallback if description column does not exist in schema
+                    $stmt = $db->prepare("INSERT INTO `blog_categories` (`name`, `slug`) VALUES (?, ?)");
+                    $stmt->execute([$cat_name, $cat_slug]);
+                }
                 header('Location: /admin/blogs?tab=categories&msg=cat_added');
                 exit;
             } catch (Exception $e) {

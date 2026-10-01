@@ -98,17 +98,16 @@ CREATE TABLE IF NOT EXISTS `blog_categories` (
   `id` INT AUTO_INCREMENT PRIMARY KEY,
   `name` VARCHAR(100) NOT NULL UNIQUE,
   `slug` VARCHAR(100) NOT NULL UNIQUE,
-  `description` VARCHAR(255) DEFAULT NULL,
   `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
-INSERT IGNORE INTO `blog_categories` (`id`, `name`, `slug`, `description`) VALUES
-(1, 'Pedagogy & Curriculum', 'pedagogy-curriculum', 'Insights into Oxford thematic learning, CBSE mapping, and progressive education.'),
-(2, 'Technology & AI', 'technology-ai', 'Artificial intelligence, coding, and future skills in online schooling.'),
-(3, 'Parenting & Life Skills', 'parenting-life-skills', 'Guidance for homeschooling parents, emotional resilience, and work-life balance.'),
-(4, 'School News & Announcements', 'school-news', 'Official updates, circulars, and announcements from Zuvio Global School.'),
-(5, 'Awards & Recognition', 'awards-recognition', 'Achievements, accreditations, and media coverage highlighting school excellence.');
+INSERT IGNORE INTO `blog_categories` (`name`, `slug`) VALUES
+('Pedagogy & Curriculum', 'pedagogy-curriculum'),
+('Technology & AI', 'technology-ai'),
+('Parenting & Life Skills', 'parenting-life-skills'),
+('School News & Announcements', 'school-news'),
+('Awards & Recognition', 'awards-recognition');
 
 -- 5. Ensure navigation_items table exists with complete hierarchy
 CREATE TABLE IF NOT EXISTS `navigation_items` (
