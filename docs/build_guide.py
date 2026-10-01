@@ -1,0 +1,501 @@
+import os
+
+out = os.path.join(os.path.dirname(__file__), 'admin-guide.html')
+
+css = """<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Zuvio Global School — Admin Panel User Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#062B63;--nd:#041E4A;--gold:#D9A441;--teal:#0D9488;--lb:#EFF6FF;--bd:#E2E8F0;--tx:#1E293B;--mu:#64748B;--ok:#059669;--er:#DC2626;--wa:#D97706}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;color:var(--tx);background:#fff;font-size:10pt;line-height:1.6}
+@page{size:A4;margin:12mm 14mm}
+@media print{.pb{page-break-before:always}.nb{page-break-inside:avoid}body{font-size:9.5pt}}
+.cover{display:flex;flex-direction:column;justify-content:center;align-items:center;min-height:100vh;background:linear-gradient(145deg,var(--nd),var(--navy) 60%,#0D4A8A);color:#fff;text-align:center;padding:3rem;page-break-after:always}
+.ci{width:90px;height:90px;background:rgba(255,255,255,.12);border:2px solid rgba(255,255,255,.3);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:2.5rem;margin-bottom:2rem}
+.cb{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:3px;color:var(--gold);margin-bottom:1rem}
+.cover h1{font-family:'Playfair Display',serif;font-size:2.8rem;font-weight:800;line-height:1.15;margin-bottom:1rem}
+.cover h1 span{color:var(--gold)}
+.cs{font-size:1rem;color:rgba(255,255,255,.75);max-width:480px;margin:0 auto 2.5rem;line-height:1.7}
+.dv{width:60px;height:3px;background:var(--gold);border-radius:2px;margin:0 auto 2.5rem}
+.cm{display:flex;gap:3rem;margin-top:2.5rem;font-size:.8rem;color:rgba(255,255,255,.6)}
+.cm span{display:flex;flex-direction:column;align-items:center;gap:.25rem}
+.cm strong{color:#fff;font-size:.9rem}
+.cv{margin-top:3rem;padding:.5rem 1.25rem;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:20px;font-size:.75rem;color:rgba(255,255,255,.7)}
+.sh{display:flex;align-items:center;gap:.75rem;margin-bottom:1.5rem;padding-bottom:.75rem;border-bottom:2px solid var(--navy)}
+.sn{width:32px;height:32px;background:var(--navy);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700;flex-shrink:0}
+.st{font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--navy);font-weight:700}
+.ti{display:flex;align-items:center;justify-content:space-between;padding:.55rem .75rem;border-radius:6px;margin-bottom:.25rem}
+.ti:nth-child(odd){background:#F8FAFC}
+.tl{display:flex;align-items:center;gap:.75rem;font-size:.88rem;font-weight:500;color:var(--tx)}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--gold);flex-shrink:0}
+.pn{font-size:.8rem;font-weight:600;color:var(--navy)}
+.ds{padding:1rem 0 2rem}
+.bx{border-radius:8px;padding:.9rem 1.1rem;margin:1rem 0;display:flex;align-items:flex-start;gap:.75rem;font-size:.87rem}
+.bx.inf{background:#EFF6FF;border-left:3px solid #3B82F6;color:#1E3A5F}
+.bx.tip{background:#ECFDF5;border-left:3px solid var(--ok);color:#064E3B}
+.bx.wrn{background:#FFFBEB;border-left:3px solid var(--wa);color:#78350F}
+.bx.dng{background:#FEF2F2;border-left:3px solid var(--er);color:#7F1D1D}
+.bi{font-size:1.1rem;flex-shrink:0;margin-top:.05rem}
+.st2{display:flex;gap:1rem;margin-bottom:1rem;align-items:flex-start}
+.sn2{width:28px;height:28px;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;flex-shrink:0;margin-top:.1rem}
+.sc h4{font-size:.9rem;font-weight:700;color:var(--navy);margin-bottom:.2rem}
+.sc p{font-size:.85rem;color:var(--mu);line-height:1.55}
+table{width:100%;border-collapse:collapse;font-size:.85rem;margin:1rem 0}
+th{background:var(--navy);color:#fff;padding:.6rem .9rem;text-align:left;font-weight:600;font-size:.8rem}
+td{padding:.55rem .9rem;border-bottom:1px solid var(--bd);vertical-align:top}
+tr:nth-child(even) td{background:#F8FAFC}
+.pl{display:inline-block;padding:.15rem .55rem;border-radius:12px;font-size:.7rem;font-weight:700}
+.pg{background:#D1FAE5;color:#065F46}.pb2{background:#DBEAFE;color:#1E40AF}.py{background:#FEF3C7;color:#92400E}.pr{background:#FEE2E2;color:#991B1B}.pm{background:#F1F5F9;color:#475569}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin:1rem 0}
+.cd{border:1.5px solid var(--bd);border-radius:8px;padding:.9rem 1rem;background:#fff}
+.cd h4{font-size:.82rem;font-weight:700;color:var(--navy);margin-bottom:.4rem}
+.cd p{font-size:.78rem;color:var(--mu);line-height:1.5}
+.sbx{border:1.5px solid var(--bd);border-radius:10px;overflow:hidden;margin:1rem 0}
+.sbh{color:#fff;padding:.65rem 1rem;font-size:.85rem;font-weight:700}
+.sbb{padding:1rem}
+ul.dl{list-style:none;padding:0;margin:.5rem 0}
+ul.dl li{padding:.3rem 0;padding-left:1.25rem;position:relative;font-size:.86rem;color:var(--tx)}
+ul.dl li::before{content:"\\2192";position:absolute;left:0;color:var(--gold);font-weight:700}
+code{background:#F1F5F9;padding:.1rem .35rem;border-radius:3px;font-size:.82rem;font-family:'Courier New',monospace;color:var(--navy)}
+h2.sub{font-size:1.05rem;color:var(--navy);margin:1.5rem 0 .65rem;font-weight:700;display:flex;align-items:center;gap:.4rem}
+h2.sub::before{content:"";width:4px;height:18px;background:var(--gold);border-radius:2px;display:inline-block;flex-shrink:0}
+p.doc{font-size:.875rem;color:var(--tx);line-height:1.65;margin-bottom:.65rem}
+.fb{margin-top:2rem;padding:.75rem 1rem;background:var(--lb);border-radius:8px;display:flex;justify-content:space-between;align-items:center;font-size:.75rem;color:var(--mu)}
+.fb strong{color:var(--navy)}
+.wf{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;margin:1rem 0}
+.ws{background:var(--lb);border:1.5px solid #BFDBFE;border-radius:6px;padding:.4rem .75rem;font-size:.78rem;font-weight:600;color:var(--navy)}
+.wa2{color:var(--gold);font-weight:700;font-size:.9rem}
+.hs{background:linear-gradient(135deg,var(--navy),#0A3875);color:#fff;border-radius:8px;padding:1rem 1.25rem;margin:1rem 0;font-size:.85rem}
+.hs h3{font-size:.95rem;font-weight:700;color:var(--gold);margin-bottom:.35rem}
+</style>
+</head>
+<body>
+"""
+
+sections = []
+
+# COVER
+sections.append("""
+<div class="cover">
+  <div class="ci">&#127979;</div>
+  <div class="cb">Official Documentation &middot; Confidential</div>
+  <h1>Admin Panel<br><span>User Guide</span></h1>
+  <div class="dv"></div>
+  <p class="cs">A complete step-by-step guide to managing the Zuvio Global School website content, leads, media, and system settings through the Admin Panel.</p>
+  <div class="cm">
+    <span><strong>Prepared For</strong>Zuvio Global School</span>
+    <span><strong>Version</strong>1.0 &mdash; Phase 3</span>
+    <span><strong>Date</strong>October 2026</span>
+  </div>
+  <div class="cv">Confidential &middot; For Internal Use Only</div>
+</div>
+""")
+
+# TOC
+sections.append("""
+<div style="padding:2rem 0;page-break-after:always">
+  <div class="sh"><div class="sn" style="background:var(--gold);color:var(--navy)">&#128203;</div><div class="st">Table of Contents</div></div>
+  <div class="ti"><div class="tl"><div class="dot"></div>1. Getting Started &mdash; Login &amp; Dashboard</div><div class="pn">3</div></div>
+  <div class="ti"><div class="tl"><div class="dot"></div>2. Website CMS &mdash; Managing Page Sections</div><div class="pn">4</div></div>
+  <div class="ti"><div class="tl"><div class="dot" style="background:#3B82F6"></div>&nbsp;&nbsp;2.1 Homepage (16 Sections)</div><div class="pn">4</div></div>
+  <div class="ti"><div class="tl"><div class="dot" style="background:#3B82F6"></div>&nbsp;&nbsp;2.2 About Us (8 Sections)</div><div class="pn">5</div></div>
+  <div class="ti"><div class="tl"><div class="dot" style="background:#3B82F6"></div>&nbsp;&nbsp;2.3 Academics (7 Sections)</div><div class="pn">5</div></div>
+  <div class="ti"><div class="tl"><div class="dot" style="background:#3B82F6"></div>&nbsp;&nbsp;2.4 Admissions (6 Sections)</div><div class="pn">6</div></div>
+  <div class="ti"><div class="tl"><div class="dot" style="background:#3B82F6"></div>&nbsp;&nbsp;2.5 Beyond Academics (6 Sections)</div><div class="pn">6</div></div>
+  <div class="ti"><div class="tl"><div class="dot" style="background:#3B82F6"></div>&nbsp;&nbsp;2.6 Contact Us (5 Sections)</div><div class="pn">6</div></div>
+  <div class="ti"><div class="tl"><div class="dot"></div>3. Hero Banner Management</div><div class="pn">7</div></div>
+  <div class="ti"><div class="tl"><div class="dot"></div>4. Header &amp; Navigation Settings</div><div class="pn">7</div></div>
+  <div class="ti"><div class="tl"><div class="dot"></div>5. Lead / Enquiry Management (CRM)</div><div class="pn">8</div></div>
+  <div class="ti"><div class="tl"><div class="dot"></div>6. Content Modules (Blogs, FAQs, Testimonials, Media)</div><div class="pn">9</div></div>
+  <div class="ti"><div class="tl"><div class="dot"></div>7. Team Profiles</div><div class="pn">11</div></div>
+  <div class="ti"><div class="tl"><div class="dot"></div>8. SEO Manager</div><div class="pn">11</div></div>
+  <div class="ti"><div class="tl"><div class="dot"></div>9. User Accounts &amp; Roles</div><div class="pn">12</div></div>
+  <div class="ti"><div class="tl"><div class="dot"></div>10. Site Settings</div><div class="pn">12</div></div>
+  <div class="ti"><div class="tl"><div class="dot"></div>11. Quick Reference &mdash; All Admin URLs</div><div class="pn">13</div></div>
+  <div class="ti"><div class="tl"><div class="dot"></div>12. Dos &amp; Donts / Best Practices</div><div class="pn">13</div></div>
+  <div class="bx inf" style="margin-top:1.5rem"><span class="bi">&#8505;&#65039;</span><div>This guide covers the Zuvio Global School Admin Panel (Phase 3). Every section corresponds to a live admin page.</div></div>
+</div>
+""")
+
+# SEC 1
+sections.append("""
+<div class="ds pb">
+  <div class="sh"><div class="sn">1</div><div class="st">Getting Started &mdash; Login &amp; Dashboard</div></div>
+  <h2 class="sub">Logging In</h2>
+  <p class="doc">Access the admin panel at <code>yourdomain.com/admin</code>. Only authorized credentials can log in.</p>
+  <div class="st2 nb"><div class="sn2">1</div><div class="sc"><h4>Open Admin Login URL</h4><p>Navigate to <code>yourdomain.com/admin</code> or <code>yourdomain.com/admin/login</code>.</p></div></div>
+  <div class="st2 nb"><div class="sn2">2</div><div class="sc"><h4>Enter Credentials</h4><p>Type your username and password, then click <strong>Sign In</strong>.</p></div></div>
+  <div class="st2 nb"><div class="sn2">3</div><div class="sc"><h4>Dashboard Loads</h4><p>You land on the Admin Dashboard showing live stats and quick links.</p></div></div>
+  <div class="st2 nb"><div class="sn2">4</div><div class="sc"><h4>Sign Out</h4><p>Click <strong>Sign Out</strong> in the top-right corner. Always sign out on shared devices.</p></div></div>
+  <div class="bx wrn"><span class="bi">&#9888;&#65039;</span><div><strong>Security:</strong> Never share your admin credentials. Contact the system administrator immediately if you suspect unauthorized access.</div></div>
+  <h2 class="sub">Dashboard Widgets</h2>
+  <table class="nb"><tr><th>Widget</th><th>What It Shows</th></tr>
+  <tr><td><strong>Homepage Leads</strong></td><td>Total enquiries from homepage counselor form and hero banner.</td></tr>
+  <tr><td><strong>Contact Us Leads</strong></td><td>Total enquiries from the Contact Us page form.</td></tr>
+  <tr><td><strong>Total Enquiries</strong></td><td>Combined count of all student/parent leads.</td></tr>
+  <tr><td><strong>Hero Banners Active</strong></td><td>Number of hero slides currently live on the homepage.</td></tr>
+  <tr><td><strong>Recent Enquiries Table</strong></td><td>Last 6 leads with parent name, email, phone, grade, source, status.</td></tr>
+  <tr><td><strong>System Audit Log</strong></td><td>Last 5 changes made by admin users (who changed what, when).</td></tr>
+  <tr><td><strong>Refresh Live Data</strong></td><td>Pulls latest data from database for accurate counts.</td></tr></table>
+  <h2 class="sub">Sidebar Navigation Groups</h2>
+  <div class="g2 nb">
+    <div class="cd"><h4>&#127760; Website</h4><p>Header, Sliding Strip and all 6 Page CMS editors (Home, About, Academics, Admissions, Beyond, Contact).</p></div>
+    <div class="cd"><h4>&#128196; Content</h4><p>Testimonials, FAQs, Blogs, Media Library, Affiliations, Announcements.</p></div>
+    <div class="cd"><h4>&#128203; Lead Management</h4><p>Homepage Leads, Contact Leads, All Enquiries CRM.</p></div>
+    <div class="cd"><h4>&#9881;&#65039; Settings</h4><p>Site Settings, Page SEO, Navigation, Users, Database Migrations.</p></div>
+  </div>
+</div>
+""")
+
+# SEC 2
+sections.append("""
+<div class="ds pb">
+  <div class="sh"><div class="sn">2</div><div class="st">Website CMS &mdash; Managing Page Sections</div></div>
+  <p class="doc">Every main page has its own CMS editor following the same <strong>2-Column Section Manager</strong> layout.</p>
+  <div class="hs nb"><h3>How the 2-Column Section Manager Works</h3>The <strong>left sidebar</strong> lists all sections in order. The <strong>right panel</strong> shows the edit form for the selected section. Saving only affects the section currently selected.</div>
+  <h2 class="sub">Controls on Every CMS Page</h2>
+  <table class="nb"><tr><th>Control</th><th>What It Does</th></tr>
+  <tr><td><span class="pl pg">ON / OFF</span> Visible on Page</td><td>Checked = section visible on live site. Unchecked = hidden from visitors but not deleted.</td></tr>
+  <tr><td><span class="pl pr">Remove Section</span></td><td>Marks section as Removed. Disappears from website. Restorable anytime.</td></tr>
+  <tr><td><span class="pl pg">Restore Section</span></td><td>Brings a removed section back to the live website.</td></tr>
+  <tr><td><strong>Save Section Changes</strong></td><td>Saves edits and syncs to the live website immediately.</td></tr></table>
+  <div class="bx tip"><span class="bi">&#128161;</span><div><strong>Sidebar Badges:</strong> <span class="pl pg">ON</span> = visible on site, <span class="pl pm">OFF</span> = hidden, <span class="pl pr">REMOVED</span> = off site entirely.</div></div>
+  <h2 class="sub">2.1 Homepage CMS <span class="pl pb2" style="margin-left:.5rem">16 Sections</span></h2>
+  <p class="doc">Go to: <code>Admin &rarr; Website &rarr; Home</code></p>
+  <table class="nb"><tr><th>#</th><th>Section</th><th>What You Can Edit</th></tr>
+  <tr><td>1</td><td>Hero Banner (Slider)</td><td>Managed via Hero Banners manager (Section 3)</td></tr>
+  <tr><td>2</td><td>Sliding Strip / Ticker</td><td>Managed via Sliding Strip manager (Section 4)</td></tr>
+  <tr><td>3</td><td>Why Zuvio</td><td>Badge, heading, subtitle, feature items</td></tr>
+  <tr><td>4</td><td>About Section</td><td>Title, description, CTA button text and link</td></tr>
+  <tr><td>5</td><td>Statistics Counter</td><td>Numbers and labels (e.g. "2000+ Students")</td></tr>
+  <tr><td>6</td><td>Curriculum Overview</td><td>Title, description, CTA link</td></tr>
+  <tr><td>7</td><td>Academic Approach (ZUVIO)</td><td>Each letter's title and description</td></tr>
+  <tr><td>8</td><td>Admissions Journey</td><td>Steps title, subtitle, step cards</td></tr>
+  <tr><td>9</td><td>Who Is Zuvio For</td><td>Audience card titles and descriptions</td></tr>
+  <tr><td>10</td><td>LMS Ecosystem</td><td>Heading, description, video embed URL</td></tr>
+  <tr><td>11</td><td>Co-Curricular Activities</td><td>Section title, descriptions</td></tr>
+  <tr><td>12</td><td>Testimonials</td><td>Enable/disable; content via Testimonials module</td></tr>
+  <tr><td>13</td><td>News and Blogs Preview</td><td>Enable/disable; content via Blogs module</td></tr>
+  <tr><td>14</td><td>Counselor CTA (Request Callback)</td><td>Title, subtitle, description text</td></tr>
+  <tr><td>15</td><td>FAQ Preview</td><td>Enable/disable section</td></tr>
+  <tr><td>16</td><td>Conversion CTA Banner</td><td>Heading, subtext, primary and secondary button text and links</td></tr></table>
+</div>
+""")
+
+# SEC 2 continued
+sections.append("""
+<div class="ds pb">
+  <h2 class="sub">2.2 About Us CMS <span class="pl pb2" style="margin-left:.5rem">8 Sections</span></h2>
+  <p class="doc">Go to: <code>Admin &rarr; Website &rarr; About</code></p>
+  <table class="nb"><tr><th>#</th><th>Section</th><th>Editable Content</th></tr>
+  <tr><td>1</td><td>About Zuvio Story and Vision</td><td>Title, subtitle, story text, image URL, vision and mission statements</td></tr>
+  <tr><td>2</td><td>Core Values (6 Items)</td><td>Badge label, section heading</td></tr>
+  <tr><td>3</td><td>What Sets Us Apart (6 Items)</td><td>Badge label, section heading</td></tr>
+  <tr><td>4</td><td>The ZUVIO Approach (5 Items)</td><td>Badge label, section heading</td></tr>
+  <tr><td>5</td><td>Who Should Choose (8 Items)</td><td>Badge label, section heading</td></tr>
+  <tr><td>6</td><td>Founders Message</td><td>Badge, title, salutation, paragraphs, sign-off name, photo URL</td></tr>
+  <tr><td>7</td><td>Awards and Recognition</td><td>Badge label, section heading</td></tr>
+  <tr><td>8</td><td>Conversion CTA Banner</td><td>Badge, title, subtitle, button text and links</td></tr></table>
+  <div class="bx inf"><span class="bi">&#8505;&#65039;</span><div>Team profiles are managed separately via <strong>Admin &rarr; Content &rarr; Profiles</strong>.</div></div>
+
+  <h2 class="sub">2.3 Academics CMS <span class="pl pb2" style="margin-left:.5rem">7 Sections</span></h2>
+  <p class="doc">Go to: <code>Admin &rarr; Website &rarr; Academics</code></p>
+  <table class="nb"><tr><th>#</th><th>Section</th><th>Editable Content</th></tr>
+  <tr><td>1</td><td>Technology and LMS Ecosystem</td><td>Kicker, heading, description, LMS video URL</td></tr>
+  <tr><td>2</td><td>Curriculum Framework (4 Stages)</td><td>Hero title, description, stage titles and descriptions</td></tr>
+  <tr><td>3</td><td>Special Education and Neurodiversity</td><td>Kicker, heading, introduction paragraph</td></tr>
+  <tr><td>4</td><td>Electives, Languages and Skills</td><td>Badge, title, regional and foreign languages lists</td></tr>
+  <tr><td>5</td><td>NEP 2020 and Policy Framework</td><td>Title, description, PDF title, PDF URL</td></tr>
+  <tr><td>6</td><td>Academic Resources and Calendar</td><td>Calendar title, description, PDF download URL</td></tr>
+  <tr><td>7</td><td>Conversion CTA Banner</td><td>Badge, title, subtitle, button text and links</td></tr></table>
+
+  <h2 class="sub">2.4 Admissions CMS <span class="pl pb2" style="margin-left:.5rem">6 Sections</span></h2>
+  <p class="doc">Go to: <code>Admin &rarr; Website &rarr; Admissions</code></p>
+  <table><tr><th>#</th><th>Section</th><th>Editable Content</th></tr>
+  <tr><td>1</td><td>Admissions Hero and Overview</td><td>Badge, hero title, subtitle, button 1 and 2 text and URLs</td></tr>
+  <tr><td>2</td><td>Enrolment Journey and Documents</td><td>Title, 5-step admission cards, required documents list</td></tr>
+  <tr><td>3</td><td>Eligibility and Age Matrix</td><td>Title, stage-wise table (grade, age, duration), mid-session note</td></tr>
+  <tr><td>4</td><td>Tuition Fees and Inclusions</td><td>Title, fee tier table, payment notes, PDF upload</td></tr>
+  <tr><td>5</td><td>Academic Calendar and Terms</td><td>Title, subtitle, PDF upload</td></tr>
+  <tr><td>6</td><td>Admissions FAQ and Counselor CTA</td><td>FAQ kicker, title; counselor section title, description, button texts</td></tr></table>
+
+  <h2 class="sub">2.5 Beyond Academics CMS <span class="pl pb2" style="margin-left:.5rem">6 Sections</span></h2>
+  <p class="doc">Go to: <code>Admin &rarr; Website &rarr; Beyond Academics</code></p>
+  <table><tr><th>#</th><th>Section</th><th>Editable Content</th></tr>
+  <tr><td>1</td><td>Hero and Overview</td><td>Badge, heading, description</td></tr>
+  <tr><td>2</td><td>Co-Curricular Programme</td><td>Badge, heading, description, club categories</td></tr>
+  <tr><td>3</td><td>Student Achievers</td><td>Badge, heading, description, achievement items</td></tr>
+  <tr><td>4</td><td>Virtual Classroom Experience</td><td>Badge, heading, description, feature points</td></tr>
+  <tr><td>5</td><td>Photo Gallery</td><td>Badge, heading, description</td></tr>
+  <tr><td>6</td><td>Conversion CTA</td><td>Badge, heading, description, button text and link</td></tr></table>
+
+  <h2 class="sub">2.6 Contact Us CMS <span class="pl pb2" style="margin-left:.5rem">5 Sections</span></h2>
+  <p class="doc">Go to: <code>Admin &rarr; Website &rarr; Contact</code></p>
+  <table class="nb"><tr><th>#</th><th>Section</th><th>Editable Content</th></tr>
+  <tr><td>1</td><td>Hero and Intro</td><td>Badge, heading, subtitle</td></tr>
+  <tr><td>2</td><td>Contact Details and Map</td><td>Address, phone, email, Google Maps embed URL</td></tr>
+  <tr><td>3</td><td>Contact Form</td><td>Form heading, description</td></tr>
+  <tr><td>4</td><td>Social Media Links</td><td>Facebook, Instagram, YouTube, LinkedIn URLs</td></tr>
+  <tr><td>5</td><td>Conversion CTA</td><td>Badge, title, subtitle, button text and link</td></tr></table>
+</div>
+""")
+
+# SEC 3-5
+sections.append("""
+<div class="ds pb">
+  <div class="sh"><div class="sn">3</div><div class="st">Hero Banner Management</div></div>
+  <p class="doc">Go to: <code>Admin &rarr; Hero Banners</code>. Controls the full-screen image/video slides at the top of the homepage.</p>
+  <h2 class="sub">Adding a New Hero Slide</h2>
+  <div class="st2 nb"><div class="sn2">1</div><div class="sc"><h4>Click "+ Add New Slide"</h4><p>Scroll to the bottom of the Hero Banners page.</p></div></div>
+  <div class="st2 nb"><div class="sn2">2</div><div class="sc"><h4>Fill In Slide Details</h4><p>Slide title, subtitle, description, badge text, primary and secondary button labels and URLs.</p></div></div>
+  <div class="st2 nb"><div class="sn2">3</div><div class="sc"><h4>Upload Background Media</h4><p>Upload image (.jpg/.webp/.png) or provide video URL (.mp4). Recommended: <strong>1400x680px</strong>.</p></div></div>
+  <div class="st2 nb"><div class="sn2">4</div><div class="sc"><h4>Set Display Order</h4><p>Sort order number (1 = appears first in slider).</p></div></div>
+  <div class="st2 nb"><div class="sn2">5</div><div class="sc"><h4>Save Slide</h4><p>Click <strong>Save Slide</strong>. Appears live on homepage immediately.</p></div></div>
+  <table class="nb"><tr><th>Action</th><th>How To</th></tr>
+  <tr><td>Edit an existing slide</td><td>Modify any field in the slide card and click <strong>Save Slide #X</strong>.</td></tr>
+  <tr><td>Disable a slide</td><td>Uncheck the <strong>Active</strong> checkbox to hide without deleting.</td></tr>
+  <tr><td>Delete a slide</td><td>Click <strong>Delete Slide</strong>. A confirmation appears before permanent deletion.</td></tr>
+  <tr><td>Version history</td><td>View slide snapshots on the Dashboard under "Recent Hero Slide Snapshots".</td></tr></table>
+  <div class="bx wrn"><span class="bi">&#9888;&#65039;</span><div>Keep at least <strong>1 active hero slide</strong> at all times. The homepage will show blank if no slides are active.</div></div>
+
+  <div class="sh" style="margin-top:2rem"><div class="sn">4</div><div class="st">Header and Navigation Settings</div></div>
+  <h2 class="sub">Header Settings</h2>
+  <p class="doc">Go to: <code>Admin &rarr; Website &rarr; Main Header</code></p>
+  <table class="nb"><tr><th>Setting</th><th>Description</th></tr>
+  <tr><td>Logo Upload</td><td>Upload school logo (.png/.webp/.svg). Shows in header on every page.</td></tr>
+  <tr><td>Phone Number</td><td>Contact phone shown in the header bar.</td></tr>
+  <tr><td>Email Address</td><td>Enquiry email shown in the header.</td></tr>
+  <tr><td>CTA Button Text</td><td>Text of the main header action button (e.g., "Enrol Now").</td></tr>
+  <tr><td>CTA Button URL</td><td>Where the header button links to.</td></tr>
+  <tr><td>Announcement Bar</td><td>Enable/disable and set text for the top announcement bar.</td></tr></table>
+  <h2 class="sub">Sliding Strip / Ticker</h2>
+  <p class="doc">Go to: <code>Admin &rarr; Website &rarr; Sliding Strip</code>. The scrolling marquee below the hero section.</p>
+  <div class="st2 nb"><div class="sn2">1</div><div class="sc"><h4>Add Strip Item</h4><p>Fill Badge (optional), Strip Text, Link URL (optional), Sort Order. Click <strong>Add Strip Item</strong>.</p></div></div>
+  <div class="st2 nb"><div class="sn2">2</div><div class="sc"><h4>Edit an Item</h4><p>Each item has its own form. Make changes and click <strong>Save Item #X</strong>.</p></div></div>
+  <div class="st2 nb"><div class="sn2">3</div><div class="sc"><h4>Enable / Disable / Delete</h4><p>Use the <strong>Active</strong> checkbox to toggle, or click <strong>Delete</strong> to remove permanently.</p></div></div>
+  <h2 class="sub">Navigation Menu Manager</h2>
+  <p class="doc">Go to: <code>Admin &rarr; Settings &rarr; Navigation</code></p>
+  <table class="nb"><tr><th>Field</th><th>Description</th></tr>
+  <tr><td>Label</td><td>Visible text in the menu (e.g., "Academics").</td></tr>
+  <tr><td>URL / Path</td><td>Link destination (e.g., <code>/academics</code>).</td></tr>
+  <tr><td>Parent</td><td>Set a parent to create dropdown sub-menus.</td></tr>
+  <tr><td>Sort Order</td><td>Lower number = appears first.</td></tr>
+  <tr><td>Active</td><td>Show or hide the item in live navigation.</td></tr></table>
+</div>
+
+<div class="ds pb">
+  <div class="sh"><div class="sn">5</div><div class="st">Lead / Enquiry Management (CRM)</div></div>
+  <p class="doc">Go to: <code>Admin &rarr; Lead Management</code>. All enquiries submitted via the website are stored and manageable here.</p>
+  <div class="g2 nb">
+    <div class="cd"><h4>Homepage Leads</h4><p>From Counselor form, Hero CTA, or callback request.<br><code>/admin/enquiries?source=homepage</code></p></div>
+    <div class="cd"><h4>Contact Us Leads</h4><p>From the Contact Us page form.<br><code>/admin/enquiries?source=contact</code></p></div>
+    <div class="cd"><h4>All Enquiries CRM</h4><p>Unified view with search, sort and status filter.<br><code>/admin/enquiries</code></p></div>
+    <div class="cd"><h4>Admissions Leads</h4><p>From the Enrol Now / Admissions application form.</p></div>
+  </div>
+  <h2 class="sub">Lead Fields Captured</h2>
+  <table class="nb"><tr><th>Field</th><th>Description</th></tr>
+  <tr><td>Parent Name</td><td>Name of the enquiring parent or guardian.</td></tr>
+  <tr><td>Email Address</td><td>Parent email for follow-up communication.</td></tr>
+  <tr><td>Phone Number</td><td>Contact mobile number.</td></tr>
+  <tr><td>Child Grade</td><td>Grade the child is applying for.</td></tr>
+  <tr><td>City / Location</td><td>Where the family is based.</td></tr>
+  <tr><td>Message</td><td>Additional notes or special requirements.</td></tr>
+  <tr><td>Source</td><td>Which page/form the enquiry came from.</td></tr>
+  <tr><td>Status</td><td>CRM stage: New, Contacted, In Progress, Enrolled, or Lost.</td></tr>
+  <tr><td>Submitted At</td><td>Date and time the enquiry was submitted.</td></tr></table>
+  <h2 class="sub">Lead Pipeline Workflow</h2>
+  <div class="wf nb">
+    <div class="ws">New</div><div class="wa2">&rarr;</div>
+    <div class="ws">Contacted</div><div class="wa2">&rarr;</div>
+    <div class="ws">In Progress</div><div class="wa2">&rarr;</div>
+    <div class="ws">Enrolled</div>
+  </div>
+  <div class="bx tip"><span class="bi">&#128161;</span><div>Respond to new leads within <strong>24 hours</strong> for best conversion. Update the lead status after each follow-up call or email.</div></div>
+</div>
+""")
+
+# SEC 6-12
+sections.append("""
+<div class="ds pb">
+  <div class="sh"><div class="sn">6</div><div class="st">Content Modules</div></div>
+
+  <h2 class="sub">6.1 Blogs and News Articles</h2>
+  <p class="doc">Go to: <code>Admin &rarr; Content &rarr; News and Blogs</code></p>
+  <div class="st2 nb"><div class="sn2">1</div><div class="sc"><h4>Click Write New Article</h4><p>Opens the blog editor form.</p></div></div>
+  <div class="st2 nb"><div class="sn2">2</div><div class="sc"><h4>Fill in Article Details</h4><p>Title, excerpt, full body, category, author name, featured image URL, tags.</p></div></div>
+  <div class="st2 nb"><div class="sn2">3</div><div class="sc"><h4>Set Status</h4><p>Choose <strong>Published</strong> (live) or <strong>Draft</strong> (saves without publishing).</p></div></div>
+  <div class="st2 nb"><div class="sn2">4</div><div class="sc"><h4>Publish Article</h4><p>Click <strong>Publish Article</strong>. Appears on the live Blogs page and indexed for SEO.</p></div></div>
+
+  <h2 class="sub">6.2 Testimonials</h2>
+  <p class="doc">Go to: <code>Admin &rarr; Content &rarr; Testimonials</code></p>
+  <table class="nb"><tr><th>Field</th><th>Description</th></tr>
+  <tr><td>Name</td><td>Name shown on the testimonial card.</td></tr>
+  <tr><td>Location / Grade</td><td>e.g., "Parent of Grade 4 student, Mumbai".</td></tr>
+  <tr><td>Review / Quote</td><td>The testimonial text.</td></tr>
+  <tr><td>Rating</td><td>Star rating (1 to 5).</td></tr>
+  <tr><td>Photo URL</td><td>Optional reviewer avatar/photo.</td></tr>
+  <tr><td>Published / Sort Order</td><td>Toggle visibility and control carousel sequence.</td></tr></table>
+
+  <h2 class="sub">6.3 FAQs</h2>
+  <p class="doc">Go to: <code>Admin &rarr; Content &rarr; FAQs</code></p>
+  <table class="nb"><tr><th>Field</th><th>Description</th></tr>
+  <tr><td>Question</td><td>The FAQ question text.</td></tr>
+  <tr><td>Answer</td><td>Detailed answer. Supports multi-line text.</td></tr>
+  <tr><td>Category</td><td>Group under topics (e.g., "Admissions", "Academics", "Technology").</td></tr>
+  <tr><td>Sort Order / Published</td><td>Control display order and visibility.</td></tr></table>
+
+  <h2 class="sub">6.4 Media Library</h2>
+  <p class="doc">Go to: <code>Admin &rarr; Content &rarr; Media</code>. Upload and manage all images, videos, and PDFs.</p>
+  <div class="st2 nb"><div class="sn2">1</div><div class="sc"><h4>Upload a File</h4><p>Click <strong>Upload New Media</strong>. Supported: JPG, PNG, WebP, MP4, PDF.</p></div></div>
+  <div class="st2 nb"><div class="sn2">2</div><div class="sc"><h4>Add Alt Text</h4><p>Descriptive alt text for images is important for SEO and accessibility.</p></div></div>
+  <div class="st2 nb"><div class="sn2">3</div><div class="sc"><h4>Copy File URL</h4><p>Copy the URL from the media library and paste it in any CMS editor field.</p></div></div>
+  <div class="bx tip"><span class="bi">&#128161;</span><div><strong>Image Best Practice:</strong> Compress before uploading (squoosh.app). Use WebP for photos, PNG for logos. Max: <strong>300KB per image</strong>.</div></div>
+
+  <h2 class="sub">6.5 Affiliations and Accreditations</h2>
+  <p class="doc">Go to: <code>Admin &rarr; Content &rarr; Affiliations</code></p>
+  <table class="nb"><tr><th>Field</th><th>Description</th></tr>
+  <tr><td>Organization Name</td><td>Full name of the accrediting body.</td></tr>
+  <tr><td>Logo URL</td><td>URL to the organization logo image.</td></tr>
+  <tr><td>Description</td><td>Brief description of the affiliation.</td></tr>
+  <tr><td>Website URL</td><td>Link to the official website of the body.</td></tr>
+  <tr><td>Sort Order / Published</td><td>Control sequence and visibility.</td></tr></table>
+
+  <h2 class="sub">6.6 Announcements</h2>
+  <p class="doc">Go to: <code>Admin &rarr; Content &rarr; Announcements</code>. Time-based notices with title, content, type (info/success/warning), start and expiry date. Expired announcements auto-hide from the website.</p>
+</div>
+
+<div class="ds pb">
+  <div class="sh"><div class="sn">7</div><div class="st">Team Profiles</div></div>
+  <p class="doc">Go to: <code>Admin &rarr; Content &rarr; Profiles</code>. Manage the leadership team on the About Us and Our Team pages.</p>
+  <div class="st2 nb"><div class="sn2">1</div><div class="sc"><h4>Click Add New Profile</h4><p>Opens the team member creation form.</p></div></div>
+  <div class="st2 nb"><div class="sn2">2</div><div class="sc"><h4>Fill in Member Details</h4><p>Full name, designation, department, bio paragraph, photo URL, LinkedIn URL.</p></div></div>
+  <div class="st2 nb"><div class="sn2">3</div><div class="sc"><h4>Set Sort Order and Publish</h4><p>Lower number = appears earlier. Check Published to show on the live website.</p></div></div>
+  <div class="st2 nb"><div class="sn2">4</div><div class="sc"><h4>Save Profile</h4><p>Click <strong>Save Profile</strong>. Member now appears on the Our Team and About pages.</p></div></div>
+
+  <div class="sh" style="margin-top:2rem"><div class="sn">8</div><div class="st">SEO Manager</div></div>
+  <p class="doc">Go to: <code>Admin &rarr; Settings &rarr; Page SEO</code>. Manage meta info for every page including titles, descriptions, canonical URLs, and social sharing tags.</p>
+  <div class="bx inf"><span class="bi">&#8505;&#65039;</span><div>SEO settings control how your pages appear in Google results and when shared on WhatsApp, Facebook, or Instagram.</div></div>
+  <table class="nb"><tr><th>Field</th><th>What It Controls</th><th>Best Practice</th></tr>
+  <tr><td><strong>SEO Title</strong></td><td>Blue clickable title in Google search results.</td><td>Under 60 characters. Include school name.</td></tr>
+  <tr><td><strong>Meta Description</strong></td><td>Grey summary under title in Google results.</td><td>Under 155 characters. Clearly describe page value.</td></tr>
+  <tr><td><strong>Canonical URL</strong></td><td>Definitive URL for the page (prevents duplicates).</td><td>Match the page full URL exactly.</td></tr>
+  <tr><td><strong>OG Title</strong></td><td>Title shown when page link shared on social media.</td><td>Same as SEO Title or slightly more engaging.</td></tr>
+  <tr><td><strong>OG Description</strong></td><td>Description shown in social media link previews.</td><td>Under 200 characters. Compelling.</td></tr>
+  <tr><td><strong>OG Image</strong></td><td>Thumbnail shown when sharing on social media.</td><td>Recommended 1200 x 630px.</td></tr>
+  <tr><td><strong>Index Status</strong></td><td>Whether Google should index this page.</td><td>Set "index, follow" for all important pages.</td></tr></table>
+</div>
+
+<div class="ds pb">
+  <div class="sh"><div class="sn">9</div><div class="st">User Accounts and Roles</div></div>
+  <p class="doc">Go to: <code>Admin &rarr; Settings &rarr; Users</code>. Manage who has access and what they can do.</p>
+  <div class="bx dng"><span class="bi">&#128308;</span><div><strong>Super Admin Only:</strong> Only Super Admins can create, edit, or delete other users and change role assignments.</div></div>
+  <table class="nb"><tr><th>Role</th><th>Access Level</th><th>Typical Use</th></tr>
+  <tr><td><span class="pl pr">Super Admin</span></td><td>Full access including user management, migrations, and system settings.</td><td>Technical lead / school director</td></tr>
+  <tr><td><span class="pl pb2">Admin</span></td><td>Full CMS access, manage content, view leads. Cannot manage users or run migrations.</td><td>Website manager / content team lead</td></tr>
+  <tr><td><span class="pl py">Editor</span></td><td>Edit page content, blogs, testimonials, FAQs. Cannot manage hero banners, users, or settings.</td><td>Content writer / social media team</td></tr></table>
+  <div class="st2 nb"><div class="sn2">1</div><div class="sc"><h4>Click Add New User</h4><p>Opens the user creation form.</p></div></div>
+  <div class="st2 nb"><div class="sn2">2</div><div class="sc"><h4>Enter Details</h4><p>Full name, username, email address, initial password.</p></div></div>
+  <div class="st2 nb"><div class="sn2">3</div><div class="sc"><h4>Assign a Role</h4><p>Select Super Admin, Admin, or Editor from the dropdown.</p></div></div>
+  <div class="st2 nb"><div class="sn2">4</div><div class="sc"><h4>Create and Share Credentials</h4><p>Click <strong>Create User</strong>. Share login URL, username, and password securely.</p></div></div>
+  <div class="bx wrn"><span class="bi">&#9888;&#65039;</span><div>Always ask new users to change their password after first login. Never share passwords via plain-text WhatsApp or email.</div></div>
+
+  <div class="sh" style="margin-top:2rem"><div class="sn">10</div><div class="st">Site Settings</div></div>
+  <p class="doc">Go to: <code>Admin &rarr; Settings &rarr; Site Settings</code>. Global settings applying across all pages.</p>
+  <table class="nb"><tr><th>Setting</th><th>Description</th></tr>
+  <tr><td>Site Name</td><td>Name in browser tabs and SEO titles.</td></tr>
+  <tr><td>Site Logo URL</td><td>Main logo displayed in header and footer.</td></tr>
+  <tr><td>Favicon URL</td><td>Small icon shown in browser tabs.</td></tr>
+  <tr><td>Primary Phone / Email</td><td>Main contact details used across the website.</td></tr>
+  <tr><td>School Address</td><td>Full registered address of the school.</td></tr>
+  <tr><td>Google Analytics ID</td><td>Paste GA4 tracking ID to enable analytics.</td></tr>
+  <tr><td>Facebook Pixel ID</td><td>For Facebook and Instagram ad conversion tracking.</td></tr>
+  <tr><td>WhatsApp Button Number</td><td>Phone number for the floating WhatsApp chat button.</td></tr>
+  <tr><td>Maintenance Mode</td><td>Shows a Coming Soon page to visitors during maintenance.</td></tr></table>
+  <div class="bx dng"><span class="bi">&#128308;</span><div><strong>Maintenance Mode Warning:</strong> Enabling this makes the website inaccessible to ALL visitors. Only enable for planned maintenance and disable immediately when done.</div></div>
+</div>
+
+<div class="ds pb">
+  <div class="sh"><div class="sn">11</div><div class="st">Quick Reference &mdash; All Admin URLs</div></div>
+  <table><tr><th>Function</th><th>Admin URL</th></tr>
+  <tr><td>Dashboard</td><td><code>/admin</code></td></tr>
+  <tr><td>Login</td><td><code>/admin/login</code></td></tr>
+  <tr><td>Hero Banners</td><td><code>/admin/hero.php</code></td></tr>
+  <tr><td>Header Settings</td><td><code>/admin/header-settings.php</code></td></tr>
+  <tr><td>Sliding Strip</td><td><code>/admin/sliding-strip.php</code></td></tr>
+  <tr><td>Homepage CMS</td><td><code>/admin/homepage.php</code></td></tr>
+  <tr><td>About Us CMS</td><td><code>/admin/about-cms.php</code></td></tr>
+  <tr><td>Academics CMS</td><td><code>/admin/academics-cms.php</code></td></tr>
+  <tr><td>Admissions CMS</td><td><code>/admin/admissions-cms.php</code></td></tr>
+  <tr><td>Beyond Academics CMS</td><td><code>/admin/beyond-cms.php</code></td></tr>
+  <tr><td>Contact CMS</td><td><code>/admin/contact-cms.php</code></td></tr>
+  <tr><td>Team Profiles</td><td><code>/admin/profiles.php</code></td></tr>
+  <tr><td>Testimonials</td><td><code>/admin/testimonials.php</code></td></tr>
+  <tr><td>FAQs</td><td><code>/admin/faqs.php</code></td></tr>
+  <tr><td>Blogs and News</td><td><code>/admin/blogs.php</code></td></tr>
+  <tr><td>Media Library</td><td><code>/admin/media.php</code></td></tr>
+  <tr><td>Affiliations</td><td><code>/admin/accreditations.php</code></td></tr>
+  <tr><td>Announcements</td><td><code>/admin/announcements.php</code></td></tr>
+  <tr><td>All Enquiries CRM</td><td><code>/admin/enquiries.php</code></td></tr>
+  <tr><td>Homepage Leads</td><td><code>/admin/enquiries.php?source=homepage</code></td></tr>
+  <tr><td>Contact Leads</td><td><code>/admin/enquiries.php?source=contact</code></td></tr>
+  <tr><td>Page SEO Manager</td><td><code>/admin/seo.php</code></td></tr>
+  <tr><td>Navigation Manager</td><td><code>/admin/navigation.php</code></td></tr>
+  <tr><td>User Management</td><td><code>/admin/users.php</code></td></tr>
+  <tr><td>Site Settings</td><td><code>/admin/settings.php</code></td></tr></table>
+
+  <div class="sh" style="margin-top:2rem"><div class="sn">12</div><div class="st">Dos and Donts &mdash; Best Practices</div></div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+    <div class="sbx nb"><div class="sbh" style="background:#059669">DO &mdash; Best Practices</div><div class="sbb"><ul class="dl">
+      <li>Always click <strong>Save Section Changes</strong> after editing.</li>
+      <li>Test every change by clicking View Live Page after saving.</li>
+      <li>Use Disable (uncheck Visible) instead of Remove for temporary hiding.</li>
+      <li>Compress images before uploading (max 300KB per image).</li>
+      <li>Keep SEO titles under 60 chars, meta descriptions under 155 chars.</li>
+      <li>Respond to new leads within 24 hours.</li>
+      <li>Sign out of the admin panel when done.</li>
+      <li>Back up content by copying text before major edits.</li>
+      <li>Use meaningful alt text for all uploaded images.</li>
+      <li>Keep at least 1 active Hero Banner slide at all times.</li>
+    </ul></div></div>
+    <div class="sbx nb"><div class="sbh" style="background:#DC2626">DONT &mdash; Common Mistakes</div><div class="sbb"><ul class="dl">
+      <li>Do not enable Maintenance Mode accidentally - it blocks all visitors.</li>
+      <li>Do not delete leads - mark as Lost/Closed to keep history.</li>
+      <li>Do not upload very large images (over 2MB).</li>
+      <li>Do not remove main nav items without planning a redirect.</li>
+      <li>Do not share your admin password with anyone.</li>
+      <li>Do not use the same password for admin as other platforms.</li>
+      <li>Do not edit the same page in multiple browser tabs simultaneously.</li>
+      <li>Do not run database migrations unless advised by the developer.</li>
+      <li>Do not leave HTML tags unescaped in text fields.</li>
+      <li>Do not delete media files actively used on the website.</li>
+    </ul></div></div>
+  </div>
+  <h2 class="sub" style="margin-top:1.5rem">Common Tasks &mdash; Quick Reference</h2>
+  <div class="g2">
+    <div class="cd nb"><h4>Update Homepage Text</h4><p>Admin &rarr; Website &rarr; Home &rarr; Select Section &rarr; Edit &rarr; Save &rarr; View Live Page</p></div>
+    <div class="cd nb"><h4>Change Hero Banner</h4><p>Admin &rarr; Hero Banners &rarr; Select Slide &rarr; Upload New Image &rarr; Save Slide</p></div>
+    <div class="cd nb"><h4>View New Leads</h4><p>Admin &rarr; Lead Management &rarr; All Enquiries CRM &rarr; Sort by Date Descending</p></div>
+    <div class="cd nb"><h4>Publish Blog Post</h4><p>Admin &rarr; Content &rarr; Blogs &rarr; Write New Article &rarr; Status: Published &rarr; Save</p></div>
+    <div class="cd nb"><h4>Add Team Member</h4><p>Admin &rarr; Content &rarr; Profiles &rarr; Add New Profile &rarr; Fill Details &rarr; Save</p></div>
+    <div class="cd nb"><h4>Add Testimonial</h4><p>Admin &rarr; Content &rarr; Testimonials &rarr; Add Testimonial &rarr; Published &rarr; Save</p></div>
+    <div class="cd nb"><h4>Update Fee Table</h4><p>Admin &rarr; Website &rarr; Admissions &rarr; Section 4 Fees &rarr; Edit &rarr; Save</p></div>
+    <div class="cd nb"><h4>Update Page SEO</h4><p>Admin &rarr; Settings &rarr; Page SEO &rarr; Select Page &rarr; Update Title and Description &rarr; Save</p></div>
+  </div>
+  <div class="fb" style="margin-top:2rem">
+    <span><strong>Zuvio Global School</strong> &mdash; Admin Panel User Guide v1.0</span>
+    <span>Prepared by Development Team &middot; October 2026 &middot; <strong>Confidential</strong></span>
+  </div>
+</div>
+</body></html>
+""")
+
+with open(out, 'w', encoding='utf-8') as f:
+    f.write(css)
+    for s in sections:
+        f.write(s)
+
+print(f"Written: {os.path.getsize(out):,} bytes")
