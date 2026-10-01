@@ -122,5 +122,34 @@ CREATE TABLE IF NOT EXISTS `navigation_items` (
   INDEX (`parent_id`),
   INDEX (`sort_order`)
 );
+-- 6. Ensure all global site_settings keys exist with appropriate defaults
+INSERT INTO `site_settings` (`setting_key`, `setting_value`, `description`) VALUES
+('site_name', 'Zuvio Global School', 'Institution name shown in browser tabs and titles'),
+('site_tagline', 'Learning Beyond Boundaries', 'Primary school motto and tagline'),
+('logo_url', '/assets/images/logo.png', 'Global header and footer logo image URL'),
+('favicon_url', '/assets/images/logo.png', 'Browser tab favicon icon URL'),
+('phone', '7827262956', 'Main contact phone number'),
+('general_email', 'info@zuvioglobalschool.com', 'General public contact email'),
+('admissions_email', 'info@zuvioglobalschool.com', 'Dedicated admissions department email'),
+('address', 'B-09, Lower Ground Floor, ITL Twin Tower, Netaji Subhash Place, Pitampura, Delhi - 110034', 'Full registered school campus and office address'),
+('office_timings', 'Monday - Saturday: 10:00 AM - 7:00 PM IST', 'Working hours and counselor availability'),
+('google_maps_link', 'https://maps.google.com/?q=ITL+Twin+Tower+Netaji+Subhash+Place+Delhi', 'Official Google Maps location link'),
+('google_analytics_id', '', 'Google Analytics 4 (GA4) Measurement ID (e.g. G-XXXXXXXXXX)'),
+('google_analytics_enabled', '0', 'Toggle Google Analytics tracking script (1=enabled, 0=disabled)'),
+('facebook_pixel_id', '', 'Meta Facebook Pixel ID (e.g. 123456789012345)'),
+('facebook_pixel_enabled', '0', 'Toggle Facebook Pixel tracking script (1=enabled, 0=disabled)'),
+('whatsapp', '7827262956', 'WhatsApp phone number with country code'),
+('whatsapp_enabled', '1', 'Toggle floating WhatsApp chat button (1=enabled, 0=disabled)'),
+('whatsapp_message', 'Hello Zuvio Global School, I would like to enquire about admissions.', 'Pre-filled WhatsApp chat message'),
+('maintenance_mode', '0', 'Emergency / Scheduled Maintenance mode switch (1=active, 0=inactive)'),
+('maintenance_title', 'We’re Upgrading Our Learning Experience', 'Heading displayed on the maintenance screen'),
+('maintenance_message', 'Zuvio Global School website is currently undergoing scheduled platform upgrades. We will be back online shortly. For admissions assistance or immediate inquiries, our counseling desk is available via phone and WhatsApp.', 'Message displayed on the maintenance screen'),
+('copyright', '© 2026 Zuvio Global School. All rights reserved.', 'Standard footer copyright disclaimer'),
+('social_instagram', 'https://www.instagram.com/thezuvio/', 'Instagram profile URL'),
+('social_facebook', 'https://www.facebook.com/share/1XsYWDm3rt/', 'Facebook official page URL'),
+('social_linkedin', 'https://www.linkedin.com/company/zuvio-global-school/', 'LinkedIn company page URL'),
+('social_youtube', 'https://www.youtube.com/@zuvioglobalschool', 'YouTube official channel URL')
+ON DUPLICATE KEY UPDATE
+  `description` = VALUES(`description`);
 
 SET FOREIGN_KEY_CHECKS = 1;

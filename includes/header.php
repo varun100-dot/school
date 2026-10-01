@@ -5,6 +5,16 @@ require_once dirname(__FILE__) . '/helper.php';
 
 safe_session_start();
 
+// 0. Maintenance Mode Check
+$is_maintenance_mode = ((string)get_setting('maintenance_mode', '0') === '1');
+if ($is_maintenance_mode) {
+    require_once dirname(__FILE__) . '/auth.php';
+    if (!is_logged_in()) {
+        include_once dirname(__FILE__) . '/maintenance_page.php';
+        exit;
+    }
+}
+
 // Resolve SEO variables
 $current_slug = isset($page_slug) ? $page_slug : 'home';
 if (!isset($seo)) {
@@ -167,6 +177,49 @@ if (empty($sliding_strip_items)) {
   <meta property="og:type" content="website">
   <meta name="robots" content="<?php echo h($seo['index_status']); ?>">
 
+  <!-- Dynamic Favicon -->
+  <?php $site_favicon = get_setting('favicon_url', '/assets/images/logo.png'); ?>
+  <link rel="icon" type="image/png" href="<?php echo h($site_favicon); ?>">
+  <link rel="apple-touch-icon" href="<?php echo h($site_favicon); ?>">
+
+  <!-- Google Analytics 4 (GA4) -->
+  <?php 
+  $ga_id = trim(get_setting('google_analytics_id', ''));
+  $ga_enabled = ((string)get_setting('google_analytics_enabled', '0') === '1');
+  if ($ga_enabled && !empty($ga_id)): 
+  ?>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=<?php echo h($ga_id); ?>"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', '<?php echo h($ga_id); ?>');
+  </script>
+  <?php endif; ?>
+
+  <!-- Meta / Facebook Pixel -->
+  <?php 
+  $fb_pixel_id = trim(get_setting('facebook_pixel_id', ''));
+  $fb_enabled = ((string)get_setting('facebook_pixel_enabled', '0') === '1');
+  if ($fb_enabled && !empty($fb_pixel_id)): 
+  ?>
+  <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '<?php echo h($fb_pixel_id); ?>');
+    fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=<?php echo h($fb_pixel_id); ?>&ev=PageView&noscript=1"
+  /></noscript>
+  <?php endif; ?>
+
   <?php 
   $css_version = '';
   $css_filepath = dirname(__FILE__) . '/../css/main.css';
@@ -307,6 +360,13 @@ if (empty($sliding_strip_items)) {
   </style>
 </head>
 <body>
+
+  <?php if (!empty($is_maintenance_mode)): ?>
+  <div style="background: #FFF7ED; border-bottom: 2px solid #D97706; color: #9A3412; padding: 0.65rem 1.5rem; text-align: center; font-size: 0.86rem; font-weight: 600; position: sticky; top: 0; z-index: 10000; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+    <span>⚠️ <strong>Maintenance Mode is Active</strong> — Public visitors see the Coming Soon page. You are viewing live as an authenticated administrator.</span>
+    <a href="/admin/settings.php#sec-maintenance" style="color: #062B63; text-decoration: underline; font-weight: 700; margin-left: 0.5rem;">Manage in Settings &rarr;</a>
+  </div>
+  <?php endif; ?>
 
   <!-- 1. Unified Top Utility Bar (Affiliation + Moving USPs + Contact) -->
   <?php if ($is_topbar_visible): ?>
