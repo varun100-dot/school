@@ -75,6 +75,7 @@ $social_youtube = get_setting('social_youtube', 'https://www.youtube.com/@zuviog
           <li><a href="/our-team" class="footer-link">Leadership & Team</a></li>
           <li><a href="/founders-message" class="footer-link">Founder’s Message</a></li>
           <li><a href="/affiliations-accreditations" class="footer-link">Affiliations & Accreditations</a></li>
+          <li><a href="/blogs" class="footer-link">Blogs & Insights</a></li>
           <li><a href="/contact" class="footer-link">Contact & Enquiries</a></li>
         </ul>
       </div>
