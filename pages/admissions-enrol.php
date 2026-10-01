@@ -125,6 +125,7 @@ render_breadcrumbs([
 
           <form id="admissionsEnrolForm" onsubmit="submitEnrolForm(event)">
             <input type="hidden" name="csrf_token" value="<?php echo generate_csrf_token(); ?>">
+            <input type="hidden" name="source" value="Admissions Enrol Form">
             
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.25rem;">
               <div>

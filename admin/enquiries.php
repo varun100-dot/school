@@ -19,6 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_status']) && $
         $error = 'Security check failed. Please submit again.';
     } else {
         $status_id = (int)$_POST['status_id'];
+        $src_redirect = trim($_POST['source'] ?? '');
         try {
             $old_stmt = $db->prepare("SELECT * FROM `enquiries` WHERE `id` = ? LIMIT 1");
             $old_stmt->execute([$id]);
@@ -28,7 +29,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_status']) && $
             $stmt->execute([$status_id, $id]);
             
             log_audit('ENQUIRY_UPDATED', 'enquiries', 'enquiries', $id, $old_enquiry, ['status_id' => $status_id], "Updated enquiry ID {$id} status");
-            header('Location: /admin/enquiries?msg=status_updated');
+            $redir = '/admin/enquiries?msg=status_updated' . ($src_redirect ? '&source=' . urlencode($src_redirect) : '');
+            header('Location: ' . $redir);
             exit;
         } catch (Exception $e) {
             $error = 'Failed to update status: ' . $e->getMessage();
@@ -67,24 +69,64 @@ if ($action === 'view' && $id > 0) {
     }
 }
 
+$source_tab = trim($_GET['source'] ?? ''); // 'homepage', 'contact', or ''
+
+// Calculate lead category counts
+$count_all = 0;
+$count_homepage = 0;
+$count_contact = 0;
+
+if ($db) {
+    try {
+        $count_all = (int)$db->query("SELECT COUNT(*) FROM `enquiries`")->fetchColumn();
+        $count_homepage = (int)$db->query("SELECT COUNT(*) FROM `enquiries` WHERE `source` LIKE '%Home%' OR `source` LIKE '%Counselor%' OR `source` LIKE '%Banner%'")->fetchColumn();
+        $count_contact = (int)$db->query("SELECT COUNT(*) FROM `enquiries` WHERE `source` LIKE '%Contact%'")->fetchColumn();
+    } catch (Exception $e) {}
+}
+
+if (!empty($_SESSION['mock_enquiries'])) {
+    foreach ($_SESSION['mock_enquiries'] as $m) {
+        $count_all++;
+        $m_src = $m['source'] ?? '';
+        if (stripos($m_src, 'Home') !== false || stripos($m_src, 'Counselor') !== false || stripos($m_src, 'Banner') !== false) {
+            $count_homepage++;
+        } elseif (stripos($m_src, 'Contact') !== false) {
+            $count_contact++;
+        }
+    }
+}
+
 // Handle CSV Export
 if ($action === 'export_csv') {
     require_permission('enquiries.view');
     $export_rows = [];
     if ($db) {
         try {
-            $export_rows = $db->query("
+            $export_sql = "
                 SELECT e.id, e.parent_name, e.student_name, e.email, e.phone, e.grade, e.source, s.name as status_name, e.message, e.created_at
                 FROM `enquiries` e
                 LEFT JOIN `enquiry_statuses` s ON s.id = e.status_id
-                ORDER BY e.created_at DESC
-            ")->fetchAll();
+                WHERE 1=1
+            ";
+            $export_params = [];
+            if ($source_tab === 'homepage') {
+                $export_sql .= " AND (e.source LIKE '%Home%' OR e.source LIKE '%Counselor%' OR e.source LIKE '%Banner%')";
+            } elseif ($source_tab === 'contact') {
+                $export_sql .= " AND e.source LIKE '%Contact%'";
+            }
+            $export_sql .= " ORDER BY e.created_at DESC";
+            $exp_stmt = $db->prepare($export_sql);
+            $exp_stmt->execute($export_params);
+            $export_rows = $exp_stmt->fetchAll();
         } catch (Exception $e) {
             error_log("[CSV Export Error] " . $e->getMessage());
         }
     }
     if (!empty($_SESSION['mock_enquiries'])) {
         foreach ($_SESSION['mock_enquiries'] as $mock_lead) {
+            $m_src = $mock_lead['source'] ?? '';
+            if ($source_tab === 'homepage' && !(stripos($m_src, 'Home') !== false || stripos($m_src, 'Counselor') !== false || stripos($m_src, 'Banner') !== false)) continue;
+            if ($source_tab === 'contact' && stripos($m_src, 'Contact') === false) continue;
             $export_rows[] = [
                 'id' => $mock_lead['id'] ?? time(),
                 'parent_name' => $mock_lead['parent_name'] ?? '',
@@ -100,8 +142,12 @@ if ($action === 'export_csv') {
         }
     }
 
+    $filename_prefix = 'zuvio_enquiries_';
+    if ($source_tab === 'homepage') $filename_prefix = 'zuvio_homepage_leads_';
+    if ($source_tab === 'contact') $filename_prefix = 'zuvio_contact_leads_';
+
     header('Content-Type: text/csv; charset=utf-8');
-    header('Content-Disposition: attachment; filename=zuvio_enquiries_' . date('Y-m-d_His') . '.csv');
+    header('Content-Disposition: attachment; filename=' . $filename_prefix . date('Y-m-d_His') . '.csv');
     $output = fopen('php://output', 'w');
     fputcsv($output, ['ID', 'Parent Name', 'Student Name', 'Email', 'Phone', 'Grade', 'Source', 'Status', 'Message', 'Created At']);
     foreach ($export_rows as $r) {
@@ -122,7 +168,7 @@ if ($action === 'export_csv') {
     exit;
 }
 
-// Listing all enquiries
+// Listing enquiries
 $search_q = trim($_GET['q'] ?? '');
 $status_filter = (int)($_GET['status_id'] ?? 0);
 
@@ -137,6 +183,11 @@ if ($action === 'list') {
                 WHERE 1=1
             ";
             $params = [];
+            if ($source_tab === 'homepage') {
+                $sql .= " AND (e.source LIKE '%Home%' OR e.source LIKE '%Counselor%' OR e.source LIKE '%Banner%')";
+            } elseif ($source_tab === 'contact') {
+                $sql .= " AND e.source LIKE '%Contact%'";
+            }
             if ($status_filter > 0) {
                 $sql .= " AND e.status_id = ?";
                 $params[] = $status_filter;
@@ -158,6 +209,9 @@ if ($action === 'list') {
     // Merge mock enquiries from session if available
     if (!empty($_SESSION['mock_enquiries'])) {
         foreach ($_SESSION['mock_enquiries'] as $mock_lead) {
+            $m_src = $mock_lead['source'] ?? '';
+            if ($source_tab === 'homepage' && !(stripos($m_src, 'Home') !== false || stripos($m_src, 'Counselor') !== false || stripos($m_src, 'Banner') !== false)) continue;
+            if ($source_tab === 'contact' && stripos($m_src, 'Contact') === false) continue;
             if ($status_filter > 0 && ($mock_lead['status_id'] ?? 1) !== $status_filter) continue;
             if ($search_q !== '' && stripos($mock_lead['parent_name'] . ' ' . $mock_lead['email'] . ' ' . $mock_lead['phone'], $search_q) === false) continue;
             $mock_lead['status_name'] = 'New';
@@ -168,28 +222,58 @@ if ($action === 'list') {
 
 $page_slug = 'admin-enquiries';
 include_once dirname(__FILE__) . '/header.php';
+
+// Dynamic Titles
+$page_title = 'Lead Management CRM';
+$page_sub = 'Manage prospective student admissions enquiries and leads.';
+if ($source_tab === 'homepage') {
+    $page_title = 'Homepage Leads CRM';
+    $page_sub = 'Prospective student leads received directly from the Homepage Counselor enquiry form.';
+} elseif ($source_tab === 'contact') {
+    $page_title = 'Contact Us Leads CRM';
+    $page_sub = 'Inquiries and parent messages received from the Contact Us form.';
+}
 ?>
 
-<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
   <div>
-    <h1 style="font-family: var(--font-secondary); font-size: 1.5rem; color: var(--color-navy); margin-bottom: 0.25rem;">Admissions Enquiries CRM</h1>
-    <p style="color: var(--color-muted); font-size: 0.85rem;">Review, filter, update pipeline status and export leads.</p>
+    <h1 style="font-family: var(--font-secondary); font-size: 1.5rem; color: var(--color-navy); margin-bottom: 0.25rem;"><?php echo h($page_title); ?></h1>
+    <p style="color: var(--color-muted); font-size: 0.85rem;"><?php echo h($page_sub); ?></p>
   </div>
   <div style="display: flex; gap: 0.75rem; align-items: center;">
     <?php if ($action === 'list'): ?>
-      <a href="/admin/enquiries?action=export_csv" class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.85rem; background: #047857; border-color: #047857;">
+      <a href="/admin/enquiries?action=export_csv<?php echo $source_tab ? '&source=' . urlencode($source_tab) : ''; ?>" class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.85rem; background: #047857; border-color: #047857;">
         📥 Export CSV
       </a>
     <?php else: ?>
-      <a href="/admin/enquiries" class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.85rem;">&larr; Back to List</a>
+      <a href="/admin/enquiries<?php echo $source_tab ? '?source=' . urlencode($source_tab) : ''; ?>" class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.85rem;">&larr; Back to Leads</a>
     <?php endif; ?>
   </div>
 </div>
 
 <?php if ($action === 'list'): ?>
+  <!-- Lead Category Tabs -->
+  <div style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem; border-bottom: 2px solid var(--color-border); padding-bottom: 0.5rem; flex-wrap: wrap;">
+    <a href="/admin/enquiries" style="padding: 0.5rem 1rem; border-radius: var(--radius-sm); font-size: 0.85rem; font-weight: 600; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; <?php echo empty($source_tab) ? 'background: var(--color-navy); color: #fff;' : 'background: #fff; color: var(--color-navy); border: 1px solid var(--color-border);'; ?>">
+      <span>All Enquiries</span>
+      <span style="background: <?php echo empty($source_tab) ? 'var(--color-gold)' : 'var(--color-surface-blue)'; ?>; color: <?php echo empty($source_tab) ? 'var(--color-navy-dark)' : 'var(--color-navy)'; ?>; padding: 0.15rem 0.45rem; border-radius: 12px; font-size: 0.75rem; font-weight: 700;"><?php echo $count_all; ?></span>
+    </a>
+    <a href="/admin/enquiries?source=homepage" style="padding: 0.5rem 1rem; border-radius: var(--radius-sm); font-size: 0.85rem; font-weight: 600; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; <?php echo $source_tab === 'homepage' ? 'background: var(--color-navy); color: #fff;' : 'background: #fff; color: var(--color-navy); border: 1px solid var(--color-border);'; ?>">
+      <span>🏠 Homepage Leads</span>
+      <span style="background: <?php echo $source_tab === 'homepage' ? 'var(--color-gold)' : 'var(--color-surface-blue)'; ?>; color: <?php echo $source_tab === 'homepage' ? 'var(--color-navy-dark)' : 'var(--color-navy)'; ?>; padding: 0.15rem 0.45rem; border-radius: 12px; font-size: 0.75rem; font-weight: 700;"><?php echo $count_homepage; ?></span>
+    </a>
+    <a href="/admin/enquiries?source=contact" style="padding: 0.5rem 1rem; border-radius: var(--radius-sm); font-size: 0.85rem; font-weight: 600; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; <?php echo $source_tab === 'contact' ? 'background: var(--color-navy); color: #fff;' : 'background: #fff; color: var(--color-navy); border: 1px solid var(--color-border);'; ?>">
+      <span>✉️ Contact Us Leads</span>
+      <span style="background: <?php echo $source_tab === 'contact' ? 'var(--color-gold)' : 'var(--color-surface-blue)'; ?>; color: <?php echo $source_tab === 'contact' ? 'var(--color-navy-dark)' : 'var(--color-navy)'; ?>; padding: 0.15rem 0.45rem; border-radius: 12px; font-size: 0.75rem; font-weight: 700;"><?php echo $count_contact; ?></span>
+    </a>
+  </div>
+
   <!-- Filters Bar -->
   <form method="GET" action="/admin/enquiries" style="background: #fff; padding: 1rem 1.25rem; border-radius: var(--radius-sm); border: 1px solid var(--color-border); margin-bottom: 1.5rem; display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
-    <input type="text" name="q" value="<?php echo h($search_q); ?>" placeholder="Search name, email, phone..." style="flex-grow: 1; min-width: 220px; padding: 0.5rem 0.75rem; border: 1px solid var(--color-border); border-radius: 4px; font-size: 0.85rem;">
+    <?php if ($source_tab): ?>
+      <input type="hidden" name="source" value="<?php echo h($source_tab); ?>">
+    <?php endif; ?>
+    <input type="text" name="q" value="<?php echo h($search_q); ?>" placeholder="Search parent name, student, email, phone..." style="flex-grow: 1; min-width: 220px; padding: 0.5rem 0.75rem; border: 1px solid var(--color-border); border-radius: 4px; font-size: 0.85rem;">
     <select name="status_id" style="padding: 0.5rem 0.75rem; border: 1px solid var(--color-border); border-radius: 4px; font-size: 0.85rem; background: #fff;">
       <option value="0">All Statuses</option>
       <?php foreach ($statuses as $st): ?>
@@ -200,7 +284,7 @@ include_once dirname(__FILE__) . '/header.php';
     </select>
     <button type="submit" class="btn btn-primary" style="padding: 0.5rem 1.25rem; font-size: 0.85rem;">Filter</button>
     <?php if ($search_q !== '' || $status_filter > 0): ?>
-      <a href="/admin/enquiries" style="font-size: 0.85rem; color: #EF4444; text-decoration: none;">Clear</a>
+      <a href="/admin/enquiries<?php echo $source_tab ? '?source=' . urlencode($source_tab) : ''; ?>" style="font-size: 0.85rem; color: #EF4444; text-decoration: none;">Clear</a>
     <?php endif; ?>
   </form>
 <?php endif; ?>
@@ -244,7 +328,11 @@ include_once dirname(__FILE__) . '/header.php';
                 <td style="padding: 0.75rem 1rem;"><?php echo h($row['email']); ?></td>
                 <td style="padding: 0.75rem 1rem;"><?php echo h($row['phone']); ?></td>
                 <td style="padding: 0.75rem 1rem;"><?php echo h($row['grade']); ?></td>
-                <td style="padding: 0.75rem 1rem;"><?php echo h($row['source']); ?></td>
+                <td style="padding: 0.75rem 1rem;">
+                  <span style="display: inline-block; padding: 0.2rem 0.5rem; font-size: 0.7rem; border-radius: var(--radius-sm); font-weight: 600; background: rgba(6, 43, 99, 0.08); color: var(--color-navy);">
+                    <?php echo h($row['source']); ?>
+                  </span>
+                </td>
                 <td style="padding: 0.75rem 1rem;">
                   <span style="display: inline-block; padding: 0.2rem 0.5rem; font-size: 0.7rem; border-radius: var(--radius-sm); font-weight: 700; background-color: var(--color-surface-blue); color: var(--color-navy);">
                     <?php echo h($row['status_name'] ?: 'NEW'); ?>
@@ -252,7 +340,7 @@ include_once dirname(__FILE__) . '/header.php';
                 </td>
                 <td style="padding: 0.75rem 1rem; color: var(--color-muted);"><?php echo date('Y-m-d H:i', strtotime($row['created_at'])); ?></td>
                 <td style="padding: 0.75rem 1rem; text-align: right;">
-                  <a href="/admin/enquiries?action=view&id=<?php echo $row['id']; ?>" style="color: var(--color-gold); font-weight: 600;">View Details</a>
+                  <a href="/admin/enquiries?action=view&id=<?php echo $row['id']; ?><?php echo $source_tab ? '&source=' . urlencode($source_tab) : ''; ?>" style="color: var(--color-gold); font-weight: 600;">View Details</a>
                 </td>
               </tr>
             <?php endforeach; ?>
@@ -260,7 +348,7 @@ include_once dirname(__FILE__) . '/header.php';
         </table>
       </div>
     <?php else: ?>
-      <p style="color: var(--color-muted); text-align: center;">No admissions enquiries received yet.</p>
+      <p style="color: var(--color-muted); text-align: center; padding: 2rem 0;">No admissions enquiries found in this category.</p>
     <?php endif; ?>
   </div>
 
@@ -304,7 +392,7 @@ include_once dirname(__FILE__) . '/header.php';
         <p style="font-size: 0.9rem; line-height: 1.6; color: var(--color-text); margin: 0; white-space: pre-wrap;"><?php echo h($enq['message']); ?></p>
       </div>
       
-      <a href="/admin/enquiries" class="btn btn-outline" style="padding: 0.6rem 1.5rem;">&larr; Back to List</a>
+      <a href="/admin/enquiries<?php echo $source_tab ? '?source=' . urlencode($source_tab) : ''; ?>" class="btn btn-outline" style="padding: 0.6rem 1.5rem;">&larr; Back to Leads</a>
     </div>
 
     <!-- Right Column: Status Controls -->
@@ -313,6 +401,9 @@ include_once dirname(__FILE__) . '/header.php';
       
       <form method="POST" action="">
         <input type="hidden" name="csrf_token" value="<?php echo get_csrf_token(); ?>">
+        <?php if ($source_tab): ?>
+          <input type="hidden" name="source" value="<?php echo h($source_tab); ?>">
+        <?php endif; ?>
         
         <div class="admin-form-group">
           <label class="admin-label">Assign New Status</label>

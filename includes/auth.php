@@ -27,7 +27,7 @@ function has_permission($permission) {
     if (!isset($_SESSION['permissions'])) {
         return false;
     }
-    if (isset($_SESSION['role_name']) && $_SESSION['role_name'] === 'super_admin') {
+    if (isset($_SESSION['role_name']) && in_array($_SESSION['role_name'], ['super_admin', 'admin'])) {
         return true;
     }
     if (in_array('*', $_SESSION['permissions'])) {

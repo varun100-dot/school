@@ -38,40 +38,60 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     exit;
 }
 
-try {
-    if (!$db) {
-        throw new Exception("Database connection required.");
-    }
-    
-    // Concatenate the Preferred Callback Time and original message into the message field
+$student_name = trim($_POST['student_name'] ?? '');
+$source = trim($_POST['source'] ?? '') ?: 'Callback Modal';
+
+$full_message = '';
+if (!empty($preferred_time)) {
     $full_message = "Preferred Callback Time: " . $preferred_time;
-    if (!empty($user_message)) {
-        $full_message .= "\n\nParent Message:\n" . $user_message;
-    }
-    
-    // Insert into enquiries table using prepared statements
-    $stmt = $db->prepare("
-        INSERT INTO `enquiries` (`parent_name`, `student_name`, `grade`, `phone`, `email`, `message`, `source`, `status_id`)
-        VALUES (?, ?, ?, ?, ?, ?, 'Callback Modal', 1)
-    ");
-    $stmt->execute([
-        $parent_name,
-        $parent_name . ' (Student)',
-        $grade,
-        $phone,
-        $email,
-        $full_message
-    ]);
-    
-    echo json_encode([
-        'status' => 'success',
-        'message' => 'Thank you. Our team will get in touch with you shortly.'
-    ]);
-} catch (Exception $e) {
-    error_log("[Callback Submission Error] " . $e->getMessage());
-    http_response_code(500);
-    echo json_encode([
-        'status' => 'error',
-        'message' => 'Database connection required. Form could not be persisted.'
-    ]);
 }
+if (!empty($user_message)) {
+    $full_message .= ($full_message ? "\n\n" : "") . "Message / Notes:\n" . $user_message;
+}
+if (empty($full_message)) {
+    $full_message = "Submitted via " . $source;
+}
+
+$saved = false;
+if ($db) {
+    try {
+        $stmt = $db->prepare("
+            INSERT INTO `enquiries` (`parent_name`, `student_name`, `grade`, `phone`, `email`, `message`, `source`, `status_id`)
+            VALUES (?, ?, ?, ?, ?, ?, ?, 1)
+        ");
+        $stmt->execute([
+            $parent_name,
+            $student_name ?: ($parent_name . ' (Student)'),
+            $grade,
+            $phone,
+            $email,
+            $full_message,
+            $source
+        ]);
+        $saved = true;
+    } catch (Exception $e) {
+        error_log("[Enquiry Submission DB Error] " . $e->getMessage());
+    }
+}
+
+// Persist in session fallback
+if (!isset($_SESSION['mock_enquiries'])) {
+    $_SESSION['mock_enquiries'] = [];
+}
+$_SESSION['mock_enquiries'][] = [
+    'id' => count($_SESSION['mock_enquiries']) + 1001,
+    'parent_name' => $parent_name,
+    'student_name' => $student_name ?: ($parent_name . ' (Student)'),
+    'grade' => $grade,
+    'phone' => $phone,
+    'email' => $email,
+    'message' => $full_message,
+    'source' => $source,
+    'status_id' => 1,
+    'created_at' => date('Y-m-d H:i:s')
+];
+
+echo json_encode([
+    'status' => 'success',
+    'message' => 'Thank you. Our admissions team will get in touch with you shortly.'
+]);

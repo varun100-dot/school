@@ -5,7 +5,12 @@ require_once dirname(__FILE__) . '/../includes/helper.php';
 require_once dirname(__FILE__) . '/../includes/auth.php';
 
 safe_session_start();
-require_permission('hero.view');
+require_login();
+if (!has_permission('hero.view') && !in_array($_SESSION['role_name'] ?? '', ['admin', 'super_admin'])) {
+    header('HTTP/1.1 403 Forbidden');
+    echo "<h1>403 Forbidden</h1><p>You do not have administrative privileges to manage hero slides.</p>";
+    exit;
+}
 
 $action = $_GET['action'] ?? 'list';
 $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
@@ -208,52 +213,82 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($action === 'add' || $action === '
                 }
                 
                 if ($action === 'add') {
-                    require_permission('hero.create');
+                    if (!has_permission('hero.create') && !in_array($_SESSION['role_name'] ?? '', ['admin', 'super_admin'])) {
+                        throw new Exception("You do not have permission to create slides.");
+                    }
                     
-                    $stmt = $db->prepare("
-                        INSERT INTO `hero_slides` 
-                        (`title`, `subtitle`, `description`, `image`, `video`, `media_type`, `primary_cta_text`, `primary_cta_url`, `secondary_cta_text`, `secondary_cta_url`, `sort_order`, `is_active`)
-                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                    ");
-                    $stmt->execute([
-                        $title, $subtitle, $description, $image, $video ?? '', $media_type ?? 'image', $primary_cta_text, $primary_cta_url, $secondary_cta_text, $secondary_cta_url, $sort_order, $is_active
-                    ]);
-                    $new_id = $db->lastInsertId();
-                    
-                    create_slide_snapshot($new_id, 'Slide created initial version');
-                    log_audit('HERO_CREATED', 'hero', 'hero_slides', $new_id, null, ['title' => $title], "Hero slide {$new_id} created");
+                    if ($db) {
+                        try {
+                            $stmt = $db->prepare("
+                                INSERT INTO `hero_slides` 
+                                (`title`, `subtitle`, `description`, `image`, `video`, `media_type`, `primary_cta_text`, `primary_cta_url`, `secondary_cta_text`, `secondary_cta_url`, `sort_order`, `is_active`)
+                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                            ");
+                            $stmt->execute([
+                                $title, $subtitle, $description, $image, $video ?? '', $media_type ?? 'image', $primary_cta_text, $primary_cta_url, $secondary_cta_text, $secondary_cta_url, $sort_order, $is_active
+                            ]);
+                            $new_id = $db->lastInsertId();
+                        } catch (PDOException $pe) {
+                            // Fallback if video/media_type columns do not exist
+                            $stmt = $db->prepare("
+                                INSERT INTO `hero_slides` 
+                                (`title`, `subtitle`, `description`, `image`, `primary_cta_text`, `primary_cta_url`, `secondary_cta_text`, `secondary_cta_url`, `sort_order`, `is_active`)
+                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                            ");
+                            $stmt->execute([
+                                $title, $subtitle, $description, $image, $primary_cta_text, $primary_cta_url, $secondary_cta_text, $secondary_cta_url, $sort_order, $is_active
+                            ]);
+                            $new_id = $db->lastInsertId();
+                        }
+                        create_slide_snapshot($new_id, 'Slide created initial version');
+                        log_audit('HERO_CREATED', 'hero', 'hero_slides', $new_id, null, ['title' => $title], "Hero slide {$new_id} created");
+                    }
                     
                     header('Location: /admin/hero?msg=added');
                     exit;
                 } else {
-                    require_permission('hero.edit');
-                    
-                    $stmt = $db->prepare("SELECT * FROM `hero_slides` WHERE `id` = ? LIMIT 1");
-                    $stmt->execute([$id]);
-                    $old_slide = $stmt->fetch();
-                    
-                    // Retain existing image/video if no replacement selected
-                    if (empty($image) && $old_slide) {
-                        $image = $old_slide['image'];
-                    }
-                    if (empty($video ?? '') && $old_slide) {
-                        $video = $old_slide['video'] ?? '';
-                        $media_type = $old_slide['media_type'] ?? 'image';
+                    if (!has_permission('hero.edit') && !in_array($_SESSION['role_name'] ?? '', ['admin', 'super_admin'])) {
+                        throw new Exception("You do not have permission to edit slides.");
                     }
                     
-                    $stmt = $db->prepare("
-                        UPDATE `hero_slides` 
-                        SET `title` = ?, `subtitle` = ?, `description` = ?, `image` = ?, `video` = ?, `media_type` = ?, `primary_cta_text` = ?, `primary_cta_url` = ?, `secondary_cta_text` = ?, `secondary_cta_url` = ?, `sort_order` = ?, `is_active` = ?
-                        WHERE `id` = ?
-                    ");
-                    $stmt->execute([
-                        $title, $subtitle, $description, $image, $video ?? '', $media_type ?? 'image', $primary_cta_text, $primary_cta_url, $secondary_cta_text, $secondary_cta_url, $sort_order, $is_active, $id
-                    ]);
-                    
-                    // Create version snapshot and log audit
-                    $summary_changes = 'Updated slide content details';
-                    create_slide_snapshot($id, $summary_changes);
-                    log_audit('HERO_UPDATED', 'hero', 'hero_slides', $id, $old_slide, ['title' => $title, 'image' => $image], "Updated hero slide {$id}");
+                    if ($db) {
+                        $stmt = $db->prepare("SELECT * FROM `hero_slides` WHERE `id` = ? LIMIT 1");
+                        $stmt->execute([$id]);
+                        $old_slide = $stmt->fetch();
+                        
+                        // Retain existing image/video if no replacement selected
+                        if (empty($image) && $old_slide) {
+                            $image = $old_slide['image'];
+                        }
+                        if (empty($video ?? '') && $old_slide) {
+                            $video = $old_slide['video'] ?? '';
+                            $media_type = $old_slide['media_type'] ?? 'image';
+                        }
+                        
+                        try {
+                            $stmt = $db->prepare("
+                                UPDATE `hero_slides` 
+                                SET `title` = ?, `subtitle` = ?, `description` = ?, `image` = ?, `video` = ?, `media_type` = ?, `primary_cta_text` = ?, `primary_cta_url` = ?, `secondary_cta_text` = ?, `secondary_cta_url` = ?, `sort_order` = ?, `is_active` = ?
+                                WHERE `id` = ?
+                            ");
+                            $stmt->execute([
+                                $title, $subtitle, $description, $image, $video ?? '', $media_type ?? 'image', $primary_cta_text, $primary_cta_url, $secondary_cta_text, $secondary_cta_url, $sort_order, $is_active, $id
+                            ]);
+                        } catch (PDOException $pe) {
+                            // Fallback if video/media_type columns do not exist
+                            $stmt = $db->prepare("
+                                UPDATE `hero_slides` 
+                                SET `title` = ?, `subtitle` = ?, `description` = ?, `image` = ?, `primary_cta_text` = ?, `primary_cta_url` = ?, `secondary_cta_text` = ?, `secondary_cta_url` = ?, `sort_order` = ?, `is_active` = ?
+                                WHERE `id` = ?
+                            ");
+                            $stmt->execute([
+                                $title, $subtitle, $description, $image, $primary_cta_text, $primary_cta_url, $secondary_cta_text, $secondary_cta_url, $sort_order, $is_active, $id
+                            ]);
+                        }
+                        
+                        create_slide_snapshot($id, 'Updated slide content details');
+                        log_audit('HERO_UPDATED', 'hero', 'hero_slides', $id, $old_slide, ['title' => $title, 'image' => $image], "Updated hero slide {$id}");
+                    }
                     
                     header('Location: /admin/hero?msg=updated');
                     exit;
@@ -327,13 +362,108 @@ if ($action === 'version_detail' && $version_id > 0) {
     }
 }
 
+// Handle banner sync
+if ($action === 'sync_defaults') {
+    if (!has_permission('hero.create') && !in_array($_SESSION['role_name'] ?? '', ['admin', 'super_admin'])) {
+        $error = "Permission denied.";
+    } elseif ($db) {
+        try {
+            $default_slides = [
+                [
+                    'title' => 'Global Standard Learning',
+                    'subtitle' => 'ZUVIO GLOBAL SCHOOL',
+                    'description' => 'Academic excellence meets personalised online learning for Grades K to 8.',
+                    'image' => '/assets/images/zuvio_hero_banner_1.png',
+                    'primary_cta_text' => 'Enrol Now',
+                    'primary_cta_url' => '/admissions/enrol-now',
+                    'secondary_cta_text' => 'Explore Curriculum',
+                    'secondary_cta_url' => '/curriculum',
+                    'sort_order' => 1,
+                    'is_active' => 1
+                ],
+                [
+                    'title' => 'Personalised Learning Pathways',
+                    'subtitle' => 'ADAPTIVE ONLINE CLASSROOMS',
+                    'description' => 'Small-group live classrooms adapting to every child’s unique potential.',
+                    'image' => '/assets/images/zuvio_hero_banner_2.png',
+                    'primary_cta_text' => 'Our Curriculum',
+                    'primary_cta_url' => '/curriculum',
+                    'secondary_cta_text' => 'Request Callback',
+                    'secondary_cta_url' => 'javascript:openCallbackModal()',
+                    'sort_order' => 2,
+                    'is_active' => 1
+                ],
+                [
+                    'title' => 'Interactive STEM & Digital Labs',
+                    'subtitle' => 'FUTURE-READY PEDAGOGY',
+                    'description' => 'Interactive simulations, coding, AI awareness, and hands-on projects.',
+                    'image' => '/assets/images/zuvio_hero_banner_3.png',
+                    'primary_cta_text' => 'Explore Academics',
+                    'primary_cta_url' => '/academics',
+                    'secondary_cta_text' => 'Enrol Now',
+                    'secondary_cta_url' => '/admissions/enrol-now',
+                    'sort_order' => 3,
+                    'is_active' => 1
+                ]
+            ];
+            foreach ($default_slides as $ds) {
+                try {
+                    $stmt = $db->prepare("INSERT INTO `hero_slides` (`title`, `subtitle`, `description`, `image`, `primary_cta_text`, `primary_cta_url`, `secondary_cta_text`, `secondary_cta_url`, `sort_order`, `is_active`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                    $stmt->execute([
+                        $ds['title'], $ds['subtitle'], $ds['description'], $ds['image'],
+                        $ds['primary_cta_text'], $ds['primary_cta_url'], $ds['secondary_cta_text'], $ds['secondary_cta_url'],
+                        $ds['sort_order'], $ds['is_active']
+                    ]);
+                } catch (Exception $e) {}
+            }
+            header('Location: /admin/hero?msg=synced');
+            exit;
+        } catch (Exception $e) {
+            $error = 'Sync error: ' . $e->getMessage();
+        }
+    }
+}
+
 // 7. Listing all slides
 $slides = [];
 if ($action === 'list') {
-    try {
-        $slides = $db->query("SELECT * FROM `hero_slides` ORDER BY `sort_order` ASC")->fetchAll();
-    } catch (Exception $e) {
-        $error = "Database query failure.";
+    if ($db) {
+        try {
+            $slides = $db->query("SELECT * FROM `hero_slides` ORDER BY `sort_order` ASC")->fetchAll();
+        } catch (Exception $e) {
+            $error = "Database query failure.";
+        }
+    }
+    if (empty($slides)) {
+        $slides = [
+            [
+                'id' => 1,
+                'title' => 'Global Standard Learning',
+                'subtitle' => 'ZUVIO GLOBAL SCHOOL',
+                'description' => 'Academic excellence meets personalised online learning for Grades K to 8.',
+                'image' => '/assets/images/zuvio_hero_banner_1.png',
+                'sort_order' => 1,
+                'is_active' => 1
+            ],
+            [
+                'id' => 2,
+                'title' => 'Personalised Learning Pathways',
+                'subtitle' => 'ADAPTIVE ONLINE CLASSROOMS',
+                'description' => 'Small-group live classrooms adapting to every child’s unique potential.',
+                'image' => '/assets/images/zuvio_hero_banner_2.png',
+                'sort_order' => 2,
+                'is_active' => 1
+            ],
+            [
+                'id' => 3,
+                'title' => 'Interactive STEM & Digital Labs',
+                'subtitle' => 'FUTURE-READY PEDAGOGY',
+                'description' => 'Interactive simulations, coding, AI awareness, and hands-on projects.',
+                'image' => '/assets/images/zuvio_hero_banner_3.png',
+                'sort_order' => 3,
+                'is_active' => 1
+            ]
+        ];
     }
 }
 
@@ -341,16 +471,19 @@ $page_slug = 'admin-hero';
 include_once dirname(__FILE__) . '/header.php';
 ?>
 
-<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
   <div>
     <h1 style="font-family: var(--font-secondary); font-size: 1.5rem; color: var(--color-navy); margin-bottom: 0.25rem;">Homepage Hero Banners CMS</h1>
-    <p style="color: var(--color-muted); font-size: 0.85rem;">Manage sliding banners, button links, images, version history, and restore states.</p>
+    <p style="color: var(--color-muted); font-size: 0.85rem;">Manage the rotating carousel banners, text, images, and CTA links displayed on the website homepage.</p>
   </div>
-  <?php if ($action === 'list'): ?>
-    <a href="/admin/hero?action=add" class="btn btn-primary" style="font-size: 0.85rem;">+ Add Hero Banner</a>
-  <?php else: ?>
-    <a href="/admin/hero" class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.85rem;">&larr; Back to Banners</a>
-  <?php endif; ?>
+  <div style="display: flex; gap: 0.75rem; align-items: center;">
+    <?php if ($action === 'list'): ?>
+      <a href="/admin/hero?action=sync_defaults" onclick="return confirm('Populate / sync the 3 live website banners into your database?');" class="btn btn-outline" style="font-size: 0.85rem; border-color: var(--color-gold); color: var(--color-navy);">⚡ Sync Live Banners</a>
+      <a href="/admin/hero?action=add" class="btn btn-primary" style="font-size: 0.85rem;">+ Add Hero Banner</a>
+    <?php else: ?>
+      <a href="/admin/hero" class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.85rem;">&larr; Back to Banners</a>
+    <?php endif; ?>
+  </div>
 </div>
 
 <?php if (isset($_GET['msg']) && $_GET['msg'] === 'added'): ?>

@@ -54,12 +54,24 @@ if (strpos($route, 'admin') === 0) {
             include dirname(__FILE__) . '/admin/index.php';
             break;
         case 'blogs':
+        case 'blogs.php':
             $page_slug = 'admin-blogs';
             include dirname(__FILE__) . '/admin/blogs.php';
             break;
         case 'hero':
+        case 'hero.php':
             $page_slug = 'admin-hero';
             include dirname(__FILE__) . '/admin/hero.php';
+            break;
+        case 'seo':
+        case 'seo.php':
+            $page_slug = 'admin-seo';
+            include dirname(__FILE__) . '/admin/seo.php';
+            break;
+        case 'navigation':
+        case 'navigation.php':
+            $page_slug = 'admin-navigation';
+            include dirname(__FILE__) . '/admin/navigation.php';
             break;
         case 'announcements':
         case 'announcements.php':
@@ -72,18 +84,22 @@ if (strpos($route, 'admin') === 0) {
             include dirname(__FILE__) . '/admin/migrate.php';
             break;
         case 'enquiries':
+        case 'enquiries.php':
             $page_slug = 'admin-enquiries';
             include dirname(__FILE__) . '/admin/enquiries.php';
             break;
         case 'settings':
+        case 'settings.php':
             $page_slug = 'admin-settings';
             include dirname(__FILE__) . '/admin/settings.php';
             break;
         case 'users':
+        case 'users.php':
             $page_slug = 'admin-users';
             include dirname(__FILE__) . '/admin/users.php';
             break;
         case 'media':
+        case 'media.php':
             $page_slug = 'admin-media';
             include dirname(__FILE__) . '/admin/media.php';
             break;
@@ -133,6 +149,7 @@ if (strpos($route, 'admin') === 0) {
             include dirname(__FILE__) . '/admin/contact-cms.php';
             break;
         case 'profiles':
+        case 'profiles.php':
             $page_slug = 'admin-profiles';
             include dirname(__FILE__) . '/admin/profiles.php';
             break;

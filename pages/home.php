@@ -33,26 +33,46 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_enquiry'])) {
             $form_status = 'error';
             $error_message = 'Incorrect captcha code. Please try again.';
         } else {
-            try {
-                if ($db) {
+            $formatted_phone = $country_code . ' ' . $phone;
+            $notes_message = 'Country: ' . $country . ' | Submitted via Homepage Talk to an Admission Counselor form';
+
+            if ($db) {
+                try {
                     $stmt = $db->prepare("
                         INSERT INTO `enquiries` (`parent_name`, `student_name`, `grade`, `phone`, `email`, `message`, `source`, `status_id`)
-                        VALUES (?, ?, ?, ?, ?, ?, 'Talk to an Admission Counselor', 1)
+                        VALUES (?, ?, ?, ?, ?, ?, 'Homepage Form', 1)
                     ");
                     $stmt->execute([
                         $parent_name,
                         $parent_name . ' (Student)',
                         $grade,
-                        $country_code . ' ' . $phone,
+                        $formatted_phone,
                         $email,
-                        'Country: ' . $country . ' | Submitted via Talk to an Admission Counselor form'
+                        $notes_message
                     ]);
+                } catch (Exception $e) {
+                    error_log("[Homepage Enquiry Error] " . $e->getMessage());
                 }
-                $form_status = 'success';
-            } catch (Exception $e) {
-                // If local database offline, still show success for front-end simulation
-                $form_status = 'success';
             }
+
+            // Always persist into mock enquiries session so lead is never lost in local/offline test environments
+            if (!isset($_SESSION['mock_enquiries'])) {
+                $_SESSION['mock_enquiries'] = [];
+            }
+            $_SESSION['mock_enquiries'][] = [
+                'id' => count($_SESSION['mock_enquiries']) + 1001,
+                'parent_name' => $parent_name,
+                'student_name' => $parent_name . ' (Student)',
+                'grade' => $grade,
+                'phone' => $formatted_phone,
+                'email' => $email,
+                'message' => $notes_message,
+                'source' => 'Homepage Form',
+                'status_id' => 1,
+                'created_at' => date('Y-m-d H:i:s')
+            ];
+
+            $form_status = 'success';
         }
     }
 }

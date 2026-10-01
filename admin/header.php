@@ -66,6 +66,45 @@ $current_page = $page_slug ?? 'admin-dashboard';
       color: #D9A441;
       padding: 1rem 1rem 0.35rem 1rem;
     }
+    .nav-section {
+      margin-bottom: 0.4rem;
+    }
+    .nav-section-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1.1px;
+      color: #D9A441;
+      padding: 0.65rem 0.85rem 0.35rem 0.85rem;
+      cursor: pointer;
+      user-select: none;
+      border-radius: var(--radius-sm);
+      transition: background 0.15s ease, color 0.15s ease;
+    }
+    .nav-section-title:hover {
+      color: #F8E2A6;
+      background: rgba(255, 255, 255, 0.04);
+    }
+    .nav-section-toggle-icon {
+      font-size: 0.65rem;
+      transition: transform 0.2s ease;
+      color: #D9A441;
+    }
+    .nav-section.collapsed .nav-section-toggle-icon {
+      transform: rotate(-90deg);
+    }
+    .nav-section-items {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+      transition: all 0.2s ease;
+    }
+    .nav-section.collapsed .nav-section-items {
+      display: none !important;
+    }
     .sidebar-item {
       display: flex;
       align-items: center;
@@ -235,69 +274,171 @@ $current_page = $page_slug ?? 'admin-dashboard';
     </div>
     
     <nav class="sidebar-menu" style="overflow-y: auto;">
-      <div class="sidebar-heading">Main Overview</div>
-      <?php if (has_permission('dashboard.view') || true): ?>
-        <a href="/admin" class="sidebar-item <?php echo $current_page === 'admin-dashboard' ? 'active' : ''; ?>">Dashboard</a>
-      <?php endif; ?>
-      <a href="/admin/homepage.php" class="sidebar-item <?php echo $current_page === 'admin-homepage' ? 'active' : ''; ?>">Homepage Sections CMS</a>
+      <!-- Overview & Quick Access -->
+      <div class="nav-section-group">
+        <a href="/admin" class="sidebar-item <?php echo ($current_page === 'admin-dashboard' || $current_page === 'dashboard') ? 'active' : ''; ?>">
+          <span style="display:flex; align-items:center; gap:0.5rem;">
+            <span>&#9638;</span> Dashboard Overview
+          </span>
+        </a>
+      </div>
 
-      <div class="sidebar-heading">Navigation &amp; SEO</div>
-      <a href="/admin/seo.php" class="sidebar-item <?php echo $current_page === 'admin-seo' ? 'active' : ''; ?>">Page SEO &amp; Meta</a>
-      <a href="/admin/navigation.php" class="sidebar-item <?php echo $current_page === 'admin-navigation' ? 'active' : ''; ?>">Navigation Menu Tree</a>
+      <!-- 2. Dedicated Lead Management -->
+      <?php 
+        $curr_lead_src = $_GET['source'] ?? '';
+        $is_leads_active = ($current_page === 'admin-enquiries' || strpos($_SERVER['REQUEST_URI'] ?? '', 'enquiries') !== false);
+      ?>
+      <div class="nav-section" id="nav-leads">
+        <div class="nav-section-title" onclick="toggleNavGroup('nav-leads')">
+          <span>Lead Management</span>
+          <span class="nav-section-toggle-icon">&#9662;</span>
+        </div>
+        <div class="nav-section-items">
+          <a href="/admin/enquiries.php?source=homepage" class="sidebar-item <?php echo ($is_leads_active && $curr_lead_src === 'homepage') ? 'active' : ''; ?>" style="padding-left: 1.5rem;">
+            <span style="display:flex; justify-content:space-between; width:100%; align-items:center;">
+              <span>&#9873; Homepage Leads</span>
+              <span class="badge" style="background:#2563EB; color:#fff; font-size:0.65rem; padding:1px 6px; border-radius:10px;">Home</span>
+            </span>
+          </a>
+          <a href="/admin/enquiries.php?source=contact" class="sidebar-item <?php echo ($is_leads_active && $curr_lead_src === 'contact') ? 'active' : ''; ?>" style="padding-left: 1.5rem;">
+            <span style="display:flex; justify-content:space-between; width:100%; align-items:center;">
+              <span>&#9993; Contact Us Leads</span>
+              <span class="badge" style="background:#059669; color:#fff; font-size:0.65rem; padding:1px 6px; border-radius:10px;">Contact</span>
+            </span>
+          </a>
+          <a href="/admin/enquiries.php" class="sidebar-item <?php echo ($is_leads_active && empty($curr_lead_src)) ? 'active' : ''; ?>" style="padding-left: 1.5rem;">
+            <span>&#10003; All Enquiries CRM</span>
+          </a>
+        </div>
+      </div>
 
-      <div class="sidebar-heading">About Us</div>
-      <a href="/admin/about-cms.php" class="sidebar-item <?php echo $current_page === 'admin-about-cms' && empty($_GET['tab']) ? 'active' : ''; ?>">About Zuvio</a>
-      <a href="/admin/profiles.php" class="sidebar-item <?php echo $current_page === 'admin-profiles' ? 'active' : ''; ?>">Our Team</a>
-      <a href="/admin/about-cms.php?tab=founder" class="sidebar-item <?php echo ($current_page === 'admin-about-cms' && ($_GET['tab'] ?? '') === 'founder') ? 'active' : ''; ?>">Founder’s Message</a>
-      <a href="/admin/accreditations.php" class="sidebar-item <?php echo $current_page === 'admin-accreditations' ? 'active' : ''; ?>">Affiliations & Accreditations</a>
+      <!-- Homepage Management -->
+      <div class="nav-section" id="nav-home">
+        <div class="nav-section-title" onclick="toggleNavGroup('nav-home')">
+          <span>Homepage</span>
+          <span class="nav-section-toggle-icon">&#9662;</span>
+        </div>
+        <div class="nav-section-items">
+          <a href="/admin/hero.php" class="sidebar-item <?php echo ($current_page === 'admin-hero' || strpos($_SERVER['REQUEST_URI'] ?? '', 'hero') !== false) ? 'active' : ''; ?>" style="padding-left: 1.5rem;">
+            <span>&#128444; Hero Banners (Live Carousel)</span>
+          </a>
+          <a href="/admin/homepage.php" class="sidebar-item <?php echo $current_page === 'admin-homepage' ? 'active' : ''; ?>" style="padding-left: 1.5rem;">
+            <span>&#9881; Homepage Sections CMS</span>
+          </a>
+        </div>
+      </div>
 
-      <div class="sidebar-heading">Academics</div>
-      <a href="/admin/academics-cms.php?tab=technology" class="sidebar-item <?php echo ($current_page === 'admin-academics-cms' && ($_GET['tab'] ?? '') === 'technology') ? 'active' : ''; ?>">Technology &amp; LMS</a>
-      <a href="/admin/academics-cms.php?tab=curriculum" class="sidebar-item <?php echo ($current_page === 'admin-academics-cms' && ($_GET['tab'] ?? '') === 'curriculum') ? 'active' : ''; ?>">Curriculum Framework</a>
-      <a href="/admin/academics-cms.php?tab=special_ed" class="sidebar-item <?php echo ($current_page === 'admin-academics-cms' && ($_GET['tab'] ?? '') === 'special_ed') ? 'active' : ''; ?>">Special Education</a>
-      <a href="/admin/academics-cms.php?tab=electives" class="sidebar-item <?php echo ($current_page === 'admin-academics-cms' && ($_GET['tab'] ?? '') === 'electives') ? 'active' : ''; ?>">Electives</a>
-      <a href="/admin/academics-cms.php?tab=nep_2020" class="sidebar-item <?php echo ($current_page === 'admin-academics-cms' && ($_GET['tab'] ?? '') === 'nep_2020') ? 'active' : ''; ?>">NEP 2020</a>
-      <a href="/admin/academics-cms.php?tab=resources" class="sidebar-item <?php echo ($current_page === 'admin-academics-cms' && ($_GET['tab'] ?? '') === 'resources') ? 'active' : ''; ?>">Resources</a>
+      <!-- About Us -->
+      <div class="nav-section" id="nav-about">
+        <div class="nav-section-title" onclick="toggleNavGroup('nav-about')">
+          <span>About Us</span>
+          <span class="nav-section-toggle-icon">&#9662;</span>
+        </div>
+        <div class="nav-section-items">
+          <a href="/admin/about-cms.php" class="sidebar-item <?php echo ($current_page === 'admin-about-cms' && empty($_GET['tab'])) ? 'active' : ''; ?>" style="padding-left: 1.5rem;">About Zuvio</a>
+          <a href="/admin/profiles.php" class="sidebar-item <?php echo $current_page === 'admin-profiles' ? 'active' : ''; ?>" style="padding-left: 1.5rem;">Our Team</a>
+          <a href="/admin/about-cms.php?tab=founder" class="sidebar-item <?php echo ($current_page === 'admin-about-cms' && ($_GET['tab'] ?? '') === 'founder') ? 'active' : ''; ?>" style="padding-left: 1.5rem;">Founder's Message</a>
+          <a href="/admin/accreditations.php" class="sidebar-item <?php echo $current_page === 'admin-accreditations' ? 'active' : ''; ?>" style="padding-left: 1.5rem;">Affiliations &amp; Accreditations</a>
+        </div>
+      </div>
 
-      <div class="sidebar-heading">Admissions</div>
-      <a href="/admin/admissions-cms.php?tab=overview" class="sidebar-item <?php echo ($current_page === 'admin-admissions-cms' && (empty($_GET['tab']) || $_GET['tab'] === 'overview')) ? 'active' : ''; ?>">Admissions Overview</a>
-      <a href="/admin/admissions-cms.php?tab=enrol" class="sidebar-item <?php echo ($current_page === 'admin-admissions-cms' && ($_GET['tab'] ?? '') === 'enrol') ? 'active' : ''; ?>">Enrol Now (5 Steps)</a>
-      <a href="/admin/admissions-cms.php?tab=eligibility" class="sidebar-item <?php echo ($current_page === 'admin-admissions-cms' && ($_GET['tab'] ?? '') === 'eligibility') ? 'active' : ''; ?>">Eligibility Matrix</a>
-      <a href="/admin/admissions-cms.php?tab=calendar" class="sidebar-item <?php echo ($current_page === 'admin-admissions-cms' && ($_GET['tab'] ?? '') === 'calendar') ? 'active' : ''; ?>">Academic Calendar</a>
-      <a href="/admin/admissions-cms.php?tab=fees" class="sidebar-item <?php echo ($current_page === 'admin-admissions-cms' && ($_GET['tab'] ?? '') === 'fees') ? 'active' : ''; ?>">Fees Structure</a>
-      <a href="/admin/faqs.php" class="sidebar-item <?php echo $current_page === 'admin-faqs' ? 'active' : ''; ?>">Parent FAQs (18 Items)</a>
+      <!-- Academics -->
+      <div class="nav-section" id="nav-academics">
+        <div class="nav-section-title" onclick="toggleNavGroup('nav-academics')">
+          <span>Academics</span>
+          <span class="nav-section-toggle-icon">&#9662;</span>
+        </div>
+        <div class="nav-section-items">
+          <a href="/admin/academics-cms.php?tab=technology" class="sidebar-item <?php echo ($current_page === 'admin-academics-cms' && ($_GET['tab'] ?? '') === 'technology') ? 'active' : ''; ?>" style="padding-left: 1.5rem;">Technology &amp; LMS</a>
+          <a href="/admin/academics-cms.php?tab=curriculum" class="sidebar-item <?php echo ($current_page === 'admin-academics-cms' && ($_GET['tab'] ?? '') === 'curriculum') ? 'active' : ''; ?>" style="padding-left: 1.5rem;">Curriculum Framework</a>
+          <a href="/admin/academics-cms.php?tab=special_ed" class="sidebar-item <?php echo ($current_page === 'admin-academics-cms' && ($_GET['tab'] ?? '') === 'special_ed') ? 'active' : ''; ?>" style="padding-left: 1.5rem;">Special Education</a>
+          <a href="/admin/academics-cms.php?tab=electives" class="sidebar-item <?php echo ($current_page === 'admin-academics-cms' && ($_GET['tab'] ?? '') === 'electives') ? 'active' : ''; ?>" style="padding-left: 1.5rem;">Electives</a>
+          <a href="/admin/academics-cms.php?tab=nep_2020" class="sidebar-item <?php echo ($current_page === 'admin-academics-cms' && ($_GET['tab'] ?? '') === 'nep_2020') ? 'active' : ''; ?>" style="padding-left: 1.5rem;">NEP 2020</a>
+          <a href="/admin/academics-cms.php?tab=resources" class="sidebar-item <?php echo ($current_page === 'admin-academics-cms' && ($_GET['tab'] ?? '') === 'resources') ? 'active' : ''; ?>" style="padding-left: 1.5rem;">Academic Resources</a>
+        </div>
+      </div>
 
-      <div class="sidebar-heading">Contact &amp; Enquiries</div>
-      <a href="/admin/contact-cms.php" class="sidebar-item <?php echo $current_page === 'admin-contact-cms' ? 'active' : ''; ?>">Contact Us CMS</a>
-      <?php if (has_permission('enquiries.view') || true): ?>
-        <a href="/admin/enquiries" class="sidebar-item <?php echo $current_page === 'admin-enquiries' ? 'active' : ''; ?>">Enrolment Leads CRM</a>
-      <?php endif; ?>
+      <!-- Admissions -->
+      <div class="nav-section" id="nav-admissions">
+        <div class="nav-section-title" onclick="toggleNavGroup('nav-admissions')">
+          <span>Admissions</span>
+          <span class="nav-section-toggle-icon">&#9662;</span>
+        </div>
+        <div class="nav-section-items">
+          <a href="/admin/admissions-cms.php?tab=overview" class="sidebar-item <?php echo ($current_page === 'admin-admissions-cms' && (empty($_GET['tab']) || $_GET['tab'] === 'overview')) ? 'active' : ''; ?>" style="padding-left: 1.5rem;">Admissions Overview</a>
+          <a href="/admin/admissions-cms.php?tab=enrol" class="sidebar-item <?php echo ($current_page === 'admin-admissions-cms' && ($_GET['tab'] ?? '') === 'enrol') ? 'active' : ''; ?>" style="padding-left: 1.5rem;">Enrol Now (5 Steps)</a>
+          <a href="/admin/admissions-cms.php?tab=eligibility" class="sidebar-item <?php echo ($current_page === 'admin-admissions-cms' && ($_GET['tab'] ?? '') === 'eligibility') ? 'active' : ''; ?>" style="padding-left: 1.5rem;">Eligibility Matrix</a>
+          <a href="/admin/admissions-cms.php?tab=calendar" class="sidebar-item <?php echo ($current_page === 'admin-admissions-cms' && ($_GET['tab'] ?? '') === 'calendar') ? 'active' : ''; ?>" style="padding-left: 1.5rem;">Academic Calendar</a>
+          <a href="/admin/admissions-cms.php?tab=fees" class="sidebar-item <?php echo ($current_page === 'admin-admissions-cms' && ($_GET['tab'] ?? '') === 'fees') ? 'active' : ''; ?>" style="padding-left: 1.5rem;">Fees Structure</a>
+          <a href="/admin/faqs.php" class="sidebar-item <?php echo $current_page === 'admin-faqs' ? 'active' : ''; ?>" style="padding-left: 1.5rem;">Parent FAQs (18 Items)</a>
+        </div>
+      </div>
 
-      <div class="sidebar-heading">Beyond</div>
-      <a href="/admin/beyond-cms.php?tab=cocurricular" class="sidebar-item <?php echo ($current_page === 'admin-beyond-cms' && ($_GET['tab'] ?? 'cocurricular') === 'cocurricular') ? 'active' : ''; ?>">Co-curricular / Clubs</a>
-      <a href="/admin/beyond-cms.php?tab=hybrid" class="sidebar-item <?php echo ($current_page === 'admin-beyond-cms' && ($_GET['tab'] ?? '') === 'hybrid') ? 'active' : ''; ?>">Hybrid Campus</a>
-      <a href="/admin/beyond-cms.php?tab=achievers" class="sidebar-item <?php echo ($current_page === 'admin-beyond-cms' && ($_GET['tab'] ?? '') === 'achievers') ? 'active' : ''; ?>">Student Achievers</a>
-      <a href="/admin/beyond-cms.php?tab=gallery" class="sidebar-item <?php echo ($current_page === 'admin-beyond-cms' && ($_GET['tab'] ?? '') === 'gallery') ? 'active' : ''; ?>">Photo Gallery</a>
-      <a href="/admin/beyond-cms.php?tab=classroom" class="sidebar-item <?php echo ($current_page === 'admin-beyond-cms' && ($_GET['tab'] ?? '') === 'classroom') ? 'active' : ''; ?>">Virtual Classroom</a>
+      <!-- Beyond Academics -->
+      <div class="nav-section" id="nav-beyond">
+        <div class="nav-section-title" onclick="toggleNavGroup('nav-beyond')">
+          <span>Beyond Academics</span>
+          <span class="nav-section-toggle-icon">&#9662;</span>
+        </div>
+        <div class="nav-section-items">
+          <a href="/admin/beyond-cms.php?tab=cocurricular" class="sidebar-item <?php echo ($current_page === 'admin-beyond-cms' && ($_GET['tab'] ?? 'cocurricular') === 'cocurricular') ? 'active' : ''; ?>" style="padding-left: 1.5rem;">Co-curricular / Clubs</a>
+          <a href="/admin/beyond-cms.php?tab=hybrid" class="sidebar-item <?php echo ($current_page === 'admin-beyond-cms' && ($_GET['tab'] ?? '') === 'hybrid') ? 'active' : ''; ?>" style="padding-left: 1.5rem;">Hybrid Campus</a>
+          <a href="/admin/beyond-cms.php?tab=achievers" class="sidebar-item <?php echo ($current_page === 'admin-beyond-cms' && ($_GET['tab'] ?? '') === 'achievers') ? 'active' : ''; ?>" style="padding-left: 1.5rem;">Student Achievers</a>
+          <a href="/admin/beyond-cms.php?tab=gallery" class="sidebar-item <?php echo ($current_page === 'admin-beyond-cms' && ($_GET['tab'] ?? '') === 'gallery') ? 'active' : ''; ?>" style="padding-left: 1.5rem;">Photo Gallery</a>
+          <a href="/admin/beyond-cms.php?tab=classroom" class="sidebar-item <?php echo ($current_page === 'admin-beyond-cms' && ($_GET['tab'] ?? '') === 'classroom') ? 'active' : ''; ?>" style="padding-left: 1.5rem;">Virtual Classroom</a>
+        </div>
+      </div>
 
-      <div class="sidebar-heading">Media &amp; Engagement</div>
-      <a href="/admin/testimonials.php" class="sidebar-item <?php echo $current_page === 'admin-testimonials' ? 'active' : ''; ?>">Parent Testimonials</a>
-      <?php if (has_permission('media.view') || true): ?>
-        <a href="/admin/media" class="sidebar-item <?php echo $current_page === 'admin-media' ? 'active' : ''; ?>">Media Manager (IMG/VID/PDF)</a>
-      <?php endif; ?>
-      <?php if (has_permission('blogs.view') || true): ?>
-        <a href="/admin/blogs" class="sidebar-item <?php echo $current_page === 'admin-blogs' ? 'active' : ''; ?>">Manage Blogs &amp; Categories</a>
-      <?php endif; ?>
-      <a href="/admin/announcements.php" class="sidebar-item <?php echo $current_page === 'admin-announcements' ? 'active' : ''; ?>">Announcements Strip</a>
+      <!-- Contact Us -->
+      <div class="nav-section" id="nav-contact">
+        <div class="nav-section-title" onclick="toggleNavGroup('nav-contact')">
+          <span>Contact Us</span>
+          <span class="nav-section-toggle-icon">&#9662;</span>
+        </div>
+        <div class="nav-section-items">
+          <a href="/admin/contact-cms.php" class="sidebar-item <?php echo $current_page === 'admin-contact-cms' ? 'active' : ''; ?>" style="padding-left: 1.5rem;">Contact Us Page CMS</a>
+          <a href="/admin/enquiries.php?source=contact" class="sidebar-item <?php echo ($is_leads_active && $curr_lead_src === 'contact') ? 'active' : ''; ?>" style="padding-left: 1.5rem;">View Contact Leads</a>
+        </div>
+      </div>
 
-      <div class="sidebar-heading">System &amp; Admin</div>
-      <?php if (has_permission('users.view') || true): ?>
-        <a href="/admin/users" class="sidebar-item <?php echo $current_page === 'admin-users' ? 'active' : ''; ?>">User Management</a>
-      <?php endif; ?>
-      <?php if (has_permission('settings.view') || true): ?>
-        <a href="/admin/settings" class="sidebar-item <?php echo $current_page === 'admin-settings' ? 'active' : ''; ?>">Site Settings</a>
-      <?php endif; ?>
-      <a href="/admin/migrate.php" class="sidebar-item <?php echo $current_page === 'admin-migrate' ? 'active' : ''; ?>">Database Migrations</a>
+      <!-- Media & Engagement -->
+      <div class="nav-section" id="nav-media">
+        <div class="nav-section-title" onclick="toggleNavGroup('nav-media')">
+          <span>Media &amp; Community</span>
+          <span class="nav-section-toggle-icon">&#9662;</span>
+        </div>
+        <div class="nav-section-items">
+          <a href="/admin/testimonials.php" class="sidebar-item <?php echo $current_page === 'admin-testimonials' ? 'active' : ''; ?>" style="padding-left: 1.5rem;">Parent Testimonials</a>
+          <a href="/admin/media.php" class="sidebar-item <?php echo $current_page === 'admin-media' ? 'active' : ''; ?>" style="padding-left: 1.5rem;">Media Manager (IMG/VID/PDF)</a>
+          <a href="/admin/blogs.php" class="sidebar-item <?php echo $current_page === 'admin-blogs' ? 'active' : ''; ?>" style="padding-left: 1.5rem;">Manage Blogs &amp; Articles</a>
+          <a href="/admin/announcements.php" class="sidebar-item <?php echo $current_page === 'admin-announcements' ? 'active' : ''; ?>" style="padding-left: 1.5rem;">Announcements Strip</a>
+        </div>
+      </div>
+
+      <!-- Navigation & SEO -->
+      <div class="nav-section" id="nav-seo">
+        <div class="nav-section-title" onclick="toggleNavGroup('nav-seo')">
+          <span>SEO &amp; Navigation</span>
+          <span class="nav-section-toggle-icon">&#9662;</span>
+        </div>
+        <div class="nav-section-items">
+          <a href="/admin/seo.php" class="sidebar-item <?php echo $current_page === 'admin-seo' ? 'active' : ''; ?>" style="padding-left: 1.5rem;">Page SEO &amp; Meta (26 Pages)</a>
+          <a href="/admin/navigation.php" class="sidebar-item <?php echo $current_page === 'admin-navigation' ? 'active' : ''; ?>" style="padding-left: 1.5rem;">Navigation Menu Tree</a>
+        </div>
+      </div>
+
+      <!-- System & Settings -->
+      <div class="nav-section" id="nav-system">
+        <div class="nav-section-title" onclick="toggleNavGroup('nav-system')">
+          <span>System &amp; Settings</span>
+          <span class="nav-section-toggle-icon">&#9662;</span>
+        </div>
+        <div class="nav-section-items">
+          <a href="/admin/users.php" class="sidebar-item <?php echo $current_page === 'admin-users' ? 'active' : ''; ?>" style="padding-left: 1.5rem;">User Management</a>
+          <a href="/admin/settings.php" class="sidebar-item <?php echo $current_page === 'admin-settings' ? 'active' : ''; ?>" style="padding-left: 1.5rem;">Site Settings</a>
+          <a href="/admin/migrate.php" class="sidebar-item <?php echo $current_page === 'admin-migrate' ? 'active' : ''; ?>" style="padding-left: 1.5rem;">Database Migrations</a>
+        </div>
+      </div>
     </nav>
     
     <div class="sidebar-user">
@@ -334,5 +475,33 @@ $current_page = $page_slug ?? 'admin-dashboard';
           overlay.classList.toggle('active');
         }
       }
+
+      function toggleNavGroup(id) {
+        const sec = document.getElementById(id);
+        if (sec) {
+          sec.classList.toggle('collapsed');
+          try {
+            const isCollapsed = sec.classList.contains('collapsed');
+            localStorage.setItem('admin_nav_' + id, isCollapsed ? 'collapsed' : 'open');
+          } catch(e) {}
+        }
+      }
+
+      // Restore user preferences while keeping active sections open
+      document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.nav-section').forEach(function(sec) {
+          // If active link is inside this section, keep it open
+          if (sec.querySelector('.sidebar-item.active')) {
+            sec.classList.remove('collapsed');
+            return;
+          }
+          try {
+            const state = localStorage.getItem('admin_nav_' + sec.id);
+            if (state === 'collapsed') {
+              sec.classList.add('collapsed');
+            }
+          } catch(e) {}
+        });
+      });
     </script>
 
