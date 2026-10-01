@@ -67,43 +67,50 @@ $current_page = $page_slug ?? 'admin-dashboard';
       padding: 1rem 1rem 0.35rem 1rem;
     }
     .nav-section {
-      margin-bottom: 0.4rem;
+      margin-bottom: 0.25rem;
     }
     .nav-section-title {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      font-size: 0.72rem;
-      font-weight: 800;
+      font-size: 0.74rem;
+      font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 1.1px;
-      color: #D9A441;
-      padding: 0.65rem 0.85rem 0.35rem 0.85rem;
+      letter-spacing: 1px;
+      color: #CBD5E1;
+      padding: 0.65rem 0.85rem;
       cursor: pointer;
       user-select: none;
       border-radius: var(--radius-sm);
       transition: background 0.15s ease, color 0.15s ease;
     }
     .nav-section-title:hover {
-      color: #F8E2A6;
-      background: rgba(255, 255, 255, 0.04);
+      color: #FFFFFF;
+      background: rgba(255, 255, 255, 0.08);
+    }
+    .nav-section.open .nav-section-title {
+      color: #D9A441;
+      background: rgba(255, 255, 255, 0.05);
     }
     .nav-section-toggle-icon {
       font-size: 0.65rem;
       transition: transform 0.2s ease;
+      color: #94A3B8;
+      transform: rotate(-90deg); /* points right (closed) by default */
+    }
+    .nav-section.open .nav-section-toggle-icon {
+      transform: rotate(0deg); /* points down (open) */
       color: #D9A441;
     }
-    .nav-section.collapsed .nav-section-toggle-icon {
-      transform: rotate(-90deg);
-    }
     .nav-section-items {
-      display: flex;
+      display: none; /* CLOSED BY DEFAULT */
       flex-direction: column;
       gap: 0.2rem;
+      padding: 0.2rem 0 0.4rem 0;
       transition: all 0.2s ease;
     }
-    .nav-section.collapsed .nav-section-items {
-      display: none !important;
+    .nav-section.open .nav-section-items {
+      display: flex !important;
     }
     .sidebar-item {
       display: flex;
@@ -286,9 +293,20 @@ $current_page = $page_slug ?? 'admin-dashboard';
       <!-- 2. Dedicated Lead Management -->
       <?php 
         $curr_lead_src = $_GET['source'] ?? '';
-        $is_leads_active = ($current_page === 'admin-enquiries' || strpos($_SERVER['REQUEST_URI'] ?? '', 'enquiries') !== false);
+        $curr_uri = $_SERVER['REQUEST_URI'] ?? '';
+        
+        $is_leads_active = ($current_page === 'admin-enquiries' || strpos($curr_uri, 'enquiries') !== false);
+        $is_home_active = ($current_page === 'admin-hero' || $current_page === 'admin-homepage' || strpos($curr_uri, 'hero') !== false || strpos($curr_uri, 'homepage') !== false);
+        $is_about_active = ($current_page === 'admin-about-cms' || $current_page === 'admin-profiles' || $current_page === 'admin-accreditations' || strpos($curr_uri, 'about-cms') !== false || strpos($curr_uri, 'profiles') !== false || strpos($curr_uri, 'accreditations') !== false);
+        $is_academics_active = ($current_page === 'admin-academics-cms' || strpos($curr_uri, 'academics-cms') !== false);
+        $is_admissions_active = ($current_page === 'admin-admissions-cms' || $current_page === 'admin-faqs' || strpos($curr_uri, 'admissions-cms') !== false || strpos($curr_uri, 'faqs') !== false);
+        $is_beyond_active = ($current_page === 'admin-beyond-cms' || strpos($curr_uri, 'beyond-cms') !== false);
+        $is_contact_active = ($current_page === 'admin-contact-cms' || strpos($curr_uri, 'contact-cms') !== false);
+        $is_media_active = ($current_page === 'admin-testimonials' || $current_page === 'admin-media' || $current_page === 'admin-blogs' || $current_page === 'admin-announcements' || strpos($curr_uri, 'testimonials') !== false || strpos($curr_uri, 'media') !== false || strpos($curr_uri, 'blogs') !== false || strpos($curr_uri, 'announcements') !== false);
+        $is_seo_active = ($current_page === 'admin-seo' || $current_page === 'admin-navigation' || strpos($curr_uri, 'seo') !== false || strpos($curr_uri, 'navigation') !== false);
+        $is_system_active = ($current_page === 'admin-users' || $current_page === 'admin-settings' || $current_page === 'admin-migrate' || strpos($curr_uri, 'users') !== false || strpos($curr_uri, 'settings') !== false || strpos($curr_uri, 'migrate') !== false);
       ?>
-      <div class="nav-section" id="nav-leads">
+      <div class="nav-section <?php echo $is_leads_active ? 'open' : ''; ?>" id="nav-leads">
         <div class="nav-section-title" onclick="toggleNavGroup('nav-leads')">
           <span>Lead Management</span>
           <span class="nav-section-toggle-icon">&#9662;</span>
@@ -313,13 +331,13 @@ $current_page = $page_slug ?? 'admin-dashboard';
       </div>
 
       <!-- Homepage Management -->
-      <div class="nav-section" id="nav-home">
+      <div class="nav-section <?php echo $is_home_active ? 'open' : ''; ?>" id="nav-home">
         <div class="nav-section-title" onclick="toggleNavGroup('nav-home')">
           <span>Homepage</span>
           <span class="nav-section-toggle-icon">&#9662;</span>
         </div>
         <div class="nav-section-items">
-          <a href="/admin/hero.php" class="sidebar-item <?php echo ($current_page === 'admin-hero' || strpos($_SERVER['REQUEST_URI'] ?? '', 'hero') !== false) ? 'active' : ''; ?>" style="padding-left: 1.5rem;">
+          <a href="/admin/hero.php" class="sidebar-item <?php echo ($current_page === 'admin-hero' || strpos($curr_uri, 'hero') !== false) ? 'active' : ''; ?>" style="padding-left: 1.5rem;">
             <span>&#128444; Hero Banners (Live Carousel)</span>
           </a>
           <a href="/admin/homepage.php" class="sidebar-item <?php echo $current_page === 'admin-homepage' ? 'active' : ''; ?>" style="padding-left: 1.5rem;">
@@ -329,7 +347,7 @@ $current_page = $page_slug ?? 'admin-dashboard';
       </div>
 
       <!-- About Us -->
-      <div class="nav-section" id="nav-about">
+      <div class="nav-section <?php echo $is_about_active ? 'open' : ''; ?>" id="nav-about">
         <div class="nav-section-title" onclick="toggleNavGroup('nav-about')">
           <span>About Us</span>
           <span class="nav-section-toggle-icon">&#9662;</span>
@@ -343,7 +361,7 @@ $current_page = $page_slug ?? 'admin-dashboard';
       </div>
 
       <!-- Academics -->
-      <div class="nav-section" id="nav-academics">
+      <div class="nav-section <?php echo $is_academics_active ? 'open' : ''; ?>" id="nav-academics">
         <div class="nav-section-title" onclick="toggleNavGroup('nav-academics')">
           <span>Academics</span>
           <span class="nav-section-toggle-icon">&#9662;</span>
@@ -359,7 +377,7 @@ $current_page = $page_slug ?? 'admin-dashboard';
       </div>
 
       <!-- Admissions -->
-      <div class="nav-section" id="nav-admissions">
+      <div class="nav-section <?php echo $is_admissions_active ? 'open' : ''; ?>" id="nav-admissions">
         <div class="nav-section-title" onclick="toggleNavGroup('nav-admissions')">
           <span>Admissions</span>
           <span class="nav-section-toggle-icon">&#9662;</span>
@@ -375,7 +393,7 @@ $current_page = $page_slug ?? 'admin-dashboard';
       </div>
 
       <!-- Beyond Academics -->
-      <div class="nav-section" id="nav-beyond">
+      <div class="nav-section <?php echo $is_beyond_active ? 'open' : ''; ?>" id="nav-beyond">
         <div class="nav-section-title" onclick="toggleNavGroup('nav-beyond')">
           <span>Beyond Academics</span>
           <span class="nav-section-toggle-icon">&#9662;</span>
@@ -390,7 +408,7 @@ $current_page = $page_slug ?? 'admin-dashboard';
       </div>
 
       <!-- Contact Us -->
-      <div class="nav-section" id="nav-contact">
+      <div class="nav-section <?php echo $is_contact_active ? 'open' : ''; ?>" id="nav-contact">
         <div class="nav-section-title" onclick="toggleNavGroup('nav-contact')">
           <span>Contact Us</span>
           <span class="nav-section-toggle-icon">&#9662;</span>
@@ -402,7 +420,7 @@ $current_page = $page_slug ?? 'admin-dashboard';
       </div>
 
       <!-- Media & Engagement -->
-      <div class="nav-section" id="nav-media">
+      <div class="nav-section <?php echo $is_media_active ? 'open' : ''; ?>" id="nav-media">
         <div class="nav-section-title" onclick="toggleNavGroup('nav-media')">
           <span>Media &amp; Community</span>
           <span class="nav-section-toggle-icon">&#9662;</span>
@@ -416,7 +434,7 @@ $current_page = $page_slug ?? 'admin-dashboard';
       </div>
 
       <!-- Navigation & SEO -->
-      <div class="nav-section" id="nav-seo">
+      <div class="nav-section <?php echo $is_seo_active ? 'open' : ''; ?>" id="nav-seo">
         <div class="nav-section-title" onclick="toggleNavGroup('nav-seo')">
           <span>SEO &amp; Navigation</span>
           <span class="nav-section-toggle-icon">&#9662;</span>
@@ -428,7 +446,7 @@ $current_page = $page_slug ?? 'admin-dashboard';
       </div>
 
       <!-- System & Settings -->
-      <div class="nav-section" id="nav-system">
+      <div class="nav-section <?php echo $is_system_active ? 'open' : ''; ?>" id="nav-system">
         <div class="nav-section-title" onclick="toggleNavGroup('nav-system')">
           <span>System &amp; Settings</span>
           <span class="nav-section-toggle-icon">&#9662;</span>
@@ -479,29 +497,8 @@ $current_page = $page_slug ?? 'admin-dashboard';
       function toggleNavGroup(id) {
         const sec = document.getElementById(id);
         if (sec) {
-          sec.classList.toggle('collapsed');
-          try {
-            const isCollapsed = sec.classList.contains('collapsed');
-            localStorage.setItem('admin_nav_' + id, isCollapsed ? 'collapsed' : 'open');
-          } catch(e) {}
+          sec.classList.toggle('open');
         }
       }
-
-      // Restore user preferences while keeping active sections open
-      document.addEventListener('DOMContentLoaded', function() {
-        document.querySelectorAll('.nav-section').forEach(function(sec) {
-          // If active link is inside this section, keep it open
-          if (sec.querySelector('.sidebar-item.active')) {
-            sec.classList.remove('collapsed');
-            return;
-          }
-          try {
-            const state = localStorage.getItem('admin_nav_' + sec.id);
-            if (state === 'collapsed') {
-              sec.classList.add('collapsed');
-            }
-          } catch(e) {}
-        });
-      });
     </script>
 
