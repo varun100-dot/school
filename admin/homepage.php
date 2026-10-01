@@ -620,7 +620,7 @@ include dirname(__FILE__) . '/header.php';
         <?php foreach ($sections_nav as $s_k => $s_meta): 
           $is_current = ($tab === $s_k);
           $s_removed = !empty($home_cms[$s_k]['is_removed']);
-          $s_active = !empty($home_cms[$s_k]['is_active']) && !$s_removed;
+          $s_active = (!isset($home_cms[$s_k]['is_active']) || !empty($home_cms[$s_k]['is_active'])) && !$s_removed;
         ?>
           <a href="/admin/homepage.php?tab=<?php echo urlencode($s_k); ?>" style="display: flex; align-items: center; justify-content: space-between; padding: 0.65rem 0.85rem; border-radius: 6px; text-decoration: none; font-size: 0.82rem; transition: all 0.15s ease; <?php echo $is_current ? 'background: var(--color-navy); color: #FFFFFF; font-weight: 600;' : 'color: var(--color-text); background: transparent;'; ?>">
             <div style="display: flex; align-items: center; gap: 0.5rem; min-width: 0;">
@@ -664,7 +664,7 @@ include dirname(__FILE__) . '/header.php';
           <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
             <div style="display: flex; align-items: center; gap: 0.5rem; background: #F8FAFC; border: 1px solid #E2E8F0; padding: 0.5rem 0.85rem; border-radius: var(--radius-sm);">
               <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; font-weight: 600; color: var(--color-navy); cursor: pointer; margin: 0;">
-                <input type="checkbox" name="is_active" value="1" <?php echo (!empty($current_sec['is_active']) && empty($current_sec['is_removed'])) ? 'checked' : ''; ?>>
+                <input type="checkbox" name="is_active" value="1" <?php echo ((!isset($current_sec['is_active']) || !empty($current_sec['is_active'])) && empty($current_sec['is_removed'])) ? 'checked' : ''; ?>>
                 <span>Visible on Homepage</span>
               </label>
             </div>

@@ -31,6 +31,10 @@ function generate_csrf_token() {
     return get_csrf_token();
 }
 
+function csrf_field() {
+    return '<input type="hidden" name="csrf_token" value="' . h(get_csrf_token()) . '">';
+}
+
 // Validate CSRF token
 function validate_csrf_token($token) {
     safe_session_start();
