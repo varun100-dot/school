@@ -326,7 +326,7 @@ include dirname(__FILE__) . '/header.php';
 
         <div style="margin-top: 2rem; display: flex; justify-content: flex-end; gap: 1rem; border-top: 1px solid var(--color-border); padding-top: 1.5rem;">
           <a href="/admin/announcements.php" class="btn btn-outline" style="padding: 0.6rem 1.5rem; font-size: 0.85rem; border-color: var(--color-border); color: var(--color-text);">Cancel</a>
-          <button type="submit" class="btn btn-primary" style="padding: 0.6rem 2rem; font-size: 0.85rem; background-color: var(--color-teal); border-color: var(--color-teal);"><?php echo $action === 'add' ? 'Create' : 'Save Changes'; ?></button>
+          <button type="submit" class="btn btn-primary" style="padding: 0.6rem 2rem; font-size: 0.85rem; background-color: var(--color-teal); border-color: var(--color-teal); color: #FFFFFF; font-weight: 600;"><?php echo $action === 'add' ? 'Create' : 'Save Changes'; ?></button>
         </div>
       </form>
     </div>

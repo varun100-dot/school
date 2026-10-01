@@ -361,7 +361,7 @@ include_once dirname(__FILE__) . '/header.php';
                 Delete
               </button>
 
-              <button type="submit" id="save-btn-<?php echo $iid; ?>" class="btn btn-primary" style="font-size: 0.82rem; padding: 0.45rem 1.1rem; background: var(--color-navy); border-color: var(--color-navy);">
+              <button type="submit" id="save-btn-<?php echo $iid; ?>" class="btn btn-primary" style="font-size: 0.82rem; padding: 0.45rem 1.1rem; background: var(--color-navy); border-color: var(--color-navy); color: #FFFFFF; font-weight: 600;">
                 Save Item #<?php echo $iid; ?>
               </button>
             </div>
