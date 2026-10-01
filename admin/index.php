@@ -133,9 +133,9 @@ include_once dirname(__FILE__) . '/header.php';
   </div>
 
   <div>
-    <button type="button" id="refreshDashboardBtn" onclick="triggerDashboardRefresh()" class="btn btn-primary" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.6rem 1.25rem; font-size: 0.85rem; background: var(--color-navy); border-color: var(--color-navy);">
-      <svg id="refreshIconSvg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="transition: transform 0.5s ease;"><path d="M23 4v6h-6"></path><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
-      <span id="refreshBtnText">Refresh Live Data</span>
+    <button type="button" id="refreshDashboardBtn" onclick="triggerDashboardRefresh()" class="btn" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.6rem 1.25rem; font-size: 0.85rem; background: var(--color-navy); border: 1px solid var(--color-navy); color: #FFFFFF !important; font-weight: 600; cursor: pointer; border-radius: var(--radius-sm); transition: all 0.2s ease; box-shadow: 0 2px 6px rgba(6, 43, 99, 0.2);">
+      <svg id="refreshIconSvg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.5" style="color: #FFFFFF !important; stroke: #FFFFFF !important; transition: transform 0.5s ease;"><path d="M23 4v6h-6"></path><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
+      <span id="refreshBtnText" style="color: #FFFFFF !important; font-weight: 600;">Refresh Live Data</span>
     </button>
   </div>
 </div>
