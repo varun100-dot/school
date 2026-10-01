@@ -338,28 +338,40 @@ include_once dirname(__FILE__) . '/../includes/header.php';
   <div class="container hero-stage">
     <div class="hero-stage-grid">
       
-      <!-- Left Column: Full-Width Image Banner Carousel (No CTA buttons) -->
+      <!-- Left Column: Full-Width Image Banner Carousel (Dynamic DB Slides + Fallback) -->
+      <?php 
+      $hero_banner_items = [];
+      if (!empty($slides)) {
+          foreach ($slides as $s) {
+              $img = $s['image'] ?: '/assets/images/zuvio_hero_banner_1.png';
+              $webp = preg_replace('/\.(png|jpe?g)$/i', '.webp', $img);
+              $webp_exists = file_exists(dirname(__FILE__) . '/../' . ltrim($webp, '/'));
+              $hero_banner_items[] = [
+                  'image' => $img,
+                  'webp' => $webp_exists ? $webp : $img,
+                  'alt' => $s['title'] ?: 'Zuvio Global School Banner'
+              ];
+          }
+      }
+      if (empty($hero_banner_items)) {
+          $hero_banner_items = [
+              ['image' => '/assets/images/zuvio_hero_banner_1.png', 'webp' => '/assets/images/zuvio_hero_banner_1.webp', 'alt' => 'Zuvio Global Standard Learning Banner'],
+              ['image' => '/assets/images/zuvio_hero_banner_2.png', 'webp' => '/assets/images/zuvio_hero_banner_2.webp', 'alt' => 'Zuvio Personalised Pathways Banner'],
+              ['image' => '/assets/images/zuvio_hero_banner_3.png', 'webp' => '/assets/images/zuvio_hero_banner_3.webp', 'alt' => 'Zuvio Science and AI Labs Banner']
+          ];
+      }
+      ?>
       <div class="hero-banner-image-wrapper" id="heroBannerImageCarousel">
         <h1 class="visually-hidden">Global Standard Learning - Zuvio Global School</h1>
         <div class="hero-banner-slides-track">
-          <div class="hero-banner-image-slide active">
-            <picture>
-              <source srcset="/assets/images/zuvio_hero_banner_1.webp" type="image/webp">
-              <img src="/assets/images/zuvio_hero_banner_1.png" alt="Zuvio Global Standard Learning Banner" class="hero-banner-img" width="1400" height="680">
-            </picture>
-          </div>
-          <div class="hero-banner-image-slide">
-            <picture>
-              <source srcset="/assets/images/zuvio_hero_banner_2.webp" type="image/webp">
-              <img src="/assets/images/zuvio_hero_banner_2.png" alt="Zuvio Personalised Pathways Banner" class="hero-banner-img" width="1400" height="680">
-            </picture>
-          </div>
-          <div class="hero-banner-image-slide">
-            <picture>
-              <source srcset="/assets/images/zuvio_hero_banner_3.webp" type="image/webp">
-              <img src="/assets/images/zuvio_hero_banner_3.png" alt="Zuvio Science and AI Labs Banner" class="hero-banner-img" width="1400" height="680">
-            </picture>
-          </div>
+          <?php foreach ($hero_banner_items as $idx => $item): ?>
+            <div class="hero-banner-image-slide <?php echo $idx === 0 ? 'active' : ''; ?>">
+              <picture>
+                <source srcset="<?php echo h($item['webp']); ?>" type="image/webp">
+                <img src="<?php echo h($item['image']); ?>" alt="<?php echo h($item['alt']); ?>" class="hero-banner-img" width="1400" height="680">
+              </picture>
+            </div>
+          <?php endforeach; ?>
         </div>
 
         <!-- Floating Carousel Navigation Controls -->
@@ -372,9 +384,9 @@ include_once dirname(__FILE__) . '/../includes/header.php';
 
         <!-- Dots -->
         <div class="banner-img-dots">
-          <button type="button" class="banner-img-dot active" onclick="setImageBanner(0)" aria-label="Slide 1: Global Standard Learning"></button>
-          <button type="button" class="banner-img-dot" onclick="setImageBanner(1)" aria-label="Slide 2: Education That Adapts to Your Child"></button>
-          <button type="button" class="banner-img-dot" onclick="setImageBanner(2)" aria-label="Slide 3: Skills for Tomorrow"></button>
+          <?php foreach ($hero_banner_items as $idx => $item): ?>
+            <button type="button" class="banner-img-dot <?php echo $idx === 0 ? 'active' : ''; ?>" onclick="setImageBanner(<?php echo $idx; ?>)" aria-label="Slide <?php echo $idx + 1; ?>: <?php echo h($item['alt']); ?>"></button>
+          <?php endforeach; ?>
         </div>
       </div>
 

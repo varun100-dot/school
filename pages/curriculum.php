@@ -5,6 +5,9 @@ require_once dirname(__FILE__) . '/../includes/helper.php';
 
 safe_session_start();
 
+$ac_cms = get_json_setting('cms_academics', $_SESSION['mock_academics_cms'] ?? []);
+$curr = $ac_cms['curriculum'] ?? [];
+
 $page_slug = 'our-curriculum';
 include_once dirname(__FILE__) . '/../includes/header.php';
 
@@ -21,17 +24,21 @@ render_breadcrumbs([
   <section class="curriculum-section bg-white" style="padding-top: 40px;">
     <div class="curriculum-container">
       <div class="curriculum-section-header" style="text-align: center;">
-        <h1 class="curriculum-hero-title">CURRICULUM INSIGHTS</h1>
-        <p class="curriculum-section-subtitle">A Future-Ready Learning Journey | Kindergarten to Grade 8th</p>
+        <h1 class="curriculum-hero-title"><?php echo h(!empty($curr['hero_title']) ? $curr['hero_title'] : 'CURRICULUM INSIGHTS'); ?></h1>
+        <p class="curriculum-section-subtitle"><?php echo h(!empty($curr['hero_subtitle']) ? $curr['hero_subtitle'] : 'A Future-Ready Learning Journey | Kindergarten to Grade 8th'); ?></p>
       </div>
 
       <div class="curriculum-body">
-        <p style="margin-bottom: 16px;">
-          At <strong>Zuvio Global School</strong>, learning is designed to grow with every child. From stories, sounds, numbers and discovery in the Early Years to research, innovation, technology and independent thinking in Middle School, every stage builds upon the previous one.
-        </p>
-        <p style="margin: 0;">
-          Our curriculum is <strong>mapped to CBSE, NEP 2020 and NCF principles</strong>, combining strong academic foundations with creativity, communication, digital fluency, life skills and real-world learning.
-        </p>
+        <?php if (!empty($curr['hero_desc'])): ?>
+          <p style="margin-bottom: 16px;"><?php echo nl2br(h($curr['hero_desc'])); ?></p>
+        <?php else: ?>
+          <p style="margin-bottom: 16px;">
+            At <strong>Zuvio Global School</strong>, learning is designed to grow with every child. From stories, sounds, numbers and discovery in the Early Years to research, innovation, technology and independent thinking in Middle School, every stage builds upon the previous one.
+          </p>
+          <p style="margin: 0;">
+            Our curriculum is <strong>mapped to CBSE, NEP 2020 and NCF principles</strong>, combining strong academic foundations with creativity, communication, digital fluency, life skills and real-world learning.
+          </p>
+        <?php endif; ?>
       </div>
 
       <!-- THE ZUVIO LEARNING JOURNEY illustration strip -->

@@ -6,8 +6,9 @@ require_once dirname(__FILE__) . '/../includes/helper.php';
 safe_session_start();
 
 // CMS synchronization
-if (!isset($_SESSION['mock_academics_cms'])) {
-    $_SESSION['mock_academics_cms'] = [];
+$db_cms = get_json_setting('cms_academics', []);
+if (!isset($_SESSION['mock_academics_cms']) || !empty($db_cms)) {
+    $_SESSION['mock_academics_cms'] = !empty($db_cms) ? $db_cms : [];
 }
 $ac_cms = &$_SESSION['mock_academics_cms'];
 

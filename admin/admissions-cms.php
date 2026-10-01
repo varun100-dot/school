@@ -11,11 +11,19 @@ $msg = $_GET['msg'] ?? '';
 $error = '';
 $tab = $_GET['tab'] ?? 'overview';
 
-// Ensure $_SESSION['mock_admissions_cms'] is populated with structure
-if (!isset($_SESSION['mock_admissions_cms'])) {
-    $_SESSION['mock_admissions_cms'] = [];
+// Persistent CMS Storage (MySQL database with session fallback)
+$db_saved = get_json_setting('cms_admissions', []);
+if (!isset($_SESSION['mock_admissions_cms']) || !empty($db_saved)) {
+    $_SESSION['mock_admissions_cms'] = !empty($db_saved) ? $db_saved : [];
 }
 $adm_cms = &$_SESSION['mock_admissions_cms'];
+
+function redirect_and_save_admissions($tab, $msg) {
+    global $adm_cms;
+    set_json_setting('cms_admissions', $adm_cms, 'Admissions CMS Content');
+    header("Location: /admin/admissions-cms.php?tab=" . urlencode($tab) . "&msg=" . urlencode($msg));
+    exit;
+}
 
 // 1. Defaults for Overview
 if (!isset($adm_cms['overview'])) {
@@ -150,8 +158,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $adm_cms['overview']['hero_badge'] = trim($_POST['hero_badge'] ?? '');
             $adm_cms['overview']['hero_title'] = trim($_POST['hero_title'] ?? '');
             $adm_cms['overview']['hero_subtitle'] = trim($_POST['hero_subtitle'] ?? '');
-            header('Location: /admin/admissions-cms.php?tab=overview&msg=saved');
-            exit;
+            redirect_and_save_admissions('overview', 'saved');
         }
 
         // 2. Enrol Now Actions
@@ -164,8 +171,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (!empty($raw_docs)) {
                 $adm_cms['enrol']['required_docs'] = array_filter(array_map('trim', explode("\n", str_replace("\r", "", $raw_docs))));
             }
-            header('Location: /admin/admissions-cms.php?tab=enrol&msg=saved');
-            exit;
+            redirect_and_save_admissions('enrol', 'saved');
         }
 
         if ($action === 'add_enrol_step') {
@@ -178,15 +184,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'sort_order' => count($adm_cms['enrol']['steps']) + 1,
                 'is_published' => 1
             ];
-            header('Location: /admin/admissions-cms.php?tab=enrol&msg=added');
-            exit;
+            redirect_and_save_admissions('enrol', 'added');
         }
 
         if ($action === 'delete_enrol_step') {
             $id = (int)$_POST['id'];
             $adm_cms['enrol']['steps'] = array_values(array_filter($adm_cms['enrol']['steps'], fn($s) => ($s['id'] ?? 0) !== $id));
-            header('Location: /admin/admissions-cms.php?tab=enrol&msg=deleted');
-            exit;
+            redirect_and_save_admissions('enrol', 'deleted');
         }
 
         // 3. Eligibility Actions
@@ -194,8 +198,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $adm_cms['eligibility']['title'] = trim($_POST['title'] ?? '');
             $adm_cms['eligibility']['subtitle'] = trim($_POST['subtitle'] ?? '');
             $adm_cms['eligibility']['mid_session_note'] = trim($_POST['mid_session_note'] ?? '');
-            header('Location: /admin/admissions-cms.php?tab=eligibility&msg=saved');
-            exit;
+            redirect_and_save_admissions('eligibility', 'saved');
         }
 
         if ($action === 'add_eligibility_stage') {
@@ -210,15 +213,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'sort_order' => count($adm_cms['eligibility']['stages']) + 1,
                 'is_published' => 1
             ];
-            header('Location: /admin/admissions-cms.php?tab=eligibility&msg=added');
-            exit;
+            redirect_and_save_admissions('eligibility', 'added');
         }
 
         if ($action === 'delete_eligibility_stage') {
             $id = (int)$_POST['id'];
             $adm_cms['eligibility']['stages'] = array_values(array_filter($adm_cms['eligibility']['stages'], fn($s) => ($s['id'] ?? 0) !== $id));
-            header('Location: /admin/admissions-cms.php?tab=eligibility&msg=deleted');
-            exit;
+            redirect_and_save_admissions('eligibility', 'deleted');
         }
 
         // 4. Calendar Actions
@@ -236,8 +237,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
 
             if (!$error) {
-                header('Location: /admin/admissions-cms.php?tab=calendar&msg=saved');
-                exit;
+                redirect_and_save_admissions('calendar', 'saved');
             }
         }
 
@@ -258,8 +258,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
 
             if (!$error) {
-                header('Location: /admin/admissions-cms.php?tab=fees&msg=saved');
-                exit;
+                redirect_and_save_admissions('fees', 'saved');
             }
         }
 
@@ -275,15 +274,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'sort_order' => count($adm_cms['fees']['tiers']) + 1,
                 'is_published' => 1
             ];
-            header('Location: /admin/admissions-cms.php?tab=fees&msg=added');
-            exit;
+            redirect_and_save_admissions('fees', 'added');
         }
 
         if ($action === 'delete_fee_tier') {
             $id = (int)$_POST['id'];
             $adm_cms['fees']['tiers'] = array_values(array_filter($adm_cms['fees']['tiers'], fn($t) => ($t['id'] ?? 0) !== $id));
-            header('Location: /admin/admissions-cms.php?tab=fees&msg=deleted');
-            exit;
+            redirect_and_save_admissions('fees', 'deleted');
         }
     }
 }

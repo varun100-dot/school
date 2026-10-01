@@ -43,7 +43,10 @@ function validate_csrf_token($token) {
 // Get site settings key-value pair from database
 function get_setting($key, $default = '') {
     global $db;
-    if (!$db) return $default;
+    if (!$db) {
+        safe_session_start();
+        return $_SESSION['mock_settings'][$key] ?? $default;
+    }
     try {
         $stmt = $db->prepare("SELECT `setting_value` FROM `site_settings` WHERE `setting_key` = ? LIMIT 1");
         $stmt->execute([$key]);
@@ -53,6 +56,53 @@ function get_setting($key, $default = '') {
         error_log("[Settings Error] " . $e->getMessage());
         return $default;
     }
+}
+
+// Set or update a site setting in database (or fallback session)
+function set_setting($key, $value, $description = null) {
+    global $db;
+    safe_session_start();
+    $_SESSION['mock_settings'][$key] = $value;
+    
+    if (!$db) return true;
+    try {
+        $stmt = $db->prepare("SELECT `id` FROM `site_settings` WHERE `setting_key` = ? LIMIT 1");
+        $stmt->execute([$key]);
+        if ($stmt->fetch()) {
+            if ($description !== null) {
+                $up = $db->prepare("UPDATE `site_settings` SET `setting_value` = ?, `description` = ? WHERE `setting_key` = ?");
+                return $up->execute([$value, $description, $key]);
+            } else {
+                $up = $db->prepare("UPDATE `site_settings` SET `setting_value` = ? WHERE `setting_key` = ?");
+                return $up->execute([$value, $key]);
+            }
+        } else {
+            $ins = $db->prepare("INSERT INTO `site_settings` (`setting_key`, `setting_value`, `description`) VALUES (?, ?, ?)");
+            return $ins->execute([$key, $value, $description]);
+        }
+    } catch (Exception $e) {
+        error_log("[Set Setting Error] " . $e->getMessage());
+        return false;
+    }
+}
+
+// Retrieve JSON-encoded setting with default fallback
+function get_json_setting($key, $default = []) {
+    $raw = get_setting($key, null);
+    if ($raw === null || $raw === '') {
+        safe_session_start();
+        return $_SESSION['mock_' . $key] ?? $default;
+    }
+    $decoded = json_decode($raw, true);
+    return is_array($decoded) ? $decoded : $default;
+}
+
+// Persist structured JSON setting directly into database
+function set_json_setting($key, $data, $description = null) {
+    safe_session_start();
+    $_SESSION['mock_' . $key] = $data;
+    $encoded = json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    return set_setting($key, $encoded, $description);
 }
 
 // Retrieve page SEO metadata

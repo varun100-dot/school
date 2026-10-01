@@ -6,8 +6,10 @@ require_once dirname(__FILE__) . '/../includes/helper.php';
 safe_session_start();
 
 // Initialize Mock CMS session store for Beyond if not present
-if (!isset($_SESSION['mock_beyond_cms'])) {
-    $_SESSION['mock_beyond_cms'] = [];
+// Initialize CMS store for Beyond from persistent database or session
+$db_beyond = get_json_setting('cms_beyond', []);
+if (!isset($_SESSION['mock_beyond_cms']) || !empty($db_beyond)) {
+    $_SESSION['mock_beyond_cms'] = !empty($db_beyond) ? $db_beyond : [];
 }
 $beyond_cms = &$_SESSION['mock_beyond_cms'];
 

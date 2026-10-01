@@ -42,13 +42,48 @@ $default_team = [
     ]
 ];
 
-$team = $cms['team'] ?? $default_team;
+$team = [];
+if ($db) {
+    try {
+        $stmt = $db->query("SELECT * FROM `leadership` WHERE `is_active` = 1 ORDER BY `sort_order` ASC");
+        $db_team = $stmt->fetchAll();
+        if (!empty($db_team)) {
+            foreach ($db_team as $row) {
+                $badges = [];
+                if (!empty($row['badges'])) {
+                    $decoded = json_decode($row['badges'], true);
+                    $badges = is_array($decoded) ? $decoded : array_map('trim', explode(',', $row['badges']));
+                } elseif (!empty($row['designation'])) {
+                    $badges = [$row['designation']];
+                }
+                $team[] = [
+                    'id' => $row['id'],
+                    'name' => $row['name'],
+                    'slug' => $row['slug'],
+                    'designation' => $row['designation'],
+                    'category' => !empty($row['category']) ? $row['category'] : 'Academic Leadership',
+                    'image' => $row['image'] ?: '/assets/images/Profile_Images/Pragya_Professional_Profile.webp',
+                    'short_description' => $row['short_description'] ?: $row['bio'],
+                    'badges' => $badges
+                ];
+            }
+        }
+    } catch (Exception $e) {
+        error_log("[Our Team DB Fetch Error] " . $e->getMessage());
+    }
+}
+
+if (empty($team)) {
+    $cms = get_json_setting('cms_about', []);
+    $team = $cms['team'] ?? $default_team;
+}
+
 // Enforce exclusion of Rashmi Bhasin
 $team = array_values(array_filter($team, function($member) {
     return stripos($member['name'] ?? '', 'Rashmi') === false && ($member['slug'] ?? '') !== 'rashmi-bhasin';
 }));
 
-// Also ensure Sharmin Habib has correct designation and category if coming from previous session/state
+// Ensure Sharmin Habib has correct designation and category
 foreach ($team as &$m) {
     if (($m['slug'] ?? '') === 'sharmin-habib') {
         $m['designation'] = 'Head of Business and Operations';

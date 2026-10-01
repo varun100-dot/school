@@ -67,25 +67,99 @@ if ($action === 'view' && $id > 0) {
     }
 }
 
-// Listing all enquiries
-$enquiries = [];
-if ($action === 'list') {
+// Handle CSV Export
+if ($action === 'export_csv') {
+    require_permission('enquiries.view');
+    $export_rows = [];
     if ($db) {
         try {
-            $enquiries = $db->query("
-                SELECT e.*, s.name as status_name 
+            $export_rows = $db->query("
+                SELECT e.id, e.parent_name, e.student_name, e.email, e.phone, e.grade, e.source, s.name as status_name, e.message, e.created_at
                 FROM `enquiries` e
                 LEFT JOIN `enquiry_statuses` s ON s.id = e.status_id
                 ORDER BY e.created_at DESC
             ")->fetchAll();
         } catch (Exception $e) {
-            $error = "Database queries failed.";
+            error_log("[CSV Export Error] " . $e->getMessage());
+        }
+    }
+    if (!empty($_SESSION['mock_enquiries'])) {
+        foreach ($_SESSION['mock_enquiries'] as $mock_lead) {
+            $export_rows[] = [
+                'id' => $mock_lead['id'] ?? time(),
+                'parent_name' => $mock_lead['parent_name'] ?? '',
+                'student_name' => $mock_lead['student_name'] ?? '',
+                'email' => $mock_lead['email'] ?? '',
+                'phone' => $mock_lead['phone'] ?? '',
+                'grade' => $mock_lead['grade'] ?? '',
+                'source' => $mock_lead['source'] ?? 'Website Form',
+                'status_name' => 'New',
+                'message' => $mock_lead['message'] ?? '',
+                'created_at' => $mock_lead['created_at'] ?? date('Y-m-d H:i:s')
+            ];
+        }
+    }
+
+    header('Content-Type: text/csv; charset=utf-8');
+    header('Content-Disposition: attachment; filename=zuvio_enquiries_' . date('Y-m-d_His') . '.csv');
+    $output = fopen('php://output', 'w');
+    fputcsv($output, ['ID', 'Parent Name', 'Student Name', 'Email', 'Phone', 'Grade', 'Source', 'Status', 'Message', 'Created At']);
+    foreach ($export_rows as $r) {
+        fputcsv($output, [
+            $r['id'] ?? '',
+            $r['parent_name'] ?? '',
+            $r['student_name'] ?? '',
+            $r['email'] ?? '',
+            $r['phone'] ?? '',
+            $r['grade'] ?? '',
+            $r['source'] ?? '',
+            $r['status_name'] ?? 'NEW',
+            $r['message'] ?? '',
+            $r['created_at'] ?? ''
+        ]);
+    }
+    fclose($output);
+    exit;
+}
+
+// Listing all enquiries
+$search_q = trim($_GET['q'] ?? '');
+$status_filter = (int)($_GET['status_id'] ?? 0);
+
+$enquiries = [];
+if ($action === 'list') {
+    if ($db) {
+        try {
+            $sql = "
+                SELECT e.*, s.name as status_name 
+                FROM `enquiries` e
+                LEFT JOIN `enquiry_statuses` s ON s.id = e.status_id
+                WHERE 1=1
+            ";
+            $params = [];
+            if ($status_filter > 0) {
+                $sql .= " AND e.status_id = ?";
+                $params[] = $status_filter;
+            }
+            if ($search_q !== '') {
+                $sql .= " AND (e.parent_name LIKE ? OR e.student_name LIKE ? OR e.email LIKE ? OR e.phone LIKE ?)";
+                $wild = "%$search_q%";
+                $params = array_merge($params, [$wild, $wild, $wild, $wild]);
+            }
+            $sql .= " ORDER BY e.created_at DESC";
+            $stmt = $db->prepare($sql);
+            $stmt->execute($params);
+            $enquiries = $stmt->fetchAll();
+        } catch (Exception $e) {
+            $error = "Database queries failed: " . $e->getMessage();
         }
     }
     
     // Merge mock enquiries from session if available
     if (!empty($_SESSION['mock_enquiries'])) {
         foreach ($_SESSION['mock_enquiries'] as $mock_lead) {
+            if ($status_filter > 0 && ($mock_lead['status_id'] ?? 1) !== $status_filter) continue;
+            if ($search_q !== '' && stripos($mock_lead['parent_name'] . ' ' . $mock_lead['email'] . ' ' . $mock_lead['phone'], $search_q) === false) continue;
             $mock_lead['status_name'] = 'New';
             array_unshift($enquiries, $mock_lead);
         }
@@ -96,15 +170,40 @@ $page_slug = 'admin-enquiries';
 include_once dirname(__FILE__) . '/header.php';
 ?>
 
-<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
   <div>
-    <h1 style="font-family: var(--font-secondary); font-size: 1.5rem; color: var(--color-navy); margin-bottom: 0.25rem;">Admissions Enquiries</h1>
-    <p style="color: var(--color-muted); font-size: 0.85rem;">Review submissions from the Home and Contact pages.</p>
+    <h1 style="font-family: var(--font-secondary); font-size: 1.5rem; color: var(--color-navy); margin-bottom: 0.25rem;">Admissions Enquiries CRM</h1>
+    <p style="color: var(--color-muted); font-size: 0.85rem;">Review, filter, update pipeline status and export leads.</p>
   </div>
-  <?php if ($action !== 'list'): ?>
-    <a href="/admin/enquiries" class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.85rem;">&larr; Back to List</a>
-  <?php endif; ?>
+  <div style="display: flex; gap: 0.75rem; align-items: center;">
+    <?php if ($action === 'list'): ?>
+      <a href="/admin/enquiries?action=export_csv" class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.85rem; background: #047857; border-color: #047857;">
+        📥 Export CSV
+      </a>
+    <?php else: ?>
+      <a href="/admin/enquiries" class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.85rem;">&larr; Back to List</a>
+    <?php endif; ?>
+  </div>
 </div>
+
+<?php if ($action === 'list'): ?>
+  <!-- Filters Bar -->
+  <form method="GET" action="/admin/enquiries" style="background: #fff; padding: 1rem 1.25rem; border-radius: var(--radius-sm); border: 1px solid var(--color-border); margin-bottom: 1.5rem; display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
+    <input type="text" name="q" value="<?php echo h($search_q); ?>" placeholder="Search name, email, phone..." style="flex-grow: 1; min-width: 220px; padding: 0.5rem 0.75rem; border: 1px solid var(--color-border); border-radius: 4px; font-size: 0.85rem;">
+    <select name="status_id" style="padding: 0.5rem 0.75rem; border: 1px solid var(--color-border); border-radius: 4px; font-size: 0.85rem; background: #fff;">
+      <option value="0">All Statuses</option>
+      <?php foreach ($statuses as $st): ?>
+        <option value="<?php echo $st['id']; ?>" <?php echo $status_filter == $st['id'] ? 'selected' : ''; ?>>
+          <?php echo h($st['name']); ?>
+        </option>
+      <?php endforeach; ?>
+    </select>
+    <button type="submit" class="btn btn-primary" style="padding: 0.5rem 1.25rem; font-size: 0.85rem;">Filter</button>
+    <?php if ($search_q !== '' || $status_filter > 0): ?>
+      <a href="/admin/enquiries" style="font-size: 0.85rem; color: #EF4444; text-decoration: none;">Clear</a>
+    <?php endif; ?>
+  </form>
+<?php endif; ?>
 
 <?php if (isset($_GET['msg']) && $_GET['msg'] === 'status_updated'): ?>
   <div style="background-color: var(--color-surface-blue); border-left: 4px solid var(--color-success); padding: 0.75rem 1rem; border-radius: var(--radius-sm); color: var(--color-navy); font-size: 0.85rem; margin-bottom: 1.5rem;">

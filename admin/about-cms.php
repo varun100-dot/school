@@ -11,11 +11,19 @@ $msg = $_GET['msg'] ?? '';
 $error = '';
 $tab = $_GET['tab'] ?? 'story';
 
-// Ensure $_SESSION['mock_about_cms'] is fully structured
-if (!isset($_SESSION['mock_about_cms'])) {
-    $_SESSION['mock_about_cms'] = [];
+// Persistent CMS Storage (MySQL database with session fallback)
+$db_saved = get_json_setting('cms_about', []);
+if (!isset($_SESSION['mock_about_cms']) || !empty($db_saved)) {
+    $_SESSION['mock_about_cms'] = !empty($db_saved) ? $db_saved : [];
 }
 $cms = &$_SESSION['mock_about_cms'];
+
+function redirect_and_save_about($tab, $msg) {
+    global $cms;
+    set_json_setting('cms_about', $cms, 'About Us Page CMS Content');
+    header("Location: /admin/about-cms.php?tab=" . urlencode($tab) . "&msg=" . urlencode($msg));
+    exit;
+}
 
 // 1. Defaults if empty
 if (!isset($cms['story'])) {
@@ -124,8 +132,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $cms['story']['image'] = trim($_POST['story_image'] ?? '');
             $cms['vision_mission']['vision'] = trim($_POST['vision'] ?? '');
             $cms['vision_mission']['mission'] = trim($_POST['mission'] ?? '');
-            header('Location: /admin/about-cms.php?tab=story&msg=saved');
-            exit;
+            redirect_and_save_about('story', 'saved');
         }
 
         // 2. Values: Add / Edit / Delete / Toggle Publish / Reorder
@@ -139,8 +146,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'sort_order' => count($cms['values']) + 1,
                 'is_published' => 1
             ];
-            header('Location: /admin/about-cms.php?tab=values&msg=added');
-            exit;
+            redirect_and_save_about('values', 'added');
         }
 
         if ($action === 'edit_value') {
@@ -155,15 +161,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             }
             usort($cms['values'], fn($a, $b) => ($a['sort_order'] ?? 0) <=> ($b['sort_order'] ?? 0));
-            header('Location: /admin/about-cms.php?tab=values&msg=updated');
-            exit;
+            redirect_and_save_about('values', 'updated');
         }
 
         if ($action === 'delete_value') {
             $id = (int)$_POST['id'];
             $cms['values'] = array_values(array_filter($cms['values'], fn($v) => $v['id'] !== $id));
-            header('Location: /admin/about-cms.php?tab=values&msg=deleted');
-            exit;
+            redirect_and_save_about('values', 'deleted');
         }
 
         if ($action === 'toggle_publish_value') {
@@ -174,8 +178,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     break;
                 }
             }
-            header('Location: /admin/about-cms.php?tab=values&msg=status_updated');
-            exit;
+            redirect_and_save_about('values', 'status_updated');
         }
 
         // 3. What Sets Us Apart: Add / Edit / Delete / Toggle / Reorder
@@ -189,8 +192,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'sort_order' => count($cms['apart']) + 1,
                 'is_published' => 1
             ];
-            header('Location: /admin/about-cms.php?tab=apart&msg=added');
-            exit;
+            redirect_and_save_about('apart', 'added');
         }
 
         if ($action === 'edit_apart') {
@@ -205,15 +207,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             }
             usort($cms['apart'], fn($a, $b) => ($a['sort_order'] ?? 0) <=> ($b['sort_order'] ?? 0));
-            header('Location: /admin/about-cms.php?tab=apart&msg=updated');
-            exit;
+            redirect_and_save_about('apart', 'updated');
         }
 
         if ($action === 'delete_apart') {
             $id = (int)$_POST['id'];
             $cms['apart'] = array_values(array_filter($cms['apart'], fn($a) => $a['id'] !== $id));
-            header('Location: /admin/about-cms.php?tab=apart&msg=deleted');
-            exit;
+            redirect_and_save_about('apart', 'deleted');
         }
 
         if ($action === 'toggle_publish_apart') {
@@ -224,8 +224,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     break;
                 }
             }
-            header('Location: /admin/about-cms.php?tab=apart&msg=status_updated');
-            exit;
+            redirect_and_save_about('apart', 'status_updated');
         }
 
         // 4. Approach (ZUVIO)
@@ -235,8 +234,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $app['desc'] = trim($_POST['desc_' . $idx] ?? $app['desc']);
                 $app['is_published'] = isset($_POST['published_' . $idx]) ? 1 : 0;
             }
-            header('Location: /admin/about-cms.php?tab=approach&msg=saved');
-            exit;
+            redirect_and_save_about('approach', 'saved');
         }
 
         // 5. Who Should Choose Zuvio (Audiences)
@@ -249,8 +247,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'sort_order' => count($cms['audiences']) + 1,
                 'is_published' => 1
             ];
-            header('Location: /admin/about-cms.php?tab=audiences&msg=added');
-            exit;
+            redirect_and_save_about('audiences', 'added');
         }
 
         if ($action === 'edit_audience') {
@@ -264,15 +261,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             }
             usort($cms['audiences'], fn($a, $b) => ($a['sort_order'] ?? 0) <=> ($b['sort_order'] ?? 0));
-            header('Location: /admin/about-cms.php?tab=audiences&msg=updated');
-            exit;
+            redirect_and_save_about('audiences', 'updated');
         }
 
         if ($action === 'delete_audience') {
             $id = (int)$_POST['id'];
             $cms['audiences'] = array_values(array_filter($cms['audiences'], fn($aud) => $aud['id'] !== $id));
-            header('Location: /admin/about-cms.php?tab=audiences&msg=deleted');
-            exit;
+            redirect_and_save_about('audiences', 'deleted');
         }
 
         if ($action === 'toggle_publish_audience') {
@@ -283,8 +278,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     break;
                 }
             }
-            header('Location: /admin/about-cms.php?tab=audiences&msg=status_updated');
-            exit;
+            redirect_and_save_about('audiences', 'status_updated');
         }
 
         // 6. Founder's Message
@@ -301,8 +295,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $cms['founder_message_data']['paragraphs'] = array_values($paras);
             }
 
-            header('Location: /admin/about-cms.php?tab=founder_msg&msg=saved');
-            exit;
+            redirect_and_save_about('founder_msg', 'saved');
         }
 
         // 7. Awards: Add / Edit / Delete / Toggle
@@ -316,8 +309,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'sort_order' => count($cms['awards']) + 1,
                 'is_published' => 1
             ];
-            header('Location: /admin/about-cms.php?tab=awards&msg=added');
-            exit;
+            redirect_and_save_about('awards', 'added');
         }
 
         if ($action === 'edit_award') {
@@ -332,15 +324,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             }
             usort($cms['awards'], fn($a, $b) => ($a['sort_order'] ?? 0) <=> ($b['sort_order'] ?? 0));
-            header('Location: /admin/about-cms.php?tab=awards&msg=updated');
-            exit;
+            redirect_and_save_about('awards', 'updated');
         }
 
         if ($action === 'delete_award') {
             $id = (int)$_POST['id'];
             $cms['awards'] = array_values(array_filter($cms['awards'], fn($aw) => $aw['id'] !== $id));
-            header('Location: /admin/about-cms.php?tab=awards&msg=deleted');
-            exit;
+            redirect_and_save_about('awards', 'deleted');
         }
 
         if ($action === 'toggle_publish_award') {
@@ -351,8 +341,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     break;
                 }
             }
-            header('Location: /admin/about-cms.php?tab=awards&msg=status_updated');
-            exit;
+            redirect_and_save_about('awards', 'status_updated');
         }
     }
 }

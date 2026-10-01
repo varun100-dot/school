@@ -56,99 +56,90 @@ render_breadcrumbs([
         </p>
       </div>
 
+<?php
+$accreditations = [];
+if ($db) {
+    try {
+        $stmt = $db->query("SELECT * FROM `accreditations` WHERE `is_active` = 1 ORDER BY `sort_order` ASC");
+        $accreditations = $stmt->fetchAll();
+    } catch (Exception $e) {
+        error_log("[Accreditations Fetch Error] " . $e->getMessage());
+    }
+}
+if (empty($accreditations)) {
+    $accreditations = [
+        [
+            'name' => 'IAO Accredited',
+            'subtitle' => 'International Accreditation Organization',
+            'badge' => 'Affiliation No: IA 4883',
+            'description' => 'IAO accreditation is an internationally recognized seal of academic quality. It validates Zuvio’s robust curriculum frameworks, faculty qualifications, assessment integrity, student support systems, and organizational governance against leading global educational standards.',
+            'logo' => '/assets/images/iao-logo.png',
+            'certificate_url' => 'https://www.iao.org/India-Delhi/Zuvio-Global-School',
+            'cta_text' => 'Verify Official IAO Certificate'
+        ],
+        [
+            'name' => 'ISSO Member',
+            'subtitle' => 'International Schools Sports Organisation',
+            'badge' => 'Sports Member School',
+            'description' => 'As an ISSO member school, Zuvio Global School ensures student-athletes have structured access to regional, national, and international tournaments. Our students compete alongside premier international schools, building teamwork, resilience, and sportsmanship.',
+            'logo' => '/assets/images/isso-logo.png',
+            'certificate_url' => 'https://www.issosports.org/',
+            'cta_text' => 'Visit ISSO Sports Portal →'
+        ],
+        [
+            'name' => 'Oxford Quality',
+            'subtitle' => 'Oxford University Press',
+            'badge' => 'Curriculum & Pedagogical Partner',
+            'description' => 'The Oxford Quality Programme represents an agreement with Oxford University Press to use high-quality educational materials and continuous professional development for teachers. Students benefit from globally researched textbooks, graded readers, and structured phonics.',
+            'logo' => '/assets/images/oxford-logo.png',
+            'certificate_url' => '/curriculum',
+            'cta_text' => 'Explore Oxford Curriculum →'
+        ]
+    ];
+}
+$top_border_colors = ['var(--color-gold)', 'var(--color-teal)', 'var(--color-navy)'];
+?>
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2.5rem; max-width: 1140px; margin: 0 auto;">
-        
-        <!-- IAO Card -->
-        <div style="background: #FFFFFF; border-radius: var(--radius-lg); border: 1.5px solid rgba(6, 43, 99, 0.16); box-shadow: var(--shadow-sm); padding: 2.5rem; display: flex; flex-direction: column; justify-content: space-between; border-top: 4px solid var(--color-gold);">
+        <?php foreach ($accreditations as $i => $acc): 
+            $border_color = $top_border_colors[$i % count($top_border_colors)];
+            $cert_url = $acc['certificate_url'] ?? '';
+            $cta_label = !empty($acc['cta_text']) ? $acc['cta_text'] : (!empty($cert_url) && strpos($cert_url, 'http') === 0 ? 'Verify Official Certificate &rarr;' : 'Explore Curriculum &rarr;');
+        ?>
+        <div style="background: #FFFFFF; border-radius: var(--radius-lg); border: 1.5px solid rgba(6, 43, 99, 0.16); box-shadow: var(--shadow-sm); padding: 2.5rem; display: flex; flex-direction: column; justify-content: space-between; border-top: 4px solid <?php echo $border_color; ?>;">
           <div>
             <div style="height: 80px; display: flex; align-items: center; margin-bottom: 1.5rem;">
-              <img src="/assets/images/iao-logo.png" alt="IAO Logo" style="max-height: 70px; max-width: 180px; object-fit: contain;">
+              <img src="<?php echo h($acc['logo'] ?? '/assets/images/iao-logo.png'); ?>" alt="<?php echo h($acc['name']); ?> Logo" style="max-height: 70px; max-width: 180px; object-fit: contain;">
             </div>
 
-            <div style="display: inline-block; background: #FFF9E6; color: var(--color-navy-dark); font-weight: 700; font-size: 0.8rem; padding: 0.3rem 0.75rem; border-radius: 4px; margin-bottom: 1rem; border: 1px solid rgba(212,175,55,0.4);">
-              Affiliation No: IA 4883
-            </div>
+            <?php if (!empty($acc['badge'])): ?>
+              <div style="display: inline-block; background: #FFF9E6; color: var(--color-navy-dark); font-weight: 700; font-size: 0.8rem; padding: 0.3rem 0.75rem; border-radius: 4px; margin-bottom: 1rem; border: 1px solid rgba(212,175,55,0.4);">
+                <?php echo h($acc['badge']); ?>
+              </div>
+            <?php endif; ?>
 
             <h3 style="font-size: 1.4rem; color: var(--color-navy); font-family: var(--font-primary); margin-bottom: 0.35rem;">
-              IAO Accredited
+              <?php echo h($acc['name']); ?>
             </h3>
-            <h4 style="font-size: 0.9rem; color: var(--color-teal); font-weight: 600; margin-bottom: 1rem;">
-              International Accreditation Organization
-            </h4>
+            <?php if (!empty($acc['subtitle'])): ?>
+              <h4 style="font-size: 0.9rem; color: var(--color-teal); font-weight: 600; margin-bottom: 1rem;">
+                <?php echo h($acc['subtitle']); ?>
+              </h4>
+            <?php endif; ?>
 
             <p style="color: var(--color-text); font-size: 0.95rem; line-height: 1.7; margin-bottom: 1.5rem;">
-              IAO accreditation is an internationally recognized seal of academic quality. It validates Zuvio’s robust curriculum frameworks, faculty qualifications, assessment integrity, student support systems, and organizational governance against leading global educational standards.
+              <?php echo nl2br(h($acc['description'])); ?>
             </p>
           </div>
 
-          <div style="border-top: 1px solid var(--color-border); padding-top: 1.25rem;">
-            <a href="https://www.iao.org/India-Delhi/Zuvio-Global-School" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; background: var(--color-navy); color: #FFFFFF; font-weight: 600; padding: 0.75rem 1.25rem; border-radius: var(--radius-sm); text-decoration: none; width: 100%; text-align: center; transition: background 0.2s;">
-              Verify Official IAO Certificate
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
-            </a>
-          </div>
+          <?php if (!empty($cert_url)): ?>
+            <div style="border-top: 1px solid var(--color-border); padding-top: 1.25rem;">
+              <a href="<?php echo h($cert_url); ?>" <?php echo strpos($cert_url, 'http') === 0 ? 'target="_blank" rel="noopener"' : ''; ?> style="display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; background: var(--color-navy); color: #FFFFFF; font-weight: 600; padding: 0.75rem 1.25rem; border-radius: var(--radius-sm); text-decoration: none; width: 100%; text-align: center; transition: background 0.2s;">
+                <?php echo $cta_label; ?>
+              </a>
+            </div>
+          <?php endif; ?>
         </div>
-
-        <!-- ISSO Card -->
-        <div style="background: #FFFFFF; border-radius: var(--radius-lg); border: 1.5px solid rgba(6, 43, 99, 0.16); box-shadow: var(--shadow-sm); padding: 2.5rem; display: flex; flex-direction: column; justify-content: space-between; border-top: 4px solid var(--color-teal);">
-          <div>
-            <div style="height: 80px; display: flex; align-items: center; margin-bottom: 1.5rem;">
-              <img src="/assets/images/isso-logo.png" alt="ISSO Logo" style="max-height: 70px; max-width: 180px; object-fit: contain;">
-            </div>
-
-            <div style="display: inline-block; background: var(--pastel-blue); color: var(--color-navy); font-weight: 700; font-size: 0.8rem; padding: 0.3rem 0.75rem; border-radius: 4px; margin-bottom: 1rem;">
-              Sports Member School
-            </div>
-
-            <h3 style="font-size: 1.4rem; color: var(--color-navy); font-family: var(--font-primary); margin-bottom: 0.35rem;">
-              ISSO Member
-            </h3>
-            <h4 style="font-size: 0.9rem; color: var(--color-teal); font-weight: 600; margin-bottom: 1rem;">
-              International Schools Sports Organisation
-            </h4>
-
-            <p style="color: var(--color-text); font-size: 0.95rem; line-height: 1.7; margin-bottom: 1.5rem;">
-              As an ISSO member school, Zuvio Global School ensures student-athletes have structured access to regional, national, and international tournaments. Our students compete alongside premier international schools, building teamwork, resilience, and sportsmanship.
-            </p>
-          </div>
-
-          <div style="border-top: 1px solid var(--color-border); padding-top: 1.25rem;">
-            <a href="https://www.issosports.org/" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; background: var(--color-teal); color: #FFFFFF; font-weight: 600; padding: 0.75rem 1.25rem; border-radius: var(--radius-sm); text-decoration: none; width: 100%; text-align: center; transition: opacity 0.2s;">
-              Visit ISSO Sports Portal &rarr;
-            </a>
-          </div>
-        </div>
-
-        <!-- Oxford Quality Card -->
-        <div style="background: #FFFFFF; border-radius: var(--radius-lg); border: 1.5px solid rgba(6, 43, 99, 0.16); box-shadow: var(--shadow-sm); padding: 2.5rem; display: flex; flex-direction: column; justify-content: space-between; border-top: 4px solid var(--color-navy);">
-          <div>
-            <div style="height: 80px; display: flex; align-items: center; margin-bottom: 1.5rem;">
-              <img src="/assets/images/oxford-logo.png" alt="Oxford Quality Logo" style="max-height: 70px; max-width: 180px; object-fit: contain;">
-            </div>
-
-            <div style="display: inline-block; background: var(--pastel-blue); color: var(--color-navy); font-weight: 700; font-size: 0.8rem; padding: 0.3rem 0.75rem; border-radius: 4px; margin-bottom: 1rem;">
-              Curriculum &amp; Pedagogical Partner
-            </div>
-
-            <h3 style="font-size: 1.4rem; color: var(--color-navy); font-family: var(--font-primary); margin-bottom: 0.35rem;">
-              Oxford Quality
-            </h3>
-            <h4 style="font-size: 0.9rem; color: var(--color-teal); font-weight: 600; margin-bottom: 1rem;">
-              Oxford University Press
-            </h4>
-
-            <p style="color: var(--color-text); font-size: 0.95rem; line-height: 1.7; margin-bottom: 1.5rem;">
-              The Oxford Quality Programme represents an agreement with Oxford University Press to use high-quality educational materials and continuous professional development for teachers. Students benefit from globally researched textbooks, graded readers, and structured phonics.
-            </p>
-          </div>
-
-          <div style="border-top: 1px solid var(--color-border); padding-top: 1.25rem;">
-            <a href="/curriculum" style="display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; background: var(--color-navy-dark); color: #FFFFFF; font-weight: 600; padding: 0.75rem 1.25rem; border-radius: var(--radius-sm); text-decoration: none; width: 100%; text-align: center;">
-              Explore Oxford Curriculum &rarr;
-            </a>
-          </div>
-        </div>
-
+        <?php endforeach; ?>
       </div>
     </div>
   </section>

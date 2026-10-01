@@ -11,11 +11,19 @@ $msg = $_GET['msg'] ?? '';
 $error = '';
 $tab = $_GET['tab'] ?? 'details';
 
-// Initialize session store
-if (!isset($_SESSION['mock_contact_cms'])) {
-    $_SESSION['mock_contact_cms'] = [];
+// Persistent CMS Storage (MySQL database with session fallback)
+$db_saved = get_json_setting('cms_contact', []);
+if (!isset($_SESSION['mock_contact_cms']) || !empty($db_saved)) {
+    $_SESSION['mock_contact_cms'] = !empty($db_saved) ? $db_saved : [];
 }
 $contact_cms = &$_SESSION['mock_contact_cms'];
+
+function redirect_and_save_contact($tab, $msg) {
+    global $contact_cms;
+    set_json_setting('cms_contact', $contact_cms, 'Contact CMS Content');
+    header("Location: /admin/contact-cms.php?tab=" . urlencode($tab) . "&msg=" . urlencode($msg));
+    exit;
+}
 
 // 1. Defaults for Details
 if (!isset($contact_cms['details'])) {
@@ -158,8 +166,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             }
 
-            header('Location: /admin/contact-cms.php?tab=details&msg=saved');
-            exit;
+            redirect_and_save_contact('details', 'saved');
         }
 
         // 2. Add Social Link
@@ -183,8 +190,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'sort_order' => $sort_order,
                     'is_published' => $is_published
                 ];
-                header('Location: /admin/contact-cms.php?tab=social&msg=added');
-                exit;
+                redirect_and_save_contact('social', 'added');
             } else {
                 $error = 'Platform and URL are required.';
             }
@@ -209,8 +215,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     break;
                 }
             }
-            header('Location: /admin/contact-cms.php?tab=social&msg=updated');
-            exit;
+            redirect_and_save_contact('social', 'updated');
         }
 
         // 4. Delete Social Link
@@ -219,8 +224,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $contact_cms['social_links'] = array_values(array_filter($contact_cms['social_links'], function($i) use ($id) {
                 return $i['id'] !== $id;
             }));
-            header('Location: /admin/contact-cms.php?tab=social&msg=deleted');
-            exit;
+            redirect_and_save_contact('social', 'deleted');
         }
 
         // 5. Toggle Social Publish
@@ -232,8 +236,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     break;
                 }
             }
-            header('Location: /admin/contact-cms.php?tab=social&msg=status_toggled');
-            exit;
+            redirect_and_save_contact('social', 'status_toggled');
         }
 
         // 6. Save Map Settings
@@ -245,8 +248,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $contact_cms['map']['directions_url'] = trim($_POST['directions_url'] ?? '');
             $contact_cms['map']['height'] = (int)($_POST['height'] ?? 420);
 
-            header('Location: /admin/contact-cms.php?tab=map&msg=saved');
-            exit;
+            redirect_and_save_contact('map', 'saved');
         }
 
         // 7. Save Form Configuration
@@ -258,8 +260,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $contact_cms['form']['success_title'] = trim($_POST['success_title'] ?? '');
             $contact_cms['form']['success_message'] = trim($_POST['success_message'] ?? '');
 
-            header('Location: /admin/contact-cms.php?tab=form&msg=saved');
-            exit;
+            redirect_and_save_contact('form', 'saved');
         }
 
         // 8. Save Conversion Banner
@@ -272,8 +273,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $contact_cms['banner']['cta_secondary_label'] = trim($_POST['cta_secondary_label'] ?? '');
             $contact_cms['banner']['cta_secondary_url'] = trim($_POST['cta_secondary_url'] ?? '');
 
-            header('Location: /admin/contact-cms.php?tab=banner&msg=saved');
-            exit;
+            redirect_and_save_contact('banner', 'saved');
         }
     }
 }

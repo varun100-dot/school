@@ -5,9 +5,10 @@ require_once dirname(__FILE__) . '/../includes/helper.php';
 
 safe_session_start();
 
-// CMS data synchronization
-if (!isset($_SESSION['mock_about_cms'])) {
-    $_SESSION['mock_about_cms'] = [];
+// CMS data synchronization (DB with session fallback)
+$db_cms = get_json_setting('cms_about', []);
+if (!isset($_SESSION['mock_about_cms']) || !empty($db_cms)) {
+    $_SESSION['mock_about_cms'] = !empty($db_cms) ? $db_cms : [];
 }
 $cms = &$_SESSION['mock_about_cms'];
 

@@ -109,6 +109,42 @@ if ($db) {
     }
 }
 
+// Category Action Handlers
+if ($action === 'add_category' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+    require_permission('blogs.edit');
+    if (!validate_csrf_token($_POST['csrf_token'] ?? '')) {
+        $error = 'Security check failed.';
+    } else {
+        $cat_name = trim($_POST['cat_name'] ?? '');
+        $cat_slug = trim($_POST['cat_slug'] ?? '') ?: slugify($cat_name);
+        $cat_desc = trim($_POST['cat_desc'] ?? '');
+        if ($cat_name && $db) {
+            try {
+                $stmt = $db->prepare("INSERT INTO `blog_categories` (`name`, `slug`, `description`) VALUES (?, ?, ?)");
+                $stmt->execute([$cat_name, $cat_slug, $cat_desc]);
+                header('Location: /admin/blogs?tab=categories&msg=cat_added');
+                exit;
+            } catch (Exception $e) {
+                $error = 'Category error: ' . $e->getMessage();
+            }
+        }
+    }
+}
+
+if ($action === 'delete_category' && $id > 0) {
+    require_permission('blogs.delete');
+    if ($db) {
+        try {
+            $stmt = $db->prepare("DELETE FROM `blog_categories` WHERE `id` = ?");
+            $stmt->execute([$id]);
+            header('Location: /admin/blogs?tab=categories&msg=cat_deleted');
+            exit;
+        } catch (Exception $e) {
+            $error = 'Category delete error: ' . $e->getMessage();
+        }
+    }
+}
+
 // 2. Action Handler: Save (Create/Update)
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($action === 'add' || $action === 'edit')) {
     if ($action === 'add') {
@@ -231,20 +267,38 @@ if ($action === 'list') {
 }
 
 $page_slug = 'admin-blogs';
+$tab = $_GET['tab'] ?? 'posts';
+
+$page_slug = 'admin-blogs';
 include_once dirname(__FILE__) . '/header.php';
 ?>
 
-<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
   <div>
     <h1 style="font-family: var(--font-secondary); font-size: 1.5rem; color: var(--color-navy); margin-bottom: 0.25rem;">Blogs & Insights Manager</h1>
-    <p style="color: var(--color-muted); font-size: 0.85rem;">Create, edit, publish, or draft school articles.</p>
+    <p style="color: var(--color-muted); font-size: 0.85rem;">Create, edit, publish, draft articles and manage blog categories.</p>
   </div>
   <?php if ($action === 'list'): ?>
-    <a href="/admin/blogs?action=add" class="btn btn-primary" style="font-size: 0.85rem;">+ Create New Blog</a>
+    <div style="display: flex; gap: 0.6rem;">
+      <a href="/admin/blogs?tab=categories" class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.85rem;">Manage Categories (<?php echo count($categories); ?>)</a>
+      <a href="/admin/blogs?action=add" class="btn btn-primary" style="font-size: 0.85rem;">+ Create New Blog</a>
+    </div>
   <?php else: ?>
     <a href="/admin/blogs" class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.85rem;">&larr; Back to List</a>
   <?php endif; ?>
 </div>
+
+<!-- Tabs -->
+<?php if ($action === 'list'): ?>
+  <div style="display: flex; gap: 0.5rem; border-bottom: 2px solid var(--color-border); margin-bottom: 1.5rem;">
+    <a href="/admin/blogs?tab=posts" style="padding: 0.6rem 1.25rem; font-weight: 600; font-size: 0.88rem; text-decoration: none; border-bottom: 3px solid <?php echo $tab === 'posts' ? 'var(--color-navy)' : 'transparent'; ?>; color: <?php echo $tab === 'posts' ? 'var(--color-navy)' : 'var(--color-muted)'; ?>;">
+      All Articles (<?php echo count($posts); ?>)
+    </a>
+    <a href="/admin/blogs?tab=categories" style="padding: 0.6rem 1.25rem; font-weight: 600; font-size: 0.88rem; text-decoration: none; border-bottom: 3px solid <?php echo $tab === 'categories' ? 'var(--color-navy)' : 'transparent'; ?>; color: <?php echo $tab === 'categories' ? 'var(--color-navy)' : 'var(--color-muted)'; ?>;">
+      Blog Categories (<?php echo count($categories); ?>)
+    </a>
+  </div>
+<?php endif; ?>
 
 <?php if (isset($_GET['msg']) && $_GET['msg'] === 'added'): ?>
   <div style="background-color: var(--color-surface-blue); border-left: 4px solid var(--color-success); padding: 0.75rem 1rem; border-radius: var(--radius-sm); color: var(--color-navy); font-size: 0.85rem; margin-bottom: 1.5rem;">
@@ -258,6 +312,14 @@ include_once dirname(__FILE__) . '/header.php';
   <div style="background-color: var(--color-surface-blue); border-left: 4px solid var(--color-success); padding: 0.75rem 1rem; border-radius: var(--radius-sm); color: var(--color-navy); font-size: 0.85rem; margin-bottom: 1.5rem;">
     Article deleted successfully.
   </div>
+<?php elseif (isset($_GET['msg']) && $_GET['msg'] === 'cat_added'): ?>
+  <div style="background-color: var(--color-surface-blue); border-left: 4px solid var(--color-success); padding: 0.75rem 1rem; border-radius: var(--radius-sm); color: var(--color-navy); font-size: 0.85rem; margin-bottom: 1.5rem;">
+    New category created successfully.
+  </div>
+<?php elseif (isset($_GET['msg']) && $_GET['msg'] === 'cat_deleted'): ?>
+  <div style="background-color: var(--color-surface-blue); border-left: 4px solid var(--color-success); padding: 0.75rem 1rem; border-radius: var(--radius-sm); color: var(--color-navy); font-size: 0.85rem; margin-bottom: 1.5rem;">
+    Category deleted successfully.
+  </div>
 <?php endif; ?>
 
 <?php if ($error): ?>
@@ -266,8 +328,58 @@ include_once dirname(__FILE__) . '/header.php';
   </div>
 <?php endif; ?>
 
-<!-- Action View: LIST -->
-<?php if ($action === 'list'): ?>
+<?php if ($action === 'list' && $tab === 'categories'): ?>
+  <!-- Category Management Tab -->
+  <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; align-items: flex-start;">
+    <div class="card" style="border-left: none; padding: 2rem;">
+      <h3 style="color: var(--color-navy); font-size: 1.2rem; margin-top: 0; margin-bottom: 1rem;">Active Blog Categories</h3>
+      <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem; text-align: left;">
+        <thead>
+          <tr style="border-bottom: 2px solid var(--color-border); color: var(--color-navy); font-weight: 600;">
+            <th style="padding: 0.75rem 1rem;">Category Name</th>
+            <th style="padding: 0.75rem 1rem;">Slug</th>
+            <th style="padding: 0.75rem 1rem;">Description</th>
+            <th style="padding: 0.75rem 1rem; text-align: right;">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php foreach ($categories as $c): ?>
+            <tr style="border-bottom: 1px solid var(--color-border);">
+              <td style="padding: 0.75rem 1rem; font-weight: 600; color: var(--color-navy);"><?php echo h($c['name']); ?></td>
+              <td style="padding: 0.75rem 1rem; color: var(--color-muted);"><code><?php echo h($c['slug']); ?></code></td>
+              <td style="padding: 0.75rem 1rem; color: var(--color-muted);"><?php echo h($c['description'] ?? '—'); ?></td>
+              <td style="padding: 0.75rem 1rem; text-align: right;">
+                <a href="/admin/blogs?action=delete_category&id=<?php echo $c['id']; ?>" onclick="return confirm('Delete this category?');" style="color: #EF4444; font-weight: 600; text-decoration: none;">Delete</a>
+              </td>
+            </tr>
+          <?php endforeach; ?>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Add Category Form -->
+    <div class="card" style="border-left: none; padding: 2rem; border-top: 4px solid var(--color-gold);">
+      <h3 style="color: var(--color-navy); font-size: 1.15rem; margin-top: 0; margin-bottom: 1.25rem;">Add New Category</h3>
+      <form method="POST" action="/admin/blogs?action=add_category">
+        <input type="hidden" name="csrf_token" value="<?php echo get_csrf_token(); ?>">
+        <div class="admin-form-group">
+          <label class="admin-label">Category Name *</label>
+          <input type="text" name="cat_name" required placeholder="e.g. EdTech & AI" class="admin-input">
+        </div>
+        <div class="admin-form-group">
+          <label class="admin-label">Slug (Optional)</label>
+          <input type="text" name="cat_slug" placeholder="e.g. edtech-and-ai" class="admin-input">
+        </div>
+        <div class="admin-form-group">
+          <label class="admin-label">Description</label>
+          <textarea name="cat_desc" rows="3" placeholder="Brief summary of topic..." class="admin-input"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.75rem;">Create Category</button>
+      </form>
+    </div>
+  </div>
+
+<?php elseif ($action === 'list' && $tab === 'posts'): ?>
   <div class="card" style="border-left: none; padding: 2rem;">
     <?php if (!empty($posts)): ?>
       <div style="overflow-x: auto;">

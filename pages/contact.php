@@ -5,9 +5,10 @@ require_once dirname(__FILE__) . '/../includes/helper.php';
 
 safe_session_start();
 
-// Initialize Contact CMS Mock State / Session Store
-if (!isset($_SESSION['mock_contact_cms'])) {
-    $_SESSION['mock_contact_cms'] = [];
+// Initialize Contact CMS store from persistent database or session
+$db_contact = get_json_setting('cms_contact', []);
+if (!isset($_SESSION['mock_contact_cms']) || !empty($db_contact)) {
+    $_SESSION['mock_contact_cms'] = !empty($db_contact) ? $db_contact : [];
 }
 $contact_cms = &$_SESSION['mock_contact_cms'];
 

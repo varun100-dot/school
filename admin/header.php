@@ -141,52 +141,109 @@ $current_page = $page_slug ?? 'admin-dashboard';
       border-color: var(--color-navy);
     }
 
-    @media (max-width: 900px) {
-      body {
-        flex-direction: column;
+    /* Table and UI helpers */
+    .table-responsive {
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      margin-bottom: 1rem;
+    }
+    
+    .sidebar-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(6, 43, 99, 0.6);
+      backdrop-filter: blur(2px);
+      z-index: 998;
+    }
+    .sidebar-overlay.active {
+      display: block;
+    }
+
+    .mobile-menu-toggle {
+      display: none;
+      background: none;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      padding: 0.45rem 0.75rem;
+      font-size: 1.2rem;
+      cursor: pointer;
+      color: var(--color-navy);
+      line-height: 1;
+    }
+
+    @media (max-width: 991px) {
+      .mobile-menu-toggle {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
       }
       .admin-sidebar {
-        width: 100%;
-        height: auto;
-        position: static;
+        position: fixed;
+        left: -280px;
+        top: 0;
+        width: 270px;
+        height: 100vh;
+        z-index: 999;
+        transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.3);
       }
-      .sidebar-menu {
-        flex-direction: row;
-        flex-wrap: wrap;
-        padding: 0.75rem;
-        gap: 0.5rem;
+      .admin-sidebar.open {
+        left: 0;
       }
-      .sidebar-item {
-        padding: 0.5rem 0.75rem;
-        font-size: 0.8rem;
+      .sidebar-brand {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
       }
-      .sidebar-user {
-        display: none;
+      .sidebar-close-btn {
+        display: block !important;
+        background: none;
+        border: none;
+        color: #fff;
+        font-size: 1.5rem;
+        cursor: pointer;
+        padding: 0.25rem;
       }
       .admin-main {
-        height: auto;
-        overflow-y: visible;
+        width: 100%;
+        height: 100vh;
+      }
+      .admin-topbar {
+        padding: 0.85rem 1.25rem;
       }
       .admin-body {
-        padding: 1.5rem;
+        padding: 1.25rem;
       }
     }
   </style>
 </head>
 <body>
 
+  <!-- Mobile Overlay -->
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleAdminSidebar()"></div>
+
   <!-- Admin Sidebar -->
-  <aside class="admin-sidebar">
+  <aside class="admin-sidebar" id="adminSidebar">
     <div class="sidebar-brand">
       <img src="<?php echo h($logo_path); ?>" alt="Zuvio Admin" class="sidebar-logo">
+      <button class="sidebar-close-btn" style="display: none;" onclick="toggleAdminSidebar()">&times;</button>
     </div>
     
-    <nav class="sidebar-menu">
+    <nav class="sidebar-menu" style="overflow-y: auto;">
       <div class="sidebar-heading">Main Overview</div>
       <?php if (has_permission('dashboard.view') || true): ?>
         <a href="/admin" class="sidebar-item <?php echo $current_page === 'admin-dashboard' ? 'active' : ''; ?>">Dashboard</a>
       <?php endif; ?>
       <a href="/admin/homepage.php" class="sidebar-item <?php echo $current_page === 'admin-homepage' ? 'active' : ''; ?>">Homepage Sections CMS</a>
+
+      <div class="sidebar-heading">Navigation &amp; SEO</div>
+      <a href="/admin/seo.php" class="sidebar-item <?php echo $current_page === 'admin-seo' ? 'active' : ''; ?>">Page SEO &amp; Meta</a>
+      <a href="/admin/navigation.php" class="sidebar-item <?php echo $current_page === 'admin-navigation' ? 'active' : ''; ?>">Navigation Menu Tree</a>
 
       <div class="sidebar-heading">About Us</div>
       <a href="/admin/about-cms.php" class="sidebar-item <?php echo $current_page === 'admin-about-cms' && empty($_GET['tab']) ? 'active' : ''; ?>">About Zuvio</a>
@@ -195,8 +252,8 @@ $current_page = $page_slug ?? 'admin-dashboard';
       <a href="/admin/accreditations.php" class="sidebar-item <?php echo $current_page === 'admin-accreditations' ? 'active' : ''; ?>">Affiliations & Accreditations</a>
 
       <div class="sidebar-heading">Academics</div>
-      <a href="/admin/academics-cms.php?tab=technology" class="sidebar-item <?php echo ($current_page === 'admin-academics-cms' && ($_GET['tab'] ?? '') === 'technology') ? 'active' : ''; ?>">Technology</a>
-      <a href="/curriculum" target="_blank" class="sidebar-item">Curriculum &nearr;</a>
+      <a href="/admin/academics-cms.php?tab=technology" class="sidebar-item <?php echo ($current_page === 'admin-academics-cms' && ($_GET['tab'] ?? '') === 'technology') ? 'active' : ''; ?>">Technology &amp; LMS</a>
+      <a href="/admin/academics-cms.php?tab=curriculum" class="sidebar-item <?php echo ($current_page === 'admin-academics-cms' && ($_GET['tab'] ?? '') === 'curriculum') ? 'active' : ''; ?>">Curriculum Framework</a>
       <a href="/admin/academics-cms.php?tab=special_ed" class="sidebar-item <?php echo ($current_page === 'admin-academics-cms' && ($_GET['tab'] ?? '') === 'special_ed') ? 'active' : ''; ?>">Special Education</a>
       <a href="/admin/academics-cms.php?tab=electives" class="sidebar-item <?php echo ($current_page === 'admin-academics-cms' && ($_GET['tab'] ?? '') === 'electives') ? 'active' : ''; ?>">Electives</a>
       <a href="/admin/academics-cms.php?tab=nep_2020" class="sidebar-item <?php echo ($current_page === 'admin-academics-cms' && ($_GET['tab'] ?? '') === 'nep_2020') ? 'active' : ''; ?>">NEP 2020</a>
@@ -210,7 +267,7 @@ $current_page = $page_slug ?? 'admin-dashboard';
       <a href="/admin/admissions-cms.php?tab=fees" class="sidebar-item <?php echo ($current_page === 'admin-admissions-cms' && ($_GET['tab'] ?? '') === 'fees') ? 'active' : ''; ?>">Fees Structure</a>
       <a href="/admin/faqs.php" class="sidebar-item <?php echo $current_page === 'admin-faqs' ? 'active' : ''; ?>">Parent FAQs (18 Items)</a>
 
-      <div class="sidebar-heading">Contact & Enquiries</div>
+      <div class="sidebar-heading">Contact &amp; Enquiries</div>
       <a href="/admin/contact-cms.php" class="sidebar-item <?php echo $current_page === 'admin-contact-cms' ? 'active' : ''; ?>">Contact Us CMS</a>
       <?php if (has_permission('enquiries.view') || true): ?>
         <a href="/admin/enquiries" class="sidebar-item <?php echo $current_page === 'admin-enquiries' ? 'active' : ''; ?>">Enrolment Leads CRM</a>
@@ -223,17 +280,17 @@ $current_page = $page_slug ?? 'admin-dashboard';
       <a href="/admin/beyond-cms.php?tab=gallery" class="sidebar-item <?php echo ($current_page === 'admin-beyond-cms' && ($_GET['tab'] ?? '') === 'gallery') ? 'active' : ''; ?>">Photo Gallery</a>
       <a href="/admin/beyond-cms.php?tab=classroom" class="sidebar-item <?php echo ($current_page === 'admin-beyond-cms' && ($_GET['tab'] ?? '') === 'classroom') ? 'active' : ''; ?>">Virtual Classroom</a>
 
-      <div class="sidebar-heading">Media & Engagement</div>
+      <div class="sidebar-heading">Media &amp; Engagement</div>
       <a href="/admin/testimonials.php" class="sidebar-item <?php echo $current_page === 'admin-testimonials' ? 'active' : ''; ?>">Parent Testimonials</a>
       <?php if (has_permission('media.view') || true): ?>
         <a href="/admin/media" class="sidebar-item <?php echo $current_page === 'admin-media' ? 'active' : ''; ?>">Media Manager (IMG/VID/PDF)</a>
       <?php endif; ?>
       <?php if (has_permission('blogs.view') || true): ?>
-        <a href="/admin/blogs" class="sidebar-item <?php echo $current_page === 'admin-blogs' ? 'active' : ''; ?>">Manage Blogs & News</a>
+        <a href="/admin/blogs" class="sidebar-item <?php echo $current_page === 'admin-blogs' ? 'active' : ''; ?>">Manage Blogs &amp; Categories</a>
       <?php endif; ?>
       <a href="/admin/announcements.php" class="sidebar-item <?php echo $current_page === 'admin-announcements' ? 'active' : ''; ?>">Announcements Strip</a>
 
-      <div class="sidebar-heading">System & Admin</div>
+      <div class="sidebar-heading">System &amp; Admin</div>
       <?php if (has_permission('users.view') || true): ?>
         <a href="/admin/users" class="sidebar-item <?php echo $current_page === 'admin-users' ? 'active' : ''; ?>">User Management</a>
       <?php endif; ?>
@@ -255,9 +312,27 @@ $current_page = $page_slug ?? 'admin-dashboard';
   <!-- Admin Main Content Area -->
   <main class="admin-main">
     <div class="admin-topbar">
-      <h2 style="font-size: 1.15rem; color: var(--color-navy); font-family: var(--font-secondary);">System Management Dashboard</h2>
+      <div style="display: flex; align-items: center; gap: 1rem;">
+        <button class="mobile-menu-toggle" onclick="toggleAdminSidebar()" aria-label="Toggle navigation menu">&#9776;</button>
+        <h2 style="font-size: 1.15rem; color: var(--color-navy); font-family: var(--font-secondary); margin: 0;">System Management Dashboard</h2>
+      </div>
       
-      <!-- Sign Out link -->
-      <a href="/admin/logout" class="btn btn-outline" style="padding: 0.4rem 1rem; font-size: 0.8rem; border-color: #EF4444; color: #EF4444;" onclick="return confirm('Sign out?');">Sign Out</a>
+      <!-- Topbar Actions -->
+      <div style="display: flex; align-items: center; gap: 0.75rem;">
+        <a href="/" target="_blank" class="btn btn-outline" style="padding: 0.4rem 0.85rem; font-size: 0.8rem;">View Website &nearr;</a>
+        <a href="/admin/logout" class="btn btn-outline" style="padding: 0.4rem 1rem; font-size: 0.8rem; border-color: #EF4444; color: #EF4444;" onclick="return confirm('Sign out?');">Sign Out</a>
+      </div>
     </div>
     <div class="admin-body">
+
+    <script>
+      function toggleAdminSidebar() {
+        const sidebar = document.getElementById('adminSidebar');
+        const overlay = document.getElementById('sidebarOverlay');
+        if (sidebar && overlay) {
+          sidebar.classList.toggle('open');
+          overlay.classList.toggle('active');
+        }
+      }
+    </script>
+

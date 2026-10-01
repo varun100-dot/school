@@ -5,9 +5,10 @@ require_once dirname(__FILE__) . '/../includes/helper.php';
 
 safe_session_start();
 
-// Initialize Academics CMS data from session or defaults
-if (!isset($_SESSION['mock_academics_cms'])) {
-    $_SESSION['mock_academics_cms'] = [];
+// Initialize Academics CMS data from persistent settings or defaults
+$db_cms = get_json_setting('cms_academics', []);
+if (!isset($_SESSION['mock_academics_cms']) || !empty($db_cms)) {
+    $_SESSION['mock_academics_cms'] = !empty($db_cms) ? $db_cms : [];
 }
 $ac_cms = &$_SESSION['mock_academics_cms'];
 

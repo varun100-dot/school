@@ -11,11 +11,19 @@ $msg = $_GET['msg'] ?? '';
 $error = '';
 $tab = $_GET['tab'] ?? 'cocurricular';
 
-// Ensure $_SESSION['mock_beyond_cms'] is populated
-if (!isset($_SESSION['mock_beyond_cms'])) {
-    $_SESSION['mock_beyond_cms'] = [];
+// Persistent CMS Storage (MySQL database with session fallback)
+$db_saved = get_json_setting('cms_beyond', []);
+if (!isset($_SESSION['mock_beyond_cms']) || !empty($db_saved)) {
+    $_SESSION['mock_beyond_cms'] = !empty($db_saved) ? $db_saved : [];
 }
 $beyond_cms = &$_SESSION['mock_beyond_cms'];
+
+function redirect_and_save_beyond($tab, $msg) {
+    global $beyond_cms;
+    set_json_setting('cms_beyond', $beyond_cms, 'Beyond CMS Content');
+    header("Location: /admin/beyond-cms.php?tab=" . urlencode($tab) . "&msg=" . urlencode($msg));
+    exit;
+}
 
 // 1. Defaults for Co-curricular Clubs
 if (!isset($beyond_cms['cocurricular_clubs'])) {
@@ -345,16 +353,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'sort_order' => count($beyond_cms['cocurricular_clubs']) + 1,
                 'is_published' => 1
             ];
-            header("Location: /admin/beyond-cms.php?tab=cocurricular&msg=Club+added+successfully");
-            exit;
+            redirect_and_save_beyond('cocurricular', 'Club added successfully');
         }
     } elseif ($action === 'delete_club') {
         $id = (int)($_POST['id'] ?? 0);
         $beyond_cms['cocurricular_clubs'] = array_values(array_filter($beyond_cms['cocurricular_clubs'], function($c) use ($id) {
             return $c['id'] != $id;
         }));
-        header("Location: /admin/beyond-cms.php?tab=cocurricular&msg=Club+deleted+successfully");
-        exit;
+        redirect_and_save_beyond('cocurricular', 'Club deleted successfully');
     } elseif ($action === 'toggle_club_publish') {
         $id = (int)($_POST['id'] ?? 0);
         foreach ($beyond_cms['cocurricular_clubs'] as &$c) {
@@ -363,8 +369,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 break;
             }
         }
-        header("Location: /admin/beyond-cms.php?tab=cocurricular&msg=Club+status+updated");
-        exit;
+        redirect_and_save_beyond('cocurricular', 'Club status updated');
     }
 
     // --- Actions for Student Achievers ---
@@ -388,16 +393,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'sort_order' => count($beyond_cms['student_achievers']) + 1,
                 'is_published' => 1
             ];
-            header("Location: /admin/beyond-cms.php?tab=achievers&msg=Achiever+added+successfully");
-            exit;
+            redirect_and_save_beyond('achievers', 'Achiever added successfully');
         }
     } elseif ($action === 'delete_achiever') {
         $id = (int)($_POST['id'] ?? 0);
         $beyond_cms['student_achievers'] = array_values(array_filter($beyond_cms['student_achievers'], function($a) use ($id) {
             return $a['id'] != $id;
         }));
-        header("Location: /admin/beyond-cms.php?tab=achievers&msg=Achiever+removed+successfully");
-        exit;
+        redirect_and_save_beyond('achievers', 'Achiever removed successfully');
     } elseif ($action === 'toggle_achiever_publish') {
         $id = (int)($_POST['id'] ?? 0);
         foreach ($beyond_cms['student_achievers'] as &$a) {
@@ -406,8 +409,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 break;
             }
         }
-        header("Location: /admin/beyond-cms.php?tab=achievers&msg=Achiever+status+updated");
-        exit;
+        redirect_and_save_beyond('achievers', 'Achiever status updated');
     }
 
     // --- Actions for Gallery ---
@@ -430,16 +432,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'sort_order' => count($beyond_cms['gallery']) + 1,
                 'is_published' => 1
             ];
-            header("Location: /admin/beyond-cms.php?tab=gallery&msg=Gallery+item+added");
-            exit;
+            redirect_and_save_beyond('gallery', 'Gallery item added');
         }
     } elseif ($action === 'delete_gallery') {
         $id = (int)($_POST['id'] ?? 0);
         $beyond_cms['gallery'] = array_values(array_filter($beyond_cms['gallery'], function($g) use ($id) {
             return $g['id'] != $id;
         }));
-        header("Location: /admin/beyond-cms.php?tab=gallery&msg=Gallery+item+deleted");
-        exit;
+        redirect_and_save_beyond('gallery', 'Gallery item deleted');
     }
 
     // --- Actions for Virtual Classroom Videos ---
@@ -468,16 +468,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'sort_order' => count($beyond_cms['virtual_classroom']) + 1,
                 'is_published' => 1
             ];
-            header("Location: /admin/beyond-cms.php?tab=classroom&msg=Video+item+added");
-            exit;
+            redirect_and_save_beyond('classroom', 'Video item added');
         }
     } elseif ($action === 'delete_video') {
         $id = (int)($_POST['id'] ?? 0);
         $beyond_cms['virtual_classroom'] = array_values(array_filter($beyond_cms['virtual_classroom'], function($v) use ($id) {
             return $v['id'] != $id;
         }));
-        header("Location: /admin/beyond-cms.php?tab=classroom&msg=Video+item+deleted");
-        exit;
+        redirect_and_save_beyond('classroom', 'Video item deleted');
     }
 }
 

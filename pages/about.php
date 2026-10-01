@@ -5,9 +5,10 @@ require_once dirname(__FILE__) . '/../includes/helper.php';
 
 safe_session_start();
 
-// Initialize CMS store from session if available, else defaults from DOCX source of truth
-if (!isset($_SESSION['mock_about_cms'])) {
-    $_SESSION['mock_about_cms'] = [];
+// Initialize CMS store from persistent database setting (with session fallback)
+$db_cms = get_json_setting('cms_about', []);
+if (!isset($_SESSION['mock_about_cms']) || !empty($db_cms)) {
+    $_SESSION['mock_about_cms'] = !empty($db_cms) ? $db_cms : [];
 }
 $cms = &$_SESSION['mock_about_cms'];
 

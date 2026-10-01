@@ -11,11 +11,19 @@ $msg = $_GET['msg'] ?? '';
 $error = '';
 $tab = $_GET['tab'] ?? 'technology';
 
-// Ensure $_SESSION['mock_academics_cms'] is populated with structure
-if (!isset($_SESSION['mock_academics_cms'])) {
-    $_SESSION['mock_academics_cms'] = [];
+// Persistent CMS Storage (MySQL database with session fallback)
+$db_saved = get_json_setting('cms_academics', []);
+if (!isset($_SESSION['mock_academics_cms']) || !empty($db_saved)) {
+    $_SESSION['mock_academics_cms'] = !empty($db_saved) ? $db_saved : [];
 }
 $ac_cms = &$_SESSION['mock_academics_cms'];
+
+function redirect_and_save_academics($tab, $msg) {
+    global $ac_cms;
+    set_json_setting('cms_academics', $ac_cms, 'Academics CMS Content');
+    header("Location: /admin/academics-cms.php?tab=" . urlencode($tab) . "&msg=" . urlencode($msg));
+    exit;
+}
 
 // 1. Defaults for Technology
 if (!isset($ac_cms['technology'])) {
@@ -87,6 +95,25 @@ if (!isset($ac_cms['resources'])) {
     ];
 }
 
+// 6. Defaults for Curriculum Framework
+if (!isset($ac_cms['curriculum'])) {
+    $ac_cms['curriculum'] = [
+        'hero_title' => 'A Future-Ready Learning Journey — Kindergarten to Grade 8th',
+        'hero_subtitle' => 'Curriculum Framework',
+        'hero_desc' => 'Mapped to CBSE learning outcomes, NEP 2020 pedagogical structure, and Oxford thematic inquiry — building strong academic foundations with creativity, communication, digital fluency, and real-world mastery.',
+        'early_years_title' => 'Early Years · Nursery to UKG',
+        'early_years_desc' => 'Learning through stories, play, music, sensory discovery, and phonics. Fostering curiosity, language foundations, and social-emotional confidence.',
+        'foundation_title' => 'Foundation Stage · Grades 1–2',
+        'foundation_desc' => 'Strengthening reading comprehension, foundational numeracy, environmental awareness, and creative expression through theme-based modules.',
+        'preparatory_title' => 'Preparatory Stage · Grades 3–5',
+        'preparatory_desc' => 'Interdisciplinary, application-led learning in science, computational thinking, financial awareness, and structured inquiry projects.',
+        'middle_school_title' => 'Middle School · Grades 6–8',
+        'middle_school_desc' => 'Analytical depth, research methodologies, AI fluency, public debate, entrepreneurship, and global citizenship.',
+        'oxford_theme' => 'Zuvio incorporates Oxford thematic learning where subjects converge around meaningful monthly themes, teaching children to synthesize concepts rather than memorizing in silos.',
+        'assessment_philosophy' => 'Continuous formative assessment, portfolio reviews, and observation-based milestones that measure growth, conceptual mastery, and critical application.'
+    ];
+}
+
 // Helper: Handle file uploads for PDFs, Images, and Videos
 function handle_cms_upload($file_key, $allowed_extensions = ['pdf', 'jpg', 'jpeg', 'png', 'webp', 'mp4']) {
     if (!isset($_FILES[$file_key]) || $_FILES[$file_key]['error'] !== UPLOAD_ERR_OK) {
@@ -134,8 +161,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
 
             if (!$error) {
-                header('Location: /admin/academics-cms.php?tab=technology&msg=saved');
-                exit;
+                redirect_and_save_academics('technology', 'saved');
             }
         }
 
@@ -150,8 +176,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'sort_order' => count($ac_cms['technology']['lms_features']) + 1,
                 'is_published' => 1
             ];
-            header('Location: /admin/academics-cms.php?tab=technology&msg=added');
-            exit;
+            redirect_and_save_academics('technology', 'added');
         }
 
         if ($action === 'edit_lms_feature') {
@@ -166,15 +191,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             }
             usort($ac_cms['technology']['lms_features'], fn($a, $b) => ($a['sort_order'] ?? 0) <=> ($b['sort_order'] ?? 0));
-            header('Location: /admin/academics-cms.php?tab=technology&msg=updated');
-            exit;
+            redirect_and_save_academics('technology', 'updated');
         }
 
         if ($action === 'delete_lms_feature') {
             $id = (int)$_POST['id'];
             $ac_cms['technology']['lms_features'] = array_values(array_filter($ac_cms['technology']['lms_features'], fn($f) => $f['id'] !== $id));
-            header('Location: /admin/academics-cms.php?tab=technology&msg=deleted');
-            exit;
+            redirect_and_save_academics('technology', 'deleted');
         }
 
         if ($action === 'toggle_publish_lms_feature') {
@@ -185,8 +208,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     break;
                 }
             }
-            header('Location: /admin/academics-cms.php?tab=technology&msg=status_updated');
-            exit;
+            redirect_and_save_academics('technology', 'status_updated');
         }
 
         // 3. Special Education
@@ -194,8 +216,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $ac_cms['special_ed']['title'] = trim($_POST['title'] ?? '');
             $ac_cms['special_ed']['kicker'] = trim($_POST['kicker'] ?? '');
             $ac_cms['special_ed']['intro'] = trim($_POST['intro'] ?? '');
-            header('Location: /admin/academics-cms.php?tab=special_ed&msg=saved');
-            exit;
+            redirect_and_save_academics('special_ed', 'saved');
         }
 
         if ($action === 'add_special_ed_pillar') {
@@ -207,8 +228,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'sort_order' => count($ac_cms['special_ed']['pillars']) + 1,
                 'is_published' => 1
             ];
-            header('Location: /admin/academics-cms.php?tab=special_ed&msg=added');
-            exit;
+            redirect_and_save_academics('special_ed', 'added');
         }
 
         if ($action === 'edit_special_ed_pillar') {
@@ -222,15 +242,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             }
             usort($ac_cms['special_ed']['pillars'], fn($a, $b) => ($a['sort_order'] ?? 0) <=> ($b['sort_order'] ?? 0));
-            header('Location: /admin/academics-cms.php?tab=special_ed&msg=updated');
-            exit;
+            redirect_and_save_academics('special_ed', 'updated');
         }
 
         if ($action === 'delete_special_ed_pillar') {
             $id = (int)$_POST['id'];
             $ac_cms['special_ed']['pillars'] = array_values(array_filter($ac_cms['special_ed']['pillars'], fn($p) => $p['id'] !== $id));
-            header('Location: /admin/academics-cms.php?tab=special_ed&msg=deleted');
-            exit;
+            redirect_and_save_academics('special_ed', 'deleted');
         }
 
         // 4. Electives
@@ -241,8 +259,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $raw_for = trim($_POST['foreign_languages'] ?? '');
             $ac_cms['electives']['foreign_languages'] = array_filter(array_map('trim', explode(',', $raw_for)));
             
-            header('Location: /admin/academics-cms.php?tab=electives&msg=saved');
-            exit;
+            redirect_and_save_academics('electives', 'saved');
         }
 
         if ($action === 'add_skill_elective') {
@@ -254,8 +271,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'sort_order' => count($ac_cms['electives']['future_skills']) + 1,
                 'is_published' => 1
             ];
-            header('Location: /admin/academics-cms.php?tab=electives&msg=added');
-            exit;
+            redirect_and_save_academics('electives', 'added');
         }
 
         if ($action === 'edit_skill_elective') {
@@ -269,15 +285,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             }
             usort($ac_cms['electives']['future_skills'], fn($a, $b) => ($a['sort_order'] ?? 0) <=> ($b['sort_order'] ?? 0));
-            header('Location: /admin/academics-cms.php?tab=electives&msg=updated');
-            exit;
+            redirect_and_save_academics('electives', 'updated');
         }
 
         if ($action === 'delete_skill_elective') {
             $id = (int)$_POST['id'];
             $ac_cms['electives']['future_skills'] = array_values(array_filter($ac_cms['electives']['future_skills'], fn($fs) => $fs['id'] !== $id));
-            header('Location: /admin/academics-cms.php?tab=electives&msg=deleted');
-            exit;
+            redirect_and_save_academics('electives', 'deleted');
         }
 
         // 5. NEP 2020 & Documents (PDF Upload)
@@ -299,8 +313,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
 
             if (!$error) {
-                header('Location: /admin/academics-cms.php?tab=nep_2020&msg=saved');
-                exit;
+                redirect_and_save_academics('nep_2020', 'saved');
             }
         }
 
@@ -321,9 +334,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
 
             if (!$error) {
-                header('Location: /admin/academics-cms.php?tab=resources&msg=saved');
-                exit;
+                redirect_and_save_academics('resources', 'saved');
             }
+        }
+
+        // 7. Curriculum Framework
+        if ($action === 'save_curriculum') {
+            $ac_cms['curriculum']['hero_title'] = trim($_POST['hero_title'] ?? '');
+            $ac_cms['curriculum']['hero_subtitle'] = trim($_POST['hero_subtitle'] ?? '');
+            $ac_cms['curriculum']['hero_desc'] = trim($_POST['hero_desc'] ?? '');
+            $ac_cms['curriculum']['early_years_title'] = trim($_POST['early_years_title'] ?? '');
+            $ac_cms['curriculum']['early_years_desc'] = trim($_POST['early_years_desc'] ?? '');
+            $ac_cms['curriculum']['foundation_title'] = trim($_POST['foundation_title'] ?? '');
+            $ac_cms['curriculum']['foundation_desc'] = trim($_POST['foundation_desc'] ?? '');
+            $ac_cms['curriculum']['preparatory_title'] = trim($_POST['preparatory_title'] ?? '');
+            $ac_cms['curriculum']['preparatory_desc'] = trim($_POST['preparatory_desc'] ?? '');
+            $ac_cms['curriculum']['middle_school_title'] = trim($_POST['middle_school_title'] ?? '');
+            $ac_cms['curriculum']['middle_school_desc'] = trim($_POST['middle_school_desc'] ?? '');
+            $ac_cms['curriculum']['oxford_theme'] = trim($_POST['oxford_theme'] ?? '');
+            $ac_cms['curriculum']['assessment_philosophy'] = trim($_POST['assessment_philosophy'] ?? '');
+
+            redirect_and_save_academics('curriculum', 'saved');
         }
     }
 }
@@ -385,6 +416,9 @@ include_once dirname(__FILE__) . '/header.php';
   </a>
   <a href="?tab=resources" style="padding: 0.6rem 1rem; font-weight: 600; font-size: 0.88rem; text-decoration: none; border-radius: var(--radius-sm) var(--radius-sm) 0 0; <?php echo $tab === 'resources' ? 'background: var(--color-navy); color: #fff;' : 'color: var(--color-text); background: #f8fafc;'; ?>">
     5. Resources & Calendar
+  </a>
+  <a href="?tab=curriculum" style="padding: 0.6rem 1rem; font-weight: 600; font-size: 0.88rem; text-decoration: none; border-radius: var(--radius-sm) var(--radius-sm) 0 0; <?php echo $tab === 'curriculum' ? 'background: var(--color-navy); color: #fff;' : 'color: var(--color-text); background: #f8fafc;'; ?>">
+    6. Curriculum Framework
   </a>
 </div>
 
@@ -832,6 +866,77 @@ include_once dirname(__FILE__) . '/header.php';
         </div>
       </div>
       <button type="submit" class="btn btn-primary" style="margin-top: 1.5rem; padding: 0.75rem 2rem;">Save Calendar Settings</button>
+    </div>
+  </form>
+
+<?php elseif ($tab === 'curriculum'): ?>
+  <!-- TAB 6: Curriculum Framework -->
+  <form method="POST" action="/admin/academics-cms.php">
+    <input type="hidden" name="csrf_token" value="<?php echo generate_csrf_token(); ?>">
+    <input type="hidden" name="action" value="save_curriculum">
+
+    <div class="card" style="padding: 2rem; margin-bottom: 2rem;">
+      <h3 style="color: var(--color-navy); font-size: 1.25rem; margin-bottom: 1.25rem; border-bottom: 1px solid var(--color-border); padding-bottom: 0.5rem;">
+        Curriculum Framework & Pedagogical Stages
+      </h3>
+      <div class="form-group" style="margin-bottom: 1.25rem;">
+        <label style="display: block; font-weight: 600; color: var(--color-navy); margin-bottom: 0.5rem; font-size: 0.85rem;">Hero Section Title</label>
+        <input type="text" name="hero_title" value="<?php echo h($ac_cms['curriculum']['hero_title'] ?? ''); ?>" class="form-control" style="width: 100%; padding: 0.6rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm);">
+      </div>
+      <div class="form-group" style="margin-bottom: 1.25rem;">
+        <label style="display: block; font-weight: 600; color: var(--color-navy); margin-bottom: 0.5rem; font-size: 0.85rem;">Hero Subtitle</label>
+        <input type="text" name="hero_subtitle" value="<?php echo h($ac_cms['curriculum']['hero_subtitle'] ?? ''); ?>" class="form-control" style="width: 100%; padding: 0.6rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm);">
+      </div>
+      <div class="form-group" style="margin-bottom: 1.25rem;">
+        <label style="display: block; font-weight: 600; color: var(--color-navy); margin-bottom: 0.5rem; font-size: 0.85rem;">Curriculum Hero Description</label>
+        <textarea name="hero_desc" rows="3" class="form-control" style="width: 100%; padding: 0.6rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); font-family: inherit;"><?php echo h($ac_cms['curriculum']['hero_desc'] ?? ''); ?></textarea>
+      </div>
+
+      <div style="border-top: 1px solid var(--color-border); padding-top: 1.25rem; margin-top: 1.5rem;">
+        <h4 style="font-size: 1.1rem; color: var(--color-navy); margin-bottom: 1rem;">Pedagogical Stages (NEP & CBSE Mapped)</h4>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1rem;">
+          <div>
+            <label style="display: block; font-weight: 600; color: var(--color-navy); margin-bottom: 0.4rem; font-size: 0.85rem;">Early Years Stage Title (Nursery - UKG)</label>
+            <input type="text" name="early_years_title" value="<?php echo h($ac_cms['curriculum']['early_years_title'] ?? ''); ?>" class="form-control" style="width: 100%; padding: 0.6rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm);">
+            <label style="display: block; font-weight: 600; color: var(--color-navy); margin-top: 0.6rem; margin-bottom: 0.4rem; font-size: 0.85rem;">Early Years Description</label>
+            <textarea name="early_years_desc" rows="3" class="form-control" style="width: 100%; padding: 0.6rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); font-family: inherit;"><?php echo h($ac_cms['curriculum']['early_years_desc'] ?? ''); ?></textarea>
+          </div>
+          <div>
+            <label style="display: block; font-weight: 600; color: var(--color-navy); margin-bottom: 0.4rem; font-size: 0.85rem;">Foundation Stage Title (Grades 1-2)</label>
+            <input type="text" name="foundation_title" value="<?php echo h($ac_cms['curriculum']['foundation_title'] ?? ''); ?>" class="form-control" style="width: 100%; padding: 0.6rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm);">
+            <label style="display: block; font-weight: 600; color: var(--color-navy); margin-top: 0.6rem; margin-bottom: 0.4rem; font-size: 0.85rem;">Foundation Stage Description</label>
+            <textarea name="foundation_desc" rows="3" class="form-control" style="width: 100%; padding: 0.6rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); font-family: inherit;"><?php echo h($ac_cms['curriculum']['foundation_desc'] ?? ''); ?></textarea>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.5rem;">
+          <div>
+            <label style="display: block; font-weight: 600; color: var(--color-navy); margin-bottom: 0.4rem; font-size: 0.85rem;">Preparatory Stage Title (Grades 3-5)</label>
+            <input type="text" name="preparatory_title" value="<?php echo h($ac_cms['curriculum']['preparatory_title'] ?? ''); ?>" class="form-control" style="width: 100%; padding: 0.6rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm);">
+            <label style="display: block; font-weight: 600; color: var(--color-navy); margin-top: 0.6rem; margin-bottom: 0.4rem; font-size: 0.85rem;">Preparatory Stage Description</label>
+            <textarea name="preparatory_desc" rows="3" class="form-control" style="width: 100%; padding: 0.6rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); font-family: inherit;"><?php echo h($ac_cms['curriculum']['preparatory_desc'] ?? ''); ?></textarea>
+          </div>
+          <div>
+            <label style="display: block; font-weight: 600; color: var(--color-navy); margin-bottom: 0.4rem; font-size: 0.85rem;">Middle School Stage Title (Grades 6-8)</label>
+            <input type="text" name="middle_school_title" value="<?php echo h($ac_cms['curriculum']['middle_school_title'] ?? ''); ?>" class="form-control" style="width: 100%; padding: 0.6rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm);">
+            <label style="display: block; font-weight: 600; color: var(--color-navy); margin-top: 0.6rem; margin-bottom: 0.4rem; font-size: 0.85rem;">Middle School Description</label>
+            <textarea name="middle_school_desc" rows="3" class="form-control" style="width: 100%; padding: 0.6rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); font-family: inherit;"><?php echo h($ac_cms['curriculum']['middle_school_desc'] ?? ''); ?></textarea>
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 1.25rem;">
+          <label style="display: block; font-weight: 600; color: var(--color-navy); margin-bottom: 0.4rem; font-size: 0.85rem;">Oxford Thematic Inquiry Integration</label>
+          <textarea name="oxford_theme" rows="2" class="form-control" style="width: 100%; padding: 0.6rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); font-family: inherit;"><?php echo h($ac_cms['curriculum']['oxford_theme'] ?? ''); ?></textarea>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 1.25rem;">
+          <label style="display: block; font-weight: 600; color: var(--color-navy); margin-bottom: 0.4rem; font-size: 0.85rem;">Assessment & Progression Philosophy</label>
+          <textarea name="assessment_philosophy" rows="2" class="form-control" style="width: 100%; padding: 0.6rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); font-family: inherit;"><?php echo h($ac_cms['curriculum']['assessment_philosophy'] ?? ''); ?></textarea>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary" style="margin-top: 1rem; padding: 0.75rem 2rem;">Save Curriculum Framework</button>
     </div>
   </form>
 
