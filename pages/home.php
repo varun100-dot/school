@@ -127,87 +127,250 @@ if (empty($slides)) {
     ];
 }
 
-// 2. Fetch Homepage Sections
-$sections = [];
-if ($db) {
-    try {
-        $stmt = $db->query("SELECT * FROM `homepage_sections` WHERE `is_active` = 1");
-        while ($row = $stmt->fetch()) {
-            $sections[$row['section_key']] = $row;
-        }
-    } catch (Exception $e) {}
-}
+// Master Homepage CMS Store & Data Loader
+$home_cms = get_json_setting('cms_homepage', []);
 
-// 3. Fetch Homepage Cards
-$cards_by_section = [];
-if ($db) {
-    try {
-        $stmt = $db->query("SELECT * FROM `homepage_cards` WHERE `is_active` = 1 ORDER BY `sort_order` ASC");
-        while ($row = $stmt->fetch()) {
-            $cards_by_section[$row['section_key']][] = $row;
-        }
-    } catch (Exception $e) {}
-}
+$sec_hero_form = $home_cms['hero_form'] ?? [
+    'is_active' => 1,
+    'badge' => 'Admissions 2026–27',
+    'title' => 'Talk to an Admission Counselor',
+    'subtitle' => 'Get immediate guidance on curriculum, timings, and personalized learning pathways.',
+    'btn_text' => 'Request Academic Roadmap',
+    'whatsapp_number' => '917827262956',
+    'consent_note' => 'By submitting this form, you authorize Zuvio Global School to contact you via Email, SMS, Call & WhatsApp.'
+];
 
-// Fallback Learning Journey Cards (Section 9)
-$learning_journey_cards = $cards_by_section['learning_journey'] ?? [
+$sec_about = $home_cms['about_zuvio'] ?? [
+    'is_active' => 1,
+    'badge' => 'Who Are We & Why Zuvio',
+    'title' => 'About Zuvio',
+    'lead_text' => 'Zuvio Global School is an online school built on one belief: education should adapt to the child, not the child to the system.',
+    'body_text' => 'We bring together a structured, curriculum-aligned programme, caring teachers and thoughtful technology to create a flexible, personalised learning experience your child can access from anywhere. Different ways of learning. One community. Equal opportunities.',
+    'highlight_text' => "That's what learning beyond boundaries means.",
+    'cta_text' => 'Read Our Story →',
+    'cta_url' => '/about',
+    'image' => '/assets/images/Teacher interacting with students.webp',
+    'image_title' => 'Learning Beyond Boundaries',
+    'image_subtitle' => 'Personalised, 100% Live Online Schooling • Kindergarten to Grade 8th'
+];
+
+$sec_choose = $home_cms['who_should_choose'] ?? [
+    'is_active' => 1,
+    'badge' => 'Tailored for Modern Learners',
+    'title' => 'Who Should Choose Zuvio',
+    'subtitle' => 'Zuvio is for families who want learning to fit their life — not their life to revolve around a timetable.',
+    'cards' => [
+        ['title' => 'Globally Mobile Families', 'desc' => 'Globally mobile families who move between cities or countries and want learning continuity without disruptions.'],
+        ['title' => 'Homeschooling & Alternative Learners', 'desc' => 'Homeschooling & alternative-learning families who want structure with freedom and teacher guidance.'],
+        ['title' => 'Young Athletes, Artists & Performers', 'desc' => 'Young athletes, artists & performers balancing demanding training and rehearsal schedules.'],
+        ['title' => 'Children Who Thrive Online', 'desc' => 'Children who thrive online and learn best in a digital environment with modern interactive tools.'],
+        ['title' => 'Personalised Approach Seekers', 'desc' => 'Learners who need a more personalised approach, pace or attention to reach their full potential.'],
+        ['title' => 'Alternative Schooling Environment', 'desc' => "Children who need a different schooling environment when traditional school isn't the right fit."]
+    ],
+    'footer_note' => 'If you believe education should adapt to the child, Zuvio may be the right choice.',
+    'cta_text' => 'Check Age & Grade Eligibility →',
+    'cta_url' => '/admissions#eligibility'
+];
+
+// Fallback Learning Journey Cards (Section 4)
+$learning_journey_cards = $sec_curriculum['stages'] ?? [
     [
+        'badge' => 'K–KG',
         'badge_text' => 'K–KG',
         'title' => 'Early Years · K–KG',
         'subtitle' => 'Explore • Play • Discover',
+        'keywords' => 'Explore • Play • Discover',
         'content' => "Learning through stories, play, music and hands-on activities\n• Early literacy, phonics and numeracy\n• Communication, creativity and social-emotional growth",
+        'bullets' => "Learning through stories, play, music and hands-on activities\n• Early literacy, phonics and numeracy\n• Communication, creativity and social-emotional growth",
         'outcome' => 'Confidence, curiosity and strong foundations'
     ],
     [
+        'badge' => 'Grades 1–2',
         'badge_text' => 'Grades 1–2',
         'title' => 'Foundation Stage · Grades 1–2',
         'subtitle' => 'Build • Question • Create',
+        'keywords' => 'Build • Question • Create',
         'content' => "Strengthening reading, writing and maths\n• Connecting classroom concepts to everyday life\n• Art, life skills and digital literacy",
+        'bullets' => "Strengthening reading, writing and maths\n• Connecting classroom concepts to everyday life\n• Art, life skills and digital literacy",
         'outcome' => 'Numeracy, communication and independent thinking'
     ],
     [
+        'badge' => 'Grades 3–5',
         'badge_text' => 'Grades 3–5',
         'title' => 'Preparatory Stage · Grades 3–5',
         'subtitle' => 'Understand • Apply • Collaborate',
+        'keywords' => 'Understand • Apply • Collaborate',
         'content' => "Interdisciplinary, application-led learning\n• Science, coding and computational thinking\n• Communication, financial awareness and creativity",
+        'bullets' => "Interdisciplinary, application-led learning\n• Science, coding and computational thinking\n• Communication, financial awareness and creativity",
         'outcome' => 'Conceptual understanding, research and digital fluency'
     ],
     [
+        'badge' => 'Grades 6–8',
         'badge_text' => 'Grades 6–8',
         'title' => 'Middle School · Grades 6–8',
         'subtitle' => 'Think • Apply • Innovate',
+        'keywords' => 'Think • Apply • Innovate',
         'content' => "Deeper analysis, research and discussion\n• Coding & AI awareness, entrepreneurship, design thinking\n• Leadership, global citizenship and career exploration",
+        'bullets' => "Deeper analysis, research and discussion\n• Coding & AI awareness, entrepreneurship, design thinking\n• Leadership, global citizenship and career exploration",
         'outcome' => 'Critical thinking, independence and real-world readiness'
     ]
 ];
 
-// Fallback Learning Framework Items (Section 10)
-$framework_items = $cards_by_section['learning_framework'] ?? [
-    ['badge_text' => 'Step 01', 'title' => 'Know', 'subtitle' => 'Foundation', 'content' => 'Build the foundation of essential concepts and ideas'],
-    ['badge_text' => 'Step 02', 'title' => 'Think', 'subtitle' => 'Analysis & Reason', 'content' => 'Question, analyse, reason and solve'],
-    ['badge_text' => 'Step 03', 'title' => 'Create', 'subtitle' => 'Design & Innovation', 'content' => 'Imagine, experiment, design and innovate'],
-    ['badge_text' => 'Step 04', 'title' => 'Connect', 'subtitle' => 'Collaboration', 'content' => 'Communicate, collaborate and understand other perspectives'],
-    ['badge_text' => 'Step 05', 'title' => 'Apply', 'subtitle' => 'Real-World Doing', 'content' => 'Use knowledge confidently in projects and real life']
+$sec_curriculum = $home_cms['curriculum_pathways'] ?? [
+    'is_active' => 1,
+    'badge' => 'Curriculum Pathways',
+    'title' => 'A Future-Ready Learning Journey — Kindergarten to Grade 8th',
+    'subtitle' => 'Mapped to CBSE, NEP 2020 and NCF — strong academic foundations blended with creativity, communication, digital fluency and real-world learning.',
+    'stages' => $learning_journey_cards,
+    'footer_tagline' => 'Strong Foundations. Future Skills. Learning Without Boundaries.',
+    'cta_text' => 'Explore the Full Curriculum →',
+    'cta_url' => '/curriculum'
 ];
 
-// Fallback Beyond Textbook Cards (Section 11)
-$beyond_textbook_items = $cards_by_section['beyond_textbook'] ?? [
-    ['title' => 'Projects & Experiments', 'subtitle' => 'Hands-On Discovery', 'content' => 'learning by doing, testing and discovering'],
-    ['title' => 'Technology & Digital Learning', 'subtitle' => 'Future-Ready', 'content' => 'used creatively and responsibly'],
-    ['title' => 'Communication & Collaboration', 'subtitle' => 'Global Teamwork', 'content' => 'presentations, teamwork, global interaction'],
-    ['title' => 'Life Skills', 'subtitle' => 'Real-World Readiness', 'content' => 'decision-making, independence and financial awareness'],
-    ['title' => 'Creativity & Innovation', 'subtitle' => 'Art & Coding', 'content' => 'art, coding and design thinking'],
-    ['title' => 'Global Exposure', 'subtitle' => 'Beyond Boundaries', 'content' => 'cultures and ideas beyond boundaries']
+// Fallback Learning Framework Items (Section 5)
+$framework_items = [
+    ['badge' => 'Step 01', 'badge_text' => 'Step 01', 'title' => 'Know', 'subtitle' => 'Foundation', 'content' => 'Build the foundation of essential concepts and ideas', 'desc' => 'Build the foundation of essential concepts and ideas'],
+    ['badge' => 'Step 02', 'badge_text' => 'Step 02', 'title' => 'Think', 'subtitle' => 'Analysis & Reason', 'content' => 'Question, analyse, reason and solve', 'desc' => 'Question, analyse, reason and solve'],
+    ['badge' => 'Step 03', 'badge_text' => 'Step 03', 'title' => 'Create', 'subtitle' => 'Design & Innovation', 'content' => 'Imagine, experiment, design and innovate', 'desc' => 'Imagine, experiment, design and innovate'],
+    ['badge' => 'Step 04', 'badge_text' => 'Step 04', 'title' => 'Connect', 'subtitle' => 'Collaboration', 'content' => 'Communicate, collaborate and understand other perspectives', 'desc' => 'Communicate, collaborate and understand other perspectives'],
+    ['badge' => 'Step 05', 'badge_text' => 'Step 05', 'title' => 'Apply', 'subtitle' => 'Real-World Doing', 'content' => 'Use knowledge confidently in projects and real life', 'desc' => 'Use knowledge confidently in projects and real life']
 ];
 
-// Fallback Inclusivity Statements (Section 13)
-$inclusivity_items = $cards_by_section['inclusivity'] ?? [
-    ['title' => 'Inclusive by Design', 'content' => 'Learning built around how your child learns — not the other way round.'],
-    ['title' => 'Learn From Anywhere', 'content' => 'A complete school experience that moves with your family, across cities or countries.'],
-    ['title' => 'Personalised Attention', 'content' => 'Teacher-led, small-group classes where every child is known, seen and supported.'],
-    ['title' => 'Flexible Pacing', 'content' => 'Space to move ahead, slow down or revisit — without the pressure to keep up.'],
-    ['title' => 'Beyond Academics', 'content' => 'Confidence, communication, creativity and life skills — not just examination marks.'],
-    ['title' => 'Inclusive Learning for Students with Special Needs', 'content' => 'A qualified Special Educator and personalised plans for diverse learning needs.']
+$sec_framework = $home_cms['learning_framework'] ?? [
+    'is_active' => 1,
+    'badge' => 'Core Methodology',
+    'title' => 'The Zuvio Learning Framework',
+    'subtitle' => 'From Knowing to Doing',
+    'steps' => $framework_items,
+    'ribbon_text' => 'Knowledge → Understanding → Application → Innovation'
+];
+
+// Fallback Beyond Textbook Cards (Section 6)
+$beyond_textbook_items = [
+    ['title' => 'Projects & Experiments', 'subtitle' => 'Hands-On Discovery', 'content' => 'learning by doing, testing and discovering', 'desc' => 'learning by doing, testing and discovering'],
+    ['title' => 'Technology & Digital Learning', 'subtitle' => 'Future-Ready', 'content' => 'used creatively and responsibly', 'desc' => 'used creatively and responsibly'],
+    ['title' => 'Communication & Collaboration', 'subtitle' => 'Global Teamwork', 'content' => 'presentations, teamwork, global interaction', 'desc' => 'presentations, teamwork, global interaction'],
+    ['title' => 'Life Skills', 'subtitle' => 'Real-World Readiness', 'content' => 'decision-making, independence and financial awareness', 'desc' => 'decision-making, independence and financial awareness'],
+    ['title' => 'Creativity & Innovation', 'subtitle' => 'Art & Coding', 'content' => 'art, coding and design thinking', 'desc' => 'art, coding and design thinking'],
+    ['title' => 'Global Exposure', 'subtitle' => 'Beyond Boundaries', 'content' => 'cultures and ideas beyond boundaries', 'desc' => 'cultures and ideas beyond boundaries']
+];
+
+$sec_beyond = $home_cms['beyond_textbook'] ?? [
+    'is_active' => 1,
+    'badge' => 'Real-World Classrooms',
+    'title' => 'Learning Beyond the Textbook',
+    'subtitle' => 'Because the world is the real classroom.',
+    'items' => $beyond_textbook_items
+];
+
+$sec_diff = $home_cms['why_different'] ?? [
+    'is_active' => 1,
+    'badge' => 'The Zuvio Edge',
+    'title' => 'What Makes Zuvio Different',
+    'pillars' => [
+        ['title' => 'Assessment for Growth', 'desc' => 'We measure progress and skills, not just marks — providing regular, meaningful qualitative insights and developmental analytics for parents.'],
+        ['title' => 'Personalised Learning', 'desc' => 'Live teacher guidance, adaptive digital tools and targeted academic support that continuously adapt to each child’s pace and individual learning needs.'],
+        ['title' => 'Zuvio Beyond', 'desc' => 'Rich co-curricular clubs, AI/coding modules, sports association, enrichment electives, and extra academic support matched to your child’s passions.']
+    ],
+    'graduate_badge' => 'Graduate Profile',
+    'graduate_title' => 'The Zuvio Graduate — by the end of Grade 8',
+    'graduate_pills' => 'Academically Strong, Curious, Confident & Articulate, Creative, Digitally Fluent, Collaborative, Independent, Globally Aware, Future-Ready',
+    'graduate_quote' => 'Not just ready for the next grade — ready to learn, adapt and grow in a changing world.'
+];
+
+// Fallback Inclusivity Statements (Section 8)
+$inclusivity_items = [
+    ['title' => 'Inclusive by Design', 'content' => 'Learning built around how your child learns — not the other way round.', 'desc' => 'Learning built around how your child learns — not the other way round.'],
+    ['title' => 'Learn From Anywhere', 'content' => 'A complete school experience that moves with your family, across cities or countries.', 'desc' => 'A complete school experience that moves with your family, across cities or countries.'],
+    ['title' => 'Personalised Attention', 'content' => 'Teacher-led, small-group classes where every child is known, seen and supported.', 'desc' => 'Teacher-led, small-group classes where every child is known, seen and supported.'],
+    ['title' => 'Flexible Pacing', 'content' => 'Space to move ahead, slow down or revisit — without the pressure to keep up.', 'desc' => 'Space to move ahead, slow down or revisit — without the pressure to keep up.'],
+    ['title' => 'Beyond Academics', 'content' => 'Confidence, communication, creativity and life skills — not just examination marks.', 'desc' => 'Confidence, communication, creativity and life skills — not just examination marks.'],
+    ['title' => 'Special Educator Support', 'content' => 'A qualified Special Educator and personalised plans for diverse learning needs.', 'desc' => 'A qualified Special Educator and personalised plans for diverse learning needs.']
+];
+
+$sec_inc = $home_cms['inclusivity'] ?? [
+    'is_active' => 1,
+    'badge' => 'Equal Opportunities For Every Child',
+    'title' => 'Inclusivity & Beyond',
+    'subtitle' => 'Every Child. Every Mind. Every Possibility.',
+    'items' => $inclusivity_items,
+    'cocurricular_title' => 'Zuvio Beyond Co-Curricular Programmes',
+    'cocurricular_subtitle' => 'Empowering skills in tech, innovation, logic, performing arts, and financial literacy.',
+    'cocurricular_cta' => 'View All Beyond Programmes →',
+    'cocurricular_url' => '/beyond'
+];
+
+$sec_stats = $home_cms['statistics'] ?? [
+    'is_active' => 1,
+    'stats' => [
+        ['val' => 'KG to 8th', 'label' => 'Grade Spectrum'],
+        ['val' => '15:1', 'label' => 'Max Cohort Ratio'],
+        ['val' => '100%', 'label' => 'Live Online Schooling'],
+        ['val' => 'CBSE', 'label' => '& NEP 2020 Aligned'],
+        ['val' => '6', 'label' => 'Beyond Textbook Domains']
+    ]
+];
+
+$sec_acc = $home_cms['accreditations_preview'] ?? [
+    'is_active' => 1,
+    'badge' => 'Global Quality Partnerships',
+    'title' => 'Affiliations & Accreditations',
+    'subtitle' => 'Recognised and benchmarked globally for quality assurance and sports excellence.'
+];
+
+$sec_test = $home_cms['testimonials_preview'] ?? [
+    'is_active' => 1,
+    'badge' => 'Parent Perspectives',
+    'title' => 'Parent Testimonials & Reviews',
+    'subtitle' => 'Hear directly from families flourishing in our online learning community.'
+];
+
+$sec_news = $home_cms['news_blogs_preview'] ?? [
+    'is_active' => 1,
+    'badge' => 'Stay Informed',
+    'title' => 'News, Updates & Recognition'
+];
+
+$sec_feat = $home_cms['featured_in'] ?? [
+    'is_active' => 1,
+    'badge' => 'Media Recognition',
+    'title' => 'Featured In',
+    'subtitle' => 'Zuvio Global School highlighted in leading educational publications for pioneering future-skills homeschooling.',
+    'publications' => 'Education World, EdTech Review, The Hindu Education, Brainfeed Magazine, Indian Express, Hindustan Times'
+];
+
+$sec_founder = $home_cms['founder_message'] ?? [
+    'is_active' => 1,
+    'portrait' => '/assets/images/Profile_Images/Pragya_Professional_Profile.webp',
+    'author_name' => 'Founder',
+    'author_title' => 'Zuvio Global School',
+    'badge' => "Founder's Message",
+    'heading' => 'Learning Without Boundaries. Growing With Purpose.',
+    'salutation' => 'Dear Parents, Students and Members of the Zuvio Community,',
+    'p1' => 'Education today must prepare children not only for examinations, but for a world that is constantly evolving.',
+    'p2' => 'At Zuvio Global School, we believe that meaningful learning is not defined by the walls of a classroom. It is defined by curiosity, connection, opportunity and the confidence to explore beyond what is already known.',
+    'p3' => 'Our vision is to create a 100% online, future-ready learning environment where every child has the opportunity to learn beyond geographical boundaries while receiving the guidance, structure and personal attention needed to thrive.',
+    'p4' => 'Our aspiration is simple yet powerful: to nurture confident learners, independent thinkers, compassionate individuals and responsible global citizens who are prepared not just for the next grade, but for the world ahead.',
+    'cta_text' => 'Read Full Message →',
+    'cta_url' => '/founder-message'
+];
+
+$sec_faq = $home_cms['faq_preview'] ?? [
+    'is_active' => 1,
+    'badge' => 'Got Questions?',
+    'title' => 'Parent FAQ — Online Schooling',
+    'subtitle' => 'A quick guide for parents to understand Zuvio’s online schooling model, curriculum, assessments, communication and student support.'
+];
+
+$sec_cta = $home_cms['final_cta'] ?? [
+    'is_active' => 1,
+    'badge' => 'Start Your Journey',
+    'title' => 'Ready to Experience Zuvio?',
+    'subtitle' => 'Connect with our academic team today to discuss an age-appropriate learning timeline and personalized curriculum roadmap for your child.',
+    'primary_btn_text' => 'Begin Your Journey',
+    'primary_btn_url' => '/admissions#enrol',
+    'secondary_btn_text' => 'Book a Free Demo',
+    'secondary_btn_action' => 'javascript:openCallbackModal()'
 ];
 
 // 4. Fetch Accreditations (Section 15)
@@ -354,9 +517,15 @@ include_once dirname(__FILE__) . '/../includes/header.php';
 <!-- ========================================================================
      SECTIONS 4 & 5: HERO CAROUSEL + SIDE ENQUIRY FORM + PRIMARY CTAS
      ======================================================================== -->
+<!-- ========================================================================
+     SECTIONS 1: HERO CAROUSEL + SIDE ENQUIRY FORM
+     ======================================================================== -->
+<?php 
+$show_hero_form = (!isset($sec_hero_form['is_active']) || !empty($sec_hero_form['is_active']));
+?>
 <section class="hero-wrapper">
   <div class="container hero-stage">
-    <div class="hero-stage-grid">
+    <div class="hero-stage-grid" style="<?php echo !$show_hero_form ? 'grid-template-columns: 1fr;' : ''; ?>">
       
       <!-- Left Column: Full-Width Image Banner Carousel (Dynamic DB Slides + Fallback) -->
       <?php 
@@ -381,7 +550,7 @@ include_once dirname(__FILE__) . '/../includes/header.php';
           ];
       }
       ?>
-      <div class="hero-banner-image-wrapper" id="heroBannerImageCarousel">
+      <div class="hero-banner-image-wrapper" id="heroBannerImageCarousel" style="<?php echo !$show_hero_form ? 'width: 100%;' : ''; ?>">
         <h1 class="visually-hidden">Global Standard Learning - Zuvio Global School</h1>
         <div class="hero-banner-slides-track">
           <?php foreach ($hero_banner_items as $idx => $item): ?>
@@ -411,9 +580,10 @@ include_once dirname(__FILE__) . '/../includes/header.php';
       </div>
 
       <!-- Right Column: Standalone "TALK TO AN ADMISSION COUNSELOR" Form -->
+      <?php if ($show_hero_form): ?>
       <div class="hero-enquiry-card">
-        <h3 class="counsellor-card-title">TALK TO AN ADMISSION COUNSELOR</h3>
-        <div class="counsellor-card-sub">Enquire now</div>
+        <h3 class="counsellor-card-title"><?php echo h($sec_hero_form['title'] ?? 'TALK TO AN ADMISSION COUNSELOR'); ?></h3>
+        <div class="counsellor-card-sub"><?php echo h($sec_hero_form['subtitle'] ?? 'Enquire now'); ?></div>
 
         <?php if ($form_status === 'success'): ?>
           <div style="background-color: #DEF7EC; border: 1px solid #31C48D; padding: 1.5rem; border-radius: 8px; text-align: center;">
@@ -491,28 +661,30 @@ include_once dirname(__FILE__) . '/../includes/header.php';
 
             <label class="counsellor-consent-label" for="hero_consent">
               <input type="checkbox" id="hero_consent" name="consent" required>
-              <span>I authorize Zuvio Global School and its representatives to contact me with updates/notifications via Email, SMS, WhatsApp and Voice Call. This consent overrides DND registration.</span>
+              <span><?php echo h($sec_hero_form['consent_note'] ?? 'I authorize Zuvio Global School and its representatives to contact me with updates/notifications via Email, SMS, WhatsApp and Voice Call. This consent overrides DND registration.'); ?></span>
             </label>
 
             <button type="submit" class="btn-counsellor-submit">
-              SUBMIT
+              <?php echo h($sec_hero_form['btn_text'] ?? 'SUBMIT'); ?>
             </button>
           </form>
         <?php endif; ?>
       </div>
+      <?php endif; ?>
 
     </div>
   </div>
 </section>
 
 <!-- ========================================================================
-     SECTION 7: ABOUT ZUVIO (HOMEPAGE SHORT FORM WITH SUPPORTING GRAPHIC)
+     SECTION 2: ABOUT ZUVIO (HOMEPAGE SHORT FORM WITH SUPPORTING GRAPHIC)
      ======================================================================== -->
+<?php if (!isset($sec_about['is_active']) || !empty($sec_about['is_active'])): ?>
 <section class="section" style="background-color: #FFFFFF; border-bottom: 1px solid var(--color-border);">
   <div class="container" style="max-width: 1140px;">
     <div class="text-center" style="margin-bottom: 2.5rem;">
-      <span style="font-size: 0.85rem; font-weight: 700; color: var(--color-gold); text-transform: uppercase; letter-spacing: 2px;">Who Are We & Why Zuvio</span>
-      <h2 style="font-size: 2.5rem; color: var(--color-navy); margin-top: 0.5rem; font-family: var(--font-primary);">About Zuvio</h2>
+      <span style="font-size: 0.85rem; font-weight: 700; color: var(--color-gold); text-transform: uppercase; letter-spacing: 2px;"><?php echo h($sec_about['badge'] ?? 'Who Are We & Why Zuvio'); ?></span>
+      <h2 style="font-size: 2.5rem; color: var(--color-navy); margin-top: 0.5rem; font-family: var(--font-primary);"><?php echo h($sec_about['title'] ?? 'About Zuvio'); ?></h2>
       <div style="width: 60px; height: 3px; background-color: var(--color-gold); margin: 1rem auto 0 auto;"></div>
     </div>
 
@@ -520,110 +692,80 @@ include_once dirname(__FILE__) . '/../includes/header.php';
       <!-- Content Box -->
       <div style="background-color: var(--pastel-blue); border-radius: var(--radius-lg); padding: 2.75rem 2.25rem; border: 1.5px solid rgba(10, 137, 152, 0.2); box-shadow: var(--shadow-sm);">
         <p style="font-size: 1.22rem; font-weight: 600; color: var(--color-navy); line-height: 1.7; margin-bottom: 1.5rem; font-family: var(--font-secondary);">
-          Zuvio Global School is an online school built on one belief: <span style="color: var(--color-teal); text-decoration: underline; text-underline-offset: 4px;">education should adapt to the child, not the child to the system.</span>
+          <?php echo nl2br(h($sec_about['lead_text'] ?? 'Zuvio Global School is an online school built on one belief: education should adapt to the child, not the child to the system.')); ?>
         </p>
         <p style="font-size: 1.05rem; color: var(--color-text); line-height: 1.8; margin-bottom: 1.75rem;">
-          We bring together a structured, curriculum-aligned programme, caring teachers and thoughtful technology to create a flexible, personalised learning experience your child can access from anywhere. Different ways of learning. One community. Equal opportunities.
+          <?php echo nl2br(h($sec_about['body_text'] ?? 'We bring together a structured, curriculum-aligned programme, caring teachers and thoughtful technology to create a flexible, personalised learning experience your child can access from anywhere. Different ways of learning. One community. Equal opportunities.')); ?>
         </p>
         <p style="font-size: 1.15rem; font-weight: 700; color: var(--color-navy-dark); margin-bottom: 2rem;">
-          That's what learning beyond boundaries means.
+          <?php echo h($sec_about['highlight_text'] ?? "That's what learning beyond boundaries means."); ?>
         </p>
-        <a href="/about" class="btn btn-primary" style="background-color: var(--color-navy); border-color: var(--color-navy); color: #FFFFFF; font-weight: 600; padding: 0.75rem 2rem;">
-          Read Our Story &rarr;
+        <a href="<?php echo h($sec_about['cta_url'] ?? '/about'); ?>" class="btn btn-primary" style="background-color: var(--color-navy); border-color: var(--color-navy); color: #FFFFFF; font-weight: 600; padding: 0.75rem 2rem;">
+          <?php echo h($sec_about['cta_text'] ?? 'Read Our Story →'); ?>
         </a>
       </div>
 
       <!-- Supporting Graphic Visual -->
       <div class="about-zuvio-visual" style="border-radius: var(--radius-lg); overflow: hidden; border: 1.5px solid rgba(6, 43, 99, 0.16); box-shadow: var(--shadow-md); position: relative;">
-        <img src="/assets/images/Teacher interacting with students.webp" alt="Teacher interacting with students at Zuvio Global School" loading="lazy" style="width: 100%; height: 380px; object-fit: cover; display: block;">
+        <img src="<?php echo h($sec_about['image'] ?? '/assets/images/Teacher interacting with students.webp'); ?>" alt="<?php echo h($sec_about['image_title'] ?? 'Teacher interacting with students at Zuvio Global School'); ?>" loading="lazy" style="width: 100%; height: 380px; object-fit: cover; display: block;">
         <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(0deg, rgba(3,27,66,0.92) 0%, rgba(3,27,66,0) 100%); padding: 1.5rem 1.25rem 1rem 1.25rem; color: #FFFFFF;">
-          <p style="font-weight: 700; font-size: 1rem; margin: 0; color: var(--color-gold);">Learning Beyond Boundaries</p>
-          <p style="font-size: 0.82rem; margin: 0; color: #E2E8F0;">Personalised, 100% Live Online Schooling • Kindergarten to Grade 8th</p>
+          <p style="font-weight: 700; font-size: 1rem; margin: 0; color: var(--color-gold);"><?php echo h($sec_about['image_title'] ?? 'Learning Beyond Boundaries'); ?></p>
+          <p style="font-size: 0.82rem; margin: 0; color: #E2E8F0;"><?php echo h($sec_about['image_subtitle'] ?? 'Personalised, 100% Live Online Schooling • Kindergarten to Grade 8th'); ?></p>
         </div>
       </div>
     </div>
   </div>
 </section>
+<?php endif; ?>
 
 <!-- ========================================================================
-     SECTION 8: WHO SHOULD CHOOSE ZUVIO
+     SECTION 3: WHO SHOULD CHOOSE ZUVIO
      ======================================================================== -->
+<?php if (!isset($sec_choose['is_active']) || !empty($sec_choose['is_active'])): ?>
 <section class="section" style="background-color: var(--color-surface-blue); border-bottom: 1px solid var(--color-border);">
   <div class="container">
     <div class="text-center" style="margin-bottom: 3.5rem;">
-      <span style="font-size: 0.85rem; font-weight: 700; color: var(--color-gold); text-transform: uppercase; letter-spacing: 2px;">Tailored for Modern Learners</span>
-      <h2 style="font-size: 2.5rem; color: var(--color-navy); margin-top: 0.5rem; font-family: var(--font-primary);">Who Should Choose Zuvio</h2>
+      <span style="font-size: 0.85rem; font-weight: 700; color: var(--color-gold); text-transform: uppercase; letter-spacing: 2px;"><?php echo h($sec_choose['badge'] ?? 'Tailored for Modern Learners'); ?></span>
+      <h2 style="font-size: 2.5rem; color: var(--color-navy); margin-top: 0.5rem; font-family: var(--font-primary);"><?php echo h($sec_choose['title'] ?? 'Who Should Choose Zuvio'); ?></h2>
       <p style="color: var(--color-muted); font-size: 1.1rem; margin-top: 0.5rem; max-width: 650px; margin-left: auto; margin-right: auto;">
-        Zuvio is for families who want learning to fit their life — not their life to revolve around a timetable.
+        <?php echo h($sec_choose['subtitle'] ?? 'Zuvio is for families who want learning to fit their life — not their life to revolve around a timetable.'); ?>
       </p>
     </div>
 
     <div class="grid-3" style="gap: 1.75rem;">
-      <!-- Audience 1 -->
-      <div class="card" style="padding: 2rem; border: 1.5px solid rgba(6, 43, 99, 0.16); background-color: #FFFFFF;">
-        <h3 style="font-size: 1.2rem; color: var(--color-navy); margin-bottom: 0.75rem; font-family: var(--font-primary);">Globally Mobile Families</h3>
-        <p style="color: var(--color-text); font-size: 0.95rem; line-height: 1.65;">
-          Globally mobile families who move between cities or countries and want learning continuity without disruptions.
-        </p>
-      </div>
-      <!-- Audience 2 -->
-      <div class="card" style="padding: 2rem; border: 1.5px solid rgba(6, 43, 99, 0.16); background-color: #FFFFFF;">
-        <h3 style="font-size: 1.2rem; color: var(--color-navy); margin-bottom: 0.75rem; font-family: var(--font-primary);">Homeschooling & Alternative Learners</h3>
-        <p style="color: var(--color-text); font-size: 0.95rem; line-height: 1.65;">
-          Homeschooling & alternative-learning families who want structure with freedom and teacher guidance.
-        </p>
-      </div>
-      <!-- Audience 3 -->
-      <div class="card" style="padding: 2rem; border: 1.5px solid rgba(6, 43, 99, 0.16); background-color: #FFFFFF;">
-        <h3 style="font-size: 1.2rem; color: var(--color-navy); margin-bottom: 0.75rem; font-family: var(--font-primary);">Young Athletes, Artists & Performers</h3>
-        <p style="color: var(--color-text); font-size: 0.95rem; line-height: 1.65;">
-          Young athletes, artists & performers balancing demanding training and rehearsal schedules.
-        </p>
-      </div>
-      <!-- Audience 4 -->
-      <div class="card" style="padding: 2rem; border: 1.5px solid rgba(6, 43, 99, 0.16); background-color: #FFFFFF;">
-        <h3 style="font-size: 1.2rem; color: var(--color-navy); margin-bottom: 0.75rem; font-family: var(--font-primary);">Children Who Thrive Online</h3>
-        <p style="color: var(--color-text); font-size: 0.95rem; line-height: 1.65;">
-          Children who thrive online and learn best in a digital environment with modern interactive tools.
-        </p>
-      </div>
-      <!-- Audience 5 -->
-      <div class="card" style="padding: 2rem; border: 1.5px solid rgba(6, 43, 99, 0.16); background-color: #FFFFFF;">
-        <h3 style="font-size: 1.2rem; color: var(--color-navy); margin-bottom: 0.75rem; font-family: var(--font-primary);">Personalised Approach Seekers</h3>
-        <p style="color: var(--color-text); font-size: 0.95rem; line-height: 1.65;">
-          Learners who need a more personalised approach, pace or attention to reach their full potential.
-        </p>
-      </div>
-      <!-- Audience 6 -->
-      <div class="card" style="padding: 2rem; border: 1.5px solid rgba(6, 43, 99, 0.16); background-color: #FFFFFF;">
-        <h3 style="font-size: 1.2rem; color: var(--color-navy); margin-bottom: 0.75rem; font-family: var(--font-primary);">Alternative Schooling Environment</h3>
-        <p style="color: var(--color-text); font-size: 0.95rem; line-height: 1.65;">
-          Children who need a different schooling environment when traditional school isn't the right fit.
-        </p>
-      </div>
+      <?php foreach (($sec_choose['cards'] ?? []) as $card): ?>
+        <div class="card" style="padding: 2rem; border: 1.5px solid rgba(6, 43, 99, 0.16); background-color: #FFFFFF;">
+          <h3 style="font-size: 1.2rem; color: var(--color-navy); margin-bottom: 0.75rem; font-family: var(--font-primary);"><?php echo h($card['title']); ?></h3>
+          <p style="color: var(--color-text); font-size: 0.95rem; line-height: 1.65;">
+            <?php echo h($card['content'] ?? ($card['desc'] ?? '')); ?>
+          </p>
+        </div>
+      <?php endforeach; ?>
     </div>
 
     <div class="text-center" style="margin-top: 3rem;">
       <p style="font-size: 1.1rem; font-weight: 600; color: var(--color-navy); margin-bottom: 1.25rem;">
-        If you believe education should adapt to the child, Zuvio may be the right choice.
+        <?php echo h($sec_choose['footer_note'] ?? 'If you believe education should adapt to the child, Zuvio may be the right choice.'); ?>
       </p>
-      <a href="/admissions#eligibility" class="btn btn-outline" style="border-color: var(--color-navy); color: var(--color-navy);">
-        Check Age & Grade Eligibility &rarr;
+      <a href="<?php echo h($sec_choose['cta_url'] ?? '/admissions#eligibility'); ?>" class="btn btn-outline" style="border-color: var(--color-navy); color: var(--color-navy);">
+        <?php echo h($sec_choose['cta_text'] ?? 'Check Age & Grade Eligibility →'); ?>
       </a>
     </div>
   </div>
 </section>
+<?php endif; ?>
 
 <!-- ========================================================================
-     SECTION 9: LEARNING PATH (4-STAGE LEARNING JOURNEY)
+     SECTION 4: LEARNING PATH (4-STAGE LEARNING JOURNEY)
      ======================================================================== -->
+<?php if (!isset($sec_curriculum['is_active']) || !empty($sec_curriculum['is_active'])): ?>
 <section class="section curriculum-pathways-section">
   <div class="container">
     <div class="text-center" style="max-width: 800px; margin: 0 auto 3rem auto;">
-      <span style="font-size: 0.85rem; font-weight: 700; color: var(--color-gold); text-transform: uppercase; letter-spacing: 2px;">Curriculum Pathways</span>
-      <h2 style="font-size: 2.5rem; color: var(--color-navy); margin-top: 0.5rem; font-family: var(--font-primary);">A Future-Ready Learning Journey — Kindergarten to Grade 8th</h2>
+      <span style="font-size: 0.85rem; font-weight: 700; color: var(--color-gold); text-transform: uppercase; letter-spacing: 2px;"><?php echo h($sec_curriculum['badge'] ?? 'Curriculum Pathways'); ?></span>
+      <h2 style="font-size: 2.5rem; color: var(--color-navy); margin-top: 0.5rem; font-family: var(--font-primary);"><?php echo h($sec_curriculum['title'] ?? 'A Future-Ready Learning Journey — Kindergarten to Grade 8th'); ?></h2>
       <p style="color: var(--color-muted); font-size: 1.05rem; line-height: 1.7; margin-top: 1rem;">
-        Mapped to CBSE, NEP 2020 and NCF — strong academic foundations blended with creativity, communication, digital fluency and real-world learning. Every stage builds on the last: from stories, sounds and play in the Early Years to research, innovation and independent thinking in Middle School.
+        <?php echo h($sec_curriculum['subtitle'] ?? 'Mapped to CBSE, NEP 2020 and NCF — strong academic foundations blended with creativity, communication, digital fluency and real-world learning.'); ?>
       </p>
     </div>
 
@@ -632,11 +774,11 @@ include_once dirname(__FILE__) . '/../includes/header.php';
       <?php foreach ($learning_journey_cards as $card): ?>
         <div class="stage-card">
           <div>
-            <span class="stage-badge-pill"><?php echo h($card['badge_text']); ?></span>
+            <span class="stage-badge-pill"><?php echo h($card['badge_text'] ?? ($card['badge'] ?? 'Stage')); ?></span>
             <h3 class="stage-card-title"><?php echo h($card['title']); ?></h3>
-            <p class="stage-card-keywords"><?php echo h($card['subtitle']); ?></p>
+            <p class="stage-card-keywords"><?php echo h($card['subtitle'] ?? ($card['keywords'] ?? '')); ?></p>
             <div class="stage-card-points">
-              <?php echo nl2br(h($card['content'])); ?>
+              <?php echo nl2br(h($card['content'] ?? ($card['bullets'] ?? ''))); ?>
             </div>
           </div>
           <?php if (!empty($card['outcome'])): ?>
@@ -650,142 +792,136 @@ include_once dirname(__FILE__) . '/../includes/header.php';
 
     <div class="text-center" style="margin-top: 3.5rem;">
       <p style="font-size: 1.2rem; font-weight: 700; color: var(--color-navy-dark); font-family: var(--font-primary); margin-bottom: 1.25rem;">
-        Strong Foundations. Future Skills. Learning Without Boundaries.
+        <?php echo h($sec_curriculum['footer_tagline'] ?? 'Strong Foundations. Future Skills. Learning Without Boundaries.'); ?>
       </p>
-      <a href="/curriculum" class="btn btn-primary" style="background-color: var(--color-navy); border-color: var(--color-navy); color: #FFFFFF; font-weight: 700; padding: 0.85rem 2.5rem;">
-        Explore the Full Curriculum &rarr;
+      <a href="<?php echo h($sec_curriculum['cta_url'] ?? '/curriculum'); ?>" class="btn btn-primary" style="background-color: var(--color-navy); border-color: var(--color-navy); color: #FFFFFF; font-weight: 700; padding: 0.85rem 2.5rem;">
+        <?php echo h($sec_curriculum['cta_text'] ?? 'Explore the Full Curriculum →'); ?>
       </a>
     </div>
   </div>
 </section>
+<?php endif; ?>
 
 <!-- ========================================================================
-     SECTION 10: THE ZUVIO LEARNING FRAMEWORK (FROM KNOWING TO DOING)
+     SECTION 5: THE ZUVIO LEARNING FRAMEWORK (FROM KNOWING TO DOING)
      ======================================================================== -->
+<?php if (!isset($sec_framework['is_active']) || !empty($sec_framework['is_active'])): ?>
 <section class="section" style="background-color: var(--color-surface-warm); border-bottom: 1px solid var(--color-border);">
   <div class="container">
     <div class="text-center" style="margin-bottom: 2rem;">
-      <span style="font-size: 0.85rem; font-weight: 700; color: var(--color-gold); text-transform: uppercase; letter-spacing: 2px;">Core Methodology</span>
-      <h2 style="font-size: 2.5rem; color: var(--color-navy); margin-top: 0.5rem; font-family: var(--font-primary);">The Zuvio Learning Framework</h2>
-      <p style="color: var(--color-muted); font-size: 1.1rem; margin-top: 0.5rem;">From Knowing to Doing</p>
+      <span style="font-size: 0.85rem; font-weight: 700; color: var(--color-gold); text-transform: uppercase; letter-spacing: 2px;"><?php echo h($sec_framework['badge'] ?? 'Core Methodology'); ?></span>
+      <h2 style="font-size: 2.5rem; color: var(--color-navy); margin-top: 0.5rem; font-family: var(--font-primary);"><?php echo h($sec_framework['title'] ?? 'The Zuvio Learning Framework'); ?></h2>
+      <p style="color: var(--color-muted); font-size: 1.1rem; margin-top: 0.5rem;"><?php echo h($sec_framework['subtitle'] ?? 'From Knowing to Doing'); ?></p>
     </div>
 
     <div class="framework-flow-container">
-      <?php foreach ($framework_items as $item): ?>
+      <?php foreach (($sec_framework['steps'] ?? $framework_items) as $item): ?>
         <div class="framework-step-card">
-          <div class="framework-step-number"><?php echo h($item['badge_text']); ?></div>
+          <div class="framework-step-number"><?php echo h($item['badge_text'] ?? ($item['badge'] ?? '')); ?></div>
           <h3 class="framework-step-title"><?php echo h($item['title']); ?></h3>
           <h4 style="font-size: 0.85rem; color: var(--color-teal); font-weight: 600; margin-bottom: 0.75rem;"><?php echo h($item['subtitle']); ?></h4>
-          <p class="framework-step-desc"><?php echo h($item['content']); ?></p>
+          <p class="framework-step-desc"><?php echo h($item['content'] ?? ($item['desc'] ?? '')); ?></p>
         </div>
       <?php endforeach; ?>
     </div>
 
     <div class="framework-banner-ribbon">
-      Knowledge &rarr; <span>Understanding</span> &rarr; Application &rarr; <span>Innovation</span>
+      <?php echo h($sec_framework['ribbon_text'] ?? 'Knowledge → Understanding → Application → Innovation'); ?>
     </div>
   </div>
 </section>
+<?php endif; ?>
 
 <!-- ========================================================================
-     SECTION 11: LEARNING BEYOND THE TEXTBOOK
+     SECTION 6: LEARNING BEYOND THE TEXTBOOK
      ======================================================================== -->
+<?php if (!isset($sec_beyond['is_active']) || !empty($sec_beyond['is_active'])): ?>
 <section class="section" style="background-color: #FFFFFF; border-bottom: 1px solid var(--color-border);">
   <div class="container">
     <div class="text-center" style="margin-bottom: 2.5rem;">
-      <span style="font-size: 0.85rem; font-weight: 700; color: var(--color-gold); text-transform: uppercase; letter-spacing: 2px;">Real-World Classrooms</span>
-      <h2 style="font-size: 2.5rem; color: var(--color-navy); margin-top: 0.5rem; font-family: var(--font-primary);">Learning Beyond the Textbook</h2>
+      <span style="font-size: 0.85rem; font-weight: 700; color: var(--color-gold); text-transform: uppercase; letter-spacing: 2px;"><?php echo h($sec_beyond['badge'] ?? 'Real-World Classrooms'); ?></span>
+      <h2 style="font-size: 2.5rem; color: var(--color-navy); margin-top: 0.5rem; font-family: var(--font-primary);"><?php echo h($sec_beyond['title'] ?? 'Learning Beyond the Textbook'); ?></h2>
       <p style="color: var(--color-muted); font-size: 1.1rem; margin-top: 0.5rem; font-style: italic;">
-        Because the world is the real classroom.
+        <?php echo h($sec_beyond['subtitle'] ?? 'Because the world is the real classroom.'); ?>
       </p>
     </div>
 
     <div class="beyond-textbook-grid">
-      <?php foreach ($beyond_textbook_items as $item): ?>
+      <?php foreach (($sec_beyond['items'] ?? $beyond_textbook_items) as $item): ?>
         <div class="beyond-card">
           <h3><?php echo h($item['title']); ?></h3>
-          <h4 style="font-size: 0.85rem; color: var(--color-teal); font-weight: 600; margin-bottom: 0.75rem;"><?php echo h($item['subtitle']); ?></h4>
-          <p><?php echo h($item['content']); ?></p>
+          <h4 style="font-size: 0.85rem; color: var(--color-teal); font-weight: 600; margin-bottom: 0.75rem;"><?php echo h($item['subtitle'] ?? ''); ?></h4>
+          <p><?php echo h($item['content'] ?? ($item['desc'] ?? '')); ?></p>
         </div>
       <?php endforeach; ?>
     </div>
   </div>
 </section>
+<?php endif; ?>
 
 <!-- ========================================================================
-     SECTION 12: WHAT MAKES ZUVIO DIFFERENT & THE ZUVIO GRADUATE
+     SECTION 7: WHAT MAKES ZUVIO DIFFERENT & THE ZUVIO GRADUATE
      ======================================================================== -->
+<?php if (!isset($sec_diff['is_active']) || !empty($sec_diff['is_active'])): ?>
 <section class="section" style="background-color: var(--color-surface-blue); border-bottom: 1px solid var(--color-border);">
   <div class="container">
     <div class="text-center" style="margin-bottom: 3.5rem;">
-      <span style="font-size: 0.85rem; font-weight: 700; color: var(--color-gold); text-transform: uppercase; letter-spacing: 2px;">The Zuvio Edge</span>
-      <h2 style="font-size: 2.5rem; color: var(--color-navy); margin-top: 0.5rem; font-family: var(--font-primary);">What Makes Zuvio Different</h2>
+      <span style="font-size: 0.85rem; font-weight: 700; color: var(--color-gold); text-transform: uppercase; letter-spacing: 2px;"><?php echo h($sec_diff['badge'] ?? 'The Zuvio Edge'); ?></span>
+      <h2 style="font-size: 2.5rem; color: var(--color-navy); margin-top: 0.5rem; font-family: var(--font-primary);"><?php echo h($sec_diff['title'] ?? 'What Makes Zuvio Different'); ?></h2>
     </div>
 
     <div class="grid-3" style="gap: 2rem;">
+      <?php foreach (($sec_diff['pillars'] ?? []) as $pillar): ?>
       <div class="card" style="padding: 2.5rem; border: 1.5px solid rgba(6, 43, 99, 0.16); background-color: #FFFFFF; border-radius: var(--radius-md); box-shadow: var(--shadow-sm);">
-        <h3 style="font-size: 1.35rem; color: var(--color-navy); margin-bottom: 1rem; font-family: var(--font-primary);">Assessment for Growth</h3>
+        <h3 style="font-size: 1.35rem; color: var(--color-navy); margin-bottom: 1rem; font-family: var(--font-primary);"><?php echo h($pillar['title']); ?></h3>
         <p style="color: var(--color-text); font-size: 0.95rem; line-height: 1.7;">
-          We measure progress and skills, not just marks — providing regular, meaningful qualitative insights and developmental analytics for parents.
+          <?php echo h($pillar['desc'] ?? ($pillar['content'] ?? '')); ?>
         </p>
       </div>
-
-      <div class="card" style="padding: 2.5rem; border: 1.5px solid rgba(6, 43, 99, 0.16); background-color: #FFFFFF; border-radius: var(--radius-md); box-shadow: var(--shadow-sm);">
-        <h3 style="font-size: 1.35rem; color: var(--color-navy); margin-bottom: 1rem; font-family: var(--font-primary);">Personalised Learning</h3>
-        <p style="color: var(--color-text); font-size: 0.95rem; line-height: 1.7;">
-          Live teacher guidance, adaptive digital tools and targeted academic support that continuously adapt to each child’s pace and individual learning needs.
-        </p>
-      </div>
-
-      <div class="card" style="padding: 2.5rem; border: 1.5px solid rgba(6, 43, 99, 0.16); background-color: #FFFFFF; border-radius: var(--radius-md); box-shadow: var(--shadow-sm);">
-        <h3 style="font-size: 1.35rem; color: var(--color-navy); margin-bottom: 1rem; font-family: var(--font-primary);">Zuvio Beyond</h3>
-        <p style="color: var(--color-text); font-size: 0.95rem; line-height: 1.7;">
-          Rich co-curricular clubs, AI/coding modules, sports association, enrichment electives, and extra academic support matched to your child’s passions.
-        </p>
-      </div>
+      <?php endforeach; ?>
     </div>
 
     <!-- The Zuvio Graduate Banner -->
     <div class="graduate-outcomes-box">
-      <span style="font-size: 0.85rem; font-weight: 700; color: var(--color-gold); text-transform: uppercase; letter-spacing: 2px;">Graduate Profile</span>
-      <h3 style="font-size: 2rem; color: var(--color-navy-dark); font-family: var(--font-primary); margin: 0.5rem 0 1rem 0;">The Zuvio Graduate — by the end of Grade 8</h3>
+      <span style="font-size: 0.85rem; font-weight: 700; color: var(--color-gold); text-transform: uppercase; letter-spacing: 2px;"><?php echo h($sec_diff['graduate_badge'] ?? 'Graduate Profile'); ?></span>
+      <h3 style="font-size: 2rem; color: var(--color-navy-dark); font-family: var(--font-primary); margin: 0.5rem 0 1rem 0;"><?php echo h($sec_diff['graduate_title'] ?? 'The Zuvio Graduate — by the end of Grade 8'); ?></h3>
       <div class="graduate-outcomes-pills">
-        <span class="graduate-pill">Academically Strong</span>
-        <span class="graduate-pill">Curious</span>
-        <span class="graduate-pill">Confident & Articulate</span>
-        <span class="graduate-pill">Creative</span>
-        <span class="graduate-pill">Digitally Fluent</span>
-        <span class="graduate-pill">Collaborative</span>
-        <span class="graduate-pill">Independent</span>
-        <span class="graduate-pill">Globally Aware</span>
-        <span class="graduate-pill">Future-Ready</span>
+        <?php 
+          $pills_raw = $sec_diff['graduate_pills'] ?? 'Academically Strong, Curious, Confident & Articulate, Creative, Digitally Fluent, Collaborative, Independent, Globally Aware, Future-Ready';
+          $pills_arr = array_filter(array_map('trim', explode(',', $pills_raw)));
+          foreach ($pills_arr as $pill):
+        ?>
+          <span class="graduate-pill"><?php echo h($pill); ?></span>
+        <?php endforeach; ?>
       </div>
       <p style="font-size: 1.05rem; color: var(--color-navy); font-weight: 600; margin-top: 1rem;">
-        Not just ready for the next grade — ready to learn, adapt and grow in a changing world.
+        <?php echo h($sec_diff['graduate_quote'] ?? 'Not just ready for the next grade — ready to learn, adapt and grow in a changing world.'); ?>
       </p>
     </div>
   </div>
 </section>
+<?php endif; ?>
 
 <!-- ========================================================================
-     SECTION 13: INCLUSIVITY & BEYOND
+     SECTION 8: INCLUSIVITY & BEYOND
      ======================================================================== -->
+<?php if (!isset($sec_inc['is_active']) || !empty($sec_inc['is_active'])): ?>
 <section class="section" style="background-color: #FFFFFF; border-bottom: 1px solid var(--color-border);">
   <div class="container">
     <div class="text-center" style="margin-bottom: 3.5rem;">
-      <span style="font-size: 0.85rem; font-weight: 700; color: var(--color-gold); text-transform: uppercase; letter-spacing: 2px;">Equal Opportunities For Every Child</span>
-      <h2 style="font-size: 2.5rem; color: var(--color-navy); margin-top: 0.5rem; font-family: var(--font-primary);">Inclusivity & Beyond</h2>
+      <span style="font-size: 0.85rem; font-weight: 700; color: var(--color-gold); text-transform: uppercase; letter-spacing: 2px;"><?php echo h($sec_inc['badge'] ?? 'Equal Opportunities For Every Child'); ?></span>
+      <h2 style="font-size: 2.5rem; color: var(--color-navy); margin-top: 0.5rem; font-family: var(--font-primary);"><?php echo h($sec_inc['title'] ?? 'Inclusivity & Beyond'); ?></h2>
       <p style="color: var(--color-muted); font-size: 1.1rem; margin-top: 0.5rem;">
-        Every Child. Every Mind. Every Possibility.
+        <?php echo h($sec_inc['subtitle'] ?? 'Every Child. Every Mind. Every Possibility.'); ?>
       </p>
     </div>
 
     <!-- Inclusivity Statements Grid -->
     <div class="grid-3" style="gap: 1.75rem;">
-      <?php foreach ($inclusivity_items as $item): ?>
+      <?php foreach (($sec_inc['items'] ?? $inclusivity_items) as $item): ?>
         <div class="card" style="padding: 2rem; border: 1.5px solid rgba(6, 43, 99, 0.16); background-color: var(--color-surface); border-radius: var(--radius-md); box-shadow: var(--shadow-sm);">
           <h3 style="font-size: 1.2rem; color: var(--color-navy); margin-bottom: 0.5rem; font-family: var(--font-primary);"><?php echo h($item['title']); ?></h3>
-          <p style="color: var(--color-text); font-size: 0.9rem; line-height: 1.6;"><?php echo h($item['content']); ?></p>
+          <p style="color: var(--color-text); font-size: 0.9rem; line-height: 1.6;"><?php echo h($item['content'] ?? ($item['desc'] ?? '')); ?></p>
         </div>
       <?php endforeach; ?>
     </div>
@@ -794,10 +930,10 @@ include_once dirname(__FILE__) . '/../includes/header.php';
     <div style="margin-top: 4rem; padding: 2.5rem; background-color: var(--pastel-blue); border-radius: var(--radius-lg); border: 1.5px solid rgba(10, 137, 152, 0.25);">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.75rem; flex-wrap: wrap; gap: 1rem;">
         <div>
-          <h3 style="font-size: 1.6rem; color: var(--color-navy); font-family: var(--font-primary); margin-bottom: 0.25rem;">Zuvio Beyond Co-Curricular Programmes</h3>
-          <p style="color: var(--color-muted); font-size: 0.92rem;">Empowering skills in tech, innovation, logic, performing arts, and financial literacy.</p>
+          <h3 style="font-size: 1.6rem; color: var(--color-navy); font-family: var(--font-primary); margin-bottom: 0.25rem;"><?php echo h($sec_inc['cocurricular_title'] ?? 'Zuvio Beyond Co-Curricular Programmes'); ?></h3>
+          <p style="color: var(--color-muted); font-size: 0.92rem;"><?php echo h($sec_inc['cocurricular_subtitle'] ?? 'Empowering skills in tech, innovation, logic, performing arts, and financial literacy.'); ?></p>
         </div>
-        <a href="/beyond" class="btn btn-outline" style="border-color: var(--color-navy); color: var(--color-navy); font-weight: 600;">View All Beyond Programmes &rarr;</a>
+        <a href="<?php echo h($sec_inc['cocurricular_url'] ?? '/beyond'); ?>" class="btn btn-outline" style="border-color: var(--color-navy); color: var(--color-navy); font-weight: 600;"><?php echo h($sec_inc['cocurricular_cta'] ?? 'View All Beyond Programmes →'); ?></a>
       </div>
 
       <div class="grid-4" style="gap: 1.25rem;">
@@ -821,52 +957,36 @@ include_once dirname(__FILE__) . '/../includes/header.php';
     </div>
   </div>
 </section>
+<?php endif; ?>
 
 <!-- ========================================================================
-     SECTION 14: STATISTICS / BENCHMARKS (APPROVED SPECIFICATIONS)
+     SECTION 9: STATISTICS / BENCHMARKS
      ======================================================================== -->
+<?php if (!isset($sec_stats['is_active']) || !empty($sec_stats['is_active'])): ?>
 <section class="section text-center" style="background: linear-gradient(135deg, var(--color-navy-dark) 0%, var(--color-navy) 100%); color: #FFFFFF; padding: 5rem 0;">
   <div class="container">
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1.5rem;">
-      
+      <?php foreach (($sec_stats['stats'] ?? []) as $st): ?>
       <div class="stat-box" style="padding: 1.75rem 1rem; background: rgba(255,255,255,0.04); border-radius: var(--radius-md); border: 1px solid rgba(255,255,255,0.08);">
-        <p style="font-size: 1.85rem; font-weight: 700; color: var(--color-gold); margin: 0; font-family: var(--font-primary); line-height: 1.1;">KG to 8th</p>
-        <p style="color: #E2E8F0; font-size: 0.82rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; margin-top: 0.5rem;">Grade Spectrum</p>
+        <p style="font-size: 2.25rem; font-weight: 700; color: var(--color-gold); margin: 0; font-family: var(--font-primary); line-height: 1.1;"><?php echo h($st['val']); ?></p>
+        <p style="color: #E2E8F0; font-size: 0.82rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; margin-top: 0.5rem;"><?php echo h($st['label']); ?></p>
       </div>
-
-      <div class="stat-box" style="padding: 1.75rem 1rem; background: rgba(255,255,255,0.04); border-radius: var(--radius-md); border: 1px solid rgba(255,255,255,0.08);">
-        <p style="font-size: 2.75rem; font-weight: 700; color: var(--color-gold); margin: 0; font-family: var(--font-primary); line-height: 1;">15:1</p>
-        <p style="color: #E2E8F0; font-size: 0.82rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; margin-top: 0.5rem;">Max Cohort Ratio</p>
-      </div>
-
-      <div class="stat-box" style="padding: 1.75rem 1rem; background: rgba(255,255,255,0.04); border-radius: var(--radius-md); border: 1px solid rgba(255,255,255,0.08);">
-        <p style="font-size: 2.75rem; font-weight: 700; color: var(--color-gold); margin: 0; font-family: var(--font-primary); line-height: 1;">100%</p>
-        <p style="color: #E2E8F0; font-size: 0.82rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; margin-top: 0.5rem;">Live Online Schooling</p>
-      </div>
-
-      <div class="stat-box" style="padding: 1.75rem 1rem; background: rgba(255,255,255,0.04); border-radius: var(--radius-md); border: 1px solid rgba(255,255,255,0.08);">
-        <p style="font-size: 2.75rem; font-weight: 700; color: var(--color-gold); margin: 0; font-family: var(--font-primary); line-height: 1;">CBSE</p>
-        <p style="color: #E2E8F0; font-size: 0.82rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; margin-top: 0.5rem;">& NEP 2020 Aligned</p>
-      </div>
-
-      <div class="stat-box" style="padding: 1.75rem 1rem; background: rgba(255,255,255,0.04); border-radius: var(--radius-md); border: 1px solid rgba(255,255,255,0.08);">
-        <p style="font-size: 2.75rem; font-weight: 700; color: var(--color-gold); margin: 0; font-family: var(--font-primary); line-height: 1;">6</p>
-        <p style="color: #E2E8F0; font-size: 0.82rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; margin-top: 0.5rem;">Beyond Textbook Domains</p>
-      </div>
-
+      <?php endforeach; ?>
     </div>
   </div>
 </section>
+<?php endif; ?>
 
 <!-- ========================================================================
-     SECTION 15: AFFILIATIONS & ACCREDITATIONS (WITH CERTIFICATE ACTION)
+     SECTION 10: AFFILIATIONS & ACCREDITATIONS (WITH CERTIFICATE ACTION)
      ======================================================================== -->
+<?php if (!isset($sec_acc['is_active']) || !empty($sec_acc['is_active'])): ?>
 <section id="accreditations" class="section" style="background-color: var(--pastel-blue); border-bottom: 1px solid var(--color-border); padding: 5.5rem 0;">
   <div class="container">
     <div class="text-center" style="margin-bottom: 3.5rem;">
-      <span style="font-size: 0.85rem; font-weight: 700; color: var(--color-gold); text-transform: uppercase; letter-spacing: 2px;">Global Quality Partnerships</span>
-      <h2 style="font-size: 2.5rem; color: var(--color-navy); margin-top: 0.5rem; font-family: var(--font-primary);">Affiliations & Accreditations</h2>
-      <p style="color: var(--color-muted); font-size: 1.05rem; margin-top: 0.5rem;">Recognised and benchmarked globally for quality assurance and sports excellence.</p>
+      <span style="font-size: 0.85rem; font-weight: 700; color: var(--color-gold); text-transform: uppercase; letter-spacing: 2px;"><?php echo h($sec_acc['badge'] ?? 'Global Quality Partnerships'); ?></span>
+      <h2 style="font-size: 2.5rem; color: var(--color-navy); margin-top: 0.5rem; font-family: var(--font-primary);"><?php echo h($sec_acc['title'] ?? 'Affiliations & Accreditations'); ?></h2>
+      <p style="color: var(--color-muted); font-size: 1.05rem; margin-top: 0.5rem;"><?php echo h($sec_acc['subtitle'] ?? 'Recognised and benchmarked globally for quality assurance and sports excellence.'); ?></p>
     </div>
 
     <div class="accreditation-card-grid">
@@ -898,16 +1018,18 @@ include_once dirname(__FILE__) . '/../includes/header.php';
     </div>
   </div>
 </section>
+<?php endif; ?>
 
 <!-- ========================================================================
-     SECTION 16: PARENT TESTIMONIALS / REVIEWS
+     SECTION 11: PARENT TESTIMONIALS / REVIEWS
      ======================================================================== -->
+<?php if (!isset($sec_test['is_active']) || !empty($sec_test['is_active'])): ?>
 <section class="section" style="background-color: #FFFFFF; border-bottom: 1px solid var(--color-border);">
   <div class="container">
     <div class="text-center" style="margin-bottom: 3.5rem;">
-      <span style="font-size: 0.85rem; font-weight: 700; color: var(--color-gold); text-transform: uppercase; letter-spacing: 2px;">Parent Perspectives</span>
-      <h2 style="font-size: 2.5rem; color: var(--color-navy); margin-top: 0.5rem; font-family: var(--font-primary);">Parent Testimonials & Reviews</h2>
-      <p style="color: var(--color-muted); font-size: 1.05rem; margin-top: 0.5rem;">Hear directly from families flourishing in our online learning community.</p>
+      <span style="font-size: 0.85rem; font-weight: 700; color: var(--color-gold); text-transform: uppercase; letter-spacing: 2px;"><?php echo h($sec_test['badge'] ?? 'Parent Perspectives'); ?></span>
+      <h2 style="font-size: 2.5rem; color: var(--color-navy); margin-top: 0.5rem; font-family: var(--font-primary);"><?php echo h($sec_test['title'] ?? 'Parent Testimonials & Reviews'); ?></h2>
+      <p style="color: var(--color-muted); font-size: 1.05rem; margin-top: 0.5rem;"><?php echo h($sec_test['subtitle'] ?? 'Hear directly from families flourishing in our online learning community.'); ?></p>
     </div>
 
     <div class="testimonials-grid">
@@ -928,15 +1050,17 @@ include_once dirname(__FILE__) . '/../includes/header.php';
     </div>
   </div>
 </section>
+<?php endif; ?>
 
 <!-- ========================================================================
-     SECTION 17: NEWS / UPDATES / BLOGS / AWARDS & RECOGNITION
+     SECTION 12: NEWS / UPDATES / BLOGS / AWARDS & RECOGNITION
      ======================================================================== -->
+<?php if (!isset($sec_news['is_active']) || !empty($sec_news['is_active'])): ?>
 <section class="section" style="background-color: var(--color-surface-blue); border-bottom: 1px solid var(--color-border);">
   <div class="container">
     <div class="text-center" style="margin-bottom: 3.5rem;">
-      <span style="font-size: 0.85rem; font-weight: 700; color: var(--color-gold); text-transform: uppercase; letter-spacing: 2px;">Stay Informed</span>
-      <h2 style="font-size: 2.5rem; color: var(--color-navy); margin-top: 0.5rem; font-family: var(--font-primary);">News, Updates & Recognition</h2>
+      <span style="font-size: 0.85rem; font-weight: 700; color: var(--color-gold); text-transform: uppercase; letter-spacing: 2px;"><?php echo h($sec_news['badge'] ?? 'Stay Informed'); ?></span>
+      <h2 style="font-size: 2.5rem; color: var(--color-navy); margin-top: 0.5rem; font-family: var(--font-primary);"><?php echo h($sec_news['title'] ?? 'News, Updates & Recognition'); ?></h2>
     </div>
 
     <div class="grid-3" style="gap: 2rem;">
@@ -958,39 +1082,32 @@ include_once dirname(__FILE__) . '/../includes/header.php';
     </div>
   </div>
 </section>
+<?php endif; ?>
 
 <!-- ========================================================================
-     SECTION 18: FEATURED IN (RESPONSIVE SLIDER / CAROUSEL)
+     SECTION 13: FEATURED IN (RESPONSIVE SLIDER / CAROUSEL)
      ======================================================================== -->
+<?php if (!isset($sec_feat['is_active']) || !empty($sec_feat['is_active'])): ?>
 <section class="section text-center" style="background-color: #FFFFFF; border-bottom: 1px solid var(--color-border); padding: 4.5rem 0;">
   <div class="container">
-    <span style="font-size: 0.85rem; font-weight: 700; color: var(--color-gold); text-transform: uppercase; letter-spacing: 2px;">Media Recognition</span>
-    <h2 style="font-size: 2.25rem; color: var(--color-navy); margin: 0.5rem 0 1rem 0; font-family: var(--font-primary);">Featured In</h2>
+    <span style="font-size: 0.85rem; font-weight: 700; color: var(--color-gold); text-transform: uppercase; letter-spacing: 2px;"><?php echo h($sec_feat['badge'] ?? 'Media Recognition'); ?></span>
+    <h2 style="font-size: 2.25rem; color: var(--color-navy); margin: 0.5rem 0 1rem 0; font-family: var(--font-primary);"><?php echo h($sec_feat['title'] ?? 'Featured In'); ?></h2>
     <p style="color: var(--color-muted); font-size: 0.95rem; max-width: 600px; margin: 0 auto 2.5rem auto;">
-      Zuvio Global School highlighted in leading educational publications for pioneering future-skills homeschooling.
+      <?php echo h($sec_feat['subtitle'] ?? 'Zuvio Global School highlighted in leading educational publications for pioneering future-skills homeschooling.'); ?>
     </p>
 
     <!-- Responsive Logo Carousel -->
     <div class="featured-in-slider-container" id="featuredSliderContainer">
       <div class="featured-in-slider-track" id="featuredSliderTrack">
-        <div class="featured-in-slide-item">
-          <div class="featured-in-card">Education World</div>
-        </div>
-        <div class="featured-in-slide-item">
-          <div class="featured-in-card">EdTech Review</div>
-        </div>
-        <div class="featured-in-slide-item">
-          <div class="featured-in-card">The Hindu Education</div>
-        </div>
-        <div class="featured-in-slide-item">
-          <div class="featured-in-card">Brainfeed Magazine</div>
-        </div>
-        <div class="featured-in-slide-item">
-          <div class="featured-in-card">Indian Express</div>
-        </div>
-        <div class="featured-in-slide-item">
-          <div class="featured-in-card">Hindustan Times</div>
-        </div>
+        <?php 
+          $pubs_raw = $sec_feat['publications'] ?? 'Education World, EdTech Review, The Hindu Education, Brainfeed Magazine, Indian Express, Hindustan Times';
+          $pubs_arr = array_filter(array_map('trim', explode(',', $pubs_raw)));
+          foreach ($pubs_arr as $pub):
+        ?>
+          <div class="featured-in-slide-item">
+            <div class="featured-in-card"><?php echo h($pub); ?></div>
+          </div>
+        <?php endforeach; ?>
       </div>
 
       <div class="featured-in-controls">
@@ -1001,10 +1118,12 @@ include_once dirname(__FILE__) . '/../includes/header.php';
     </div>
   </div>
 </section>
+<?php endif; ?>
 
 <!-- ========================================================================
-     SECTION 19: FOUNDER'S MESSAGE (VERBATIM FROM REFERENCE DOCX)
+     SECTION 14: FOUNDER'S MESSAGE (VERBATIM FROM REFERENCE DOCX)
      ======================================================================== -->
+<?php if (!isset($sec_founder['is_active']) || !empty($sec_founder['is_active'])): ?>
 <section id="founder" class="founder-message-section">
   <div class="container">
     <div class="founder-editorial-card">
@@ -1012,63 +1131,73 @@ include_once dirname(__FILE__) . '/../includes/header.php';
       <!-- Founder Portrait & Metadata -->
       <div class="founder-portrait-col">
         <div class="founder-portrait-frame">
-          <img src="/assets/images/Profile_Images/Pragya_Professional_Profile.webp" alt="Founder of Zuvio Global School" loading="lazy">
+          <img src="<?php echo h($sec_founder['portrait'] ?? '/assets/images/Profile_Images/Pragya_Professional_Profile.webp'); ?>" alt="<?php echo h($sec_founder['author_name'] ?? 'Founder'); ?> of Zuvio Global School" loading="lazy">
         </div>
-        <h3 style="font-size: 1.35rem; color: var(--color-navy); font-family: var(--font-primary); margin-bottom: 0.25rem;">Founder</h3>
-        <p style="font-size: 0.85rem; color: var(--color-gold); font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Zuvio Global School</p>
+        <h3 style="font-size: 1.35rem; color: var(--color-navy); font-family: var(--font-primary); margin-bottom: 0.25rem;"><?php echo h($sec_founder['author_name'] ?? 'Founder'); ?></h3>
+        <p style="font-size: 0.85rem; color: var(--color-gold); font-weight: 700; text-transform: uppercase; letter-spacing: 1px;"><?php echo h($sec_founder['author_title'] ?? 'Zuvio Global School'); ?></p>
         <div style="margin-top: 1.5rem;">
-          <a href="/founder-message" class="btn btn-outline" style="font-size: 0.82rem; padding: 0.5rem 1.25rem; border-color: var(--color-navy); color: var(--color-navy);">Read Full Message &rarr;</a>
+          <a href="<?php echo h($sec_founder['cta_url'] ?? '/founder-message'); ?>" class="btn btn-outline" style="font-size: 0.82rem; padding: 0.5rem 1.25rem; border-color: var(--color-navy); color: var(--color-navy);"><?php echo h($sec_founder['cta_text'] ?? 'Read Full Message →'); ?></a>
         </div>
       </div>
 
       <!-- Founder Letter Body -->
       <div class="founder-letter-col">
-        <span style="font-size: 0.85rem; font-weight: 700; color: var(--color-gold); text-transform: uppercase; letter-spacing: 2px; display: block; margin-bottom: 0.5rem;">Founder's Message</span>
+        <span style="font-size: 0.85rem; font-weight: 700; color: var(--color-gold); text-transform: uppercase; letter-spacing: 2px; display: block; margin-bottom: 0.5rem;"><?php echo h($sec_founder['badge'] ?? "Founder's Message"); ?></span>
         <h2 style="font-size: 2.25rem; color: var(--color-navy); font-family: var(--font-primary); margin-bottom: 1.5rem; line-height: 1.25;">
-          Learning Without Boundaries. Growing With Purpose.
+          <?php echo h($sec_founder['heading'] ?? 'Learning Without Boundaries. Growing With Purpose.'); ?>
         </h2>
 
         <p style="font-weight: 700; color: var(--color-navy); font-size: 1.05rem; margin-bottom: 1rem;">
-          Dear Parents, Students and Members of the Zuvio Community,
+          <?php echo h($sec_founder['salutation'] ?? 'Dear Parents, Students and Members of the Zuvio Community,'); ?>
         </p>
 
-        <p style="color: var(--color-text); font-size: 0.95rem; line-height: 1.8; margin-bottom: 1rem;">
-          Education today must prepare children not only for examinations, but for a world that is constantly evolving.
-        </p>
+        <?php if (!empty($sec_founder['p1'])): ?>
+          <p style="color: var(--color-text); font-size: 0.95rem; line-height: 1.8; margin-bottom: 1rem;">
+            <?php echo h($sec_founder['p1']); ?>
+          </p>
+        <?php endif; ?>
 
-        <p style="color: var(--color-text); font-size: 0.95rem; line-height: 1.8; margin-bottom: 1rem;">
-          At Zuvio Global School, we believe that meaningful learning is not defined by the walls of a classroom. It is defined by curiosity, connection, opportunity and the confidence to explore beyond what is already known.
-        </p>
+        <?php if (!empty($sec_founder['p2'])): ?>
+          <p style="color: var(--color-text); font-size: 0.95rem; line-height: 1.8; margin-bottom: 1rem;">
+            <?php echo h($sec_founder['p2']); ?>
+          </p>
+        <?php endif; ?>
 
-        <p style="color: var(--color-text); font-size: 0.95rem; line-height: 1.8; margin-bottom: 1rem;">
-          Our vision is to create a 100% online, future-ready learning environment where every child has the opportunity to learn beyond geographical boundaries while receiving the guidance, structure and personal attention needed to thrive.
-        </p>
+        <?php if (!empty($sec_founder['p3'])): ?>
+          <p style="color: var(--color-text); font-size: 0.95rem; line-height: 1.8; margin-bottom: 1rem;">
+            <?php echo h($sec_founder['p3']); ?>
+          </p>
+        <?php endif; ?>
 
-        <p style="color: var(--color-text); font-size: 0.95rem; line-height: 1.8; margin-bottom: 1.5rem;">
-          Our aspiration is simple yet powerful: to nurture confident learners, independent thinkers, compassionate individuals and responsible global citizens who are prepared not just for the next grade, but for the world ahead.
-        </p>
+        <?php if (!empty($sec_founder['p4'])): ?>
+          <p style="color: var(--color-text); font-size: 0.95rem; line-height: 1.8; margin-bottom: 1.5rem;">
+            <?php echo h($sec_founder['p4']); ?>
+          </p>
+        <?php endif; ?>
 
         <div class="founder-signoff-box">
           <p style="margin: 0; font-size: 0.95rem;">Warm regards,</p>
-          <p style="margin: 0.25rem 0 0 0; font-weight: 700; font-size: 1.05rem; color: var(--color-navy-dark);">Founder</p>
-          <p style="margin: 0; font-size: 0.85rem; color: var(--color-gold); font-weight: 600;">Zuvio Global School</p>
+          <p style="margin: 0.25rem 0 0 0; font-weight: 700; font-size: 1.05rem; color: var(--color-navy-dark);"><?php echo h($sec_founder['author_name'] ?? 'Founder'); ?></p>
+          <p style="margin: 0; font-size: 0.85rem; color: var(--color-gold); font-weight: 600;"><?php echo h($sec_founder['author_title'] ?? 'Zuvio Global School'); ?></p>
         </div>
       </div>
 
     </div>
   </div>
 </section>
+<?php endif; ?>
 
 <!-- ========================================================================
-     SECTION 20: FAQ (TWO-COLUMN ACCORDION LAYOUT WITH 18 QUESTIONS FROM PDF)
+     SECTION 15: FAQ PREVIEW (TWO-COLUMN ACCORDION)
      ======================================================================== -->
+<?php if (!isset($sec_faq['is_active']) || !empty($sec_faq['is_active'])): ?>
 <section id="faq" class="section" style="background-color: var(--color-surface); border-bottom: 1px solid var(--color-border); padding: 5.5rem 0;">
   <div class="container">
     <div class="text-center" style="margin-bottom: 2rem;">
-      <span style="font-size: 0.85rem; font-weight: 700; color: var(--color-gold); text-transform: uppercase; letter-spacing: 2px;">Got Questions?</span>
-      <h2 style="font-size: 2.5rem; color: var(--color-navy); margin-top: 0.5rem; font-family: var(--font-primary);">Parent FAQ — Online Schooling</h2>
+      <span style="font-size: 0.85rem; font-weight: 700; color: var(--color-gold); text-transform: uppercase; letter-spacing: 2px;"><?php echo h($sec_faq['badge'] ?? 'Got Questions?'); ?></span>
+      <h2 style="font-size: 2.5rem; color: var(--color-navy); margin-top: 0.5rem; font-family: var(--font-primary);"><?php echo h($sec_faq['title'] ?? 'Parent FAQ — Online Schooling'); ?></h2>
       <p style="color: var(--color-muted); font-size: 1.05rem; margin-top: 0.5rem; max-width: 650px; margin-left: auto; margin-right: auto;">
-        A quick guide for parents to understand Zuvio’s online schooling model, curriculum, assessments, communication and student support.
+        <?php echo h($sec_faq['subtitle'] ?? 'A quick guide for parents to understand Zuvio’s online schooling model, curriculum, assessments, communication and student support.'); ?>
       </p>
     </div>
 
@@ -1133,27 +1262,30 @@ include_once dirname(__FILE__) . '/../includes/header.php';
     </div>
   </div>
 </section>
+<?php endif; ?>
 
 <!-- ========================================================================
-     SECTION 21: FINAL CONVERSION CTA
+     SECTION 16: FINAL CONVERSION CTA
      ======================================================================== -->
+<?php if (!isset($sec_cta['is_active']) || !empty($sec_cta['is_active'])): ?>
 <section class="section text-center" style="background: linear-gradient(135deg, var(--pastel-blue) 0%, var(--pastel-yellow) 100%); padding: 6.5rem 0;">
   <div class="container" style="max-width: 760px;">
-    <span style="font-size: 0.85rem; font-weight: 700; color: var(--color-gold); text-transform: uppercase; letter-spacing: 2px;">Start Your Journey</span>
-    <h2 style="font-size: 2.75rem; color: var(--color-navy-dark); margin: 0.75rem 0 1.25rem 0; font-family: var(--font-primary); font-weight: 700;">Ready to Experience Zuvio?</h2>
+    <span style="font-size: 0.85rem; font-weight: 700; color: var(--color-gold); text-transform: uppercase; letter-spacing: 2px;"><?php echo h($sec_cta['badge'] ?? 'Start Your Journey'); ?></span>
+    <h2 style="font-size: 2.75rem; color: var(--color-navy-dark); margin: 0.75rem 0 1.25rem 0; font-family: var(--font-primary); font-weight: 700;"><?php echo h($sec_cta['title'] ?? 'Ready to Experience Zuvio?'); ?></h2>
     <p style="color: var(--color-text); font-size: 1.15rem; line-height: 1.8; margin-bottom: 2.5rem;">
-      Connect with our academic team today to discuss an age-appropriate learning timeline and personalized curriculum roadmap for your child.
+      <?php echo h($sec_cta['subtitle'] ?? 'Connect with our academic team today to discuss an age-appropriate learning timeline and personalized curriculum roadmap for your child.'); ?>
     </p>
     <div style="display: flex; gap: 1.25rem; justify-content: center; flex-wrap: wrap;">
-      <a href="/admissions#enrol" class="btn btn-primary" style="padding: 1rem 3rem; font-size: 1.05rem; background-color: var(--color-navy); border-color: var(--color-navy); color: #FFFFFF; font-weight: 700;">
-        Begin Your Journey
+      <a href="<?php echo h($sec_cta['primary_btn_url'] ?? '/admissions#enrol'); ?>" class="btn btn-primary" style="padding: 1rem 3rem; font-size: 1.05rem; background-color: var(--color-navy); border-color: var(--color-navy); color: #FFFFFF; font-weight: 700;">
+        <?php echo h($sec_cta['primary_btn_text'] ?? 'Begin Your Journey'); ?>
       </a>
-      <a href="javascript:void(0)" onclick="openCallbackModal()" class="btn btn-primary btn-demo" style="padding: 1rem 2.5rem; font-size: 1.05rem; background-color: var(--color-teal); border-color: var(--color-teal); color: #FFFFFF; font-weight: 700;">
-        Book a Free Demo
+      <a href="<?php echo h($sec_cta['secondary_btn_action'] ?? 'javascript:openCallbackModal()'); ?>" class="btn btn-primary btn-demo" style="padding: 1rem 2.5rem; font-size: 1.05rem; background-color: var(--color-teal); border-color: var(--color-teal); color: #FFFFFF; font-weight: 700;">
+        <?php echo h($sec_cta['secondary_btn_text'] ?? 'Book a Free Demo'); ?>
       </a>
     </div>
   </div>
 </section>
+<?php endif; ?>
 
 <!-- Interactive Scripts: FAQ, Featured In Slider, and Stats Counter -->
 <script>
