@@ -125,7 +125,7 @@ button, input, select, textarea {
 
 .btn-outline:hover {
   background-color: var(--color-navy);
-  color: var(--color-white);
+  color: #FFFFFF !important;
   transform: translateY(-2px);
   box-shadow: 0 8px 20px rgba(6, 43, 99, 0.14);
 }
@@ -133,6 +133,49 @@ button, input, select, textarea {
 .btn-outline:active {
   transform: translateY(0);
   box-shadow: 0 4px 10px rgba(6, 43, 99, 0.08);
+}
+
+/* === GLOBAL RULE: Dark background buttons always get white text === */
+/* Covers: navy, teal, dark — both inline style and class-based */
+.btn-dark {
+  color: #FFFFFF !important;
+}
+.btn-dark:hover,
+.btn-dark:focus {
+  color: #FFFFFF !important;
+  opacity: 0.9;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(6, 43, 99, 0.18);
+}
+
+/* Attribute selector catches inline style dark backgrounds */
+.btn[style*="background-color: var(--color-navy)"],
+.btn[style*="background: var(--color-navy)"],
+.btn[style*="background-color: var(--color-navy-dark)"],
+.btn[style*="background: var(--color-navy-dark)"],
+.btn[style*="background-color: var(--color-teal)"],
+.btn[style*="background: var(--color-teal)"],
+.btn[style*="background-color: #062B63"],
+.btn[style*="background-color: #062b63"],
+.btn[style*="background-color: #0D9488"],
+.btn[style*="background: linear-gradient"] {
+  color: #FFFFFF !important;
+}
+
+.btn[style*="background-color: var(--color-navy)"]:hover,
+.btn[style*="background: var(--color-navy)"]:hover,
+.btn[style*="background-color: var(--color-navy-dark)"]:hover,
+.btn[style*="background: var(--color-navy-dark)"]:hover,
+.btn[style*="background-color: var(--color-teal)"]:hover,
+.btn[style*="background: var(--color-teal)"]:hover,
+.btn[style*="background-color: #062B63"]:hover,
+.btn[style*="background-color: #062b63"]:hover,
+.btn[style*="background-color: #0D9488"]:hover,
+.btn[style*="background: linear-gradient"]:hover {
+  color: #FFFFFF !important;
+  opacity: 0.9;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(6, 43, 99, 0.18);
 }
 
 /* Accessibility settings for motion-sensitive users */
