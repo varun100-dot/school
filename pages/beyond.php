@@ -5,6 +5,13 @@ require_once dirname(__FILE__) . '/../includes/helper.php';
 
 safe_session_start();
 
+// Initialize CMS store for Beyond
+$db_beyond = get_json_setting('cms_beyond', []);
+if (!isset($_SESSION['mock_beyond_cms']) || !empty($db_beyond)) {
+    $_SESSION['mock_beyond_cms'] = !empty($db_beyond) ? $db_beyond : [];
+}
+$beyond_cms = &$_SESSION['mock_beyond_cms'];
+
 $page_slug = 'zuvio-beyond';
 include_once dirname(__FILE__) . '/../includes/header.php';
 
@@ -946,33 +953,48 @@ html {
 </style>
 
 <!-- Hero Section (Page 1 Content) -->
+<?php if ((!isset($beyond_cms['hero']['is_active']) || !empty($beyond_cms['hero']['is_active'])) && empty($beyond_cms['hero']['is_removed'])): 
+  $bh = $beyond_cms['hero'] ?? [];
+?>
 <section class="beyond-hero">
   <div class="beyond-hero-inner">
-    <span class="beyond-hero-tag">ZUVIO BEYOND</span>
-    <span class="beyond-hero-subtitle">LEARNING BEYOND CLASSROOMS</span>
-    <h1 class="beyond-hero-title">Discover. Create. Grow<br>Beyond.</h1>
+    <span class="beyond-hero-tag"><?php echo h($bh['tag'] ?? 'ZUVIO BEYOND'); ?></span>
+    <span class="beyond-hero-subtitle"><?php echo h($bh['subtitle'] ?? 'LEARNING BEYOND CLASSROOMS'); ?></span>
+    <h1 class="beyond-hero-title"><?php echo nl2br(h($bh['title'] ?? "Discover. Create. Grow\nBeyond.")); ?></h1>
     <p class="beyond-hero-desc">
-      A vibrant enrichment space for future-ready skills, creative expression and meaningful interests.
+      <?php echo h($bh['desc'] ?? 'A vibrant enrichment space for future-ready skills, creative expression and meaningful interests.'); ?>
     </p>
-    <div class="beyond-hero-grades">NURSERY – GRADE 8</div>
+    <div class="beyond-hero-grades"><?php echo h($bh['grades'] ?? 'NURSERY – GRADE 8'); ?></div>
 
     <!-- Dedicated Sub-Pages Gateway Links -->
     <div style="display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; margin-top: 2rem;">
+      <?php if ((!isset($beyond_cms['cocurricular']['is_active']) || !empty($beyond_cms['cocurricular']['is_active'])) && empty($beyond_cms['cocurricular']['is_removed'])): ?>
       <a href="/beyond/co-curricular" style="background: rgba(255,255,255,0.12); border: 1.5px solid rgba(255,255,255,0.3); color: #FFFFFF; font-size: 0.88rem; font-weight: 700; padding: 0.6rem 1.25rem; border-radius: 25px; text-decoration: none; transition: all 0.2s;">
         Global Clubs &amp; Co-Curricular &rarr;
       </a>
+      <?php endif; ?>
+
+      <?php if ((!isset($beyond_cms['achievers']['is_active']) || !empty($beyond_cms['achievers']['is_active'])) && empty($beyond_cms['achievers']['is_removed'])): ?>
       <a href="/beyond/student-achievers" style="background: rgba(255,255,255,0.12); border: 1.5px solid rgba(255,255,255,0.3); color: #FFFFFF; font-size: 0.88rem; font-weight: 700; padding: 0.6rem 1.25rem; border-radius: 25px; text-decoration: none; transition: all 0.2s;">
         Student Achievers &rarr;
       </a>
+      <?php endif; ?>
+
+      <?php if ((!isset($beyond_cms['gallery_meta']['is_active']) || !empty($beyond_cms['gallery_meta']['is_active'])) && empty($beyond_cms['gallery_meta']['is_removed'])): ?>
       <a href="/beyond/gallery" style="background: rgba(255,255,255,0.12); border: 1.5px solid rgba(255,255,255,0.3); color: #FFFFFF; font-size: 0.88rem; font-weight: 700; padding: 0.6rem 1.25rem; border-radius: 25px; text-decoration: none; transition: all 0.2s;">
         Photo Gallery &rarr;
       </a>
+      <?php endif; ?>
+
+      <?php if ((!isset($beyond_cms['classroom_meta']['is_active']) || !empty($beyond_cms['classroom_meta']['is_active'])) && empty($beyond_cms['classroom_meta']['is_removed'])): ?>
       <a href="/beyond/virtual-classroom" style="background: rgba(255,255,255,0.12); border: 1.5px solid rgba(255,255,255,0.3); color: #FFFFFF; font-size: 0.88rem; font-weight: 700; padding: 0.6rem 1.25rem; border-radius: 25px; text-decoration: none; transition: all 0.2s;">
         Inside Virtual Classroom &rarr;
       </a>
+      <?php endif; ?>
     </div>
   </div>
 </section>
+<?php endif; ?>
 
 <!-- Category Overview Section (Page 2 Content) -->
 <section class="beyond-category-section">

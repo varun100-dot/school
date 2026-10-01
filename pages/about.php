@@ -442,7 +442,8 @@ render_breadcrumbs([
 ]);
 ?>
 
-<!-- 1. Hero Banner Header -->
+<!-- 1. Hero Banner Header & Story -->
+<?php if ((!isset($cms['story']['is_active']) || !empty($cms['story']['is_active'])) && empty($cms['story']['is_removed'])): ?>
 <section class="about-hero" style="background-color: var(--pastel-blue); color: var(--color-navy); padding: 5rem 1.5rem; text-align: center; border-bottom: 1px solid var(--color-border);">
   <div class="container" style="max-width: 850px;">
     <span style="font-size: 0.85rem; font-weight: 700; color: var(--color-gold); text-transform: uppercase; letter-spacing: 2px; display: block; margin-bottom: 0.75rem;">
@@ -520,8 +521,10 @@ render_breadcrumbs([
     </div>
   </div>
 </section>
+<?php endif; ?>
 
 <!-- 3. Section: Values (What Matters at Zuvio) -->
+<?php if ((!isset($cms['values']['is_active']) || !empty($cms['values']['is_active'])) && empty($cms['values']['is_removed'])): ?>
 <section id="values" class="section" style="background-color: var(--color-white); border-bottom: 1px solid var(--color-border); padding: 5rem 0;">
   <div class="container">
     <div class="text-center" style="max-width: 750px; margin: 0 auto 3.5rem auto;">
@@ -561,8 +564,10 @@ render_breadcrumbs([
     </div>
   </div>
 </section>
+<?php endif; ?>
 
 <!-- 4. Section: What Sets Us Apart -->
+<?php if ((!isset($cms['apart']['is_active']) || !empty($cms['apart']['is_active'])) && empty($cms['apart']['is_removed'])): ?>
 <section id="what-sets-us-apart" class="section" style="background-color: var(--color-surface-warm); border-bottom: 1px solid var(--color-border); padding: 5rem 0;">
   <div class="container">
     <div class="text-center" style="max-width: 750px; margin: 0 auto 3.5rem auto;">
@@ -597,8 +602,10 @@ render_breadcrumbs([
     </div>
   </div>
 </section>
+<?php endif; ?>
 
 <!-- 5. Section: ZUVIO Approach (Z-U-V-I-O) -->
+<?php if ((!isset($cms['approach']['is_active']) || !empty($cms['approach']['is_active'])) && empty($cms['approach']['is_removed'])): ?>
 <section id="our-approach" class="section" style="background-color: var(--color-white); border-bottom: 1px solid var(--color-border); padding: 5rem 0;">
   <div class="container">
     <div class="text-center" style="max-width: 750px; margin: 0 auto 3.5rem auto;">
@@ -632,8 +639,10 @@ render_breadcrumbs([
     </div>
   </div>
 </section>
+<?php endif; ?>
 
 <!-- 6. Section: Who Should Choose Zuvio -->
+<?php if ((!isset($cms['audiences']['is_active']) || !empty($cms['audiences']['is_active'])) && empty($cms['audiences']['is_removed'])): ?>
 <section id="who-should-choose" class="section" style="background-color: var(--pastel-blue); border-bottom: 1px solid var(--color-border); padding: 5rem 0;">
   <div class="container">
     <div class="text-center" style="max-width: 780px; margin: 0 auto 3.5rem auto;">
@@ -685,6 +694,7 @@ render_breadcrumbs([
     </div>
   </div>
 </section>
+<?php endif; ?>
 
 <!-- 7. Section: Our Team (Leadership Team) -->
 <section id="our-team" class="section" style="background-color: var(--color-white); border-bottom: 1px solid var(--color-border); padding: 5rem 0;">
@@ -741,6 +751,7 @@ render_breadcrumbs([
 </section>
 
 <!-- 8. Section: Founder’s Message (Official) -->
+<?php if ((!isset($cms['founder_msg']['is_active']) || !empty($cms['founder_msg']['is_active'])) && empty($cms['founder_msg']['is_removed'])): ?>
 <section id="founders-message" class="founder-message-section" style="background-color: var(--color-surface-warm); border-bottom: 1px solid var(--color-border); padding: 5rem 0;">
   <div class="container">
     <div class="founder-editorial-card">
@@ -915,8 +926,10 @@ render_breadcrumbs([
 
   </div>
 </section>
+<?php endif; ?>
 
 <!-- 10. Section: Awards / In Media -->
+<?php if ((!isset($cms['awards']['is_active']) || !empty($cms['awards']['is_active'])) && empty($cms['awards']['is_removed'])): ?>
 <section id="awards" class="section" style="background-color: var(--color-surface-warm); border-bottom: 1px solid var(--color-border); padding: 5rem 0;">
   <div class="container">
     <div class="text-center" style="max-width: 750px; margin: 0 auto 3.5rem auto;">
@@ -949,6 +962,7 @@ render_breadcrumbs([
     </div>
   </div>
 </section>
+<?php endif; ?>
 
 <!-- 11. Section: Affiliations & Accreditations (Strictly Preserved Links & Logos) -->
 <section id="accreditations" class="section" style="background-color: var(--pastel-blue); border-bottom: 1px solid var(--color-border); padding: 5.5rem 0;">
@@ -1016,6 +1030,34 @@ render_breadcrumbs([
     </div>
   </div>
 </section>
+
+<!-- 12. Conversion CTA Banner -->
+<?php 
+$cta_cfg = $cms['cta'] ?? [];
+if ((!isset($cta_cfg['is_active']) || !empty($cta_cfg['is_active'])) && empty($cta_cfg['is_removed'])): 
+?>
+<section class="section text-center" style="background: linear-gradient(135deg, var(--pastel-blue) 0%, var(--pastel-yellow) 100%); padding: 5.5rem 0; border-top: 1px solid var(--color-border);">
+  <div class="container" style="max-width: 760px;">
+    <span style="font-size: 0.85rem; font-weight: 700; color: var(--color-gold); text-transform: uppercase; letter-spacing: 2px;">
+      <?php echo h($cta_cfg['badge'] ?? 'Take the Next Step'); ?>
+    </span>
+    <h2 style="font-size: 2.5rem; color: var(--color-navy-dark); margin: 0.75rem 0 1rem 0; font-family: var(--font-primary); font-weight: 700;">
+      <?php echo h($cta_cfg['title'] ?? 'Ready to Explore Zuvio for Your Child?'); ?>
+    </h2>
+    <p style="color: var(--color-text); font-size: 1.1rem; line-height: 1.7; margin-bottom: 2rem;">
+      <?php echo h($cta_cfg['subtitle'] ?? 'Schedule an online interaction with our academic advisors to understand our personalized learning pathways.'); ?>
+    </p>
+    <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+      <a href="<?php echo h($cta_cfg['btn_primary_url'] ?? '/contact'); ?>" class="btn btn-primary" style="background-color: var(--color-navy); border-color: var(--color-navy); color: #FFFFFF; font-weight: 700; padding: 0.85rem 2rem;">
+        <?php echo h($cta_cfg['btn_primary_text'] ?? 'Book Free Counselling'); ?>
+      </a>
+      <a href="<?php echo h($cta_cfg['btn_secondary_url'] ?? '/academics'); ?>" class="btn btn-outline" style="border-color: var(--color-navy); color: var(--color-navy); font-weight: 600; padding: 0.85rem 2rem;">
+        <?php echo h($cta_cfg['btn_secondary_text'] ?? 'Explore Academics'); ?>
+      </a>
+    </div>
+  </div>
+</section>
+<?php endif; ?>
 
 <?php
 include_once dirname(__FILE__) . '/../includes/footer.php';

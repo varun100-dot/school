@@ -1,5 +1,5 @@
 <?php
-// Zuvio Global School - Admin Contact Us CMS Manager
+// Zuvio Global School - Admin Contact Us CMS Manager (Unified 2-Column Section Manager)
 require_once dirname(__FILE__) . '/../includes/db.php';
 require_once dirname(__FILE__) . '/../includes/helper.php';
 require_once dirname(__FILE__) . '/../includes/auth.php';
@@ -9,7 +9,7 @@ require_login();
 
 $msg = $_GET['msg'] ?? '';
 $error = '';
-$tab = $_GET['tab'] ?? 'details';
+$selected_sec = $_GET['sec'] ?? 'details';
 
 // Persistent CMS Storage (MySQL database with session fallback)
 $db_saved = get_json_setting('cms_contact', []);
@@ -18,16 +18,10 @@ if (!isset($_SESSION['mock_contact_cms']) || !empty($db_saved)) {
 }
 $contact_cms = &$_SESSION['mock_contact_cms'];
 
-function redirect_and_save_contact($tab, $msg) {
-    global $contact_cms;
-    set_json_setting('cms_contact', $contact_cms, 'Contact CMS Content');
-    header("Location: /admin/contact-cms.php?tab=" . urlencode($tab) . "&msg=" . urlencode($msg));
-    exit;
-}
-
 // 1. Defaults for Details
 if (!isset($contact_cms['details'])) {
     $contact_cms['details'] = [
+        'is_active' => 1,
         'heading' => 'Contact Us / Enquire Now',
         'badge' => 'Admissions & Academic Office',
         'subheading' => 'We are here to support your child’s onboarding. Connect directly with our academic coordinators or submit an enquiry below.',
@@ -40,6 +34,13 @@ if (!isset($contact_cms['details'])) {
 }
 
 // 2. Defaults for Social Links
+if (!isset($contact_cms['social'])) {
+    $contact_cms['social'] = [
+        'is_active' => 1,
+        'title' => 'Social Media Channels',
+        'subtitle' => 'Follow and interact with Zuvio Global School across official digital channels.'
+    ];
+}
 if (!isset($contact_cms['social_links'])) {
     $contact_cms['social_links'] = [
         [
@@ -83,34 +84,24 @@ if (!isset($contact_cms['social_links'])) {
             'is_published' => 1
         ]
     ];
-} else {
-    foreach ($contact_cms['social_links'] as &$s_link) {
-        $plat = strtolower($s_link['platform'] ?? '');
-        if ($plat === 'instagram') $s_link['url'] = 'https://www.instagram.com/thezuvio/';
-        elseif ($plat === 'facebook') $s_link['url'] = 'https://www.facebook.com/share/1XsYWDm3rt/';
-        elseif ($plat === 'linkedin') $s_link['url'] = 'https://www.linkedin.com/company/zuvio-global-school/';
-        elseif ($plat === 'youtube') $s_link['url'] = 'https://www.youtube.com/@zuvioglobalschool';
-    }
-    unset($s_link);
 }
 
 // 3. Defaults for Map Settings
 if (!isset($contact_cms['map'])) {
     $contact_cms['map'] = [
-        'is_visible' => 1,
+        'is_active' => 1,
         'title' => 'Our Headquarter Office',
         'subtitle' => 'Located at ITL Twin Tower, Netaji Subhash Place (NSP), Pitampura — easily accessible via Delhi Metro (Red & Pink Lines).',
         'embed_url' => 'https://maps.google.com/maps?q=ITL+Twin+Tower,+Netaji+Subhash+Place,+Pitampura,+Delhi+110034&t=&z=15&ie=UTF8&iwloc=&output=embed',
         'directions_url' => 'https://www.google.com/maps/search/?api=1&query=ITL+Twin+Tower,+Netaji+Subhash+Place,+Pitampura,+Delhi+110034',
         'height' => 420
     ];
-} elseif (isset($contact_cms['map']['title']) && $contact_cms['map']['title'] === 'Our Academic & Admissions Office') {
-    $contact_cms['map']['title'] = 'Our Headquarter Office';
 }
 
 // 4. Defaults for Form Settings
 if (!isset($contact_cms['form'])) {
     $contact_cms['form'] = [
+        'is_active' => 1,
         'title' => 'Enquire Now',
         'subtitle' => 'Please fill the form and we will get back to you within one working day.',
         'success_title' => 'Enquiry Submitted Successfully',
@@ -123,7 +114,7 @@ if (!isset($contact_cms['form'])) {
 // 5. Defaults for Conversion Banner
 if (!isset($contact_cms['banner'])) {
     $contact_cms['banner'] = [
-        'is_visible' => 1,
+        'is_active' => 1,
         'heading' => 'Ready to Experience Modern Virtual Schooling?',
         'subheading' => 'Join forward-thinking families who have chosen flexible, CBSE-aligned online education tailored to their child.',
         'cta_primary_label' => 'Book a Free 1-on-1 Demo',
@@ -133,17 +124,55 @@ if (!isset($contact_cms['banner'])) {
     ];
 }
 
-// -------------------------------------------------------------
-// POST HANDLERS
-// -------------------------------------------------------------
+// 5 Contact Sections
+$sections_nav = [
+    'details' => ['num' => 1, 'name' => 'Contact Details & Hours', 'icon' => '📞'],
+    'form'    => ['num' => 2, 'name' => 'Enquiry Form Settings', 'icon' => '📝'],
+    'map'     => ['num' => 3, 'name' => 'Google Maps Location', 'icon' => '📍'],
+    'social'  => ['num' => 4, 'name' => 'Social Media Links', 'icon' => '🌐'],
+    'banner'  => ['num' => 5, 'name' => 'Conversion CTA Banner', 'icon' => '🚀']
+];
+
+if (!array_key_exists($selected_sec, $sections_nav)) {
+    $selected_sec = 'details';
+}
+
+function redirect_and_save_contact($sec, $msg) {
+    global $contact_cms;
+    set_json_setting('cms_contact', $contact_cms, 'Contact CMS Content');
+    header("Location: /admin/contact-cms.php?sec=" . urlencode($sec) . "&msg=" . urlencode($msg));
+    exit;
+}
+
+// Handle Form Submissions
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!validate_csrf_token($_POST['csrf_token'] ?? '')) {
-        $error = 'Security validation failed. Please refresh and try again.';
+        $error = 'Security check failed. Please refresh and try again.';
     } else {
         $action = $_POST['action'] ?? '';
+        $target_sec = $_POST['section_key'] ?? $selected_sec;
 
-        // 1. Save Details
-        if ($action === 'save_details') {
+        // Apply Section Removal / Restoration / Visibility
+        if (!isset($contact_cms[$target_sec])) {
+            $contact_cms[$target_sec] = [];
+        }
+
+        $sec_action = $_POST['sec_action'] ?? '';
+        if ($sec_action === 'remove') {
+            $contact_cms[$target_sec]['is_removed'] = 1;
+            $contact_cms[$target_sec]['is_active'] = 0;
+        } elseif ($sec_action === 'restore') {
+            $contact_cms[$target_sec]['is_removed'] = 0;
+            $contact_cms[$target_sec]['is_active'] = 1;
+        } else {
+            $contact_cms[$target_sec]['is_active'] = isset($_POST['is_active']) ? (int)$_POST['is_active'] : 0;
+            if ($contact_cms[$target_sec]['is_active'] == 1) {
+                $contact_cms[$target_sec]['is_removed'] = 0;
+            }
+        }
+
+        // Section 1: Details
+        if ($target_sec === 'details') {
             $contact_cms['details']['badge'] = trim($_POST['badge'] ?? '');
             $contact_cms['details']['heading'] = trim($_POST['heading'] ?? '');
             $contact_cms['details']['subheading'] = trim($_POST['subheading'] ?? '');
@@ -165,529 +194,555 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     error_log("[Settings Sync Error] " . $e->getMessage());
                 }
             }
-
             redirect_and_save_contact('details', 'saved');
         }
 
-        // 2. Add Social Link
-        if ($action === 'add_social') {
-            $platform = trim($_POST['platform'] ?? '');
-            $url = trim($_POST['url'] ?? '');
-            $icon = strtolower(trim($_POST['icon'] ?? $platform));
-            $sort_order = (int)($_POST['sort_order'] ?? count($contact_cms['social_links']) + 1);
-            $is_published = isset($_POST['is_published']) ? 1 : 0;
-
-            if ($platform && $url) {
-                $new_id = 1;
-                foreach ($contact_cms['social_links'] as $item) {
-                    if ($item['id'] >= $new_id) $new_id = $item['id'] + 1;
-                }
-                $contact_cms['social_links'][] = [
-                    'id' => $new_id,
-                    'platform' => $platform,
-                    'icon' => $icon,
-                    'url' => $url,
-                    'sort_order' => $sort_order,
-                    'is_published' => $is_published
-                ];
-                redirect_and_save_contact('social', 'added');
-            } else {
-                $error = 'Platform and URL are required.';
-            }
+        // Section 2: Form Settings
+        if ($target_sec === 'form') {
+            $contact_cms['form']['title'] = trim($_POST['title'] ?? '');
+            $contact_cms['form']['subtitle'] = trim($_POST['subtitle'] ?? '');
+            $contact_cms['form']['success_title'] = trim($_POST['success_title'] ?? '');
+            $contact_cms['form']['success_message'] = trim($_POST['success_message'] ?? '');
+            $contact_cms['form']['button_text'] = trim($_POST['button_text'] ?? '');
+            $contact_cms['form']['consent_text'] = trim($_POST['consent_text'] ?? '');
+            redirect_and_save_contact('form', 'saved');
         }
 
-        // 3. Edit Social Link
-        if ($action === 'edit_social') {
-            $id = (int)$_POST['id'];
-            $platform = trim($_POST['platform'] ?? '');
-            $url = trim($_POST['url'] ?? '');
-            $icon = strtolower(trim($_POST['icon'] ?? $platform));
-            $sort_order = (int)$_POST['sort_order'];
-            $is_published = isset($_POST['is_published']) ? 1 : 0;
-
-            foreach ($contact_cms['social_links'] as &$item) {
-                if ($item['id'] === $id) {
-                    $item['platform'] = $platform;
-                    $item['icon'] = $icon;
-                    $item['url'] = $url;
-                    $item['sort_order'] = $sort_order;
-                    $item['is_published'] = $is_published;
-                    break;
-                }
-            }
-            redirect_and_save_contact('social', 'updated');
-        }
-
-        // 4. Delete Social Link
-        if ($action === 'delete_social') {
-            $id = (int)$_POST['id'];
-            $contact_cms['social_links'] = array_values(array_filter($contact_cms['social_links'], function($i) use ($id) {
-                return $i['id'] !== $id;
-            }));
-            redirect_and_save_contact('social', 'deleted');
-        }
-
-        // 5. Toggle Social Publish
-        if ($action === 'toggle_social') {
-            $id = (int)$_POST['id'];
-            foreach ($contact_cms['social_links'] as &$item) {
-                if ($item['id'] === $id) {
-                    $item['is_published'] = $item['is_published'] ? 0 : 1;
-                    break;
-                }
-            }
-            redirect_and_save_contact('social', 'status_toggled');
-        }
-
-        // 6. Save Map Settings
-        if ($action === 'save_map') {
-            $contact_cms['map']['is_visible'] = isset($_POST['is_visible']) ? 1 : 0;
+        // Section 3: Map
+        if ($target_sec === 'map') {
             $contact_cms['map']['title'] = trim($_POST['title'] ?? '');
             $contact_cms['map']['subtitle'] = trim($_POST['subtitle'] ?? '');
             $contact_cms['map']['embed_url'] = trim($_POST['embed_url'] ?? '');
             $contact_cms['map']['directions_url'] = trim($_POST['directions_url'] ?? '');
             $contact_cms['map']['height'] = (int)($_POST['height'] ?? 420);
-
             redirect_and_save_contact('map', 'saved');
         }
 
-        // 7. Save Form Configuration
-        if ($action === 'save_form') {
-            $contact_cms['form']['title'] = trim($_POST['title'] ?? '');
-            $contact_cms['form']['subtitle'] = trim($_POST['subtitle'] ?? '');
-            $contact_cms['form']['button_text'] = trim($_POST['button_text'] ?? 'Submit Enquiry Form');
-            $contact_cms['form']['consent_text'] = trim($_POST['consent_text'] ?? '');
-            $contact_cms['form']['success_title'] = trim($_POST['success_title'] ?? '');
-            $contact_cms['form']['success_message'] = trim($_POST['success_message'] ?? '');
+        // Section 4: Social
+        if ($target_sec === 'social') {
+            $contact_cms['social']['title'] = trim($_POST['title'] ?? 'Social Media Channels');
+            $contact_cms['social']['subtitle'] = trim($_POST['subtitle'] ?? '');
 
-            redirect_and_save_contact('form', 'saved');
+            if ($action === 'add_social') {
+                $platform = trim($_POST['new_platform'] ?? '');
+                $url = trim($_POST['new_url'] ?? '');
+                if ($platform && $url) {
+                    $contact_cms['social_links'][] = [
+                        'id' => time(),
+                        'platform' => $platform,
+                        'icon' => strtolower($platform),
+                        'url' => $url,
+                        'sort_order' => count($contact_cms['social_links']) + 1,
+                        'is_published' => 1
+                    ];
+                }
+            } elseif ($action === 'delete_social') {
+                $id = (int)($_POST['item_id'] ?? 0);
+                $contact_cms['social_links'] = array_values(array_filter($contact_cms['social_links'], fn($s) => ($s['id'] ?? 0) != $id));
+            } elseif (isset($_POST['social_urls']) && is_array($_POST['social_urls'])) {
+                foreach ($_POST['social_urls'] as $sid => $surl) {
+                    foreach ($contact_cms['social_links'] as &$link) {
+                        if (($link['id'] ?? 0) == $sid) {
+                            $link['url'] = trim($surl);
+                        }
+                    }
+                }
+            }
+            redirect_and_save_contact('social', 'saved');
         }
 
-        // 8. Save Conversion Banner
-        if ($action === 'save_banner') {
-            $contact_cms['banner']['is_visible'] = isset($_POST['is_visible']) ? 1 : 0;
+        // Section 5: Banner
+        if ($target_sec === 'banner') {
             $contact_cms['banner']['heading'] = trim($_POST['heading'] ?? '');
             $contact_cms['banner']['subheading'] = trim($_POST['subheading'] ?? '');
             $contact_cms['banner']['cta_primary_label'] = trim($_POST['cta_primary_label'] ?? '');
             $contact_cms['banner']['cta_primary_url'] = trim($_POST['cta_primary_url'] ?? '');
             $contact_cms['banner']['cta_secondary_label'] = trim($_POST['cta_secondary_label'] ?? '');
             $contact_cms['banner']['cta_secondary_url'] = trim($_POST['cta_secondary_url'] ?? '');
-
             redirect_and_save_contact('banner', 'saved');
         }
     }
 }
 
-// Sort social links
-usort($contact_cms['social_links'], function($a, $b) {
-    return ($a['sort_order'] ?? 0) <=> ($b['sort_order'] ?? 0);
-});
-
-$current_page = 'admin-contact-cms';
+$page_slug = 'admin-contact-cms';
 include_once dirname(__FILE__) . '/header.php';
 ?>
 
-<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.75rem; flex-wrap: wrap; gap: 1rem;">
   <div>
     <h1 style="font-family: var(--font-secondary); font-size: 1.6rem; color: var(--color-navy); margin-bottom: 0.25rem;">
-      Contact Us CMS Manager
+      Contact Us Section Manager
     </h1>
-    <p style="color: var(--color-muted); font-size: 0.85rem; margin: 0;">
-      Manage official contact details, social links, location map, enquiry form, and conversion CTA.
+    <p style="color: var(--color-muted); font-size: 0.85rem;">
+      Unified 2-column management for Contact page sections. Enable/disable, remove, or customize content.
     </p>
   </div>
-  <div style="display: flex; gap: 0.75rem;">
-    <a href="/contact" target="_blank" class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 0.35rem;">
-      <span>View Live Contact Page</span> &nearr;
+  <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+    <a href="/contact" target="_blank" class="btn btn-outline" style="padding: 0.45rem 0.85rem; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 0.4rem;">
+      <span>👁️</span> Preview Live Page &nearr;
+    </a>
+    <a href="/admin/contact-cms.php?sec=<?php echo urlencode($selected_sec); ?>" class="btn btn-outline" style="padding: 0.45rem 0.85rem; font-size: 0.8rem; background: #FFFFFF;">
+      ↻ Reload
     </a>
   </div>
 </div>
 
-<?php if ($msg === 'saved' || $msg === 'updated' || $msg === 'added' || $msg === 'deleted' || $msg === 'status_toggled'): ?>
-  <div style="background-color: #ECFDF5; border-left: 4px solid var(--color-success, #10B981); padding: 0.85rem 1.15rem; border-radius: var(--radius-sm); color: #065F46; font-size: 0.85rem; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-    <span>Action processed and published successfully.</span>
+<?php if ($msg === 'saved'): ?>
+  <div style="background-color: var(--color-surface-blue); border-left: 4px solid var(--color-success); padding: 0.85rem 1.25rem; border-radius: var(--radius-sm); color: var(--color-navy); font-size: 0.9rem; margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: space-between;">
+    <div><strong>✓ Saved & Synchronized!</strong> Section updates are live on the website.</div>
+    <span style="font-size: 0.8rem; color: var(--color-muted);"><?php echo date('H:i:s'); ?></span>
   </div>
 <?php endif; ?>
 
 <?php if ($error): ?>
-  <div style="background-color: #FEF2F2; border-left: 4px solid #EF4444; padding: 0.85rem 1.15rem; border-radius: var(--radius-sm); color: #B91C1C; font-size: 0.85rem; margin-bottom: 1.5rem;">
-    <?php echo h($error); ?>
+  <div style="background:#fde8e8; border-left:4px solid #c81e1e; padding:0.85rem 1.25rem; margin-bottom:1.5rem; color:#9b1c1c; font-size:0.9rem;">
+    <strong>Error:</strong> <?php echo h($error); ?>
   </div>
 <?php endif; ?>
 
-<!-- Tabs Navigation -->
-<div style="display: flex; gap: 0.5rem; border-bottom: 2px solid var(--color-border); margin-bottom: 2rem; overflow-x: auto; padding-bottom: 2px;">
-  <a href="?tab=details" style="padding: 0.65rem 1.25rem; font-size: 0.85rem; font-weight: 600; text-decoration: none; border-bottom: 2px solid <?php echo $tab === 'details' ? 'var(--color-teal)' : 'transparent'; ?>; color: <?php echo $tab === 'details' ? 'var(--color-navy)' : 'var(--color-muted)'; ?>; margin-bottom: -4px;">
-    1. Contact Details &amp; Hours
-  </a>
-  <a href="?tab=social" style="padding: 0.65rem 1.25rem; font-size: 0.85rem; font-weight: 600; text-decoration: none; border-bottom: 2px solid <?php echo $tab === 'social' ? 'var(--color-teal)' : 'transparent'; ?>; color: <?php echo $tab === 'social' ? 'var(--color-navy)' : 'var(--color-muted)'; ?>; margin-bottom: -4px;">
-    2. Social Media Links
-  </a>
-  <a href="?tab=map" style="padding: 0.65rem 1.25rem; font-size: 0.85rem; font-weight: 600; text-decoration: none; border-bottom: 2px solid <?php echo $tab === 'map' ? 'var(--color-teal)' : 'transparent'; ?>; color: <?php echo $tab === 'map' ? 'var(--color-navy)' : 'var(--color-muted)'; ?>; margin-bottom: -4px;">
-    3. Location Map Settings
-  </a>
-  <a href="?tab=form" style="padding: 0.65rem 1.25rem; font-size: 0.85rem; font-weight: 600; text-decoration: none; border-bottom: 2px solid <?php echo $tab === 'form' ? 'var(--color-teal)' : 'transparent'; ?>; color: <?php echo $tab === 'form' ? 'var(--color-navy)' : 'var(--color-muted)'; ?>; margin-bottom: -4px;">
-    4. Enquiry Form &amp; Copy
-  </a>
-  <a href="?tab=banner" style="padding: 0.65rem 1.25rem; font-size: 0.85rem; font-weight: 600; text-decoration: none; border-bottom: 2px solid <?php echo $tab === 'banner' ? 'var(--color-teal)' : 'transparent'; ?>; color: <?php echo $tab === 'banner' ? 'var(--color-navy)' : 'var(--color-muted)'; ?>; margin-bottom: -4px;">
-    5. Bottom Conversion Banner
-  </a>
+<!-- 2-Column Section Manager Layout -->
+<div style="display: grid; grid-template-columns: 310px 1fr; gap: 1.75rem; align-items: start;">
+
+  <!-- Left Sidebar: Sticky Section Sequence -->
+  <div style="position: sticky; top: 1.5rem;">
+    <div class="card" style="padding: 0; overflow: hidden; border: 1.5px solid rgba(6, 43, 99, 0.12); box-shadow: var(--shadow-sm);">
+      <div style="background: var(--color-navy); color: #FFFFFF; padding: 1rem 1.25rem; font-weight: 700; font-size: 0.9rem; display: flex; justify-content: space-between; align-items: center;">
+        <span>Contact Sections</span>
+        <span style="font-size: 0.75rem; background: rgba(255,255,255,0.2); padding: 0.2rem 0.55rem; border-radius: 12px; font-weight: 600;">
+          <?php echo count($sections_nav); ?> Total
+        </span>
+      </div>
+
+      <div style="divide-y: 1px solid var(--color-border); max-height: calc(100vh - 180px); overflow-y: auto;">
+        <?php foreach ($sections_nav as $skey => $sdata): 
+          $s_active = !isset($contact_cms[$skey]['is_active']) || !empty($contact_cms[$skey]['is_active']);
+          $s_removed = !empty($contact_cms[$skey]['is_removed']);
+          $is_current = ($selected_sec === $skey);
+        ?>
+          <a href="/admin/contact-cms.php?sec=<?php echo urlencode($skey); ?>" 
+             style="display: flex; align-items: center; justify-content: space-between; padding: 0.85rem 1.1rem; text-decoration: none; border-bottom: 1px solid var(--color-border); background: <?php echo $is_current ? 'var(--pastel-blue)' : '#FFFFFF'; ?>; border-left: 4px solid <?php echo $is_current ? 'var(--color-navy)' : 'transparent'; ?>; transition: all 0.15s ease;">
+            <div style="display: flex; align-items: center; gap: 0.75rem; min-width: 0;">
+              <span style="font-size: 0.75rem; font-weight: 800; color: var(--color-muted); width: 18px;">
+                <?php echo str_pad($sdata['num'], 2, '0', STR_PAD_LEFT); ?>
+              </span>
+              <span style="font-size: 1.1rem;"><?php echo $sdata['icon']; ?></span>
+              <span style="font-size: 0.85rem; font-weight: <?php echo $is_current ? '700' : '500'; ?>; color: var(--color-navy); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                <?php echo h($sdata['name']); ?>
+              </span>
+            </div>
+            <div>
+              <?php if ($s_removed): ?>
+                <span style="font-size: 0.7rem; font-weight: 700; color: #dc2626; background: #fee2e2; padding: 0.15rem 0.45rem; border-radius: 4px;">
+                  REMOVED
+                </span>
+              <?php elseif (!$s_active): ?>
+                <span style="font-size: 0.7rem; font-weight: 700; color: #6b7280; background: #f3f4f6; padding: 0.15rem 0.45rem; border-radius: 4px;">
+                  OFF
+                </span>
+              <?php else: ?>
+                <span style="font-size: 0.7rem; font-weight: 700; color: #047857; background: #d1fae5; padding: 0.15rem 0.45rem; border-radius: 4px;">
+                  ON
+                </span>
+              <?php endif; ?>
+            </div>
+          </a>
+        <?php endforeach; ?>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right Main Section Editor -->
+  <div>
+    <?php 
+      $current_sec_data = $contact_cms[$selected_sec] ?? [];
+      $is_sec_removed = !empty($current_sec_data['is_removed']);
+      $is_sec_active = !isset($current_sec_data['is_active']) || !empty($current_sec_data['is_active']);
+      $sec_meta = $sections_nav[$selected_sec];
+    ?>
+
+    <form method="POST" id="sectionForm">
+      <?php echo csrf_field(); ?>
+      <input type="hidden" name="section_key" value="<?php echo h($selected_sec); ?>">
+      <input type="hidden" name="sec_action" id="sec_action_input" value="">
+      <input type="hidden" name="action" id="form_action_input" value="save_section">
+      <input type="hidden" name="item_id" id="item_id_input" value="">
+
+      <div class="card" style="padding: 2rem; border: 1.5px solid rgba(6, 43, 99, 0.15); box-shadow: var(--shadow-sm); margin-bottom: 2rem;">
+
+        <!-- Section Editor Header with Live Controls -->
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; padding-bottom: 1.25rem; margin-bottom: 1.5rem; border-bottom: 2px solid var(--color-border); flex-wrap: wrap; gap: 1rem;">
+          <div>
+            <div style="font-size: 0.75rem; font-weight: 700; color: var(--color-gold); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 0.25rem;">
+              Section <?php echo $sec_meta['num']; ?> of <?php echo count($sections_nav); ?>
+            </div>
+            <h2 style="font-size: 1.4rem; color: var(--color-navy); font-family: var(--font-secondary); margin: 0; display: flex; align-items: center; gap: 0.5rem;">
+              <span><?php echo $sec_meta['icon']; ?></span>
+              <span><?php echo h($sec_meta['name']); ?></span>
+            </h2>
+          </div>
+
+          <div style="display: flex; align-items: center; gap: 1rem;">
+            <!-- Visible on Page Toggle -->
+            <label style="display: inline-flex; align-items: center; gap: 0.5rem; cursor: pointer; font-size: 0.85rem; font-weight: 600; color: var(--color-navy); background: var(--color-surface-warm); padding: 0.4rem 0.75rem; border-radius: var(--radius-sm); border: 1px solid var(--color-border);">
+              <input type="checkbox" name="is_active" value="1" <?php echo ($is_sec_active && !$is_sec_removed) ? 'checked' : ''; ?> <?php echo $is_sec_removed ? 'disabled' : ''; ?> style="width: 16px; height: 16px; cursor: pointer;">
+              <span>Visible on Page</span>
+            </label>
+
+            <!-- Remove / Restore Button -->
+            <?php if ($is_sec_removed): ?>
+              <button type="button" onclick="setSectionAction('restore')" class="btn btn-outline" style="border-color: #047857; color: #047857; padding: 0.4rem 0.85rem; font-size: 0.85rem; font-weight: 700; display: inline-flex; align-items: center; gap: 0.4rem;">
+                <span>↩️</span> Restore Section
+              </button>
+            <?php else: ?>
+              <button type="button" onclick="setSectionAction('remove')" class="btn btn-outline" style="border-color: #dc2626; color: #dc2626; padding: 0.4rem 0.85rem; font-size: 0.85rem; font-weight: 600; display: inline-flex; align-items: center; gap: 0.4rem;">
+                <span>🗑️</span> Remove Section
+              </button>
+            <?php endif; ?>
+          </div>
+        </div>
+
+        <!-- Pending Removal Alert Box -->
+        <div id="pendingRemovalBox" style="display: none; background: #fee2e2; border-left: 4px solid #dc2626; padding: 1rem 1.25rem; border-radius: var(--radius-sm); margin-bottom: 1.5rem; color: #991b1b; font-size: 0.9rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <strong>⚠️ PENDING REMOVAL:</strong> This section will be removed from the Contact page when you click "Save Changes" below.
+            </div>
+            <button type="button" onclick="cancelSectionAction()" style="background: transparent; border: 1px solid #dc2626; color: #dc2626; padding: 0.25rem 0.65rem; border-radius: 4px; font-weight: 600; cursor: pointer; font-size: 0.8rem;">
+              Cancel Removal
+            </button>
+          </div>
+        </div>
+
+        <!-- Section 1: Contact Details & Hours -->
+        <?php if ($selected_sec === 'details'): 
+          $dt = $contact_cms['details'] ?? [];
+        ?>
+          <div style="display: grid; gap: 1.25rem;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+              <div>
+                <label class="form-label" style="font-weight: 700; font-size: 0.85rem; color: var(--color-navy); margin-bottom: 0.35rem; display: block;">
+                  Eyebrow / Badge
+                </label>
+                <input type="text" name="badge" value="<?php echo h($dt['badge'] ?? 'Admissions & Academic Office'); ?>" class="form-control" style="width: 100%; padding: 0.65rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm);">
+              </div>
+              <div>
+                <label class="form-label" style="font-weight: 700; font-size: 0.85rem; color: var(--color-navy); margin-bottom: 0.35rem; display: block;">
+                  Page Heading
+                </label>
+                <input type="text" name="heading" value="<?php echo h($dt['heading'] ?? 'Contact Us / Enquire Now'); ?>" class="form-control" style="width: 100%; padding: 0.65rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm);">
+              </div>
+            </div>
+
+            <div>
+              <label class="form-label" style="font-weight: 700; font-size: 0.85rem; color: var(--color-navy); margin-bottom: 0.35rem; display: block;">
+                Subheading / Description
+              </label>
+              <textarea name="subheading" rows="2" class="form-control" style="width: 100%; padding: 0.65rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm);"><?php echo h($dt['subheading'] ?? ''); ?></textarea>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
+              <div>
+                <label class="form-label" style="font-weight: 700; font-size: 0.85rem; color: var(--color-navy); margin-bottom: 0.35rem; display: block;">
+                  Phone Number
+                </label>
+                <input type="text" name="phone" value="<?php echo h($dt['phone'] ?? '7827262956'); ?>" class="form-control" style="width: 100%; padding: 0.65rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm);">
+              </div>
+              <div>
+                <label class="form-label" style="font-weight: 700; font-size: 0.85rem; color: var(--color-navy); margin-bottom: 0.35rem; display: block;">
+                  WhatsApp Number
+                </label>
+                <input type="text" name="whatsapp" value="<?php echo h($dt['whatsapp'] ?? '7827262956'); ?>" class="form-control" style="width: 100%; padding: 0.65rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm);">
+              </div>
+              <div>
+                <label class="form-label" style="font-weight: 700; font-size: 0.85rem; color: var(--color-navy); margin-bottom: 0.35rem; display: block;">
+                  Email Address
+                </label>
+                <input type="email" name="email" value="<?php echo h($dt['email'] ?? 'info@zuvioglobalschool.com'); ?>" class="form-control" style="width: 100%; padding: 0.65rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm);">
+              </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+              <div>
+                <label class="form-label" style="font-weight: 700; font-size: 0.85rem; color: var(--color-navy); margin-bottom: 0.35rem; display: block;">
+                  Office Address
+                </label>
+                <textarea name="address" rows="4" class="form-control" style="width: 100%; padding: 0.65rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); font-size: 0.88rem;"><?php echo h($dt['address'] ?? ''); ?></textarea>
+              </div>
+              <div>
+                <label class="form-label" style="font-weight: 700; font-size: 0.85rem; color: var(--color-navy); margin-bottom: 0.35rem; display: block;">
+                  Office Timings & Days
+                </label>
+                <input type="text" name="office_hours" value="<?php echo h($dt['office_hours'] ?? 'Monday–Saturday, 10:00 AM–7:00 PM'); ?>" class="form-control" style="width: 100%; padding: 0.65rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm);">
+                <div style="font-size: 0.8rem; color: var(--color-muted); margin-top: 0.5rem;">
+                  ℹ️ Changes to Phone, Email, Address, and Timings automatically synchronize with the site-wide footer and header.
+                </div>
+              </div>
+            </div>
+          </div>
+
+        <!-- Section 2: Enquiry Form Settings -->
+        <?php elseif ($selected_sec === 'form'): 
+          $fm = $contact_cms['form'] ?? [];
+        ?>
+          <div style="display: grid; gap: 1.25rem;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+              <div>
+                <label class="form-label" style="font-weight: 700; font-size: 0.85rem; color: var(--color-navy); margin-bottom: 0.35rem; display: block;">
+                  Form Title
+                </label>
+                <input type="text" name="title" value="<?php echo h($fm['title'] ?? 'Enquire Now'); ?>" class="form-control" style="width: 100%; padding: 0.65rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm);">
+              </div>
+              <div>
+                <label class="form-label" style="font-weight: 700; font-size: 0.85rem; color: var(--color-navy); margin-bottom: 0.35rem; display: block;">
+                  Submit Button Label
+                </label>
+                <input type="text" name="button_text" value="<?php echo h($fm['button_text'] ?? 'Submit Enquiry Form'); ?>" class="form-control" style="width: 100%; padding: 0.65rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm);">
+              </div>
+            </div>
+
+            <div>
+              <label class="form-label" style="font-weight: 700; font-size: 0.85rem; color: var(--color-navy); margin-bottom: 0.35rem; display: block;">
+                Form Subtitle / Instruction
+              </label>
+              <input type="text" name="subtitle" value="<?php echo h($fm['subtitle'] ?? ''); ?>" class="form-control" style="width: 100%; padding: 0.65rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm);">
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+              <div>
+                <label class="form-label" style="font-weight: 700; font-size: 0.85rem; color: var(--color-navy); margin-bottom: 0.35rem; display: block;">
+                  Success Notification Title
+                </label>
+                <input type="text" name="success_title" value="<?php echo h($fm['success_title'] ?? 'Enquiry Submitted Successfully'); ?>" class="form-control" style="width: 100%; padding: 0.65rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm);">
+              </div>
+              <div>
+                <label class="form-label" style="font-weight: 700; font-size: 0.85rem; color: var(--color-navy); margin-bottom: 0.35rem; display: block;">
+                  Consent / Privacy Disclaimer
+                </label>
+                <input type="text" name="consent_text" value="<?php echo h($fm['consent_text'] ?? ''); ?>" class="form-control" style="width: 100%; padding: 0.65rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm);">
+              </div>
+            </div>
+
+            <div>
+              <label class="form-label" style="font-weight: 700; font-size: 0.85rem; color: var(--color-navy); margin-bottom: 0.35rem; display: block;">
+                Success Message Text
+              </label>
+              <textarea name="success_message" rows="2" class="form-control" style="width: 100%; padding: 0.65rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm);"><?php echo h($fm['success_message'] ?? ''); ?></textarea>
+            </div>
+          </div>
+
+        <!-- Section 3: Google Maps Location -->
+        <?php elseif ($selected_sec === 'map'): 
+          $mp = $contact_cms['map'] ?? [];
+        ?>
+          <div style="display: grid; gap: 1.25rem;">
+            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 1rem;">
+              <div>
+                <label class="form-label" style="font-weight: 700; font-size: 0.85rem; color: var(--color-navy); margin-bottom: 0.35rem; display: block;">
+                  Map Section Title
+                </label>
+                <input type="text" name="title" value="<?php echo h($mp['title'] ?? 'Our Headquarter Office'); ?>" class="form-control" style="width: 100%; padding: 0.65rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm);">
+              </div>
+              <div>
+                <label class="form-label" style="font-weight: 700; font-size: 0.85rem; color: var(--color-navy); margin-bottom: 0.35rem; display: block;">
+                  Embed Frame Height (px)
+                </label>
+                <input type="number" name="height" value="<?php echo (int)($mp['height'] ?? 420); ?>" class="form-control" style="width: 100%; padding: 0.65rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm);">
+              </div>
+            </div>
+
+            <div>
+              <label class="form-label" style="font-weight: 700; font-size: 0.85rem; color: var(--color-navy); margin-bottom: 0.35rem; display: block;">
+                Location Subtitle / Transit Landmark
+              </label>
+              <input type="text" name="subtitle" value="<?php echo h($mp['subtitle'] ?? ''); ?>" class="form-control" style="width: 100%; padding: 0.65rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm);">
+            </div>
+
+            <div>
+              <label class="form-label" style="font-weight: 700; font-size: 0.85rem; color: var(--color-navy); margin-bottom: 0.35rem; display: block;">
+                Google Maps Embed URL
+              </label>
+              <input type="text" name="embed_url" value="<?php echo h($mp['embed_url'] ?? ''); ?>" class="form-control" style="width: 100%; padding: 0.65rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm);">
+            </div>
+
+            <div>
+              <label class="form-label" style="font-weight: 700; font-size: 0.85rem; color: var(--color-navy); margin-bottom: 0.35rem; display: block;">
+                Google Maps Directions URL
+              </label>
+              <input type="text" name="directions_url" value="<?php echo h($mp['directions_url'] ?? ''); ?>" class="form-control" style="width: 100%; padding: 0.65rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm);">
+            </div>
+          </div>
+
+        <!-- Section 4: Social Media Links -->
+        <?php elseif ($selected_sec === 'social'): 
+          $sc = $contact_cms['social'] ?? [];
+          $socials = $contact_cms['social_links'] ?? [];
+        ?>
+          <div style="display: grid; gap: 1.5rem;">
+            <div>
+              <label class="form-label" style="font-weight: 700; font-size: 0.85rem; color: var(--color-navy); margin-bottom: 0.35rem; display: block;">
+                Section Title
+              </label>
+              <input type="text" name="title" value="<?php echo h($sc['title'] ?? 'Social Media Channels'); ?>" class="form-control" style="width: 100%; padding: 0.65rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm);">
+            </div>
+            <div>
+              <label class="form-label" style="font-weight: 700; font-size: 0.85rem; color: var(--color-navy); margin-bottom: 0.35rem; display: block;">
+                Section Subtitle
+              </label>
+              <input type="text" name="subtitle" value="<?php echo h($sc['subtitle'] ?? ''); ?>" class="form-control" style="width: 100%; padding: 0.65rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm);">
+            </div>
+
+            <!-- Existing Social Media Links -->
+            <div>
+              <label class="form-label" style="font-weight: 700; font-size: 0.95rem; color: var(--color-navy); margin-bottom: 0.75rem; display: block;">
+                Official Social Profiles
+              </label>
+              <div style="display: grid; gap: 0.75rem;">
+                <?php foreach ($socials as $s): ?>
+                  <div style="display: grid; grid-template-columns: 140px 1fr auto; gap: 0.75rem; align-items: center; background: var(--color-surface-warm); padding: 0.75rem 1rem; border-radius: var(--radius-sm); border: 1px solid var(--color-border);">
+                    <div>
+                      <strong><?php echo h($s['platform'] ?? ''); ?></strong>
+                    </div>
+                    <div>
+                      <input type="text" name="social_urls[<?php echo (int)($s['id'] ?? 0); ?>]" value="<?php echo h($s['url'] ?? ''); ?>" class="form-control" style="width: 100%; padding: 0.45rem; border: 1px solid var(--color-border); border-radius: 4px; font-size: 0.85rem;">
+                    </div>
+                    <div>
+                      <button type="button" onclick="deleteItem('delete_social', <?php echo (int)($s['id'] ?? 0); ?>)" class="btn btn-outline" style="border-color: #dc2626; color: #dc2626; padding: 0.25rem 0.6rem; font-size: 0.75rem;">
+                        Delete
+                      </button>
+                    </div>
+                  </div>
+                <?php endforeach; ?>
+              </div>
+            </div>
+
+            <!-- Add Social Channel -->
+            <div style="background: var(--pastel-blue); padding: 1.25rem; border-radius: var(--radius-sm); border: 1px solid var(--color-border);">
+              <h4 style="font-size: 1rem; color: var(--color-navy); margin-bottom: 0.75rem;">Add New Channel</h4>
+              <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 0.75rem; margin-bottom: 0.75rem;">
+                <input type="text" name="new_platform" placeholder="Platform (e.g. Twitter / X)" class="form-control" style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: 4px;">
+                <input type="text" name="new_url" placeholder="Profile URL (e.g. https://...)" class="form-control" style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: 4px;">
+              </div>
+              <button type="button" onclick="submitItemAction('add_social')" class="btn btn-outline" style="border-color: var(--color-navy); color: var(--color-navy); font-weight: 700; padding: 0.4rem 1rem; font-size: 0.85rem;">
+                + Add Social Channel
+              </button>
+            </div>
+          </div>
+
+        <!-- Section 5: Conversion CTA Banner -->
+        <?php elseif ($selected_sec === 'banner'): 
+          $bn = $contact_cms['banner'] ?? [];
+        ?>
+          <div style="display: grid; gap: 1.25rem;">
+            <div>
+              <label class="form-label" style="font-weight: 700; font-size: 0.85rem; color: var(--color-navy); margin-bottom: 0.35rem; display: block;">
+                Banner Main Heading
+              </label>
+              <input type="text" name="heading" value="<?php echo h($bn['heading'] ?? 'Ready to Experience Modern Virtual Schooling?'); ?>" class="form-control" style="width: 100%; padding: 0.65rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm);">
+            </div>
+
+            <div>
+              <label class="form-label" style="font-weight: 700; font-size: 0.85rem; color: var(--color-navy); margin-bottom: 0.35rem; display: block;">
+                Banner Subheading / Pitch
+              </label>
+              <textarea name="subheading" rows="2" class="form-control" style="width: 100%; padding: 0.65rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm);"><?php echo h($bn['subheading'] ?? ''); ?></textarea>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+              <div>
+                <label class="form-label" style="font-weight: 700; font-size: 0.85rem; color: var(--color-navy); margin-bottom: 0.35rem; display: block;">
+                  Primary CTA Button Label
+                </label>
+                <input type="text" name="cta_primary_label" value="<?php echo h($bn['cta_primary_label'] ?? 'Book a Free 1-on-1 Demo'); ?>" class="form-control" style="width: 100%; padding: 0.65rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm);">
+              </div>
+              <div>
+                <label class="form-label" style="font-weight: 700; font-size: 0.85rem; color: var(--color-navy); margin-bottom: 0.35rem; display: block;">
+                  Primary CTA Button Link
+                </label>
+                <input type="text" name="cta_primary_url" value="<?php echo h($bn['cta_primary_url'] ?? '/book-demo'); ?>" class="form-control" style="width: 100%; padding: 0.65rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm);">
+              </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+              <div>
+                <label class="form-label" style="font-weight: 700; font-size: 0.85rem; color: var(--color-navy); margin-bottom: 0.35rem; display: block;">
+                  Secondary CTA Button Label
+                </label>
+                <input type="text" name="cta_secondary_label" value="<?php echo h($bn['cta_secondary_label'] ?? 'Admissions & Enrolment'); ?>" class="form-control" style="width: 100%; padding: 0.65rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm);">
+              </div>
+              <div>
+                <label class="form-label" style="font-weight: 700; font-size: 0.85rem; color: var(--color-navy); margin-bottom: 0.35rem; display: block;">
+                  Secondary CTA Button Link
+                </label>
+                <input type="text" name="cta_secondary_url" value="<?php echo h($bn['cta_secondary_url'] ?? '/admissions'); ?>" class="form-control" style="width: 100%; padding: 0.65rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm);">
+              </div>
+            </div>
+          </div>
+        <?php endif; ?>
+
+        <!-- Bottom Actions Bar -->
+        <div style="margin-top: 2rem; padding-top: 1.25rem; border-top: 1px solid var(--color-border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+          <a href="/admin/contact-cms.php?sec=<?php echo urlencode($selected_sec); ?>" class="btn btn-outline" style="padding: 0.65rem 1.25rem; font-size: 0.9rem;">
+            ↻ Reset / Reload
+          </a>
+
+          <button type="submit" id="saveSubmitBtn" class="btn btn-primary" style="background-color: var(--color-navy); border-color: var(--color-navy); color: #FFFFFF; font-weight: 700; padding: 0.65rem 1.75rem; font-size: 0.95rem; display: inline-flex; align-items: center; gap: 0.5rem;">
+            <span>💾</span> Save <?php echo h($sec_meta['name']); ?>
+          </button>
+        </div>
+
+      </div>
+    </form>
+  </div>
+
 </div>
 
-<!-- TAB 1: DETAILS & HOURS -->
-<?php if ($tab === 'details'): ?>
-  <div class="card" style="border-left: none; padding: 2rem; max-width: 800px;">
-    <h3 style="font-size: 1.2rem; color: var(--color-navy); margin-bottom: 0.5rem; font-family: var(--font-primary);">
-      Edit Verified Contact Details
-    </h3>
-    <p style="font-size: 0.85rem; color: var(--color-muted); margin-bottom: 1.5rem;">
-      Updates here reflect on the Contact page, global site settings, and footer.
-    </p>
+<script>
+function setSectionAction(action) {
+  const actionInput = document.getElementById('sec_action_input');
+  const pendingBox = document.getElementById('pendingRemovalBox');
+  const saveBtn = document.getElementById('saveSubmitBtn');
 
-    <form method="POST" action="">
-      <input type="hidden" name="csrf_token" value="<?php echo get_csrf_token(); ?>">
-      <input type="hidden" name="action" value="save_details">
-
-      <div class="admin-form-group">
-        <label class="admin-label">Top Banner Badge</label>
-        <input type="text" name="badge" class="admin-input" value="<?php echo h($contact_cms['details']['badge']); ?>" required>
-      </div>
-
-      <div class="admin-form-group">
-        <label class="admin-label">Hero Heading</label>
-        <input type="text" name="heading" class="admin-input" value="<?php echo h($contact_cms['details']['heading']); ?>" required>
-      </div>
-
-      <div class="admin-form-group">
-        <label class="admin-label">Hero Subheading</label>
-        <textarea name="subheading" class="admin-input" rows="2" required><?php echo h($contact_cms['details']['subheading']); ?></textarea>
-      </div>
-
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;" class="admin-grid-row">
-        <div class="admin-form-group">
-          <label class="admin-label">Phone Number (digits only)</label>
-          <input type="text" name="phone" class="admin-input" value="<?php echo h($contact_cms['details']['phone']); ?>" required>
-          <small style="color: var(--color-muted); font-size: 0.75rem;">Example: 7827262956</small>
-        </div>
-        <div class="admin-form-group">
-          <label class="admin-label">WhatsApp Number</label>
-          <input type="text" name="whatsapp" class="admin-input" value="<?php echo h($contact_cms['details']['whatsapp']); ?>" required>
-        </div>
-      </div>
-
-      <div class="admin-form-group">
-        <label class="admin-label">Official Email Address</label>
-        <input type="email" name="email" class="admin-input" value="<?php echo h($contact_cms['details']['email']); ?>" required>
-      </div>
-
-      <div class="admin-form-group">
-        <label class="admin-label">Physical Campus Office Address (multiline)</label>
-        <textarea name="address" class="admin-input" rows="4" required><?php echo h($contact_cms['details']['address']); ?></textarea>
-      </div>
-
-      <div class="admin-form-group">
-        <label class="admin-label">Verified Office Hours</label>
-        <input type="text" name="office_hours" class="admin-input" value="<?php echo h($contact_cms['details']['office_hours']); ?>" required>
-        <small style="color: var(--color-muted); font-size: 0.75rem;">Standard verified format: Monday–Saturday, 10:00 AM–7:00 PM</small>
-      </div>
-
-      <button type="submit" class="btn btn-primary" style="padding: 0.75rem 1.5rem; font-size: 0.9rem;">
-        Save Contact Information
-      </button>
-    </form>
-  </div>
-<?php endif; ?>
-
-<!-- TAB 2: SOCIAL LINKS -->
-<?php if ($tab === 'social'): ?>
-  <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 2rem; align-items: start;">
-    
-    <!-- Table of Links -->
-    <div class="card" style="border-left: none; padding: 2rem;">
-      <h3 style="font-size: 1.2rem; color: var(--color-navy); margin-bottom: 0.5rem; font-family: var(--font-primary);">
-        Configured Social Platforms
-      </h3>
-      <p style="font-size: 0.85rem; color: var(--color-muted); margin-bottom: 1.5rem;">
-        Add, edit, reorder or toggle visibility of social media buttons on the contact page.
-      </p>
-
-      <div style="overflow-x: auto;">
-        <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem; text-align: left;">
-          <thead>
-            <tr style="border-bottom: 2px solid var(--color-border); color: var(--color-navy); font-weight: 600;">
-              <th style="padding: 0.6rem 0.85rem;">Platform</th>
-              <th style="padding: 0.6rem 0.85rem;">Target URL</th>
-              <th style="padding: 0.6rem 0.85rem; text-align: center;">Order</th>
-              <th style="padding: 0.6rem 0.85rem; text-align: center;">Status</th>
-              <th style="padding: 0.6rem 0.85rem; text-align: right;">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <?php foreach ($contact_cms['social_links'] as $item): ?>
-              <tr style="border-bottom: 1px solid var(--color-border);">
-                <td style="padding: 0.75rem 0.85rem; font-weight: 600; color: var(--color-navy);">
-                  <?php echo h($item['platform']); ?>
-                </td>
-                <td style="padding: 0.75rem 0.85rem; color: var(--color-muted); max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-                  <a href="<?php echo h($item['url']); ?>" target="_blank" rel="noopener" style="color: var(--color-teal); text-decoration: none;">
-                    <?php echo h($item['url']); ?>
-                  </a>
-                </td>
-                <td style="padding: 0.75rem 0.85rem; text-align: center; font-weight: 700;">
-                  <?php echo (int)$item['sort_order']; ?>
-                </td>
-                <td style="padding: 0.75rem 0.85rem; text-align: center;">
-                  <form method="POST" action="" style="display: inline;">
-                    <input type="hidden" name="csrf_token" value="<?php echo get_csrf_token(); ?>">
-                    <input type="hidden" name="action" value="toggle_social">
-                    <input type="hidden" name="id" value="<?php echo (int)$item['id']; ?>">
-                    <button type="submit" style="background: none; border: none; cursor: pointer; padding: 0.2rem 0.5rem; border-radius: 999px; font-size: 0.75rem; font-weight: 600; background-color: <?php echo $item['is_published'] ? '#ECFDF5' : '#FEF2F2'; ?>; color: <?php echo $item['is_published'] ? '#065F46' : '#991B1B'; ?>;">
-                      <?php echo $item['is_published'] ? 'Active' : 'Hidden'; ?>
-                    </button>
-                  </form>
-                </td>
-                <td style="padding: 0.75rem 0.85rem; text-align: right;">
-                  <form method="POST" action="" style="display: inline;" onsubmit="return confirm('Delete this social link?');">
-                    <input type="hidden" name="csrf_token" value="<?php echo get_csrf_token(); ?>">
-                    <input type="hidden" name="action" value="delete_social">
-                    <input type="hidden" name="id" value="<?php echo (int)$item['id']; ?>">
-                    <button type="submit" style="background: none; border: none; color: #EF4444; font-size: 0.8rem; cursor: pointer;">
-                      Delete
-                    </button>
-                  </form>
-                </td>
-              </tr>
-            <?php endforeach; ?>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <!-- Add Link Form -->
-    <div class="card" style="border-left: none; padding: 2rem;">
-      <h3 style="font-size: 1.15rem; color: var(--color-navy); margin-bottom: 0.5rem; font-family: var(--font-primary);">
-        Add / Register Social Link
-      </h3>
-      <p style="font-size: 0.8rem; color: var(--color-muted); margin-bottom: 1.25rem;">
-        Add official verified profiles for the school.
-      </p>
-
-      <form method="POST" action="">
-        <input type="hidden" name="csrf_token" value="<?php echo get_csrf_token(); ?>">
-        <input type="hidden" name="action" value="add_social">
-
-        <div class="admin-form-group">
-          <label class="admin-label">Platform Name</label>
-          <select name="platform" class="admin-input" required>
-            <option value="WhatsApp">WhatsApp</option>
-            <option value="Instagram">Instagram</option>
-            <option value="Facebook">Facebook</option>
-            <option value="LinkedIn">LinkedIn</option>
-            <option value="YouTube">YouTube</option>
-            <option value="Twitter">X / Twitter</option>
-          </select>
-        </div>
-
-        <div class="admin-form-group">
-          <label class="admin-label">Profile URL</label>
-          <input type="url" name="url" placeholder="https://..." class="admin-input" required>
-        </div>
-
-        <div class="admin-form-group">
-          <label class="admin-label">Display Sort Order</label>
-          <input type="number" name="sort_order" value="<?php echo count($contact_cms['social_links']) + 1; ?>" class="admin-input" required>
-        </div>
-
-        <div class="admin-form-group" style="display: flex; align-items: center; gap: 0.5rem;">
-          <input type="checkbox" name="is_published" id="is_published" value="1" checked>
-          <label for="is_published" style="font-size: 0.85rem; color: var(--color-navy); cursor: pointer;">
-            Publish immediately on Contact Page
-          </label>
-        </div>
-
-        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.75rem; font-size: 0.9rem;">
-          Add Social Platform
-        </button>
-      </form>
-    </div>
-
-  </div>
-<?php endif; ?>
-
-<!-- TAB 3: LOCATION MAP SETTINGS -->
-<?php if ($tab === 'map'): ?>
-  <div class="card" style="border-left: none; padding: 2rem; max-width: 800px;">
-    <h3 style="font-size: 1.2rem; color: var(--color-navy); margin-bottom: 0.5rem; font-family: var(--font-primary);">
-      Location Map &amp; Embed Configuration
-    </h3>
-    <p style="font-size: 0.85rem; color: var(--color-muted); margin-bottom: 1.5rem;">
-      Controls the live Google Maps container replacing the old map placeholder.
-    </p>
-
-    <form method="POST" action="">
-      <input type="hidden" name="csrf_token" value="<?php echo get_csrf_token(); ?>">
-      <input type="hidden" name="action" value="save_map">
-
-      <div class="admin-form-group" style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1.5rem;">
-        <input type="checkbox" name="is_visible" id="map_visible" value="1" <?php echo !empty($contact_cms['map']['is_visible']) ? 'checked' : ''; ?>>
-        <label for="map_visible" style="font-size: 0.9rem; font-weight: 600; color: var(--color-navy); cursor: pointer;">
-          Show Interactive Google Map Section on Contact Page
-        </label>
-      </div>
-
-      <div class="admin-form-group">
-        <label class="admin-label">Map Section Title</label>
-        <input type="text" name="title" class="admin-input" value="<?php echo h($contact_cms['map']['title']); ?>" required>
-      </div>
-
-      <div class="admin-form-group">
-        <label class="admin-label">Map Section Subtitle / Transit Instructions</label>
-        <textarea name="subtitle" class="admin-input" rows="2" required><?php echo h($contact_cms['map']['subtitle']); ?></textarea>
-      </div>
-
-      <div class="admin-form-group">
-        <label class="admin-label">Google Maps Embed URL (Iframe Src)</label>
-        <input type="text" name="embed_url" class="admin-input" value="<?php echo h($contact_cms['map']['embed_url']); ?>" required>
-        <small style="color: var(--color-muted); font-size: 0.75rem;">Verified destination: ITL Twin Tower, Netaji Subhash Place, Pitampura, Delhi 110034</small>
-      </div>
-
-      <div class="admin-form-group">
-        <label class="admin-label">"Open in Google Maps" Directions URL</label>
-        <input type="text" name="directions_url" class="admin-input" value="<?php echo h($contact_cms['map']['directions_url']); ?>" required>
-      </div>
-
-      <div class="admin-form-group">
-        <label class="admin-label">Map Iframe Height (px)</label>
-        <input type="number" name="height" class="admin-input" value="<?php echo (int)$contact_cms['map']['height']; ?>" min="250" max="800" required>
-      </div>
-
-      <button type="submit" class="btn btn-primary" style="padding: 0.75rem 1.5rem; font-size: 0.9rem;">
-        Save Map Configuration
-      </button>
-    </form>
-  </div>
-<?php endif; ?>
-
-<!-- TAB 4: FORM CONFIGURATION -->
-<?php if ($tab === 'form'): ?>
-  <div class="card" style="border-left: none; padding: 2rem; max-width: 800px;">
-    <h3 style="font-size: 1.2rem; color: var(--color-navy); margin-bottom: 0.5rem; font-family: var(--font-primary);">
-      Enquiry Form Headings &amp; Messaging
-    </h3>
-    <p style="font-size: 0.85rem; color: var(--color-muted); margin-bottom: 1.5rem;">
-      Customize the layout copy, CTA button text, privacy disclaimer, and submission feedback.
-    </p>
-
-    <form method="POST" action="">
-      <input type="hidden" name="csrf_token" value="<?php echo get_csrf_token(); ?>">
-      <input type="hidden" name="action" value="save_form">
-
-      <div class="admin-form-group">
-        <label class="admin-label">Left Panel Heading (Page 65 Baseline)</label>
-        <input type="text" name="title" class="admin-input" value="<?php echo h($contact_cms['form']['title']); ?>" required>
-      </div>
-
-      <div class="admin-form-group">
-        <label class="admin-label">Left Panel Subtitle</label>
-        <textarea name="subtitle" class="admin-input" rows="2" required><?php echo h($contact_cms['form']['subtitle']); ?></textarea>
-      </div>
-
-      <div class="admin-form-group">
-        <label class="admin-label">Submit Button Label</label>
-        <input type="text" name="button_text" class="admin-input" value="<?php echo h($contact_cms['form']['button_text']); ?>" required>
-      </div>
-
-      <div class="admin-form-group">
-        <label class="admin-label">Consent &amp; Privacy Notice Text</label>
-        <textarea name="consent_text" class="admin-input" rows="2" required><?php echo h($contact_cms['form']['consent_text']); ?></textarea>
-      </div>
-
-      <div class="admin-form-group">
-        <label class="admin-label">Success Screen Headline</label>
-        <input type="text" name="success_title" class="admin-input" value="<?php echo h($contact_cms['form']['success_title']); ?>" required>
-      </div>
-
-      <div class="admin-form-group">
-        <label class="admin-label">Success Screen Message Body</label>
-        <textarea name="success_message" class="admin-input" rows="3" required><?php echo h($contact_cms['form']['success_message']); ?></textarea>
-      </div>
-
-      <button type="submit" class="btn btn-primary" style="padding: 0.75rem 1.5rem; font-size: 0.9rem;">
-        Save Form Configuration
-      </button>
-    </form>
-  </div>
-<?php endif; ?>
-
-<!-- TAB 5: CONVERSION BANNER -->
-<?php if ($tab === 'banner'): ?>
-  <div class="card" style="border-left: none; padding: 2rem; max-width: 800px;">
-    <h3 style="font-size: 1.2rem; color: var(--color-navy); margin-bottom: 0.5rem; font-family: var(--font-primary);">
-      Bottom Conversion Banner CTA
-    </h3>
-    <p style="font-size: 0.85rem; color: var(--color-muted); margin-bottom: 1.5rem;">
-      Invitation to Book a Demo or proceed with admissions at the foot of the page.
-    </p>
-
-    <form method="POST" action="">
-      <input type="hidden" name="csrf_token" value="<?php echo get_csrf_token(); ?>">
-      <input type="hidden" name="action" value="save_banner">
-
-      <div class="admin-form-group" style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1.5rem;">
-        <input type="checkbox" name="is_visible" id="banner_visible" value="1" <?php echo !empty($contact_cms['banner']['is_visible']) ? 'checked' : ''; ?>>
-        <label for="banner_visible" style="font-size: 0.9rem; font-weight: 600; color: var(--color-navy); cursor: pointer;">
-          Show Bottom Conversion Banner
-        </label>
-      </div>
-
-      <div class="admin-form-group">
-        <label class="admin-label">Banner Heading</label>
-        <input type="text" name="heading" class="admin-input" value="<?php echo h($contact_cms['banner']['heading']); ?>" required>
-      </div>
-
-      <div class="admin-form-group">
-        <label class="admin-label">Banner Subheading</label>
-        <textarea name="subheading" class="admin-input" rows="2" required><?php echo h($contact_cms['banner']['subheading']); ?></textarea>
-      </div>
-
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;" class="admin-grid-row">
-        <div class="admin-form-group">
-          <label class="admin-label">Primary CTA Label</label>
-          <input type="text" name="cta_primary_label" class="admin-input" value="<?php echo h($contact_cms['banner']['cta_primary_label']); ?>" required>
-        </div>
-        <div class="admin-form-group">
-          <label class="admin-label">Primary CTA URL</label>
-          <input type="text" name="cta_primary_url" class="admin-input" value="<?php echo h($contact_cms['banner']['cta_primary_url']); ?>" required>
-        </div>
-      </div>
-
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;" class="admin-grid-row">
-        <div class="admin-form-group">
-          <label class="admin-label">Secondary CTA Label</label>
-          <input type="text" name="cta_secondary_label" class="admin-input" value="<?php echo h($contact_cms['banner']['cta_secondary_label']); ?>" required>
-        </div>
-        <div class="admin-form-group">
-          <label class="admin-label">Secondary CTA URL</label>
-          <input type="text" name="cta_secondary_url" class="admin-input" value="<?php echo h($contact_cms['banner']['cta_secondary_url']); ?>" required>
-        </div>
-      </div>
-
-      <button type="submit" class="btn btn-primary" style="padding: 0.75rem 1.5rem; font-size: 0.9rem;">
-        Save Conversion Banner
-      </button>
-    </form>
-  </div>
-<?php endif; ?>
-
-<style>
-  @media (max-width: 768px) {
-    .admin-grid-row {
-      grid-template-columns: 1fr !important;
+  if (action === 'remove') {
+    actionInput.value = 'remove';
+    if (pendingBox) pendingBox.style.display = 'block';
+    if (saveBtn) {
+      saveBtn.style.backgroundColor = '#dc2626';
+      saveBtn.style.borderColor = '#dc2626';
+      saveBtn.innerHTML = '<span>⚠️</span> Confirm Removal &amp; Save';
     }
+  } else if (action === 'restore') {
+    actionInput.value = 'restore';
+    document.getElementById('sectionForm').submit();
   }
-</style>
+}
+
+function cancelSectionAction() {
+  const actionInput = document.getElementById('sec_action_input');
+  const pendingBox = document.getElementById('pendingRemovalBox');
+  const saveBtn = document.getElementById('saveSubmitBtn');
+
+  actionInput.value = '';
+  if (pendingBox) pendingBox.style.display = 'none';
+  if (saveBtn) {
+    saveBtn.style.backgroundColor = 'var(--color-navy)';
+    saveBtn.style.borderColor = 'var(--color-navy)';
+    saveBtn.innerHTML = '<span>💾</span> Save <?php echo addslashes(h($sec_meta['name'])); ?>';
+  }
+}
+
+function submitItemAction(actionName) {
+  document.getElementById('form_action_input').value = actionName;
+  document.getElementById('sectionForm').submit();
+}
+
+function deleteItem(actionName, id) {
+  if (confirm('Are you sure you want to delete this channel?')) {
+    document.getElementById('form_action_input').value = actionName;
+    document.getElementById('item_id_input').value = id;
+    document.getElementById('sectionForm').submit();
+  }
+}
+</script>
 
 <?php
 include_once dirname(__FILE__) . '/footer.php';
-?>

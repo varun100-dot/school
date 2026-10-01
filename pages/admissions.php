@@ -38,7 +38,8 @@ render_breadcrumbs([
 ?>
 
 <main class="admissions-hub-page">
-  <!-- Hero Section -->
+  <!-- 1. Hero Section -->
+  <?php if ((!isset($adm_cms['overview']['is_active']) || !empty($adm_cms['overview']['is_active'])) && empty($adm_cms['overview']['is_removed'])): ?>
   <section class="section-hero" style="background-color: var(--pastel-blue); padding: 5rem 1.5rem; text-align: center; border-bottom: 1px solid var(--color-border);">
     <div class="container" style="max-width: 850px;">
       <span style="font-size: 0.85rem; font-weight: 700; color: var(--color-gold); text-transform: uppercase; letter-spacing: 2px; display: block; margin-bottom: 0.75rem;">
@@ -51,11 +52,11 @@ render_breadcrumbs([
         <?php echo h($overview['hero_subtitle']); ?>
       </p>
       <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 2rem; flex-wrap: wrap;">
-        <a href="/admissions/enrol-now" class="btn btn-primary" style="background-color: var(--color-navy); border-color: var(--color-navy); color: #FFFFFF; font-weight: 700; padding: 0.85rem 2rem;">
-          Enrol Now &rarr;
+        <a href="<?php echo h($overview['btn1_url'] ?? '/admissions/enrol-now'); ?>" class="btn btn-primary" style="background-color: var(--color-navy); border-color: var(--color-navy); color: #FFFFFF; font-weight: 700; padding: 0.85rem 2rem;">
+          <?php echo h($overview['btn1_text'] ?? 'Enrol Now'); ?> &rarr;
         </a>
-        <a href="/admissions/eligibility" class="btn btn-outline" style="border-color: var(--color-navy); color: var(--color-navy); font-weight: 600; padding: 0.85rem 1.75rem;">
-          Check Eligibility
+        <a href="<?php echo h($overview['btn2_url'] ?? '/admissions/eligibility'); ?>" class="btn btn-outline" style="border-color: var(--color-navy); color: var(--color-navy); font-weight: 600; padding: 0.85rem 1.75rem;">
+          <?php echo h($overview['btn2_text'] ?? 'Check Eligibility'); ?>
         </a>
         <a href="javascript:void(0)" onclick="openCallbackModal()" class="btn btn-primary btn-demo" style="background-color: var(--color-teal); border-color: var(--color-teal); color: #FFFFFF; font-weight: 700; padding: 0.85rem 1.75rem;">
           Book a Demo
@@ -63,8 +64,9 @@ render_breadcrumbs([
       </div>
     </div>
   </section>
+  <?php endif; ?>
 
-  <!-- Gateway Cards: Dedicated Destinations -->
+  <!-- 2. Gateway Cards: Dedicated Destinations -->
   <section class="section" style="background-color: #FFFFFF; padding: 5.5rem 0; border-bottom: 1px solid var(--color-border);">
     <div class="container">
       <div class="text-center" style="max-width: 750px; margin: 0 auto 3.5rem auto;">
@@ -82,6 +84,7 @@ render_breadcrumbs([
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.75rem;">
         
         <!-- Card 1: Enrol Now -->
+        <?php if ((!isset($adm_cms['enrol']['is_active']) || !empty($adm_cms['enrol']['is_active'])) && empty($adm_cms['enrol']['is_removed'])): ?>
         <div style="background-color: var(--color-surface-warm); border-radius: var(--radius-md); padding: 2.25rem 2rem; border: 1.5px solid rgba(6, 43, 99, 0.16); box-shadow: var(--shadow-sm); display: flex; flex-direction: column; justify-content: space-between; border-top: 4px solid var(--color-teal);">
           <div>
             <div style="font-size: 2.2rem; margin-bottom: 0.75rem;">📝</div>
@@ -96,8 +99,10 @@ render_breadcrumbs([
             Go to Enrol Now &rarr;
           </a>
         </div>
+        <?php endif; ?>
 
         <!-- Card 2: Eligibility -->
+        <?php if ((!isset($adm_cms['eligibility']['is_active']) || !empty($adm_cms['eligibility']['is_active'])) && empty($adm_cms['eligibility']['is_removed'])): ?>
         <div style="background-color: var(--color-surface-warm); border-radius: var(--radius-md); padding: 2.25rem 2rem; border: 1.5px solid rgba(6, 43, 99, 0.16); box-shadow: var(--shadow-sm); display: flex; flex-direction: column; justify-content: space-between; border-top: 4px solid var(--color-gold);">
           <div>
             <div style="font-size: 2.2rem; margin-bottom: 0.75rem;">🎯</div>
@@ -112,8 +117,10 @@ render_breadcrumbs([
             Check Eligibility &rarr;
           </a>
         </div>
+        <?php endif; ?>
 
         <!-- Card 3: Calendar -->
+        <?php if ((!isset($adm_cms['calendar']['is_active']) || !empty($adm_cms['calendar']['is_active'])) && empty($adm_cms['calendar']['is_removed'])): ?>
         <div style="background-color: var(--color-surface-warm); border-radius: var(--radius-md); padding: 2.25rem 2rem; border: 1.5px solid rgba(6, 43, 99, 0.16); box-shadow: var(--shadow-sm); display: flex; flex-direction: column; justify-content: space-between; border-top: 4px solid var(--color-navy);">
           <div>
             <div style="font-size: 2.2rem; margin-bottom: 0.75rem;">🗓️</div>
@@ -128,8 +135,10 @@ render_breadcrumbs([
             View Calendar &rarr;
           </a>
         </div>
+        <?php endif; ?>
 
         <!-- Card 4: Fees -->
+        <?php if ((!isset($adm_cms['fees']['is_active']) || !empty($adm_cms['fees']['is_active'])) && empty($adm_cms['fees']['is_removed'])): ?>
         <div style="background-color: var(--color-surface-warm); border-radius: var(--radius-md); padding: 2.25rem 2rem; border: 1.5px solid rgba(6, 43, 99, 0.16); box-shadow: var(--shadow-sm); display: flex; flex-direction: column; justify-content: space-between; border-top: 4px solid var(--color-gold);">
           <div>
             <div style="font-size: 2.2rem; margin-bottom: 0.75rem;">💳</div>
@@ -144,12 +153,16 @@ render_breadcrumbs([
             Explore Fees &rarr;
           </a>
         </div>
+        <?php endif; ?>
 
       </div>
     </div>
   </section>
 
-  <!-- 4-Step Onboarding Summary -->
+  <!-- 3. Enrolment Journey / Onboarding Summary -->
+  <?php if ((!isset($adm_cms['enrol']['is_active']) || !empty($adm_cms['enrol']['is_active'])) && empty($adm_cms['enrol']['is_removed'])): 
+    $enrol_steps = $adm_cms['enrol']['steps'] ?? [];
+  ?>
   <section class="section" style="background-color: var(--pastel-blue); padding: 5rem 0; border-bottom: 1px solid var(--color-border);">
     <div class="container">
       <div class="text-center" style="max-width: 750px; margin: 0 auto 3.5rem auto;">
@@ -157,63 +170,48 @@ render_breadcrumbs([
           The Journey
         </span>
         <h2 style="font-size: 2.35rem; color: var(--color-navy); margin-top: 0.5rem; font-family: var(--font-primary);">
-          How Enrolment Works
+          <?php echo h($adm_cms['enrol']['title'] ?? 'How Enrolment Works'); ?>
         </h2>
         <p style="color: var(--color-muted); font-size: 1rem; margin-top: 0.5rem;">
-          From your first conversation to your child's first day in the digital classroom.
+          <?php echo h($adm_cms['enrol']['subtitle'] ?? 'From your first conversation to your child\'s first day in the digital classroom.'); ?>
         </p>
       </div>
 
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem;">
-        <div style="background: #FFFFFF; padding: 2rem; border-radius: var(--radius-md); border: 1.5px solid rgba(6, 43, 99, 0.16); box-shadow: var(--shadow-sm); border-top: 4px solid var(--color-gold);">
-          <span style="font-size: 0.8rem; font-weight: 800; color: var(--color-gold);">STEP 01</span>
-          <h3 style="font-size: 1.25rem; color: var(--color-navy); margin: 0.5rem 0 0.75rem 0; font-family: var(--font-primary);">Consultation</h3>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem;">
+        <?php foreach ($enrol_steps as $idx => $st): 
+          $step_color = ($idx % 2 === 0) ? 'var(--color-gold)' : 'var(--color-teal)';
+        ?>
+        <div style="background: #FFFFFF; padding: 2rem; border-radius: var(--radius-md); border: 1.5px solid rgba(6, 43, 99, 0.16); box-shadow: var(--shadow-sm); border-top: 4px solid <?php echo $step_color; ?>;">
+          <span style="font-size: 0.8rem; font-weight: 800; color: <?php echo $step_color; ?>;">STEP <?php echo str_pad($st['step'] ?? ($idx + 1), 2, '0', STR_PAD_LEFT); ?></span>
+          <h3 style="font-size: 1.25rem; color: var(--color-navy); margin: 0.5rem 0 0.75rem 0; font-family: var(--font-primary);"><?php echo h($st['title'] ?? ''); ?></h3>
           <p style="color: var(--color-text); font-size: 0.88rem; line-height: 1.65; margin: 0;">
-            Speak with our advisors to map out curriculum options, schedule flexibility, and device requirements.
+            <?php echo h($st['desc'] ?? ''); ?>
           </p>
         </div>
-
-        <div style="background: #FFFFFF; padding: 2rem; border-radius: var(--radius-md); border: 1.5px solid rgba(6, 43, 99, 0.16); box-shadow: var(--shadow-sm); border-top: 4px solid var(--color-teal);">
-          <span style="font-size: 0.8rem; font-weight: 800; color: var(--color-teal);">STEP 02</span>
-          <h3 style="font-size: 1.25rem; color: var(--color-navy); margin: 0.5rem 0 0.75rem 0; font-family: var(--font-primary);">Demo Class</h3>
-          <p style="color: var(--color-text); font-size: 0.88rem; line-height: 1.65; margin: 0;">
-            Experience our interactive live classroom environment, meet master educators, and see small-group learning.
-          </p>
-        </div>
-
-        <div style="background: #FFFFFF; padding: 2rem; border-radius: var(--radius-md); border: 1.5px solid rgba(6, 43, 99, 0.16); box-shadow: var(--shadow-sm); border-top: 4px solid var(--color-gold);">
-          <span style="font-size: 0.8rem; font-weight: 800; color: var(--color-gold);">STEP 03</span>
-          <h3 style="font-size: 1.25rem; color: var(--color-navy); margin: 0.5rem 0 0.75rem 0; font-family: var(--font-primary);">Assessment</h3>
-          <p style="color: var(--color-text); font-size: 0.88rem; line-height: 1.65; margin: 0;">
-            A low-stress baseline diagnostic to identify current learning levels and design individual bridge support.
-          </p>
-        </div>
-
-        <div style="background: #FFFFFF; padding: 2rem; border-radius: var(--radius-md); border: 1.5px solid rgba(6, 43, 99, 0.16); box-shadow: var(--shadow-sm); border-top: 4px solid var(--color-teal);">
-          <span style="font-size: 0.8rem; font-weight: 800; color: var(--color-teal);">STEP 04</span>
-          <h3 style="font-size: 1.25rem; color: var(--color-navy); margin: 0.5rem 0 0.75rem 0; font-family: var(--font-primary);">Onboarding</h3>
-          <p style="color: var(--color-text); font-size: 0.88rem; line-height: 1.65; margin: 0;">
-            Receive student LMS login credentials, Oxford digital readers, timetables, and welcome pack.
-          </p>
-        </div>
+        <?php endforeach; ?>
       </div>
     </div>
   </section>
+  <?php endif; ?>
 
+  <!-- 4. Parent FAQ & Counselor Cross Links -->
+  <?php if ((!isset($adm_cms['counselor_cta']['is_active']) || !empty($adm_cms['counselor_cta']['is_active'])) && empty($adm_cms['counselor_cta']['is_removed'])): 
+    $c_cta = $adm_cms['counselor_cta'] ?? [];
+  ?>
   <!-- Parent FAQ Cross Link -->
   <section class="section" style="background-color: #FFFFFF; padding: 5rem 0; border-bottom: 1px solid var(--color-border);">
     <div class="container text-center" style="max-width: 750px;">
       <span style="font-size: 0.85rem; font-weight: 700; color: var(--color-gold); text-transform: uppercase; letter-spacing: 2px;">
-        Got Admissions Questions?
+        <?php echo h($c_cta['faq_kicker'] ?? 'Got Admissions Questions?'); ?>
       </span>
       <h2 style="font-size: 2.25rem; color: var(--color-navy); margin: 0.5rem 0 1rem 0; font-family: var(--font-primary);">
-        Parent FAQ &amp; Transitions
+        <?php echo h($c_cta['faq_title'] ?? 'Parent FAQ & Transitions'); ?>
       </h2>
       <p style="color: var(--color-muted); font-size: 1.05rem; line-height: 1.7; margin-bottom: 2rem;">
-        Wondering about transitioning back to an offline school, board registration pathways, or class timings? Read our comprehensive 18-question parent FAQ guide.
+        <?php echo h($c_cta['faq_desc'] ?? 'Wondering about transitioning back to an offline school, board registration pathways, or class timings? Read our comprehensive 18-question parent FAQ guide.'); ?>
       </p>
-      <a href="/faq" class="btn btn-primary" style="background-color: var(--color-teal); border-color: var(--color-teal); color: #FFFFFF; font-weight: 700; padding: 0.85rem 2.25rem; border-radius: var(--radius-sm); text-decoration: none;">
-        Read Complete 18-Question FAQ &rarr;
+      <a href="<?php echo h($c_cta['faq_btn_url'] ?? '/faq'); ?>" class="btn btn-primary" style="background-color: var(--color-teal); border-color: var(--color-teal); color: #FFFFFF; font-weight: 700; padding: 0.85rem 2.25rem; border-radius: var(--radius-sm); text-decoration: none;">
+        <?php echo h($c_cta['faq_btn_text'] ?? 'Read Complete 18-Question FAQ'); ?> &rarr;
       </a>
     </div>
   </section>
@@ -223,22 +221,23 @@ render_breadcrumbs([
     <div class="container" style="max-width: 850px;">
       <div style="background: linear-gradient(135deg, var(--color-navy-dark) 0%, var(--color-navy) 100%); border-radius: var(--radius-lg); padding: 3.5rem 2.5rem; color: #FFFFFF; text-align: center; border: 1.5px solid rgba(212, 175, 55, 0.3); box-shadow: var(--shadow-lg);">
         <h2 style="font-size: 2.2rem; color: #FFFFFF; font-family: var(--font-primary); margin-bottom: 1rem;">
-          Speak with an Admissions Counselor
+          <?php echo h($c_cta['title'] ?? 'Speak with an Admissions Counselor'); ?>
         </h2>
         <p style="max-width: 650px; margin: 0 auto 2rem auto; color: rgba(255, 255, 255, 0.9); font-size: 1.05rem; line-height: 1.7;">
-          Have specific questions regarding grade placement, special education, or class schedules? Our admissions team is ready to guide you.
+          <?php echo h($c_cta['desc'] ?? 'Have specific questions regarding grade placement, special education, or class schedules? Our admissions team is ready to guide you.'); ?>
         </p>
         <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
           <a href="javascript:void(0)" onclick="openCallbackModal()" class="btn btn-primary" style="background-color: var(--color-gold); color: var(--color-navy-dark); font-weight: 700; border: none; padding: 0.85rem 2rem; border-radius: var(--radius-sm); text-decoration: none;">
-            Request a Callback &rarr;
+            <?php echo h($c_cta['btn_primary_text'] ?? 'Request a Callback'); ?> &rarr;
           </a>
-          <a href="/admissions/enrol-now" class="btn" style="background-color: transparent; color: #FFFFFF; border: 1.5px solid #FFFFFF; font-weight: 600; padding: 0.85rem 1.75rem; border-radius: var(--radius-sm); text-decoration: none;">
-            Online Application
+          <a href="<?php echo h($c_cta['btn_secondary_url'] ?? '/admissions/enrol-now'); ?>" class="btn" style="background-color: transparent; color: #FFFFFF; border: 1.5px solid #FFFFFF; font-weight: 600; padding: 0.85rem 1.75rem; border-radius: var(--radius-sm); text-decoration: none;">
+            <?php echo h($c_cta['btn_secondary_text'] ?? 'Online Application'); ?>
           </a>
         </div>
       </div>
     </div>
   </section>
+  <?php endif; ?>
 </main>
 
 <?php include_once dirname(__FILE__) . '/../includes/footer.php'; ?>

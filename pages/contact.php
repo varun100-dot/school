@@ -234,6 +234,7 @@ render_breadcrumbs([
 <main class="contact-page-main">
 
   <!-- Hero Banner Header -->
+  <?php if ((!isset($contact_cms['details']['is_active']) || !empty($contact_cms['details']['is_active'])) && empty($contact_cms['details']['is_removed'])): ?>
   <section class="contact-hero" style="background: linear-gradient(135deg, var(--color-navy-dark, #000A42) 0%, var(--color-navy, #062B63) 100%); color: #FFFFFF; padding: 4.5rem 1.5rem 4rem 1.5rem; position: relative; overflow: hidden; text-align: center;">
     <div style="position: absolute; top: -60px; right: -60px; width: 320px; height: 320px; border-radius: 50%; background: radial-gradient(circle, rgba(234, 179, 8, 0.12) 0%, transparent 70%); pointer-events: none;"></div>
     <div style="position: absolute; bottom: -40px; left: -40px; width: 260px; height: 260px; border-radius: 50%; background: radial-gradient(circle, rgba(14, 165, 233, 0.12) 0%, transparent 70%); pointer-events: none;"></div>
@@ -250,6 +251,7 @@ render_breadcrumbs([
       </p>
     </div>
   </section>
+  <?php endif; ?>
 
   <!-- Two-Column Contact + Enquiry Section (Page 65 Reference) -->
   <section class="section" style="padding: 4.5rem 0; background-color: var(--color-white, #FFFFFF); border-bottom: 1px solid var(--color-border, #E2E8F0);">
@@ -360,6 +362,7 @@ render_breadcrumbs([
           </div>
 
           <!-- Social Links Row (Page 65 Reference) -->
+          <?php if ((!isset($contact_cms['social']['is_active']) || !empty($contact_cms['social']['is_active'])) && empty($contact_cms['social']['is_removed'])): ?>
           <div style="padding-top: 0.5rem;">
             <span style="font-size: 0.8rem; font-weight: 700; color: var(--color-navy, #062B63); text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 0.85rem;">
               Connect on Social Platforms
@@ -395,6 +398,7 @@ render_breadcrumbs([
               <?php endforeach; ?>
             </div>
           </div>
+          <?php endif; ?>
 
         </div>
 
@@ -556,7 +560,7 @@ render_breadcrumbs([
   </section>
 
   <!-- Real Interactive Map Section (Replaces Placeholder) -->
-  <?php if (!empty($map['is_visible'])): ?>
+  <?php if ((!isset($contact_cms['map']['is_active']) || !empty($contact_cms['map']['is_active'])) && empty($contact_cms['map']['is_removed']) && !empty($map['is_visible'])): ?>
     <section class="section" style="padding: 4.5rem 0; background-color: var(--color-surface, #F8FAFC); border-bottom: 1px solid var(--color-border, #E2E8F0);">
       <div class="container">
         
@@ -620,7 +624,7 @@ render_breadcrumbs([
   <?php endif; ?>
 
   <!-- Final Conversion Area (Section 3.5) -->
-  <?php if (!empty($banner['is_visible'])): ?>
+  <?php if ((!isset($contact_cms['banner']['is_active']) || !empty($contact_cms['banner']['is_active'])) && empty($contact_cms['banner']['is_removed']) && !empty($banner['is_visible'])): ?>
     <section class="section" style="padding: 5rem 1.5rem; background: linear-gradient(135deg, var(--color-navy-dark, #000A42) 0%, var(--color-navy, #062B63) 100%); color: #FFFFFF; text-align: center; position: relative; overflow: hidden;">
       <div class="container" style="max-width: 800px; position: relative; z-index: 2;">
         <h2 style="font-size: 2.3rem; font-family: var(--font-primary); font-weight: 800; color: #FFFFFF; margin-bottom: 1rem; line-height: 1.25;">

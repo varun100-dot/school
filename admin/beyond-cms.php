@@ -1,5 +1,5 @@
 <?php
-// Zuvio Global School - Admin Beyond CMS Manager
+// Zuvio Global School - Admin Beyond CMS Manager (Unified 2-Column Section Manager)
 require_once dirname(__FILE__) . '/../includes/db.php';
 require_once dirname(__FILE__) . '/../includes/helper.php';
 require_once dirname(__FILE__) . '/../includes/auth.php';
@@ -9,7 +9,7 @@ require_login();
 
 $msg = $_GET['msg'] ?? '';
 $error = '';
-$tab = $_GET['tab'] ?? 'cocurricular';
+$selected_sec = $_GET['sec'] ?? 'hero';
 
 // Persistent CMS Storage (MySQL database with session fallback)
 $db_saved = get_json_setting('cms_beyond', []);
@@ -18,14 +18,26 @@ if (!isset($_SESSION['mock_beyond_cms']) || !empty($db_saved)) {
 }
 $beyond_cms = &$_SESSION['mock_beyond_cms'];
 
-function redirect_and_save_beyond($tab, $msg) {
-    global $beyond_cms;
-    set_json_setting('cms_beyond', $beyond_cms, 'Beyond CMS Content');
-    header("Location: /admin/beyond-cms.php?tab=" . urlencode($tab) . "&msg=" . urlencode($msg));
-    exit;
+// 1. Defaults for Hero
+if (!isset($beyond_cms['hero'])) {
+    $beyond_cms['hero'] = [
+        'is_active' => 1,
+        'tag' => 'ZUVIO BEYOND',
+        'subtitle' => 'LEARNING BEYOND CLASSROOMS',
+        'title' => 'Discover. Create. Grow Beyond.',
+        'desc' => 'A vibrant enrichment space for future-ready skills, creative expression and meaningful interests.',
+        'grades' => 'NURSERY – GRADE 8'
+    ];
 }
 
-// 1. Defaults for Co-curricular Clubs
+// 2. Defaults for Co-curricular Clubs
+if (!isset($beyond_cms['cocurricular'])) {
+    $beyond_cms['cocurricular'] = [
+        'is_active' => 1,
+        'title' => 'Global Clubs & Co-Curricular Enrichment',
+        'subtitle' => 'Nurturing holistic development, creative expression, and intellectual curiosity through diverse live clubs.'
+    ];
+}
 if (!isset($beyond_cms['cocurricular_clubs'])) {
     $beyond_cms['cocurricular_clubs'] = [
         [
@@ -141,7 +153,14 @@ if (!isset($beyond_cms['cocurricular_clubs'])) {
     ];
 }
 
-// 2. Defaults for Hybrid Campus
+// 3. Defaults for Hybrid Campus
+if (!isset($beyond_cms['hybrid'])) {
+    $beyond_cms['hybrid'] = [
+        'is_active' => 1,
+        'title' => 'Hybrid Campus & Practical Hands-on Learning',
+        'subtitle' => 'Online intellectual depth seamlessly combined with physical kits, regional field meets, and sensory experiments.'
+    ];
+}
 if (!isset($beyond_cms['hybrid_campus'])) {
     $beyond_cms['hybrid_campus'] = [
         [
@@ -177,7 +196,14 @@ if (!isset($beyond_cms['hybrid_campus'])) {
     ];
 }
 
-// 3. Defaults for Student Achievers
+// 4. Defaults for Student Achievers
+if (!isset($beyond_cms['achievers'])) {
+    $beyond_cms['achievers'] = [
+        'is_active' => 1,
+        'title' => 'Student Achievers & Star Performers',
+        'subtitle' => 'Celebrating excellence across competitive sports, international olympiads, visual arts, and leadership.'
+    ];
+}
 if (!isset($beyond_cms['student_achievers'])) {
     $beyond_cms['student_achievers'] = [
         [
@@ -249,7 +275,14 @@ if (!isset($beyond_cms['student_achievers'])) {
     ];
 }
 
-// 4. Defaults for Gallery
+// 5. Defaults for Gallery
+if (!isset($beyond_cms['gallery_meta'])) {
+    $beyond_cms['gallery_meta'] = [
+        'is_active' => 1,
+        'title' => 'Photo & Activity Gallery',
+        'subtitle' => 'Glimpses into our live interactive classrooms, hands-on maker activities, and global student community.'
+    ];
+}
 if (!isset($beyond_cms['gallery'])) {
     $beyond_cms['gallery'] = [
         [
@@ -295,7 +328,14 @@ if (!isset($beyond_cms['gallery'])) {
     ];
 }
 
-// 5. Defaults for Virtual Classroom
+// 6. Defaults for Virtual Classroom
+if (!isset($beyond_cms['classroom_meta'])) {
+    $beyond_cms['classroom_meta'] = [
+        'is_active' => 1,
+        'title' => 'Inside the Virtual Classroom',
+        'subtitle' => 'Watch authentic class clips and project demonstrations showing active participation, small cohorts, and real learning in action.'
+    ];
+}
 if (!isset($beyond_cms['virtual_classroom'])) {
     $beyond_cms['virtual_classroom'] = [
         [
@@ -327,585 +367,747 @@ if (!isset($beyond_cms['virtual_classroom'])) {
     ];
 }
 
+// 6 Beyond Sections
+$sections_nav = [
+    'hero'         => ['num' => 1, 'name' => 'Beyond Hero & Overview', 'icon' => '🌟'],
+    'cocurricular' => ['num' => 2, 'name' => 'Co-Curricular & Global Clubs', 'icon' => '🎭'],
+    'hybrid'       => ['num' => 3, 'name' => 'Hybrid Campus & Science Kits', 'icon' => '🔬'],
+    'achievers'    => ['num' => 4, 'name' => 'Student Achievers & Stars', 'icon' => '🏆'],
+    'gallery'      => ['num' => 5, 'name' => 'Photo & Activity Gallery', 'icon' => '📸'],
+    'classroom'    => ['num' => 6, 'name' => 'Inside Virtual Classroom', 'icon' => '💻']
+];
+
+if (!array_key_exists($selected_sec, $sections_nav)) {
+    $selected_sec = 'hero';
+}
+
+function redirect_and_save_beyond($sec, $msg) {
+    global $beyond_cms;
+    set_json_setting('cms_beyond', $beyond_cms, 'Beyond CMS Content');
+    header("Location: /admin/beyond-cms.php?sec=" . urlencode($sec) . "&msg=" . urlencode($msg));
+    exit;
+}
+
 // Handle Form Actions
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $action = $_POST['action'] ?? '';
-    
-    // --- Actions for Co-curricular Clubs ---
-    if ($action === 'add_club') {
-        $title = trim($_POST['title'] ?? '');
-        $stage = trim($_POST['stage'] ?? '');
-        $stage_key = trim($_POST['stage_key'] ?? 'prep_mid');
-        $desc = trim($_POST['desc'] ?? '');
-        $icon = trim($_POST['icon'] ?? '🌟');
-        $schedule = trim($_POST['schedule'] ?? 'Weekly session');
-        
-        if ($title) {
-            $new_id = time();
-            $beyond_cms['cocurricular_clubs'][] = [
-                'id' => $new_id,
-                'title' => $title,
-                'stage' => $stage,
-                'stage_key' => $stage_key,
-                'desc' => $desc,
-                'icon' => $icon,
-                'schedule' => $schedule,
-                'sort_order' => count($beyond_cms['cocurricular_clubs']) + 1,
-                'is_published' => 1
-            ];
-            redirect_and_save_beyond('cocurricular', 'Club added successfully');
+    if (!validate_csrf_token($_POST['csrf_token'] ?? '')) {
+        $error = 'Security check failed. Please refresh and try again.';
+    } else {
+        $action = $_POST['action'] ?? '';
+        $target_sec = $_POST['section_key'] ?? $selected_sec;
+
+        // Apply Section Removal / Restoration / Visibility
+        $storage_key = ($target_sec === 'gallery') ? 'gallery_meta' : (($target_sec === 'classroom') ? 'classroom_meta' : $target_sec);
+        if (!isset($beyond_cms[$storage_key])) {
+            $beyond_cms[$storage_key] = [];
         }
-    } elseif ($action === 'delete_club') {
-        $id = (int)($_POST['id'] ?? 0);
-        $beyond_cms['cocurricular_clubs'] = array_values(array_filter($beyond_cms['cocurricular_clubs'], function($c) use ($id) {
-            return $c['id'] != $id;
-        }));
-        redirect_and_save_beyond('cocurricular', 'Club deleted successfully');
-    } elseif ($action === 'toggle_club_publish') {
-        $id = (int)($_POST['id'] ?? 0);
-        foreach ($beyond_cms['cocurricular_clubs'] as &$c) {
-            if ($c['id'] == $id) {
-                $c['is_published'] = empty($c['is_published']) ? 1 : 0;
-                break;
+
+        $sec_action = $_POST['sec_action'] ?? '';
+        if ($sec_action === 'remove') {
+            $beyond_cms[$storage_key]['is_removed'] = 1;
+            $beyond_cms[$storage_key]['is_active'] = 0;
+        } elseif ($sec_action === 'restore') {
+            $beyond_cms[$storage_key]['is_removed'] = 0;
+            $beyond_cms[$storage_key]['is_active'] = 1;
+        } else {
+            $beyond_cms[$storage_key]['is_active'] = isset($_POST['is_active']) ? (int)$_POST['is_active'] : 0;
+            if ($beyond_cms[$storage_key]['is_active'] == 1) {
+                $beyond_cms[$storage_key]['is_removed'] = 0;
             }
         }
-        redirect_and_save_beyond('cocurricular', 'Club status updated');
-    }
 
-    // --- Actions for Student Achievers ---
-    elseif ($action === 'add_achiever') {
-        $name = trim($_POST['name'] ?? '');
-        $category = trim($_POST['category'] ?? '');
-        $category_key = trim($_POST['category_key'] ?? 'extracurricular');
-        $badge = trim($_POST['badge'] ?? '🌟 Star Kid');
-        $desc = trim($_POST['description'] ?? '');
-        
-        if ($name) {
-            $new_id = time();
-            $beyond_cms['student_achievers'][] = [
-                'id' => $new_id,
-                'name' => $name,
-                'category' => $category,
-                'category_key' => $category_key,
-                'badge' => $badge,
-                'description' => $desc,
-                'image' => '/assets/images/Profile_Images/Student_1.png',
-                'sort_order' => count($beyond_cms['student_achievers']) + 1,
-                'is_published' => 1
-            ];
-            redirect_and_save_beyond('achievers', 'Achiever added successfully');
+        // Section 1: Hero
+        if ($target_sec === 'hero') {
+            $beyond_cms['hero']['tag'] = trim($_POST['tag'] ?? 'ZUVIO BEYOND');
+            $beyond_cms['hero']['subtitle'] = trim($_POST['subtitle'] ?? 'LEARNING BEYOND CLASSROOMS');
+            $beyond_cms['hero']['title'] = trim($_POST['title'] ?? 'Discover. Create. Grow Beyond.');
+            $beyond_cms['hero']['desc'] = trim($_POST['desc'] ?? '');
+            $beyond_cms['hero']['grades'] = trim($_POST['grades'] ?? 'NURSERY – GRADE 8');
+            redirect_and_save_beyond('hero', 'saved');
         }
-    } elseif ($action === 'delete_achiever') {
-        $id = (int)($_POST['id'] ?? 0);
-        $beyond_cms['student_achievers'] = array_values(array_filter($beyond_cms['student_achievers'], function($a) use ($id) {
-            return $a['id'] != $id;
-        }));
-        redirect_and_save_beyond('achievers', 'Achiever removed successfully');
-    } elseif ($action === 'toggle_achiever_publish') {
-        $id = (int)($_POST['id'] ?? 0);
-        foreach ($beyond_cms['student_achievers'] as &$a) {
-            if ($a['id'] == $id) {
-                $a['is_published'] = empty($a['is_published']) ? 1 : 0;
-                break;
+
+        // Section 2: Co-curricular
+        if ($target_sec === 'cocurricular') {
+            $beyond_cms['cocurricular']['title'] = trim($_POST['title'] ?? '');
+            $beyond_cms['cocurricular']['subtitle'] = trim($_POST['subtitle'] ?? '');
+
+            if ($action === 'add_club') {
+                $title = trim($_POST['new_title'] ?? '');
+                if ($title) {
+                    $beyond_cms['cocurricular_clubs'][] = [
+                        'id' => time(),
+                        'title' => $title,
+                        'stage' => trim($_POST['new_stage'] ?? 'All Stages'),
+                        'stage_key' => trim($_POST['new_stage_key'] ?? 'all'),
+                        'desc' => trim($_POST['new_desc'] ?? ''),
+                        'icon' => trim($_POST['new_icon'] ?? '🌟'),
+                        'schedule' => trim($_POST['new_schedule'] ?? 'Weekly session'),
+                        'sort_order' => count($beyond_cms['cocurricular_clubs']) + 1,
+                        'is_published' => 1
+                    ];
+                }
+            } elseif ($action === 'delete_club') {
+                $id = (int)($_POST['item_id'] ?? 0);
+                $beyond_cms['cocurricular_clubs'] = array_values(array_filter($beyond_cms['cocurricular_clubs'], fn($c) => ($c['id'] ?? 0) != $id));
             }
+            redirect_and_save_beyond('cocurricular', 'saved');
         }
-        redirect_and_save_beyond('achievers', 'Achiever status updated');
-    }
 
-    // --- Actions for Gallery ---
-    elseif ($action === 'add_gallery') {
-        $title = trim($_POST['title'] ?? '');
-        $category = trim($_POST['category'] ?? 'Live Classes');
-        $category_key = trim($_POST['category_key'] ?? 'live');
-        $caption = trim($_POST['caption'] ?? '');
-        $image = trim($_POST['image'] ?? '/assets/images/Students learning in classroom.png');
-        
-        if ($title) {
-            $new_id = time();
-            $beyond_cms['gallery'][] = [
-                'id' => $new_id,
-                'title' => $title,
-                'category' => $category,
-                'category_key' => $category_key,
-                'caption' => $caption,
-                'image' => $image,
-                'sort_order' => count($beyond_cms['gallery']) + 1,
-                'is_published' => 1
-            ];
-            redirect_and_save_beyond('gallery', 'Gallery item added');
-        }
-    } elseif ($action === 'delete_gallery') {
-        $id = (int)($_POST['id'] ?? 0);
-        $beyond_cms['gallery'] = array_values(array_filter($beyond_cms['gallery'], function($g) use ($id) {
-            return $g['id'] != $id;
-        }));
-        redirect_and_save_beyond('gallery', 'Gallery item deleted');
-    }
+        // Section 3: Hybrid Campus
+        if ($target_sec === 'hybrid') {
+            $beyond_cms['hybrid']['title'] = trim($_POST['title'] ?? '');
+            $beyond_cms['hybrid']['subtitle'] = trim($_POST['subtitle'] ?? '');
 
-    // --- Actions for Virtual Classroom Videos ---
-    elseif ($action === 'add_video') {
-        $title = trim($_POST['title'] ?? '');
-        $category = trim($_POST['category'] ?? 'Live Class');
-        $category_key = trim($_POST['category_key'] ?? 'live');
-        $badge = trim($_POST['badge'] ?? '📹 Live Class');
-        $duration = trim($_POST['duration'] ?? '3:30 mins');
-        $description = trim($_POST['description'] ?? '');
-        $video_url = trim($_POST['video_url'] ?? '/assets/images/01_Collaborative_Project_Learning.mp4');
-        $thumbnail = trim($_POST['thumbnail'] ?? '/assets/images/Students learning in classroom.png');
-        
-        if ($title) {
-            $new_id = time();
-            $beyond_cms['virtual_classroom'][] = [
-                'id' => $new_id,
-                'title' => $title,
-                'category' => $category,
-                'category_key' => $category_key,
-                'badge' => $badge,
-                'duration' => $duration,
-                'description' => $description,
-                'video_url' => $video_url,
-                'thumbnail' => $thumbnail,
-                'sort_order' => count($beyond_cms['virtual_classroom']) + 1,
-                'is_published' => 1
-            ];
-            redirect_and_save_beyond('classroom', 'Video item added');
+            if ($action === 'add_hybrid') {
+                $title = trim($_POST['new_title'] ?? '');
+                if ($title) {
+                    $beyond_cms['hybrid_campus'][] = [
+                        'id' => time(),
+                        'title' => $title,
+                        'desc' => trim($_POST['new_desc'] ?? ''),
+                        'icon' => trim($_POST['new_icon'] ?? '🔬')
+                    ];
+                }
+            } elseif ($action === 'delete_hybrid') {
+                $id = (int)($_POST['item_id'] ?? 0);
+                $beyond_cms['hybrid_campus'] = array_values(array_filter($beyond_cms['hybrid_campus'], fn($h) => ($h['id'] ?? 0) != $id));
+            }
+            redirect_and_save_beyond('hybrid', 'saved');
         }
-    } elseif ($action === 'delete_video') {
-        $id = (int)($_POST['id'] ?? 0);
-        $beyond_cms['virtual_classroom'] = array_values(array_filter($beyond_cms['virtual_classroom'], function($v) use ($id) {
-            return $v['id'] != $id;
-        }));
-        redirect_and_save_beyond('classroom', 'Video item deleted');
+
+        // Section 4: Achievers
+        if ($target_sec === 'achievers') {
+            $beyond_cms['achievers']['title'] = trim($_POST['title'] ?? '');
+            $beyond_cms['achievers']['subtitle'] = trim($_POST['subtitle'] ?? '');
+
+            if ($action === 'add_achiever') {
+                $name = trim($_POST['new_name'] ?? '');
+                if ($name) {
+                    $beyond_cms['student_achievers'][] = [
+                        'id' => time(),
+                        'name' => $name,
+                        'category' => trim($_POST['new_category'] ?? 'Extracurricular'),
+                        'category_key' => trim($_POST['new_category_key'] ?? 'extracurricular'),
+                        'badge' => trim($_POST['new_badge'] ?? '🌟 Star Kid'),
+                        'description' => trim($_POST['new_desc'] ?? ''),
+                        'image' => trim($_POST['new_image'] ?? '/assets/images/Profile_Images/Student_1.png'),
+                        'sort_order' => count($beyond_cms['student_achievers']) + 1,
+                        'is_published' => 1
+                    ];
+                }
+            } elseif ($action === 'delete_achiever') {
+                $id = (int)($_POST['item_id'] ?? 0);
+                $beyond_cms['student_achievers'] = array_values(array_filter($beyond_cms['student_achievers'], fn($a) => ($a['id'] ?? 0) != $id));
+            }
+            redirect_and_save_beyond('achievers', 'saved');
+        }
+
+        // Section 5: Gallery
+        if ($target_sec === 'gallery') {
+            $beyond_cms['gallery_meta']['title'] = trim($_POST['title'] ?? '');
+            $beyond_cms['gallery_meta']['subtitle'] = trim($_POST['subtitle'] ?? '');
+
+            if ($action === 'add_gallery') {
+                $title = trim($_POST['new_title'] ?? '');
+                if ($title) {
+                    $beyond_cms['gallery'][] = [
+                        'id' => time(),
+                        'title' => $title,
+                        'category' => trim($_POST['new_category'] ?? 'Live Classes'),
+                        'category_key' => trim($_POST['new_category_key'] ?? 'live'),
+                        'caption' => trim($_POST['new_caption'] ?? ''),
+                        'image' => trim($_POST['new_image'] ?? '/assets/images/Students learning in classroom.png'),
+                        'sort_order' => count($beyond_cms['gallery']) + 1,
+                        'is_published' => 1
+                    ];
+                }
+            } elseif ($action === 'delete_gallery') {
+                $id = (int)($_POST['item_id'] ?? 0);
+                $beyond_cms['gallery'] = array_values(array_filter($beyond_cms['gallery'], fn($g) => ($g['id'] ?? 0) != $id));
+            }
+            redirect_and_save_beyond('gallery', 'saved');
+        }
+
+        // Section 6: Virtual Classroom
+        if ($target_sec === 'classroom') {
+            $beyond_cms['classroom_meta']['title'] = trim($_POST['title'] ?? '');
+            $beyond_cms['classroom_meta']['subtitle'] = trim($_POST['subtitle'] ?? '');
+
+            if ($action === 'add_video') {
+                $title = trim($_POST['new_title'] ?? '');
+                if ($title) {
+                    $beyond_cms['virtual_classroom'][] = [
+                        'id' => time(),
+                        'title' => $title,
+                        'category' => trim($_POST['new_category'] ?? 'Live Class'),
+                        'category_key' => trim($_POST['new_category_key'] ?? 'live'),
+                        'badge' => trim($_POST['new_badge'] ?? '📹 Live Class'),
+                        'duration' => trim($_POST['new_duration'] ?? '3:00 mins'),
+                        'description' => trim($_POST['new_desc'] ?? ''),
+                        'thumbnail' => trim($_POST['new_thumbnail'] ?? '/assets/images/Students learning in classroom.png'),
+                        'video_url' => trim($_POST['new_video_url'] ?? '/assets/images/01_Collaborative_Project_Learning.mp4'),
+                        'sort_order' => count($beyond_cms['virtual_classroom']) + 1,
+                        'is_published' => 1
+                    ];
+                }
+            } elseif ($action === 'delete_video') {
+                $id = (int)($_POST['item_id'] ?? 0);
+                $beyond_cms['virtual_classroom'] = array_values(array_filter($beyond_cms['virtual_classroom'], fn($v) => ($v['id'] ?? 0) != $id));
+            }
+            redirect_and_save_beyond('classroom', 'saved');
+        }
     }
 }
 
-$current_page = 'admin-beyond-cms';
+$page_slug = 'admin-beyond-cms';
 include_once dirname(__FILE__) . '/header.php';
 ?>
 
-<div class="main-content">
-  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
-    <div>
-      <span style="font-size: 0.8rem; font-weight: 700; color: var(--color-gold); text-transform: uppercase; letter-spacing: 1.5px;">CMS Module</span>
-      <h1 style="color: var(--color-navy); font-size: 2rem; margin: 0.25rem 0 0 0;">Beyond CMS Manager</h1>
-      <p style="color: var(--color-muted); margin: 0.25rem 0 0 0; font-size: 0.95rem;">
-        Manage Co-curricular &amp; Global Clubs, Hybrid Campus, Student Achievers, Gallery, and Inside Virtual Classroom.
-      </p>
-    </div>
-    <div style="display: flex; gap: 0.75rem;">
-      <a href="/beyond" target="_blank" class="btn" style="background: #FFFFFF; border: 1.5px solid var(--color-navy); color: var(--color-navy); font-size: 0.85rem; padding: 0.6rem 1.25rem; font-weight: 600; text-decoration: none; border-radius: var(--radius-sm);">
-        Preview Beyond &nearr;
-      </a>
-      <a href="/beyond/co-curricular" target="_blank" class="btn" style="background: var(--color-navy); color: #FFFFFF; font-size: 0.85rem; padding: 0.6rem 1.25rem; font-weight: 600; text-decoration: none; border-radius: var(--radius-sm);">
-        Preview Clubs &nearr;
-      </a>
-    </div>
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.75rem; flex-wrap: wrap; gap: 1rem;">
+  <div>
+    <h1 style="font-family: var(--font-secondary); font-size: 1.6rem; color: var(--color-navy); margin-bottom: 0.25rem;">
+      Beyond Academics Section Manager
+    </h1>
+    <p style="color: var(--color-muted); font-size: 0.85rem;">
+      Unified 2-column management for Beyond sections: Co-Curricular Clubs, Hybrid Campus, Achievers, Gallery, and Virtual Classroom.
+    </p>
   </div>
-
-  <?php if ($msg): ?>
-    <div style="background-color: #DEF7EC; border: 1px solid #31C48D; color: #03543F; padding: 1rem 1.5rem; border-radius: 6px; margin-bottom: 2rem; font-size: 0.95rem;">
-      <strong>Success!</strong> <?php echo h($msg); ?>
-    </div>
-  <?php endif; ?>
-
-  <!-- Modular CMS Tabs -->
-  <div style="display: flex; gap: 0.5rem; border-bottom: 2px solid var(--color-border); margin-bottom: 2rem; overflow-x: auto; padding-bottom: 2px;">
-    <a href="?tab=cocurricular" style="padding: 0.75rem 1.5rem; font-weight: 700; font-size: 0.9rem; text-decoration: none; border-bottom: 3px solid <?php echo $tab === 'cocurricular' ? 'var(--color-navy)' : 'transparent'; ?>; color: <?php echo $tab === 'cocurricular' ? 'var(--color-navy)' : 'var(--color-muted)'; ?>;">
-      1. Co-curricular &amp; Clubs
+  <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+    <a href="/beyond" target="_blank" class="btn btn-outline" style="padding: 0.45rem 0.85rem; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 0.4rem;">
+      <span>👁️</span> Preview Live Page &nearr;
     </a>
-    <a href="?tab=hybrid" style="padding: 0.75rem 1.5rem; font-weight: 700; font-size: 0.9rem; text-decoration: none; border-bottom: 3px solid <?php echo $tab === 'hybrid' ? 'var(--color-navy)' : 'transparent'; ?>; color: <?php echo $tab === 'hybrid' ? 'var(--color-navy)' : 'var(--color-muted)'; ?>;">
-      2. Hybrid Campus
-    </a>
-    <a href="?tab=achievers" style="padding: 0.75rem 1.5rem; font-weight: 700; font-size: 0.9rem; text-decoration: none; border-bottom: 3px solid <?php echo $tab === 'achievers' ? 'var(--color-navy)' : 'transparent'; ?>; color: <?php echo $tab === 'achievers' ? 'var(--color-navy)' : 'var(--color-muted)'; ?>;">
-      3. Student Achievers
-    </a>
-    <a href="?tab=gallery" style="padding: 0.75rem 1.5rem; font-weight: 700; font-size: 0.9rem; text-decoration: none; border-bottom: 3px solid <?php echo $tab === 'gallery' ? 'var(--color-navy)' : 'transparent'; ?>; color: <?php echo $tab === 'gallery' ? 'var(--color-navy)' : 'var(--color-muted)'; ?>;">
-      4. Photo Gallery
-    </a>
-    <a href="?tab=classroom" style="padding: 0.75rem 1.5rem; font-weight: 700; font-size: 0.9rem; text-decoration: none; border-bottom: 3px solid <?php echo $tab === 'classroom' ? 'var(--color-navy)' : 'transparent'; ?>; color: <?php echo $tab === 'classroom' ? 'var(--color-navy)' : 'var(--color-muted)'; ?>;">
-      5. Virtual Classroom
+    <a href="/admin/beyond-cms.php?sec=<?php echo urlencode($selected_sec); ?>" class="btn btn-outline" style="padding: 0.45rem 0.85rem; font-size: 0.8rem; background: #FFFFFF;">
+      ↻ Reload
     </a>
   </div>
+</div>
 
-  <!-- TAB 1: CO-CURRICULAR & CLUBS -->
-  <?php if ($tab === 'cocurricular'): ?>
-    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; align-items: flex-start;">
-      <div>
-        <div style="background: #FFFFFF; border-radius: var(--radius-lg); border: 1.5px solid rgba(6, 43, 99, 0.16); padding: 2rem; box-shadow: var(--shadow-sm); margin-bottom: 2rem;">
-          <h3 style="color: var(--color-navy); font-size: 1.35rem; margin-top: 0; margin-bottom: 1.25rem;">
-            Active Co-curricular &amp; Global Clubs (<?php echo count($beyond_cms['cocurricular_clubs']); ?>)
-          </h3>
-          <div style="display: flex; flex-direction: column; gap: 1rem;">
-            <?php foreach ($beyond_cms['cocurricular_clubs'] as $c): ?>
-              <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 1.25rem; display: flex; justify-content: space-between; align-items: center; gap: 1rem;">
-                <div style="display: flex; align-items: center; gap: 1rem;">
-                  <span style="font-size: 2rem;"><?php echo h($c['icon']); ?></span>
-                  <div>
-                    <h4 style="margin: 0; color: var(--color-navy); font-size: 1.1rem; font-weight: 700;">
-                      <?php echo h($c['title']); ?>
-                    </h4>
-                    <span style="font-size: 0.8rem; color: var(--color-teal); font-weight: 600;">
-                      <?php echo h($c['stage']); ?> &bull; <?php echo h($c['schedule']); ?>
-                    </span>
-                    <p style="color: var(--color-muted); font-size: 0.85rem; margin: 0.35rem 0 0 0; line-height: 1.4;">
-                      <?php echo h($c['desc']); ?>
-                    </p>
-                  </div>
-                </div>
-                <div style="display: flex; align-items: center; gap: 0.5rem; flex-shrink: 0;">
-                  <form method="POST" style="margin: 0;">
-                    <input type="hidden" name="action" value="toggle_club_publish">
-                    <input type="hidden" name="id" value="<?php echo (int)$c['id']; ?>">
-                    <button type="submit" style="background: <?php echo !empty($c['is_published']) ? '#DEF7EC' : '#FDE8E8'; ?>; color: <?php echo !empty($c['is_published']) ? '#03543F' : '#9B1C1C'; ?>; border: 1px solid <?php echo !empty($c['is_published']) ? '#31C48D' : '#F98080'; ?>; padding: 0.35rem 0.75rem; border-radius: 4px; font-size: 0.8rem; font-weight: 700; cursor: pointer;">
-                      <?php echo !empty($c['is_published']) ? 'Published' : 'Hidden'; ?>
-                    </button>
-                  </form>
-                  <form method="POST" onsubmit="return confirm('Delete this club?');" style="margin: 0;">
-                    <input type="hidden" name="action" value="delete_club">
-                    <input type="hidden" name="id" value="<?php echo (int)$c['id']; ?>">
-                    <button type="submit" style="background: #FDE8E8; color: #9B1C1C; border: 1px solid #F98080; padding: 0.35rem 0.75rem; border-radius: 4px; font-size: 0.8rem; font-weight: 700; cursor: pointer;">
-                      Delete
-                    </button>
-                  </form>
-                </div>
-              </div>
-            <?php endforeach; ?>
-          </div>
-        </div>
+<?php if ($msg === 'saved'): ?>
+  <div style="background-color: var(--color-surface-blue); border-left: 4px solid var(--color-success); padding: 0.85rem 1.25rem; border-radius: var(--radius-sm); color: var(--color-navy); font-size: 0.9rem; margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: space-between;">
+    <div><strong>✓ Saved & Synchronized!</strong> Section updates are live on the website.</div>
+    <span style="font-size: 0.8rem; color: var(--color-muted);"><?php echo date('H:i:s'); ?></span>
+  </div>
+<?php endif; ?>
+
+<?php if ($error): ?>
+  <div style="background:#fde8e8; border-left:4px solid #c81e1e; padding:0.85rem 1.25rem; margin-bottom:1.5rem; color:#9b1c1c; font-size:0.9rem;">
+    <strong>Error:</strong> <?php echo h($error); ?>
+  </div>
+<?php endif; ?>
+
+<!-- 2-Column Section Manager Layout -->
+<div style="display: grid; grid-template-columns: 310px 1fr; gap: 1.75rem; align-items: start;">
+
+  <!-- Left Sidebar: Sticky Section Sequence -->
+  <div style="position: sticky; top: 1.5rem;">
+    <div class="card" style="padding: 0; overflow: hidden; border: 1.5px solid rgba(6, 43, 99, 0.12); box-shadow: var(--shadow-sm);">
+      <div style="background: var(--color-navy); color: #FFFFFF; padding: 1rem 1.25rem; font-weight: 700; font-size: 0.9rem; display: flex; justify-content: space-between; align-items: center;">
+        <span>Beyond Sections</span>
+        <span style="font-size: 0.75rem; background: rgba(255,255,255,0.2); padding: 0.2rem 0.55rem; border-radius: 12px; font-weight: 600;">
+          <?php echo count($sections_nav); ?> Total
+        </span>
       </div>
 
-      <!-- Add Club Form -->
-      <div style="background: #FFFFFF; border-radius: var(--radius-lg); border: 1.5px solid rgba(6, 43, 99, 0.16); padding: 2rem; box-shadow: var(--shadow-sm);">
-        <h3 style="color: var(--color-navy); font-size: 1.25rem; margin-top: 0; margin-bottom: 1.25rem;">
-          Add New Club
-        </h3>
-        <form method="POST">
-          <input type="hidden" name="action" value="add_club">
-          
-          <div style="margin-bottom: 1rem;">
-            <label style="display: block; font-size: 0.85rem; font-weight: 600; color: var(--color-navy); margin-bottom: 0.3rem;">Club Title *</label>
-            <input type="text" name="title" required placeholder="e.g. Creative Writers Club" style="width: 100%; padding: 0.65rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); font-size: 0.9rem;">
-          </div>
-
-          <div style="margin-bottom: 1rem;">
-            <label style="display: block; font-size: 0.85rem; font-weight: 600; color: var(--color-navy); margin-bottom: 0.3rem;">Stage Label *</label>
-            <input type="text" name="stage" required placeholder="e.g. Preparatory & Middle School" style="width: 100%; padding: 0.65rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); font-size: 0.9rem;">
-          </div>
-
-          <div style="margin-bottom: 1rem;">
-            <label style="display: block; font-size: 0.85rem; font-weight: 600; color: var(--color-navy); margin-bottom: 0.3rem;">Stage Filter Key *</label>
-            <select name="stage_key" required style="width: 100%; padding: 0.65rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); font-size: 0.9rem; background: #fff;">
-              <option value="foundational">Foundational Stage (KG–Gr 2)</option>
-              <option value="prep_mid" selected>Preparatory &amp; Middle (Gr 3–8)</option>
-              <option value="middle">Middle School Only (Gr 6–8)</option>
-              <option value="all">All Stages</option>
-            </select>
-          </div>
-
-          <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 0.75rem; margin-bottom: 1rem;">
-            <div>
-              <label style="display: block; font-size: 0.85rem; font-weight: 600; color: var(--color-navy); margin-bottom: 0.3rem;">Icon Emoji</label>
-              <input type="text" name="icon" value="🌟" style="width: 100%; padding: 0.65rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); font-size: 0.9rem; text-align: center;">
+      <div style="divide-y: 1px solid var(--color-border); max-height: calc(100vh - 180px); overflow-y: auto;">
+        <?php foreach ($sections_nav as $skey => $sdata): 
+          $check_key = ($skey === 'gallery') ? 'gallery_meta' : (($skey === 'classroom') ? 'classroom_meta' : $skey);
+          $s_active = !isset($beyond_cms[$check_key]['is_active']) || !empty($beyond_cms[$check_key]['is_active']);
+          $s_removed = !empty($beyond_cms[$check_key]['is_removed']);
+          $is_current = ($selected_sec === $skey);
+        ?>
+          <a href="/admin/beyond-cms.php?sec=<?php echo urlencode($skey); ?>" 
+             style="display: flex; align-items: center; justify-content: space-between; padding: 0.85rem 1.1rem; text-decoration: none; border-bottom: 1px solid var(--color-border); background: <?php echo $is_current ? 'var(--pastel-blue)' : '#FFFFFF'; ?>; border-left: 4px solid <?php echo $is_current ? 'var(--color-navy)' : 'transparent'; ?>; transition: all 0.15s ease;">
+            <div style="display: flex; align-items: center; gap: 0.75rem; min-width: 0;">
+              <span style="font-size: 0.75rem; font-weight: 800; color: var(--color-muted); width: 18px;">
+                <?php echo str_pad($sdata['num'], 2, '0', STR_PAD_LEFT); ?>
+              </span>
+              <span style="font-size: 1.1rem;"><?php echo $sdata['icon']; ?></span>
+              <span style="font-size: 0.85rem; font-weight: <?php echo $is_current ? '700' : '500'; ?>; color: var(--color-navy); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                <?php echo h($sdata['name']); ?>
+              </span>
             </div>
             <div>
-              <label style="display: block; font-size: 0.85rem; font-weight: 600; color: var(--color-navy); margin-bottom: 0.3rem;">Schedule</label>
-              <input type="text" name="schedule" value="Weekly live cohort" style="width: 100%; padding: 0.65rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); font-size: 0.9rem;">
+              <?php if ($s_removed): ?>
+                <span style="font-size: 0.7rem; font-weight: 700; color: #dc2626; background: #fee2e2; padding: 0.15rem 0.45rem; border-radius: 4px;">
+                  REMOVED
+                </span>
+              <?php elseif (!$s_active): ?>
+                <span style="font-size: 0.7rem; font-weight: 700; color: #6b7280; background: #f3f4f6; padding: 0.15rem 0.45rem; border-radius: 4px;">
+                  OFF
+                </span>
+              <?php else: ?>
+                <span style="font-size: 0.7rem; font-weight: 700; color: #047857; background: #d1fae5; padding: 0.15rem 0.45rem; border-radius: 4px;">
+                  ON
+                </span>
+              <?php endif; ?>
             </div>
-          </div>
-
-          <div style="margin-bottom: 1.5rem;">
-            <label style="display: block; font-size: 0.85rem; font-weight: 600; color: var(--color-navy); margin-bottom: 0.3rem;">Description *</label>
-            <textarea name="desc" required rows="3" placeholder="Brief description of club objectives..." style="width: 100%; padding: 0.65rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); font-size: 0.9rem; font-family: inherit;"></textarea>
-          </div>
-
-          <button type="submit" class="btn btn-primary" style="width: 100%; background: var(--color-navy); color: #fff; padding: 0.75rem; border: none; font-weight: 700; border-radius: var(--radius-sm); cursor: pointer;">
-            Add Club &rarr;
-          </button>
-        </form>
-      </div>
-    </div>
-  <?php endif; ?>
-
-  <!-- TAB 2: HYBRID CAMPUS -->
-  <?php if ($tab === 'hybrid'): ?>
-    <div style="background: #FFFFFF; border-radius: var(--radius-lg); border: 1.5px solid rgba(6, 43, 99, 0.16); padding: 2rem; box-shadow: var(--shadow-sm);">
-      <h3 style="color: var(--color-navy); font-size: 1.35rem; margin-top: 0; margin-bottom: 1.5rem;">
-        Hybrid Experiential Campus Facets (Page 60 Reference)
-      </h3>
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
-        <?php foreach ($beyond_cms['hybrid_campus'] as $facet): ?>
-          <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 1.5rem;">
-            <div style="font-size: 2rem; margin-bottom: 0.5rem;"><?php echo h($facet['icon']); ?></div>
-            <h4 style="color: var(--color-navy); font-size: 1.15rem; margin: 0 0 0.5rem 0;"><?php echo h($facet['title']); ?></h4>
-            <p style="color: var(--color-muted); font-size: 0.88rem; line-height: 1.5; margin: 0;"><?php echo h($facet['desc']); ?></p>
-          </div>
+          </a>
         <?php endforeach; ?>
       </div>
     </div>
-  <?php endif; ?>
+  </div>
 
-  <!-- TAB 3: STUDENT ACHIEVERS -->
-  <?php if ($tab === 'achievers'): ?>
-    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; align-items: flex-start;">
-      <div style="background: #FFFFFF; border-radius: var(--radius-lg); border: 1.5px solid rgba(6, 43, 99, 0.16); padding: 2rem; box-shadow: var(--shadow-sm);">
-        <h3 style="color: var(--color-navy); font-size: 1.35rem; margin-top: 0; margin-bottom: 1.5rem;">
-          Verified Student Achievers (<?php echo count($beyond_cms['student_achievers']); ?>)
-        </h3>
-        <div style="display: flex; flex-direction: column; gap: 1rem;">
-          <?php foreach ($beyond_cms['student_achievers'] as $a): ?>
-            <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 1.25rem; display: flex; justify-content: space-between; align-items: center; gap: 1rem;">
+  <!-- Right Main Section Editor -->
+  <div>
+    <?php 
+      $check_key = ($selected_sec === 'gallery') ? 'gallery_meta' : (($selected_sec === 'classroom') ? 'classroom_meta' : $selected_sec);
+      $current_sec_data = $beyond_cms[$check_key] ?? [];
+      $is_sec_removed = !empty($current_sec_data['is_removed']);
+      $is_sec_active = !isset($current_sec_data['is_active']) || !empty($current_sec_data['is_active']);
+      $sec_meta = $sections_nav[$selected_sec];
+    ?>
+
+    <form method="POST" id="sectionForm">
+      <?php echo csrf_field(); ?>
+      <input type="hidden" name="section_key" value="<?php echo h($selected_sec); ?>">
+      <input type="hidden" name="sec_action" id="sec_action_input" value="">
+      <input type="hidden" name="action" id="form_action_input" value="save_section">
+      <input type="hidden" name="item_id" id="item_id_input" value="">
+
+      <div class="card" style="padding: 2rem; border: 1.5px solid rgba(6, 43, 99, 0.15); box-shadow: var(--shadow-sm); margin-bottom: 2rem;">
+
+        <!-- Section Editor Header with Live Controls -->
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; padding-bottom: 1.25rem; margin-bottom: 1.5rem; border-bottom: 2px solid var(--color-border); flex-wrap: wrap; gap: 1rem;">
+          <div>
+            <div style="font-size: 0.75rem; font-weight: 700; color: var(--color-gold); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 0.25rem;">
+              Section <?php echo $sec_meta['num']; ?> of <?php echo count($sections_nav); ?>
+            </div>
+            <h2 style="font-size: 1.4rem; color: var(--color-navy); font-family: var(--font-secondary); margin: 0; display: flex; align-items: center; gap: 0.5rem;">
+              <span><?php echo $sec_meta['icon']; ?></span>
+              <span><?php echo h($sec_meta['name']); ?></span>
+            </h2>
+          </div>
+
+          <div style="display: flex; align-items: center; gap: 1rem;">
+            <!-- Visible on Page Toggle -->
+            <label style="display: inline-flex; align-items: center; gap: 0.5rem; cursor: pointer; font-size: 0.85rem; font-weight: 600; color: var(--color-navy); background: var(--color-surface-warm); padding: 0.4rem 0.75rem; border-radius: var(--radius-sm); border: 1px solid var(--color-border);">
+              <input type="checkbox" name="is_active" value="1" <?php echo ($is_sec_active && !$is_sec_removed) ? 'checked' : ''; ?> <?php echo $is_sec_removed ? 'disabled' : ''; ?> style="width: 16px; height: 16px; cursor: pointer;">
+              <span>Visible on Page</span>
+            </label>
+
+            <!-- Remove / Restore Button -->
+            <?php if ($is_sec_removed): ?>
+              <button type="button" onclick="setSectionAction('restore')" class="btn btn-outline" style="border-color: #047857; color: #047857; padding: 0.4rem 0.85rem; font-size: 0.85rem; font-weight: 700; display: inline-flex; align-items: center; gap: 0.4rem;">
+                <span>↩️</span> Restore Section
+              </button>
+            <?php else: ?>
+              <button type="button" onclick="setSectionAction('remove')" class="btn btn-outline" style="border-color: #dc2626; color: #dc2626; padding: 0.4rem 0.85rem; font-size: 0.85rem; font-weight: 600; display: inline-flex; align-items: center; gap: 0.4rem;">
+                <span>🗑️</span> Remove Section
+              </button>
+            <?php endif; ?>
+          </div>
+        </div>
+
+        <!-- Pending Removal Alert Box -->
+        <div id="pendingRemovalBox" style="display: none; background: #fee2e2; border-left: 4px solid #dc2626; padding: 1rem 1.25rem; border-radius: var(--radius-sm); margin-bottom: 1.5rem; color: #991b1b; font-size: 0.9rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <strong>⚠️ PENDING REMOVAL:</strong> This section will be removed from the Beyond page when you click "Save Changes" below.
+            </div>
+            <button type="button" onclick="cancelSectionAction()" style="background: transparent; border: 1px solid #dc2626; color: #dc2626; padding: 0.25rem 0.65rem; border-radius: 4px; font-weight: 600; cursor: pointer; font-size: 0.8rem;">
+              Cancel Removal
+            </button>
+          </div>
+        </div>
+
+        <!-- Section 1: Hero -->
+        <?php if ($selected_sec === 'hero'): 
+          $h = $beyond_cms['hero'] ?? [];
+        ?>
+          <div style="display: grid; gap: 1.25rem;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
               <div>
-                <span style="background: var(--color-surface-warm); color: var(--color-navy); border: 1px solid var(--color-border); font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.6rem; border-radius: 12px;">
-                  <?php echo h($a['badge']); ?>
-                </span>
-                <h4 style="margin: 0.35rem 0 0.2rem 0; color: var(--color-navy); font-size: 1.15rem; font-weight: 700;">
-                  <?php echo h($a['name']); ?>
-                </h4>
-                <span style="font-size: 0.85rem; color: var(--color-teal); font-weight: 600;"><?php echo h($a['category']); ?></span>
-                <p style="color: var(--color-muted); font-size: 0.88rem; margin: 0.35rem 0 0 0; line-height: 1.4;">
-                  <?php echo h($a['description']); ?>
-                </p>
+                <label class="form-label" style="font-weight: 700; font-size: 0.85rem; color: var(--color-navy); margin-bottom: 0.35rem; display: block;">
+                  Tag / Kicker
+                </label>
+                <input type="text" name="tag" value="<?php echo h($h['tag'] ?? 'ZUVIO BEYOND'); ?>" class="form-control" style="width: 100%; padding: 0.65rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm);">
               </div>
-              <div style="display: flex; align-items: center; gap: 0.5rem; flex-shrink: 0;">
-                <form method="POST" style="margin: 0;">
-                  <input type="hidden" name="action" value="toggle_achiever_publish">
-                  <input type="hidden" name="id" value="<?php echo (int)$a['id']; ?>">
-                  <button type="submit" style="background: <?php echo !empty($a['is_published']) ? '#DEF7EC' : '#FDE8E8'; ?>; color: <?php echo !empty($a['is_published']) ? '#03543F' : '#9B1C1C'; ?>; border: 1px solid <?php echo !empty($a['is_published']) ? '#31C48D' : '#F98080'; ?>; padding: 0.35rem 0.75rem; border-radius: 4px; font-size: 0.8rem; font-weight: 700; cursor: pointer;">
-                    <?php echo !empty($a['is_published']) ? 'Published' : 'Hidden'; ?>
-                  </button>
-                </form>
-                <form method="POST" onsubmit="return confirm('Delete achiever?');" style="margin: 0;">
-                  <input type="hidden" name="action" value="delete_achiever">
-                  <input type="hidden" name="id" value="<?php echo (int)$a['id']; ?>">
-                  <button type="submit" style="background: #FDE8E8; color: #9B1C1C; border: 1px solid #F98080; padding: 0.35rem 0.75rem; border-radius: 4px; font-size: 0.8rem; font-weight: 700; cursor: pointer;">
-                    Delete
-                  </button>
-                </form>
+              <div>
+                <label class="form-label" style="font-weight: 700; font-size: 0.85rem; color: var(--color-navy); margin-bottom: 0.35rem; display: block;">
+                  Subtitle Eyebrow
+                </label>
+                <input type="text" name="subtitle" value="<?php echo h($h['subtitle'] ?? 'LEARNING BEYOND CLASSROOMS'); ?>" class="form-control" style="width: 100%; padding: 0.65rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm);">
               </div>
             </div>
-          <?php endforeach; ?>
-        </div>
-      </div>
 
-      <!-- Add Achiever Form -->
-      <div style="background: #FFFFFF; border-radius: var(--radius-lg); border: 1.5px solid rgba(6, 43, 99, 0.16); padding: 2rem; box-shadow: var(--shadow-sm);">
-        <h3 style="color: var(--color-navy); font-size: 1.25rem; margin-top: 0; margin-bottom: 1.25rem;">
-          Add Student Achiever
-        </h3>
-        <form method="POST">
-          <input type="hidden" name="action" value="add_achiever">
-          
-          <div style="margin-bottom: 1rem;">
-            <label style="display: block; font-size: 0.85rem; font-weight: 600; color: var(--color-navy); margin-bottom: 0.3rem;">Student Full Name *</label>
-            <input type="text" name="name" required placeholder="e.g. Aarav Mehta" style="width: 100%; padding: 0.65rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); font-size: 0.9rem;">
-          </div>
-
-          <div style="margin-bottom: 1rem;">
-            <label style="display: block; font-size: 0.85rem; font-weight: 600; color: var(--color-navy); margin-bottom: 0.3rem;">Badge Label *</label>
-            <input type="text" name="badge" value="🌟 Star Kid" required style="width: 100%; padding: 0.65rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); font-size: 0.9rem;">
-          </div>
-
-          <div style="margin-bottom: 1rem;">
-            <label style="display: block; font-size: 0.85rem; font-weight: 600; color: var(--color-navy); margin-bottom: 0.3rem;">Category *</label>
-            <input type="text" name="category" required placeholder="e.g. Martial Arts & Sports" style="width: 100%; padding: 0.65rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); font-size: 0.9rem;">
-          </div>
-
-          <div style="margin-bottom: 1rem;">
-            <label style="display: block; font-size: 0.85rem; font-weight: 600; color: var(--color-navy); margin-bottom: 0.3rem;">Filter Key *</label>
-            <select name="category_key" required style="width: 100%; padding: 0.65rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); font-size: 0.9rem; background: #fff;">
-              <option value="sports">Martial Arts &amp; Sports</option>
-              <option value="chess">Chess &amp; Mind Sports</option>
-              <option value="arts">Arts &amp; Creative</option>
-              <option value="academics">Olympiads &amp; STEM</option>
-              <option value="extracurricular" selected>Extracurricular</option>
-            </select>
-          </div>
-
-          <div style="margin-bottom: 1.5rem;">
-            <label style="display: block; font-size: 0.85rem; font-weight: 600; color: var(--color-navy); margin-bottom: 0.3rem;">Achievement Description *</label>
-            <textarea name="description" required rows="3" placeholder="Factual description of achievement or competition..." style="width: 100%; padding: 0.65rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); font-size: 0.9rem; font-family: inherit;"></textarea>
-          </div>
-
-          <button type="submit" class="btn btn-primary" style="width: 100%; background: var(--color-navy); color: #fff; padding: 0.75rem; border: none; font-weight: 700; border-radius: var(--radius-sm); cursor: pointer;">
-            Save Achiever &rarr;
-          </button>
-        </form>
-      </div>
-    </div>
-  <?php endif; ?>
-
-  <!-- TAB 4: GALLERY -->
-  <?php if ($tab === 'gallery'): ?>
-    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; align-items: flex-start;">
-      <div style="background: #FFFFFF; border-radius: var(--radius-lg); border: 1.5px solid rgba(6, 43, 99, 0.16); padding: 2rem; box-shadow: var(--shadow-sm);">
-        <h3 style="color: var(--color-navy); font-size: 1.35rem; margin-top: 0; margin-bottom: 1.5rem;">
-          Gallery Images (<?php echo count($beyond_cms['gallery']); ?>)
-        </h3>
-        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1.25rem;">
-          <?php foreach ($beyond_cms['gallery'] as $g): ?>
-            <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); overflow: hidden; display: flex; flex-direction: column;">
-              <img src="<?php echo h($g['image']); ?>" alt="" style="width: 100%; height: 130px; object-fit: cover;">
-              <div style="padding: 0.75rem; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between;">
-                <div>
-                  <h5 style="margin: 0 0 0.25rem 0; font-size: 0.95rem; color: var(--color-navy);"><?php echo h($g['title']); ?></h5>
-                  <span style="font-size: 0.75rem; color: var(--color-teal); font-weight: 600;"><?php echo h($g['category']); ?></span>
-                </div>
-                <form method="POST" onsubmit="return confirm('Delete image?');" style="margin-top: 0.75rem;">
-                  <input type="hidden" name="action" value="delete_gallery">
-                  <input type="hidden" name="id" value="<?php echo (int)$g['id']; ?>">
-                  <button type="submit" style="background: #FDE8E8; color: #9B1C1C; border: 1px solid #F98080; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: 700; cursor: pointer; width: 100%;">
-                    Remove
-                  </button>
-                </form>
-              </div>
-            </div>
-          <?php endforeach; ?>
-        </div>
-      </div>
-
-      <!-- Add Gallery Form -->
-      <div style="background: #FFFFFF; border-radius: var(--radius-lg); border: 1.5px solid rgba(6, 43, 99, 0.16); padding: 2rem; box-shadow: var(--shadow-sm);">
-        <h3 style="color: var(--color-navy); font-size: 1.25rem; margin-top: 0; margin-bottom: 1.25rem;">
-          Add Photo to Gallery
-        </h3>
-        <form method="POST">
-          <input type="hidden" name="action" value="add_gallery">
-          
-          <div style="margin-bottom: 1rem;">
-            <label style="display: block; font-size: 0.85rem; font-weight: 600; color: var(--color-navy); margin-bottom: 0.3rem;">Photo Title *</label>
-            <input type="text" name="title" required placeholder="e.g. Robotics Kit Assembly" style="width: 100%; padding: 0.65rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); font-size: 0.9rem;">
-          </div>
-
-          <div style="margin-bottom: 1rem;">
-            <label style="display: block; font-size: 0.85rem; font-weight: 600; color: var(--color-navy); margin-bottom: 0.3rem;">Category *</label>
-            <input type="text" name="category" required placeholder="e.g. Projects & STEM" style="width: 100%; padding: 0.65rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); font-size: 0.9rem;">
-          </div>
-
-          <div style="margin-bottom: 1rem;">
-            <label style="display: block; font-size: 0.85rem; font-weight: 600; color: var(--color-navy); margin-bottom: 0.3rem;">Category Key *</label>
-            <select name="category_key" required style="width: 100%; padding: 0.65rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); font-size: 0.9rem; background: #fff;">
-              <option value="live">Live Classes</option>
-              <option value="stem">Projects &amp; STEM</option>
-              <option value="arts">Creative Arts</option>
-              <option value="mind">Mind Sports &amp; Chess</option>
-            </select>
-          </div>
-
-          <div style="margin-bottom: 1rem;">
-            <label style="display: block; font-size: 0.85rem; font-weight: 600; color: var(--color-navy); margin-bottom: 0.3rem;">Image URL *</label>
-            <input type="text" name="image" required value="/assets/images/Students learning in classroom.png" style="width: 100%; padding: 0.65rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); font-size: 0.9rem;">
-          </div>
-
-          <div style="margin-bottom: 1.5rem;">
-            <label style="display: block; font-size: 0.85rem; font-weight: 600; color: var(--color-navy); margin-bottom: 0.3rem;">Caption *</label>
-            <textarea name="caption" required rows="3" placeholder="Factual context for the image..." style="width: 100%; padding: 0.65rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); font-size: 0.9rem; font-family: inherit;"></textarea>
-          </div>
-
-          <button type="submit" class="btn btn-primary" style="width: 100%; background: var(--color-navy); color: #fff; padding: 0.75rem; border: none; font-weight: 700; border-radius: var(--radius-sm); cursor: pointer;">
-            Add to Gallery &rarr;
-          </button>
-        </form>
-      </div>
-    </div>
-  <?php endif; ?>
-
-  <!-- TAB 5: VIRTUAL CLASSROOM VIDEOS -->
-  <?php if ($tab === 'classroom'): ?>
-    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; align-items: flex-start;">
-      <div style="background: #FFFFFF; border-radius: var(--radius-lg); border: 1.5px solid rgba(6, 43, 99, 0.16); padding: 2rem; box-shadow: var(--shadow-sm);">
-        <h3 style="color: var(--color-navy); font-size: 1.35rem; margin-top: 0; margin-bottom: 1.5rem;">
-          Virtual Classroom Videos (<?php echo count($beyond_cms['virtual_classroom']); ?>)
-        </h3>
-        <div style="display: flex; flex-direction: column; gap: 1rem;">
-          <?php foreach ($beyond_cms['virtual_classroom'] as $v): ?>
-            <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 1.25rem; display: flex; justify-content: space-between; align-items: center; gap: 1rem;">
-              <div style="display: flex; align-items: center; gap: 1rem;">
-                <img src="<?php echo h($v['thumbnail']); ?>" alt="" style="width: 80px; height: 60px; object-fit: cover; border-radius: 4px;">
-                <div>
-                  <span style="font-size: 0.75rem; background: var(--color-surface-warm); color: var(--color-navy); padding: 0.2rem 0.5rem; border-radius: 4px; font-weight: 700;">
-                    <?php echo h($v['badge']); ?> &bull; <?php echo h($v['duration']); ?>
-                  </span>
-                  <h4 style="margin: 0.25rem 0 0.2rem 0; color: var(--color-navy); font-size: 1.05rem; font-weight: 700;">
-                    <?php echo h($v['title']); ?>
-                  </h4>
-                  <span style="font-size: 0.8rem; color: var(--color-muted);"><?php echo h($v['video_url']); ?></span>
-                </div>
-              </div>
-              <form method="POST" onsubmit="return confirm('Delete video?');" style="margin: 0;">
-                <input type="hidden" name="action" value="delete_video">
-                <input type="hidden" name="id" value="<?php echo (int)$v['id']; ?>">
-                <button type="submit" style="background: #FDE8E8; color: #9B1C1C; border: 1px solid #F98080; padding: 0.35rem 0.75rem; border-radius: 4px; font-size: 0.8rem; font-weight: 700; cursor: pointer;">
-                  Delete
-                </button>
-              </form>
-            </div>
-          <?php endforeach; ?>
-        </div>
-      </div>
-
-      <!-- Add Video Form -->
-      <div style="background: #FFFFFF; border-radius: var(--radius-lg); border: 1.5px solid rgba(6, 43, 99, 0.16); padding: 2rem; box-shadow: var(--shadow-sm);">
-        <h3 style="color: var(--color-navy); font-size: 1.25rem; margin-top: 0; margin-bottom: 1.25rem;">
-          Add Classroom Video
-        </h3>
-        <form method="POST">
-          <input type="hidden" name="action" value="add_video">
-          
-          <div style="margin-bottom: 1rem;">
-            <label style="display: block; font-size: 0.85rem; font-weight: 600; color: var(--color-navy); margin-bottom: 0.3rem;">Video Title *</label>
-            <input type="text" name="title" required placeholder="e.g. Live Coding Cohort Session" style="width: 100%; padding: 0.65rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); font-size: 0.9rem;">
-          </div>
-
-          <div style="margin-bottom: 1rem;">
-            <label style="display: block; font-size: 0.85rem; font-weight: 600; color: var(--color-navy); margin-bottom: 0.3rem;">Category Badge Label *</label>
-            <input type="text" name="badge" required value="📹 Live Class" style="width: 100%; padding: 0.65rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); font-size: 0.9rem;">
-          </div>
-
-          <div style="margin-bottom: 1rem;">
-            <label style="display: block; font-size: 0.85rem; font-weight: 600; color: var(--color-navy); margin-bottom: 0.3rem;">Filter Key *</label>
-            <select name="category_key" required style="width: 100%; padding: 0.65rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); font-size: 0.9rem; background: #fff;">
-              <option value="live">Live Class</option>
-              <option value="activity">Student Activity</option>
-              <option value="cocurricular">Co-Curricular</option>
-              <option value="performance">Performances</option>
-              <option value="experience">School Experience</option>
-            </select>
-          </div>
-
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1rem;">
             <div>
-              <label style="display: block; font-size: 0.85rem; font-weight: 600; color: var(--color-navy); margin-bottom: 0.3rem;">Category</label>
-              <input type="text" name="category" value="Live Class" style="width: 100%; padding: 0.65rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); font-size: 0.9rem;">
+              <label class="form-label" style="font-weight: 700; font-size: 0.85rem; color: var(--color-navy); margin-bottom: 0.35rem; display: block;">
+                Hero Main Title
+              </label>
+              <input type="text" name="title" value="<?php echo h($h['title'] ?? 'Discover. Create. Grow Beyond.'); ?>" class="form-control" style="width: 100%; padding: 0.65rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm);">
+            </div>
+
+            <div>
+              <label class="form-label" style="font-weight: 700; font-size: 0.85rem; color: var(--color-navy); margin-bottom: 0.35rem; display: block;">
+                Hero Description
+              </label>
+              <textarea name="desc" rows="3" class="form-control" style="width: 100%; padding: 0.65rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm);"><?php echo h($h['desc'] ?? ''); ?></textarea>
+            </div>
+
+            <div>
+              <label class="form-label" style="font-weight: 700; font-size: 0.85rem; color: var(--color-navy); margin-bottom: 0.35rem; display: block;">
+                Grades Banner
+              </label>
+              <input type="text" name="grades" value="<?php echo h($h['grades'] ?? 'NURSERY – GRADE 8'); ?>" class="form-control" style="width: 100%; padding: 0.65rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm);">
+            </div>
+          </div>
+
+        <!-- Section 2: Co-Curricular & Global Clubs -->
+        <?php elseif ($selected_sec === 'cocurricular'): 
+          $cc = $beyond_cms['cocurricular'] ?? [];
+          $clubs = $beyond_cms['cocurricular_clubs'] ?? [];
+        ?>
+          <div style="display: grid; gap: 1.5rem;">
+            <div>
+              <label class="form-label" style="font-weight: 700; font-size: 0.85rem; color: var(--color-navy); margin-bottom: 0.35rem; display: block;">
+                Section Title
+              </label>
+              <input type="text" name="title" value="<?php echo h($cc['title'] ?? 'Global Clubs & Co-Curricular Enrichment'); ?>" class="form-control" style="width: 100%; padding: 0.65rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm);">
             </div>
             <div>
-              <label style="display: block; font-size: 0.85rem; font-weight: 600; color: var(--color-navy); margin-bottom: 0.3rem;">Duration</label>
-              <input type="text" name="duration" value="3:30 mins" style="width: 100%; padding: 0.65rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); font-size: 0.9rem;">
+              <label class="form-label" style="font-weight: 700; font-size: 0.85rem; color: var(--color-navy); margin-bottom: 0.35rem; display: block;">
+                Section Subtitle
+              </label>
+              <input type="text" name="subtitle" value="<?php echo h($cc['subtitle'] ?? ''); ?>" class="form-control" style="width: 100%; padding: 0.65rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm);">
+            </div>
+
+            <!-- Existing Clubs -->
+            <div>
+              <label class="form-label" style="font-weight: 700; font-size: 0.95rem; color: var(--color-navy); margin-bottom: 0.75rem; display: block;">
+                Active Clubs (<?php echo count($clubs); ?> Clubs)
+              </label>
+              <div style="display: grid; gap: 0.75rem;">
+                <?php foreach ($clubs as $c): ?>
+                  <div style="display: flex; justify-content: space-between; align-items: center; background: var(--color-surface-warm); padding: 0.85rem 1.15rem; border-radius: var(--radius-sm); border: 1px solid var(--color-border);">
+                    <div style="display: flex; align-items: center; gap: 0.75rem;">
+                      <span style="font-size: 1.4rem;"><?php echo $c['icon'] ?? '🌟'; ?></span>
+                      <div>
+                        <strong><?php echo h($c['title'] ?? ''); ?></strong>
+                        <span style="font-size: 0.75rem; color: var(--color-muted); margin-left: 0.5rem;">(<?php echo h($c['stage'] ?? ''); ?>)</span>
+                        <div style="font-size: 0.8rem; color: var(--color-text); margin-top: 0.2rem;"><?php echo h($c['schedule'] ?? ''); ?></div>
+                      </div>
+                    </div>
+                    <div>
+                      <button type="button" onclick="deleteItem('delete_club', <?php echo (int)($c['id'] ?? 0); ?>)" class="btn btn-outline" style="border-color: #dc2626; color: #dc2626; padding: 0.25rem 0.6rem; font-size: 0.75rem;">
+                        Delete
+                      </button>
+                    </div>
+                  </div>
+                <?php endforeach; ?>
+              </div>
+            </div>
+
+            <!-- Add Club Block -->
+            <div style="background: var(--pastel-blue); padding: 1.25rem; border-radius: var(--radius-sm); border: 1px solid var(--color-border);">
+              <h4 style="font-size: 1rem; color: var(--color-navy); margin-bottom: 0.75rem;">Add New Club</h4>
+              <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.75rem; margin-bottom: 0.75rem;">
+                <input type="text" name="new_title" placeholder="Club Name (e.g. Robotics Club)" class="form-control" style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: 4px;">
+                <input type="text" name="new_stage" placeholder="Stage (e.g. Grades 3-8)" class="form-control" style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: 4px;">
+                <input type="text" name="new_icon" placeholder="Emoji Icon (e.g. 🤖)" class="form-control" style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: 4px;">
+              </div>
+              <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 0.75rem; margin-bottom: 0.75rem;">
+                <input type="text" name="new_desc" placeholder="Brief club description..." class="form-control" style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: 4px;">
+                <input type="text" name="new_schedule" placeholder="Schedule (e.g. Weekly)" class="form-control" style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: 4px;">
+              </div>
+              <button type="button" onclick="submitItemAction('add_club')" class="btn btn-outline" style="border-color: var(--color-navy); color: var(--color-navy); font-weight: 700; padding: 0.4rem 1rem; font-size: 0.85rem;">
+                + Add This Club
+              </button>
             </div>
           </div>
 
-          <div style="margin-bottom: 1rem;">
-            <label style="display: block; font-size: 0.85rem; font-weight: 600; color: var(--color-navy); margin-bottom: 0.3rem;">Video URL (mp4 or stream) *</label>
-            <input type="text" name="video_url" required value="/assets/images/01_Collaborative_Project_Learning.mp4" style="width: 100%; padding: 0.65rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); font-size: 0.9rem;">
+        <!-- Section 3: Hybrid Campus -->
+        <?php elseif ($selected_sec === 'hybrid'): 
+          $hy = $beyond_cms['hybrid'] ?? [];
+          $kits = $beyond_cms['hybrid_campus'] ?? [];
+        ?>
+          <div style="display: grid; gap: 1.5rem;">
+            <div>
+              <label class="form-label" style="font-weight: 700; font-size: 0.85rem; color: var(--color-navy); margin-bottom: 0.35rem; display: block;">
+                Section Title
+              </label>
+              <input type="text" name="title" value="<?php echo h($hy['title'] ?? 'Hybrid Campus & Practical Hands-on Learning'); ?>" class="form-control" style="width: 100%; padding: 0.65rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm);">
+            </div>
+            <div>
+              <label class="form-label" style="font-weight: 700; font-size: 0.85rem; color: var(--color-navy); margin-bottom: 0.35rem; display: block;">
+                Section Subtitle
+              </label>
+              <input type="text" name="subtitle" value="<?php echo h($hy['subtitle'] ?? ''); ?>" class="form-control" style="width: 100%; padding: 0.65rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm);">
+            </div>
+
+            <!-- Existing Hybrid Features -->
+            <div>
+              <label class="form-label" style="font-weight: 700; font-size: 0.95rem; color: var(--color-navy); margin-bottom: 0.75rem; display: block;">
+                Hybrid Features & Kits
+              </label>
+              <div style="display: grid; gap: 0.75rem;">
+                <?php foreach ($kits as $k): ?>
+                  <div style="display: flex; justify-content: space-between; align-items: center; background: var(--color-surface-warm); padding: 0.85rem 1.15rem; border-radius: var(--radius-sm); border: 1px solid var(--color-border);">
+                    <div style="display: flex; align-items: center; gap: 0.75rem;">
+                      <span style="font-size: 1.4rem;"><?php echo $k['icon'] ?? '🔬'; ?></span>
+                      <div>
+                        <strong><?php echo h($k['title'] ?? ''); ?></strong>
+                        <div style="font-size: 0.82rem; color: var(--color-muted);"><?php echo h($k['desc'] ?? ''); ?></div>
+                      </div>
+                    </div>
+                    <div>
+                      <button type="button" onclick="deleteItem('delete_hybrid', <?php echo (int)($k['id'] ?? 0); ?>)" class="btn btn-outline" style="border-color: #dc2626; color: #dc2626; padding: 0.25rem 0.6rem; font-size: 0.75rem;">
+                        Delete
+                      </button>
+                    </div>
+                  </div>
+                <?php endforeach; ?>
+              </div>
+            </div>
+
+            <!-- Add Hybrid Feature -->
+            <div style="background: var(--pastel-blue); padding: 1.25rem; border-radius: var(--radius-sm); border: 1px solid var(--color-border);">
+              <h4 style="font-size: 1rem; color: var(--color-navy); margin-bottom: 0.75rem;">Add Hybrid Feature</h4>
+              <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 0.75rem; margin-bottom: 0.75rem;">
+                <input type="text" name="new_title" placeholder="Feature Title" class="form-control" style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: 4px;">
+                <input type="text" name="new_icon" placeholder="Emoji (e.g. ⚙️)" class="form-control" style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: 4px;">
+              </div>
+              <textarea name="new_desc" rows="2" placeholder="Description of practical kit or activity..." class="form-control" style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: 4px; margin-bottom: 0.75rem;"></textarea>
+              <button type="button" onclick="submitItemAction('add_hybrid')" class="btn btn-outline" style="border-color: var(--color-navy); color: var(--color-navy); font-weight: 700; padding: 0.4rem 1rem; font-size: 0.85rem;">
+                + Add Hybrid Feature
+              </button>
+            </div>
           </div>
 
-          <div style="margin-bottom: 1rem;">
-            <label style="display: block; font-size: 0.85rem; font-weight: 600; color: var(--color-navy); margin-bottom: 0.3rem;">Thumbnail Image URL *</label>
-            <input type="text" name="thumbnail" required value="/assets/images/Students learning in classroom.png" style="width: 100%; padding: 0.65rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); font-size: 0.9rem;">
+        <!-- Section 4: Student Achievers -->
+        <?php elseif ($selected_sec === 'achievers'): 
+          $ach = $beyond_cms['achievers'] ?? [];
+          $students = $beyond_cms['student_achievers'] ?? [];
+        ?>
+          <div style="display: grid; gap: 1.5rem;">
+            <div>
+              <label class="form-label" style="font-weight: 700; font-size: 0.85rem; color: var(--color-navy); margin-bottom: 0.35rem; display: block;">
+                Section Title
+              </label>
+              <input type="text" name="title" value="<?php echo h($ach['title'] ?? 'Student Achievers & Star Performers'); ?>" class="form-control" style="width: 100%; padding: 0.65rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm);">
+            </div>
+            <div>
+              <label class="form-label" style="font-weight: 700; font-size: 0.85rem; color: var(--color-navy); margin-bottom: 0.35rem; display: block;">
+                Section Subtitle
+              </label>
+              <input type="text" name="subtitle" value="<?php echo h($ach['subtitle'] ?? ''); ?>" class="form-control" style="width: 100%; padding: 0.65rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm);">
+            </div>
+
+            <!-- Existing Achievers -->
+            <div>
+              <label class="form-label" style="font-weight: 700; font-size: 0.95rem; color: var(--color-navy); margin-bottom: 0.75rem; display: block;">
+                Recognized Achievers (<?php echo count($students); ?> Students)
+              </label>
+              <div style="display: grid; gap: 0.75rem;">
+                <?php foreach ($students as $st): ?>
+                  <div style="display: flex; justify-content: space-between; align-items: center; background: var(--color-surface-warm); padding: 0.85rem 1.15rem; border-radius: var(--radius-sm); border: 1px solid var(--color-border);">
+                    <div style="display: flex; align-items: center; gap: 0.75rem;">
+                      <img src="<?php echo h($st['image'] ?? '/assets/images/Profile_Images/Student_1.png'); ?>" alt="" style="width: 44px; height: 44px; border-radius: 50%; object-fit: cover;">
+                      <div>
+                        <strong><?php echo h($st['name'] ?? ''); ?></strong>
+                        <span style="font-size: 0.75rem; background: var(--pastel-yellow); padding: 0.15rem 0.45rem; border-radius: 4px; font-weight: 700; margin-left: 0.5rem; color: var(--color-navy);"><?php echo h($st['badge'] ?? ''); ?></span>
+                        <div style="font-size: 0.8rem; color: var(--color-muted);"><?php echo h($st['category'] ?? ''); ?></div>
+                      </div>
+                    </div>
+                    <div>
+                      <button type="button" onclick="deleteItem('delete_achiever', <?php echo (int)($st['id'] ?? 0); ?>)" class="btn btn-outline" style="border-color: #dc2626; color: #dc2626; padding: 0.25rem 0.6rem; font-size: 0.75rem;">
+                        Delete
+                      </button>
+                    </div>
+                  </div>
+                <?php endforeach; ?>
+              </div>
+            </div>
+
+            <!-- Add Achiever Block -->
+            <div style="background: var(--pastel-blue); padding: 1.25rem; border-radius: var(--radius-sm); border: 1px solid var(--color-border);">
+              <h4 style="font-size: 1rem; color: var(--color-navy); margin-bottom: 0.75rem;">Add Student Achiever</h4>
+              <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.75rem; margin-bottom: 0.75rem;">
+                <input type="text" name="new_name" placeholder="Student Name" class="form-control" style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: 4px;">
+                <input type="text" name="new_badge" placeholder="Badge (e.g. 🌟 Star Kid)" class="form-control" style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: 4px;">
+                <input type="text" name="new_category" placeholder="Category (e.g. Creative Arts)" class="form-control" style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: 4px;">
+              </div>
+              <textarea name="new_desc" rows="2" placeholder="Achievement summary..." class="form-control" style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: 4px; margin-bottom: 0.75rem;"></textarea>
+              <button type="button" onclick="submitItemAction('add_achiever')" class="btn btn-outline" style="border-color: var(--color-navy); color: var(--color-navy); font-weight: 700; padding: 0.4rem 1rem; font-size: 0.85rem;">
+                + Add Achiever
+              </button>
+            </div>
           </div>
 
-          <div style="margin-bottom: 1.5rem;">
-            <label style="display: block; font-size: 0.85rem; font-weight: 600; color: var(--color-navy); margin-bottom: 0.3rem;">Description</label>
-            <textarea name="description" rows="3" placeholder="Brief description of the session..." style="width: 100%; padding: 0.65rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); font-size: 0.9rem; font-family: inherit;"></textarea>
+        <!-- Section 5: Photo Gallery -->
+        <?php elseif ($selected_sec === 'gallery'): 
+          $gm = $beyond_cms['gallery_meta'] ?? [];
+          $photos = $beyond_cms['gallery'] ?? [];
+        ?>
+          <div style="display: grid; gap: 1.5rem;">
+            <div>
+              <label class="form-label" style="font-weight: 700; font-size: 0.85rem; color: var(--color-navy); margin-bottom: 0.35rem; display: block;">
+                Section Title
+              </label>
+              <input type="text" name="title" value="<?php echo h($gm['title'] ?? 'Photo & Activity Gallery'); ?>" class="form-control" style="width: 100%; padding: 0.65rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm);">
+            </div>
+            <div>
+              <label class="form-label" style="font-weight: 700; font-size: 0.85rem; color: var(--color-navy); margin-bottom: 0.35rem; display: block;">
+                Section Subtitle
+              </label>
+              <input type="text" name="subtitle" value="<?php echo h($gm['subtitle'] ?? ''); ?>" class="form-control" style="width: 100%; padding: 0.65rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm);">
+            </div>
+
+            <!-- Existing Gallery -->
+            <div>
+              <label class="form-label" style="font-weight: 700; font-size: 0.95rem; color: var(--color-navy); margin-bottom: 0.75rem; display: block;">
+                Gallery Items (<?php echo count($photos); ?> Photos)
+              </label>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <?php foreach ($photos as $g): ?>
+                  <div style="background: var(--color-surface-warm); padding: 1rem; border-radius: var(--radius-sm); border: 1px solid var(--color-border);">
+                    <img src="<?php echo h($g['image'] ?? ''); ?>" alt="" style="width: 100%; height: 120px; object-fit: cover; border-radius: 4px; margin-bottom: 0.5rem;">
+                    <strong><?php echo h($g['title'] ?? ''); ?></strong>
+                    <div style="font-size: 0.8rem; color: var(--color-muted); margin-bottom: 0.5rem;"><?php echo h($g['category'] ?? ''); ?></div>
+                    <button type="button" onclick="deleteItem('delete_gallery', <?php echo (int)($g['id'] ?? 0); ?>)" class="btn btn-outline" style="border-color: #dc2626; color: #dc2626; padding: 0.25rem 0.6rem; font-size: 0.75rem; width: 100%;">
+                      Delete
+                    </button>
+                  </div>
+                <?php endforeach; ?>
+              </div>
+            </div>
+
+            <!-- Add Gallery Block -->
+            <div style="background: var(--pastel-blue); padding: 1.25rem; border-radius: var(--radius-sm); border: 1px solid var(--color-border);">
+              <h4 style="font-size: 1rem; color: var(--color-navy); margin-bottom: 0.75rem;">Add Gallery Photo</h4>
+              <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 0.75rem; margin-bottom: 0.75rem;">
+                <input type="text" name="new_title" placeholder="Photo Title" class="form-control" style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: 4px;">
+                <input type="text" name="new_category" placeholder="Category (e.g. Live Classes)" class="form-control" style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: 4px;">
+              </div>
+              <input type="text" name="new_image" placeholder="Image URL (e.g. /assets/images/Students learning in classroom.png)" class="form-control" style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: 4px; margin-bottom: 0.75rem;">
+              <input type="text" name="new_caption" placeholder="Caption / description..." class="form-control" style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: 4px; margin-bottom: 0.75rem;">
+              <button type="button" onclick="submitItemAction('add_gallery')" class="btn btn-outline" style="border-color: var(--color-navy); color: var(--color-navy); font-weight: 700; padding: 0.4rem 1rem; font-size: 0.85rem;">
+                + Add Photo
+              </button>
+            </div>
           </div>
 
-          <button type="submit" class="btn btn-primary" style="width: 100%; background: var(--color-navy); color: #fff; padding: 0.75rem; border: none; font-weight: 700; border-radius: var(--radius-sm); cursor: pointer;">
-            Add Video &rarr;
+        <!-- Section 6: Virtual Classroom -->
+        <?php elseif ($selected_sec === 'classroom'): 
+          $cm = $beyond_cms['classroom_meta'] ?? [];
+          $videos = $beyond_cms['virtual_classroom'] ?? [];
+        ?>
+          <div style="display: grid; gap: 1.5rem;">
+            <div>
+              <label class="form-label" style="font-weight: 700; font-size: 0.85rem; color: var(--color-navy); margin-bottom: 0.35rem; display: block;">
+                Section Title
+              </label>
+              <input type="text" name="title" value="<?php echo h($cm['title'] ?? 'Inside the Virtual Classroom'); ?>" class="form-control" style="width: 100%; padding: 0.65rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm);">
+            </div>
+            <div>
+              <label class="form-label" style="font-weight: 700; font-size: 0.85rem; color: var(--color-navy); margin-bottom: 0.35rem; display: block;">
+                Section Subtitle
+              </label>
+              <input type="text" name="subtitle" value="<?php echo h($cm['subtitle'] ?? ''); ?>" class="form-control" style="width: 100%; padding: 0.65rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm);">
+            </div>
+
+            <!-- Existing Videos -->
+            <div>
+              <label class="form-label" style="font-weight: 700; font-size: 0.95rem; color: var(--color-navy); margin-bottom: 0.75rem; display: block;">
+                Classroom Videos (<?php echo count($videos); ?> Clips)
+              </label>
+              <div style="display: grid; gap: 0.75rem;">
+                <?php foreach ($videos as $v): ?>
+                  <div style="display: flex; justify-content: space-between; align-items: center; background: var(--color-surface-warm); padding: 0.85rem 1.15rem; border-radius: var(--radius-sm); border: 1px solid var(--color-border);">
+                    <div>
+                      <strong><?php echo h($v['title'] ?? ''); ?></strong>
+                      <span style="font-size: 0.75rem; background: var(--pastel-yellow); padding: 0.15rem 0.45rem; border-radius: 4px; font-weight: 700; margin-left: 0.5rem; color: var(--color-navy);"><?php echo h($v['duration'] ?? ''); ?></span>
+                      <div style="font-size: 0.8rem; color: var(--color-muted); margin-top: 0.2rem;"><?php echo h($v['description'] ?? ''); ?></div>
+                    </div>
+                    <div>
+                      <button type="button" onclick="deleteItem('delete_video', <?php echo (int)($v['id'] ?? 0); ?>)" class="btn btn-outline" style="border-color: #dc2626; color: #dc2626; padding: 0.25rem 0.6rem; font-size: 0.75rem;">
+                        Delete
+                      </button>
+                    </div>
+                  </div>
+                <?php endforeach; ?>
+              </div>
+            </div>
+
+            <!-- Add Video Block -->
+            <div style="background: var(--pastel-blue); padding: 1.25rem; border-radius: var(--radius-sm); border: 1px solid var(--color-border);">
+              <h4 style="font-size: 1rem; color: var(--color-navy); margin-bottom: 0.75rem;">Add Classroom Video</h4>
+              <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 0.75rem; margin-bottom: 0.75rem;">
+                <input type="text" name="new_title" placeholder="Video Title" class="form-control" style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: 4px;">
+                <input type="text" name="new_duration" placeholder="Duration (e.g. 3:45 mins)" class="form-control" style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: 4px;">
+              </div>
+              <input type="text" name="new_video_url" placeholder="Video File URL (e.g. /assets/images/01_Collaborative_Project_Learning.mp4)" class="form-control" style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: 4px; margin-bottom: 0.75rem;">
+              <textarea name="new_desc" rows="2" placeholder="Video description..." class="form-control" style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: 4px; margin-bottom: 0.75rem;"></textarea>
+              <button type="button" onclick="submitItemAction('add_video')" class="btn btn-outline" style="border-color: var(--color-navy); color: var(--color-navy); font-weight: 700; padding: 0.4rem 1rem; font-size: 0.85rem;">
+                + Add Video
+              </button>
+            </div>
+          </div>
+        <?php endif; ?>
+
+        <!-- Bottom Actions Bar -->
+        <div style="margin-top: 2rem; padding-top: 1.25rem; border-top: 1px solid var(--color-border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+          <a href="/admin/beyond-cms.php?sec=<?php echo urlencode($selected_sec); ?>" class="btn btn-outline" style="padding: 0.65rem 1.25rem; font-size: 0.9rem;">
+            ↻ Reset / Reload
+          </a>
+
+          <button type="submit" id="saveSubmitBtn" class="btn btn-primary" style="background-color: var(--color-navy); border-color: var(--color-navy); color: #FFFFFF; font-weight: 700; padding: 0.65rem 1.75rem; font-size: 0.95rem; display: inline-flex; align-items: center; gap: 0.5rem;">
+            <span>💾</span> Save <?php echo h($sec_meta['name']); ?>
           </button>
-        </form>
+        </div>
+
       </div>
-    </div>
-  <?php endif; ?>
+    </form>
+  </div>
 
 </div>
 
-<?php include_once dirname(__FILE__) . '/footer.php'; ?>
+<script>
+function setSectionAction(action) {
+  const actionInput = document.getElementById('sec_action_input');
+  const pendingBox = document.getElementById('pendingRemovalBox');
+  const saveBtn = document.getElementById('saveSubmitBtn');
+
+  if (action === 'remove') {
+    actionInput.value = 'remove';
+    if (pendingBox) pendingBox.style.display = 'block';
+    if (saveBtn) {
+      saveBtn.style.backgroundColor = '#dc2626';
+      saveBtn.style.borderColor = '#dc2626';
+      saveBtn.innerHTML = '<span>⚠️</span> Confirm Removal &amp; Save';
+    }
+  } else if (action === 'restore') {
+    actionInput.value = 'restore';
+    document.getElementById('sectionForm').submit();
+  }
+}
+
+function cancelSectionAction() {
+  const actionInput = document.getElementById('sec_action_input');
+  const pendingBox = document.getElementById('pendingRemovalBox');
+  const saveBtn = document.getElementById('saveSubmitBtn');
+
+  actionInput.value = '';
+  if (pendingBox) pendingBox.style.display = 'none';
+  if (saveBtn) {
+    saveBtn.style.backgroundColor = 'var(--color-navy)';
+    saveBtn.style.borderColor = 'var(--color-navy)';
+    saveBtn.innerHTML = '<span>💾</span> Save <?php echo addslashes(h($sec_meta['name'])); ?>';
+  }
+}
+
+function submitItemAction(actionName) {
+  document.getElementById('form_action_input').value = actionName;
+  document.getElementById('sectionForm').submit();
+}
+
+function deleteItem(actionName, id) {
+  if (confirm('Are you sure you want to delete this item?')) {
+    document.getElementById('form_action_input').value = actionName;
+    document.getElementById('item_id_input').value = id;
+    document.getElementById('sectionForm').submit();
+  }
+}
+</script>
+
+<?php
+include_once dirname(__FILE__) . '/footer.php';

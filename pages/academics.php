@@ -224,17 +224,18 @@ render_breadcrumbs([
 </nav>
 
 <!-- 3. Section: Technology Ecosystem (LMS, CRM, ERP, Tools) -->
+<?php if ((!isset($ac_cms['technology']['is_active']) || !empty($ac_cms['technology']['is_active'])) && empty($ac_cms['technology']['is_removed'])): ?>
 <section id="technology" class="section" style="background-color: #FFFFFF; border-bottom: 1px solid var(--color-border); padding: 5rem 0;">
   <div class="container">
     <div class="text-center" style="max-width: 780px; margin: 0 auto 3.5rem auto;">
       <span style="font-size: 0.85rem; font-weight: 700; color: var(--color-gold); text-transform: uppercase; letter-spacing: 2px;">
-        Digital Ecosystem
+        <?php echo h($tech['hero_subtitle'] ?? 'Digital Ecosystem'); ?>
       </span>
       <h2 style="font-size: 2.35rem; color: var(--color-navy); margin-top: 0.5rem; font-family: var(--font-primary);">
-        Next-Generation Learning Management System (LMS)
+        <?php echo h($tech['hero_title'] ?? 'Next-Generation Learning Management System (LMS)'); ?>
       </h2>
       <p style="color: var(--color-muted); font-size: 1rem; margin-top: 0.5rem;">
-        Designed with your child's needs in mind, our LMS is not just a portal — it is a doorway to boundless learning possibilities.
+        <?php echo h($tech['hero_desc'] ?? 'Designed with your child\'s needs in mind, our LMS is not just a portal — it is a doorway to boundless learning possibilities.'); ?>
       </p>
     </div>
 
@@ -409,8 +410,10 @@ render_breadcrumbs([
 
   </div>
 </section>
+<?php endif; ?>
 
 <!-- 4. Section: Curriculum Foundations & Quick Facts -->
+<?php if ((!isset($ac_cms['curriculum']['is_active']) || !empty($ac_cms['curriculum']['is_active'])) && empty($ac_cms['curriculum']['is_removed'])): ?>
 <section id="curriculum" class="section" style="background-color: var(--color-surface-warm); border-bottom: 1px solid var(--color-border); padding: 5rem 0;">
   <div class="container">
     <div class="text-center" style="max-width: 780px; margin: 0 auto 3.5rem auto;">
@@ -521,8 +524,10 @@ render_breadcrumbs([
 
   </div>
 </section>
+<?php endif; ?>
 
 <!-- 5. Section: Special Education (Inclusive Learning) -->
+<?php if ((!isset($ac_cms['special_ed']['is_active']) || !empty($ac_cms['special_ed']['is_active'])) && empty($ac_cms['special_ed']['is_removed'])): ?>
 <section id="special-education" class="section" style="background-color: #FFFFFF; border-bottom: 1px solid var(--color-border); padding: 5rem 0;">
   <div class="container">
     <div class="text-center" style="max-width: 820px; margin: 0 auto 3.5rem auto;">
@@ -591,8 +596,10 @@ render_breadcrumbs([
 
   </div>
 </section>
+<?php endif; ?>
 
 <!-- 6. Section: Electives & Global Languages -->
+<?php if ((!isset($ac_cms['electives']['is_active']) || !empty($ac_cms['electives']['is_active'])) && empty($ac_cms['electives']['is_removed'])): ?>
 <section id="electives" class="section" style="background-color: var(--color-surface-warm); border-bottom: 1px solid var(--color-border); padding: 5rem 0;">
   <div class="container">
     <div class="text-center" style="max-width: 780px; margin: 0 auto 3.5rem auto;">
@@ -665,8 +672,10 @@ render_breadcrumbs([
 
   </div>
 </section>
+<?php endif; ?>
 
 <!-- 7. Section: NEP 2020 & Policy Framework -->
+<?php if ((!isset($ac_cms['nep_2020']['is_active']) || !empty($ac_cms['nep_2020']['is_active'])) && empty($ac_cms['nep_2020']['is_removed'])): ?>
 <section id="nep-2020" class="section" style="background-color: #FFFFFF; border-bottom: 1px solid var(--color-border); padding: 5rem 0;">
   <div class="container">
     <div class="text-center" style="max-width: 780px; margin: 0 auto 3.5rem auto;">
@@ -732,8 +741,10 @@ render_breadcrumbs([
 
   </div>
 </section>
+<?php endif; ?>
 
 <!-- 8. Section: Resources & Academic Calendar -->
+<?php if ((!isset($ac_cms['resources']['is_active']) || !empty($ac_cms['resources']['is_active'])) && empty($ac_cms['resources']['is_removed'])): ?>
 <section id="resources" class="section" style="background-color: var(--color-surface-warm); border-bottom: 1px solid var(--color-border); padding: 5rem 0;">
   <div class="container">
     <div class="text-center" style="max-width: 780px; margin: 0 auto 3.5rem auto;">
@@ -776,7 +787,38 @@ render_breadcrumbs([
 
   </div>
 </section>
+<?php endif; ?>
+
+<!-- 9. Section: CTA Conversion Banner -->
+<?php if ((!isset($ac_cms['cta']['is_active']) || !empty($ac_cms['cta']['is_active'])) && empty($ac_cms['cta']['is_removed'])): 
+$cta = $ac_cms['cta'] ?? [];
+?>
+<section class="section" style="background: linear-gradient(135deg, var(--color-navy-dark), var(--color-navy)); color: #FFFFFF; padding: 5rem 0; text-align: center;">
+  <div class="container" style="max-width: 780px;">
+    <?php if (!empty($cta['badge'])): ?>
+      <span style="font-size: 0.85rem; font-weight: 700; color: var(--color-gold); text-transform: uppercase; letter-spacing: 2px; display: inline-block; margin-bottom: 0.75rem;">
+        <?php echo h($cta['badge']); ?>
+      </span>
+    <?php endif; ?>
+    <h2 style="font-size: 2.4rem; color: #FFFFFF; font-family: var(--font-primary); font-weight: 700; margin-bottom: 1rem;">
+      <?php echo h($cta['title'] ?? 'Ready to Explore Zuvio Academics?'); ?>
+    </h2>
+    <p style="font-size: 1.1rem; color: rgba(255,255,255,0.85); line-height: 1.6; margin-bottom: 2rem;">
+      <?php echo h($cta['subtitle'] ?? 'Schedule a free 1-on-1 counseling interaction or explore our admission process.'); ?>
+    </p>
+    <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+      <a href="<?php echo h($cta['btn_primary_url'] ?? '/admissions#enrol'); ?>" class="btn btn-primary" style="background: var(--color-gold); color: var(--color-navy-dark); font-weight: 700; padding: 0.85rem 2rem; font-size: 1rem; border-radius: 6px; text-decoration: none;">
+        <?php echo h($cta['btn_primary_text'] ?? 'Enrol Now'); ?> &rarr;
+      </a>
+      <a href="<?php echo h($cta['btn_secondary_url'] ?? '/contact'); ?>" class="btn btn-outline" style="border: 2px solid #FFFFFF; color: #FFFFFF; font-weight: 600; padding: 0.85rem 2rem; font-size: 1rem; border-radius: 6px; text-decoration: none;">
+        <?php echo h($cta['btn_secondary_text'] ?? 'Schedule Counselling'); ?>
+      </a>
+    </div>
+  </div>
+</section>
+<?php endif; ?>
 
 <?php
 include_once dirname(__FILE__) . '/../includes/footer.php';
 ?>
+

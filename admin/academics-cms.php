@@ -1,5 +1,5 @@
 <?php
-// Zuvio Global School - Admin Academics CMS Manager
+// Zuvio Global School - Admin Academics CMS Manager (2-Column Page Section Editor)
 require_once dirname(__FILE__) . '/../includes/db.php';
 require_once dirname(__FILE__) . '/../includes/helper.php';
 require_once dirname(__FILE__) . '/../includes/auth.php';
@@ -18,16 +18,10 @@ if (!isset($_SESSION['mock_academics_cms']) || !empty($db_saved)) {
 }
 $ac_cms = &$_SESSION['mock_academics_cms'];
 
-function redirect_and_save_academics($tab, $msg) {
-    global $ac_cms;
-    set_json_setting('cms_academics', $ac_cms, 'Academics CMS Content');
-    header("Location: /admin/academics-cms.php?tab=" . urlencode($tab) . "&msg=" . urlencode($msg));
-    exit;
-}
-
-// 1. Defaults for Technology
+// 1. Defaults for Technology & LMS
 if (!isset($ac_cms['technology'])) {
     $ac_cms['technology'] = [
+        'is_active' => 1,
         'hero_title' => 'Technology Built for Real Learning',
         'hero_subtitle' => 'Our Digital Learning Ecosystem',
         'hero_desc' => 'At Zuvio Global School, technology is never a passive screen. It is an active workspace for curiosity, collaboration, and creative mastery powered by an enterprise-grade online learning environment.',
@@ -43,61 +37,10 @@ if (!isset($ac_cms['technology'])) {
     ];
 }
 
-// 2. Defaults for Special Education
-if (!isset($ac_cms['special_ed'])) {
-    $ac_cms['special_ed'] = [
-        'title' => 'Inclusive Learning & Special Education',
-        'kicker' => 'Every Child Learns. Every Child Belongs.',
-        'intro' => 'At Zuvio Global School, we believe education must adapt to the learner — never the child to the system. Our inclusive learning programme creates a supportive, flexible, and learner-centred environment where children with diverse needs can take part meaningfully, grow in confidence, and discover their unique strengths.',
-        'pillars' => [
-            ['id' => 1, 'title' => 'Personalised Learning', 'desc' => 'Flexible learning pace, individualised goals, and customized worksheets.', 'sort_order' => 1, 'is_published' => 1],
-            ['id' => 2, 'title' => 'Individual Attention', 'desc' => 'Small cohorts (1:15–1:20) and dedicated one-on-one check-ins.', 'sort_order' => 2, 'is_published' => 1],
-            ['id' => 3, 'title' => 'Flexible Learning Rhythm', 'desc' => 'Learn from the comfort of home, free from sensory overload or peer anxiety.', 'sort_order' => 3, 'is_published' => 1],
-            ['id' => 4, 'title' => 'Strength-Based Pedagogy', 'desc' => 'Focusing on what children love and do best, cultivating genuine self-esteem.', 'sort_order' => 4, 'is_published' => 1],
-            ['id' => 5, 'title' => 'Social & Emotional Growth', 'desc' => 'Empathy-driven teacher relationships in an inclusive peer setting.', 'sort_order' => 5, 'is_published' => 1],
-            ['id' => 6, 'title' => 'Close Family Partnership', 'desc' => 'Regular collaborative reviews with parents to calibrate IEP milestones.', 'sort_order' => 6, 'is_published' => 1]
-        ]
-    ];
-}
-
-// 3. Defaults for Electives
-if (!isset($ac_cms['electives'])) {
-    $ac_cms['electives'] = [
-        'regional_languages' => ['Hindi', 'Sanskrit', 'Urdu', 'Tamil', 'Telugu', 'Kannada', 'Marathi', 'Bengali'],
-        'foreign_languages' => ['French', 'Spanish', 'German', 'Arabic', 'Mandarin'],
-        'future_skills' => [
-            ['id' => 1, 'name' => 'Coding & Robotics', 'desc' => 'Block programming, Python fundamentals, and logic by Discovery Education.', 'sort_order' => 1, 'is_published' => 1],
-            ['id' => 2, 'name' => 'Abacus & Rubik\'s Cube', 'desc' => 'Mental arithmetic speed, spatial memory, and focus concentration.', 'sort_order' => 2, 'is_published' => 1],
-            ['id' => 3, 'name' => 'Public Speaking & Debate', 'desc' => 'Articulating ideas with poise, persuasive rhetoric, and voice modulation.', 'sort_order' => 3, 'is_published' => 1],
-            ['id' => 4, 'name' => 'Creative Writing & Media', 'desc' => 'Authoring short stories, journalistic reporting, and digital publishing.', 'sort_order' => 4, 'is_published' => 1],
-            ['id' => 5, 'name' => 'Financial Literacy', 'desc' => 'Foundational concepts of money, saving, budgeting, and ethical commerce.', 'sort_order' => 5, 'is_published' => 1],
-            ['id' => 6, 'name' => 'Yoga & Mindfulness', 'desc' => 'Breathing exercises, physical postures, and emotional regulation techniques.', 'sort_order' => 6, 'is_published' => 1]
-        ]
-    ];
-}
-
-// 4. Defaults for NEP 2020 & Resources
-if (!isset($ac_cms['nep_2020'])) {
-    $ac_cms['nep_2020'] = [
-        'title' => 'NEP 2020 & NCF Compliance',
-        'subtitle' => 'National Education Policy 2020 Alignment',
-        'desc' => 'In full alignment with the National Education Policy (NEP 2020) and National Curriculum Framework (NCF), Zuvio replaces rote memorization with experiential, discovery-based, and interdisciplinary learning.',
-        'pdf_title' => 'National Education Policy 2020 — Ministry of Education, Govt. of India',
-        'pdf_url' => '/assets/docs/NEP_2020_Policy_Document.pdf'
-    ];
-}
-
-if (!isset($ac_cms['resources'])) {
-    $ac_cms['resources'] = [
-        'calendar_title' => 'Academic Calendar 2026–27',
-        'calendar_desc' => 'Comprehensive term dates, assessment schedules, project submission deadlines, and school holidays.',
-        'calendar_pdf' => '/assets/docs/Zuvio_Academic_Calendar_2026_27.pdf'
-    ];
-}
-
-// 6. Defaults for Curriculum Framework
+// 2. Defaults for Curriculum Framework
 if (!isset($ac_cms['curriculum'])) {
     $ac_cms['curriculum'] = [
+        'is_active' => 1,
         'hero_title' => 'A Future-Ready Learning Journey — Kindergarten to Grade 8th',
         'hero_subtitle' => 'Curriculum Framework',
         'hero_desc' => 'Mapped to CBSE learning outcomes, NEP 2020 pedagogical structure, and Oxford thematic inquiry — building strong academic foundations with creativity, communication, digital fluency, and real-world mastery.',
@@ -114,247 +57,169 @@ if (!isset($ac_cms['curriculum'])) {
     ];
 }
 
-// Helper: Handle file uploads for PDFs, Images, and Videos
-function handle_cms_upload($file_key, $allowed_extensions = ['pdf', 'jpg', 'jpeg', 'png', 'webp', 'mp4']) {
-    if (!isset($_FILES[$file_key]) || $_FILES[$file_key]['error'] !== UPLOAD_ERR_OK) {
-        return null;
-    }
-    $file = $_FILES[$file_key];
-    $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
-    if (!in_array($ext, $allowed_extensions)) {
-        throw new Exception("Invalid file extension: $ext. Allowed: " . implode(', ', $allowed_extensions));
-    }
-    $upload_dir = dirname(__FILE__) . '/../uploads/academics/';
-    if (!is_dir($upload_dir)) {
-        mkdir($upload_dir, 0755, true);
-    }
-    $filename = bin2hex(random_bytes(6)) . '_' . time() . '.' . $ext;
-    $target = $upload_dir . $filename;
-    if (move_uploaded_file($file['tmp_name'], $target)) {
-        return '/uploads/academics/' . $filename;
-    }
-    return null;
+// 3. Defaults for Special Education
+if (!isset($ac_cms['special_ed'])) {
+    $ac_cms['special_ed'] = [
+        'is_active' => 1,
+        'title' => 'Inclusive Learning & Special Education',
+        'kicker' => 'Every Child Learns. Every Child Belongs.',
+        'intro' => 'At Zuvio Global School, we believe education must adapt to the learner — never the child to the system. Our inclusive learning programme creates a supportive, flexible, and learner-centred environment where children with diverse needs can take part meaningfully, grow in confidence, and discover their unique strengths.',
+        'pillars' => [
+            ['id' => 1, 'title' => 'Personalised Learning', 'desc' => 'Flexible learning pace, individualised goals, and customized worksheets.', 'sort_order' => 1, 'is_published' => 1],
+            ['id' => 2, 'title' => 'Individual Attention', 'desc' => 'Small cohorts (1:15–1:20) and dedicated one-on-one check-ins.', 'sort_order' => 2, 'is_published' => 1],
+            ['id' => 3, 'title' => 'Flexible Learning Rhythm', 'desc' => 'Learn from the comfort of home, free from sensory overload or peer anxiety.', 'sort_order' => 3, 'is_published' => 1],
+            ['id' => 4, 'title' => 'Strength-Based Pedagogy', 'desc' => 'Focusing on what children love and do best, cultivating genuine self-esteem.', 'sort_order' => 4, 'is_published' => 1],
+            ['id' => 5, 'title' => 'Social & Emotional Growth', 'desc' => 'Empathy-driven teacher relationships in an inclusive peer setting.', 'sort_order' => 5, 'is_published' => 1],
+            ['id' => 6, 'title' => 'Close Family Partnership', 'desc' => 'Regular collaborative reviews with parents to calibrate IEP milestones.', 'sort_order' => 6, 'is_published' => 1]
+        ]
+    ];
 }
 
-// POST Action Handlers
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+// 4. Defaults for Electives
+if (!isset($ac_cms['electives'])) {
+    $ac_cms['electives'] = [
+        'is_active' => 1,
+        'badge' => 'Beyond Core Academics',
+        'title' => 'Electives, Languages & Future Skills',
+        'regional_languages' => 'Hindi, Sanskrit, Urdu, Tamil, Telugu, Kannada, Marathi, Bengali',
+        'foreign_languages' => 'French, Spanish, German, Arabic, Mandarin',
+        'future_skills' => [
+            ['id' => 1, 'name' => 'Coding & Robotics', 'desc' => 'Block programming, Python fundamentals, and logic by Discovery Education.'],
+            ['id' => 2, 'name' => 'Abacus & Rubik\'s Cube', 'desc' => 'Mental arithmetic speed, spatial memory, and focus concentration.'],
+            ['id' => 3, 'name' => 'Public Speaking & Debate', 'desc' => 'Articulating ideas with poise, persuasive rhetoric, and voice modulation.'],
+            ['id' => 4, 'name' => 'Creative Writing & Media', 'desc' => 'Authoring short stories, journalistic reporting, and digital publishing.'],
+            ['id' => 5, 'name' => 'Financial Literacy', 'desc' => 'Foundational concepts of money, saving, budgeting, and ethical commerce.'],
+            ['id' => 6, 'name' => 'Yoga & Mindfulness', 'desc' => 'Breathing exercises, physical postures, and emotional regulation techniques.']
+        ]
+    ];
+}
+
+// 5. Defaults for NEP 2020
+if (!isset($ac_cms['nep_2020'])) {
+    $ac_cms['nep_2020'] = [
+        'is_active' => 1,
+        'title' => 'NEP 2020 & NCF Compliance',
+        'subtitle' => 'National Education Policy 2020 Alignment',
+        'desc' => 'In full alignment with the National Education Policy (NEP 2020) and National Curriculum Framework (NCF), Zuvio replaces rote memorization with experiential, discovery-based, and interdisciplinary learning.',
+        'pdf_title' => 'National Education Policy 2020 — Ministry of Education, Govt. of India',
+        'pdf_url' => '/assets/docs/NEP_2020_Policy_Document.pdf'
+    ];
+}
+
+// 6. Defaults for Resources
+if (!isset($ac_cms['resources'])) {
+    $ac_cms['resources'] = [
+        'is_active' => 1,
+        'calendar_title' => 'Academic Calendar 2026–27',
+        'calendar_desc' => 'Comprehensive term dates, assessment schedules, project submission deadlines, and school holidays.',
+        'calendar_pdf' => '/assets/docs/Zuvio_Academic_Calendar_2026_27.pdf'
+    ];
+}
+
+// 7. Defaults for CTA
+if (!isset($ac_cms['cta'])) {
+    $ac_cms['cta'] = [
+        'is_active' => 1,
+        'badge' => 'Begin Your Child’s Journey',
+        'title' => 'Ready to Explore Zuvio Academics?',
+        'subtitle' => 'Schedule a free 1-on-1 counseling interaction or explore our admission process.',
+        'btn_primary_text' => 'Enrol Now',
+        'btn_primary_url' => '/admissions#enrol',
+        'btn_secondary_text' => 'Schedule Counselling',
+        'btn_secondary_url' => '/contact'
+    ];
+}
+
+// 7 Sections Ordered Exactly as on Academics Page
+$sections_nav = [
+    'technology' => ['num' => 1, 'name' => 'Technology & LMS Ecosystem', 'icon' => '💻'],
+    'curriculum' => ['num' => 2, 'name' => 'Curriculum Framework (4 Stages)', 'icon' => '🎓'],
+    'special_ed' => ['num' => 3, 'name' => 'Special Education & Neurodiversity', 'icon' => '🤝'],
+    'electives' => ['num' => 4, 'name' => 'Electives, Languages & Skills', 'icon' => '🌍'],
+    'nep_2020' => ['num' => 5, 'name' => 'NEP 2020 & Policy Framework', 'icon' => '📜'],
+    'resources' => ['num' => 6, 'name' => 'Academic Resources & Calendar', 'icon' => '📚'],
+    'cta' => ['num' => 7, 'name' => 'Conversion CTA Banner', 'icon' => '🚀'],
+];
+
+if (!isset($sections_nav[$tab])) {
+    $tab = 'technology';
+}
+$current_sec = $ac_cms[$tab] ?? [];
+
+// POST Action Handlers (Section Save, Remove, Restore)
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_section'])) {
     if (!validate_csrf_token($_POST['csrf_token'] ?? '')) {
         $error = 'Security check failed. Please submit again.';
     } else {
-        $action = $_POST['action'] ?? '';
-
-        // 1. Save Technology Overview
-        if ($action === 'save_tech_overview') {
-            $ac_cms['technology']['hero_title'] = trim($_POST['hero_title'] ?? '');
-            $ac_cms['technology']['hero_subtitle'] = trim($_POST['hero_subtitle'] ?? '');
-            $ac_cms['technology']['hero_desc'] = trim($_POST['hero_desc'] ?? '');
-            
-            try {
-                $uploaded_video = handle_cms_upload('lms_video_file', ['mp4', 'webm', 'mov']);
-                if ($uploaded_video) {
-                    $ac_cms['technology']['lms_video'] = $uploaded_video;
-                } elseif (!empty($_POST['lms_video_url'])) {
-                    $ac_cms['technology']['lms_video'] = trim($_POST['lms_video_url']);
-                }
-            } catch (Exception $e) {
-                $error = $e->getMessage();
+        $s_key = trim($_POST['section_key'] ?? $tab);
+        $pending_action = trim($_POST['pending_action'] ?? 'save');
+        
+        if (isset($ac_cms[$s_key])) {
+            if ($pending_action === 'remove') {
+                $ac_cms[$s_key]['is_removed'] = 1;
+                $ac_cms[$s_key]['is_active'] = 0;
+            } elseif ($pending_action === 'restore') {
+                $ac_cms[$s_key]['is_removed'] = 0;
+                $ac_cms[$s_key]['is_active'] = 1;
+            } else {
+                $ac_cms[$s_key]['is_active'] = isset($_POST['is_active']) ? 1 : 0;
+                $ac_cms[$s_key]['is_removed'] = 0;
             }
 
-            if (!$error) {
-                redirect_and_save_academics('technology', 'saved');
-            }
-        }
-
-        // 2. LMS Features CRUD
-        if ($action === 'add_lms_feature') {
-            $new_id = time();
-            $ac_cms['technology']['lms_features'][] = [
-                'id' => $new_id,
-                'title' => trim($_POST['title'] ?? ''),
-                'desc' => trim($_POST['desc'] ?? ''),
-                'icon' => trim($_POST['icon'] ?? '✨'),
-                'sort_order' => count($ac_cms['technology']['lms_features']) + 1,
-                'is_published' => 1
-            ];
-            redirect_and_save_academics('technology', 'added');
-        }
-
-        if ($action === 'edit_lms_feature') {
-            $id = (int)$_POST['id'];
-            foreach ($ac_cms['technology']['lms_features'] as &$feat) {
-                if ($feat['id'] === $id) {
-                    $feat['title'] = trim($_POST['title'] ?? '');
-                    $feat['desc'] = trim($_POST['desc'] ?? '');
-                    $feat['icon'] = trim($_POST['icon'] ?? '✨');
-                    $feat['sort_order'] = (int)($_POST['sort_order'] ?? $feat['sort_order']);
-                    break;
-                }
-            }
-            usort($ac_cms['technology']['lms_features'], fn($a, $b) => ($a['sort_order'] ?? 0) <=> ($b['sort_order'] ?? 0));
-            redirect_and_save_academics('technology', 'updated');
-        }
-
-        if ($action === 'delete_lms_feature') {
-            $id = (int)$_POST['id'];
-            $ac_cms['technology']['lms_features'] = array_values(array_filter($ac_cms['technology']['lms_features'], fn($f) => $f['id'] !== $id));
-            redirect_and_save_academics('technology', 'deleted');
-        }
-
-        if ($action === 'toggle_publish_lms_feature') {
-            $id = (int)$_POST['id'];
-            foreach ($ac_cms['technology']['lms_features'] as &$feat) {
-                if ($feat['id'] === $id) {
-                    $feat['is_published'] = empty($feat['is_published']) ? 1 : 0;
-                    break;
-                }
-            }
-            redirect_and_save_academics('technology', 'status_updated');
-        }
-
-        // 3. Special Education
-        if ($action === 'save_special_ed_overview') {
-            $ac_cms['special_ed']['title'] = trim($_POST['title'] ?? '');
-            $ac_cms['special_ed']['kicker'] = trim($_POST['kicker'] ?? '');
-            $ac_cms['special_ed']['intro'] = trim($_POST['intro'] ?? '');
-            redirect_and_save_academics('special_ed', 'saved');
-        }
-
-        if ($action === 'add_special_ed_pillar') {
-            $new_id = time();
-            $ac_cms['special_ed']['pillars'][] = [
-                'id' => $new_id,
-                'title' => trim($_POST['title'] ?? ''),
-                'desc' => trim($_POST['desc'] ?? ''),
-                'sort_order' => count($ac_cms['special_ed']['pillars']) + 1,
-                'is_published' => 1
-            ];
-            redirect_and_save_academics('special_ed', 'added');
-        }
-
-        if ($action === 'edit_special_ed_pillar') {
-            $id = (int)$_POST['id'];
-            foreach ($ac_cms['special_ed']['pillars'] as &$p) {
-                if ($p['id'] === $id) {
-                    $p['title'] = trim($_POST['title'] ?? '');
-                    $p['desc'] = trim($_POST['desc'] ?? '');
-                    $p['sort_order'] = (int)($_POST['sort_order'] ?? $p['sort_order']);
-                    break;
-                }
-            }
-            usort($ac_cms['special_ed']['pillars'], fn($a, $b) => ($a['sort_order'] ?? 0) <=> ($b['sort_order'] ?? 0));
-            redirect_and_save_academics('special_ed', 'updated');
-        }
-
-        if ($action === 'delete_special_ed_pillar') {
-            $id = (int)$_POST['id'];
-            $ac_cms['special_ed']['pillars'] = array_values(array_filter($ac_cms['special_ed']['pillars'], fn($p) => $p['id'] !== $id));
-            redirect_and_save_academics('special_ed', 'deleted');
-        }
-
-        // 4. Electives
-        if ($action === 'save_electives_languages') {
-            $raw_reg = trim($_POST['regional_languages'] ?? '');
-            $ac_cms['electives']['regional_languages'] = array_filter(array_map('trim', explode(',', $raw_reg)));
-            
-            $raw_for = trim($_POST['foreign_languages'] ?? '');
-            $ac_cms['electives']['foreign_languages'] = array_filter(array_map('trim', explode(',', $raw_for)));
-            
-            redirect_and_save_academics('electives', 'saved');
-        }
-
-        if ($action === 'add_skill_elective') {
-            $new_id = time();
-            $ac_cms['electives']['future_skills'][] = [
-                'id' => $new_id,
-                'name' => trim($_POST['name'] ?? ''),
-                'desc' => trim($_POST['desc'] ?? ''),
-                'sort_order' => count($ac_cms['electives']['future_skills']) + 1,
-                'is_published' => 1
-            ];
-            redirect_and_save_academics('electives', 'added');
-        }
-
-        if ($action === 'edit_skill_elective') {
-            $id = (int)$_POST['id'];
-            foreach ($ac_cms['electives']['future_skills'] as &$fs) {
-                if ($fs['id'] === $id) {
-                    $fs['name'] = trim($_POST['name'] ?? '');
-                    $fs['desc'] = trim($_POST['desc'] ?? '');
-                    $fs['sort_order'] = (int)($_POST['sort_order'] ?? $fs['sort_order']);
-                    break;
-                }
-            }
-            usort($ac_cms['electives']['future_skills'], fn($a, $b) => ($a['sort_order'] ?? 0) <=> ($b['sort_order'] ?? 0));
-            redirect_and_save_academics('electives', 'updated');
-        }
-
-        if ($action === 'delete_skill_elective') {
-            $id = (int)$_POST['id'];
-            $ac_cms['electives']['future_skills'] = array_values(array_filter($ac_cms['electives']['future_skills'], fn($fs) => $fs['id'] !== $id));
-            redirect_and_save_academics('electives', 'deleted');
-        }
-
-        // 5. NEP 2020 & Documents (PDF Upload)
-        if ($action === 'save_nep_2020') {
-            $ac_cms['nep_2020']['title'] = trim($_POST['title'] ?? '');
-            $ac_cms['nep_2020']['subtitle'] = trim($_POST['subtitle'] ?? '');
-            $ac_cms['nep_2020']['desc'] = trim($_POST['desc'] ?? '');
-            $ac_cms['nep_2020']['pdf_title'] = trim($_POST['pdf_title'] ?? '');
-
-            try {
-                $uploaded_pdf = handle_cms_upload('nep_pdf_file', ['pdf']);
-                if ($uploaded_pdf) {
-                    $ac_cms['nep_2020']['pdf_url'] = $uploaded_pdf;
-                } elseif (!empty($_POST['nep_pdf_url'])) {
-                    $ac_cms['nep_2020']['pdf_url'] = trim($_POST['nep_pdf_url']);
-                }
-            } catch (Exception $e) {
-                $error = $e->getMessage();
+            // Save Specific Section Content
+            if ($s_key === 'technology') {
+                $ac_cms['technology']['hero_subtitle'] = trim($_POST['hero_subtitle'] ?? '');
+                $ac_cms['technology']['hero_title'] = trim($_POST['hero_title'] ?? '');
+                $ac_cms['technology']['hero_desc'] = trim($_POST['hero_desc'] ?? '');
+                $ac_cms['technology']['lms_video'] = trim($_POST['lms_video'] ?? '');
+            } elseif ($s_key === 'curriculum') {
+                $ac_cms['curriculum']['hero_subtitle'] = trim($_POST['hero_subtitle'] ?? '');
+                $ac_cms['curriculum']['hero_title'] = trim($_POST['hero_title'] ?? '');
+                $ac_cms['curriculum']['hero_desc'] = trim($_POST['hero_desc'] ?? '');
+                $ac_cms['curriculum']['early_years_title'] = trim($_POST['early_years_title'] ?? '');
+                $ac_cms['curriculum']['early_years_desc'] = trim($_POST['early_years_desc'] ?? '');
+                $ac_cms['curriculum']['foundation_title'] = trim($_POST['foundation_title'] ?? '');
+                $ac_cms['curriculum']['foundation_desc'] = trim($_POST['foundation_desc'] ?? '');
+                $ac_cms['curriculum']['preparatory_title'] = trim($_POST['preparatory_title'] ?? '');
+                $ac_cms['curriculum']['preparatory_desc'] = trim($_POST['preparatory_desc'] ?? '');
+                $ac_cms['curriculum']['middle_school_title'] = trim($_POST['middle_school_title'] ?? '');
+                $ac_cms['curriculum']['middle_school_desc'] = trim($_POST['middle_school_desc'] ?? '');
+                $ac_cms['curriculum']['oxford_theme'] = trim($_POST['oxford_theme'] ?? '');
+                $ac_cms['curriculum']['assessment_philosophy'] = trim($_POST['assessment_philosophy'] ?? '');
+            } elseif ($s_key === 'special_ed') {
+                $ac_cms['special_ed']['kicker'] = trim($_POST['kicker'] ?? '');
+                $ac_cms['special_ed']['title'] = trim($_POST['title'] ?? '');
+                $ac_cms['special_ed']['intro'] = trim($_POST['intro'] ?? '');
+            } elseif ($s_key === 'electives') {
+                $ac_cms['electives']['badge'] = trim($_POST['badge'] ?? '');
+                $ac_cms['electives']['title'] = trim($_POST['title'] ?? '');
+                $ac_cms['electives']['regional_languages'] = trim($_POST['regional_languages'] ?? '');
+                $ac_cms['electives']['foreign_languages'] = trim($_POST['foreign_languages'] ?? '');
+            } elseif ($s_key === 'nep_2020') {
+                $ac_cms['nep_2020']['subtitle'] = trim($_POST['subtitle'] ?? '');
+                $ac_cms['nep_2020']['title'] = trim($_POST['title'] ?? '');
+                $ac_cms['nep_2020']['desc'] = trim($_POST['desc'] ?? '');
+                $ac_cms['nep_2020']['pdf_title'] = trim($_POST['pdf_title'] ?? '');
+                $ac_cms['nep_2020']['pdf_url'] = trim($_POST['pdf_url'] ?? '');
+            } elseif ($s_key === 'resources') {
+                $ac_cms['resources']['calendar_title'] = trim($_POST['calendar_title'] ?? '');
+                $ac_cms['resources']['calendar_desc'] = trim($_POST['calendar_desc'] ?? '');
+                $ac_cms['resources']['calendar_pdf'] = trim($_POST['calendar_pdf'] ?? '');
+            } elseif ($s_key === 'cta') {
+                $ac_cms['cta']['badge'] = trim($_POST['badge'] ?? '');
+                $ac_cms['cta']['title'] = trim($_POST['title'] ?? '');
+                $ac_cms['cta']['subtitle'] = trim($_POST['subtitle'] ?? '');
+                $ac_cms['cta']['btn_primary_text'] = trim($_POST['btn_primary_text'] ?? '');
+                $ac_cms['cta']['btn_primary_url'] = trim($_POST['btn_primary_url'] ?? '');
+                $ac_cms['cta']['btn_secondary_text'] = trim($_POST['btn_secondary_text'] ?? '');
+                $ac_cms['cta']['btn_secondary_url'] = trim($_POST['btn_secondary_url'] ?? '');
             }
 
-            if (!$error) {
-                redirect_and_save_academics('nep_2020', 'saved');
-            }
-        }
-
-        // 6. Resources & Calendar PDF
-        if ($action === 'save_resources') {
-            $ac_cms['resources']['calendar_title'] = trim($_POST['calendar_title'] ?? '');
-            $ac_cms['resources']['calendar_desc'] = trim($_POST['calendar_desc'] ?? '');
-
-            try {
-                $uploaded_cal_pdf = handle_cms_upload('calendar_pdf_file', ['pdf']);
-                if ($uploaded_cal_pdf) {
-                    $ac_cms['resources']['calendar_pdf'] = $uploaded_cal_pdf;
-                } elseif (!empty($_POST['calendar_pdf_url'])) {
-                    $ac_cms['resources']['calendar_pdf'] = trim($_POST['calendar_pdf_url']);
-                }
-            } catch (Exception $e) {
-                $error = $e->getMessage();
-            }
-
-            if (!$error) {
-                redirect_and_save_academics('resources', 'saved');
-            }
-        }
-
-        // 7. Curriculum Framework
-        if ($action === 'save_curriculum') {
-            $ac_cms['curriculum']['hero_title'] = trim($_POST['hero_title'] ?? '');
-            $ac_cms['curriculum']['hero_subtitle'] = trim($_POST['hero_subtitle'] ?? '');
-            $ac_cms['curriculum']['hero_desc'] = trim($_POST['hero_desc'] ?? '');
-            $ac_cms['curriculum']['early_years_title'] = trim($_POST['early_years_title'] ?? '');
-            $ac_cms['curriculum']['early_years_desc'] = trim($_POST['early_years_desc'] ?? '');
-            $ac_cms['curriculum']['foundation_title'] = trim($_POST['foundation_title'] ?? '');
-            $ac_cms['curriculum']['foundation_desc'] = trim($_POST['foundation_desc'] ?? '');
-            $ac_cms['curriculum']['preparatory_title'] = trim($_POST['preparatory_title'] ?? '');
-            $ac_cms['curriculum']['preparatory_desc'] = trim($_POST['preparatory_desc'] ?? '');
-            $ac_cms['curriculum']['middle_school_title'] = trim($_POST['middle_school_title'] ?? '');
-            $ac_cms['curriculum']['middle_school_desc'] = trim($_POST['middle_school_desc'] ?? '');
-            $ac_cms['curriculum']['oxford_theme'] = trim($_POST['oxford_theme'] ?? '');
-            $ac_cms['curriculum']['assessment_philosophy'] = trim($_POST['assessment_philosophy'] ?? '');
-
-            redirect_and_save_academics('curriculum', 'saved');
+            set_json_setting('cms_academics', $ac_cms, 'Academics CMS Content');
+            $_SESSION['mock_academics_cms'] = $ac_cms;
+            $redirect_msg = ($pending_action === 'remove') ? 'removed' : (($pending_action === 'restore') ? 'restored' : 'saved');
+            header("Location: /admin/academics-cms.php?tab=" . urlencode($s_key) . "&msg=" . $redirect_msg);
+            exit;
         }
     }
 }
@@ -363,583 +228,419 @@ $page_slug = 'admin-academics-cms';
 include_once dirname(__FILE__) . '/header.php';
 ?>
 
-<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
-  <div>
-    <h1 style="font-family: var(--font-secondary); font-size: 1.6rem; color: var(--color-navy); margin-bottom: 0.25rem;">
-      Academics & Technology CMS Manager
-    </h1>
-    <p style="color: var(--color-muted); font-size: 0.88rem;">
-      Manage Technology (LMS/CRM/ERP), Special Education, Electives, NEP 2020, and Resources with file uploads.
-    </p>
+<div style="max-width: 1200px; margin: 0 auto;">
+
+  <!-- Page Header -->
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
+    <div>
+      <h1 style="font-family: var(--font-secondary); font-size: 1.6rem; color: var(--color-navy); margin: 0 0 0.25rem 0;">
+        Academics Page Sections CMS
+      </h1>
+      <p style="color: var(--color-muted); font-size: 0.88rem; margin: 0;">
+        Manage all 7 sections of the Academics page in the exact visual sequence they appear. Enable, disable, remove, and save each section independently.
+      </p>
+    </div>
+
+    <div style="display: flex; gap: 0.75rem;">
+      <a href="/curriculum" target="_blank" class="btn btn-outline" style="font-size: 0.82rem; padding: 0.5rem 1rem; border-color: var(--color-navy); color: var(--color-navy);">
+        📖 Curriculum View ↗
+      </a>
+      <a href="/academics" target="_blank" class="btn btn-outline" style="font-size: 0.82rem; padding: 0.5rem 1rem;">
+        View Live Academics Page ↗
+      </a>
+    </div>
   </div>
-  <div style="display: flex; gap: 0.6rem;">
-    <a href="/academics" target="_blank" class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.85rem;">
-      Preview /academics &nearr;
-    </a>
-    <a href="/curriculum" target="_blank" class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.85rem;">
-      Preview /curriculum &nearr;
-    </a>
+
+  <!-- Notices -->
+  <?php if ($msg === 'saved'): ?>
+    <div style="background-color: #ECFDF5; border-left: 4px solid #10B981; padding: 0.85rem 1.25rem; border-radius: var(--radius-sm); color: #065F46; font-size: 0.88rem; margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: space-between;">
+      <span><strong>Saved!</strong> Section <strong>"<?php echo h($sections_nav[$tab]['name']); ?>"</strong> has been successfully updated and synced to the website.</span>
+      <span style="font-size: 0.75rem; color: #047857;"><?php echo date('h:i:s A'); ?></span>
+    </div>
+  <?php elseif ($msg === 'removed'): ?>
+    <div style="background-color: #FEF2F2; border-left: 4px solid #EF4444; padding: 0.85rem 1.25rem; border-radius: var(--radius-sm); color: #991B1B; font-size: 0.88rem; margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: space-between;">
+      <span><strong>Section Removed:</strong> <strong>"<?php echo h($sections_nav[$tab]['name']); ?>"</strong> has been removed from the live website. Click "Restore Section" anytime to bring it back.</span>
+      <span style="font-size: 0.75rem; color: #DC2626;"><?php echo date('h:i:s A'); ?></span>
+    </div>
+  <?php elseif ($msg === 'restored'): ?>
+    <div style="background-color: #ECFDF5; border-left: 4px solid #10B981; padding: 0.85rem 1.25rem; border-radius: var(--radius-sm); color: #065F46; font-size: 0.88rem; margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: space-between;">
+      <span><strong>Section Restored:</strong> <strong>"<?php echo h($sections_nav[$tab]['name']); ?>"</strong> has been restored and made available on the live website.</span>
+      <span style="font-size: 0.75rem; color: #047857;"><?php echo date('h:i:s A'); ?></span>
+    </div>
+  <?php endif; ?>
+
+  <?php if ($error): ?>
+    <div style="background-color: #FEF2F2; border-left: 4px solid #EF4444; padding: 0.85rem 1.25rem; border-radius: var(--radius-sm); color: #991B1B; font-size: 0.88rem; margin-bottom: 1.5rem;">
+      <strong>Error:</strong> <?php echo h($error); ?>
+    </div>
+  <?php endif; ?>
+
+  <!-- 2-Column Layout: Left Sidebar + Right Section Editor -->
+  <div style="display: grid; grid-template-columns: 300px 1fr; gap: 2rem; align-items: flex-start;">
+    
+    <!-- LEFT SIDEBAR: 7 ORDERED SECTIONS -->
+    <div class="card" style="padding: 1rem; border: 1.5px solid rgba(6, 43, 99, 0.12); background: #FFFFFF; border-radius: var(--radius-md); position: sticky; top: 1.5rem;">
+      <div style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--color-gold); letter-spacing: 1px; padding: 0.5rem 0.75rem 0.75rem 0.75rem; border-bottom: 1px solid var(--color-border); margin-bottom: 0.5rem;">
+        Academics Sequence (1–7)
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 0.25rem; max-height: calc(100vh - 180px); overflow-y: auto;">
+        <?php foreach ($sections_nav as $s_k => $s_meta): 
+          $is_current = ($tab === $s_k);
+          $s_removed = !empty($ac_cms[$s_k]['is_removed']);
+          $s_active = !empty($ac_cms[$s_k]['is_active']) && !$s_removed;
+        ?>
+          <a href="/admin/academics-cms.php?tab=<?php echo urlencode($s_k); ?>" style="display: flex; align-items: center; justify-content: space-between; padding: 0.65rem 0.85rem; border-radius: 6px; text-decoration: none; font-size: 0.82rem; transition: all 0.15s ease; <?php echo $is_current ? 'background: var(--color-navy); color: #FFFFFF; font-weight: 600;' : 'color: var(--color-text); background: transparent;'; ?>">
+            <div style="display: flex; align-items: center; gap: 0.5rem; min-width: 0;">
+              <span style="font-size: 0.75rem; opacity: 0.8;"><?php echo $s_meta['num']; ?>.</span>
+              <span style="font-size: 0.95rem;"><?php echo $s_meta['icon']; ?></span>
+              <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><?php echo h($s_meta['name']); ?></span>
+            </div>
+            <?php if ($s_removed): ?>
+              <span style="font-size: 0.65rem; border-radius: 8px; padding: 1px 6px; background: #FEE2E2; color: #DC2626; font-weight: 700;">REMOVED</span>
+            <?php elseif ($s_active): ?>
+              <span style="font-size: 0.65rem; border-radius: 8px; padding: 1px 6px; <?php echo $is_current ? 'background: #10B981; color:#fff;' : 'background: #DEF7EC; color: #03543F;'; ?>">ON</span>
+            <?php else: ?>
+              <span style="font-size: 0.65rem; border-radius: 8px; padding: 1px 6px; background: #F1F5F9; color: #94A3B8;">OFF</span>
+            <?php endif; ?>
+          </a>
+        <?php endforeach; ?>
+      </div>
+    </div>
+
+    <!-- RIGHT MAIN: SECTION EDITOR -->
+    <div class="card" style="padding: 2.25rem; border: 1.5px solid rgba(6, 43, 99, 0.12); background: #FFFFFF; border-radius: var(--radius-md);">
+      
+      <form method="POST" action="/admin/academics-cms.php" enctype="multipart/form-data" id="academicsSectionForm">
+        <input type="hidden" name="section_key" value="<?php echo h($tab); ?>">
+        <input type="hidden" name="save_section" value="1">
+        <input type="hidden" name="pending_action" id="pendingActionInput" value="save">
+        <input type="hidden" name="csrf_token" value="<?php echo get_csrf_token(); ?>">
+
+        <!-- Section Header with Active Toggle & Remove Action -->
+        <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 1.25rem; border-bottom: 2px solid var(--color-border); margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
+          <div>
+            <span style="font-size: 0.75rem; font-weight: 700; color: var(--color-gold); text-transform: uppercase; letter-spacing: 1px;">
+              Section <?php echo $sections_nav[$tab]['num']; ?> of 7
+            </span>
+            <h2 style="font-size: 1.4rem; color: var(--color-navy); margin: 0.25rem 0 0 0; font-family: var(--font-secondary);">
+              <?php echo $sections_nav[$tab]['icon'] . ' ' . h($sections_nav[$tab]['name']); ?>
+            </h2>
+          </div>
+
+          <!-- Controls: Visibility Toggle + Remove/Restore Button -->
+          <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+            <div style="display: flex; align-items: center; gap: 0.5rem; background: #F8FAFC; border: 1px solid #E2E8F0; padding: 0.5rem 0.85rem; border-radius: var(--radius-sm);">
+              <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; font-weight: 600; color: var(--color-navy); cursor: pointer; margin: 0;">
+                <input type="checkbox" name="is_active" value="1" <?php echo (!empty($current_sec['is_active']) && empty($current_sec['is_removed'])) ? 'checked' : ''; ?>>
+                <span>Visible on Page</span>
+              </label>
+            </div>
+
+            <?php if (!empty($current_sec['is_removed'])): ?>
+              <button type="button" class="btn" style="background: #10B981; color: #FFFFFF; font-size: 0.82rem; padding: 0.5rem 0.95rem; font-weight: 600;" onclick="setSectionAction('restore')">
+                ↩️ Restore Section
+              </button>
+            <?php else: ?>
+              <button type="button" class="btn btn-outline" style="border-color: #EF4444; color: #EF4444; font-size: 0.82rem; padding: 0.5rem 0.95rem; font-weight: 600;" onclick="setSectionAction('remove')">
+                🗑️ Remove Section
+              </button>
+            <?php endif; ?>
+          </div>
+        </div>
+
+        <!-- Pending Removal Alert -->
+        <div id="pendingRemovalAlert" style="display: none; background: #FEF2F2; border: 1.5px solid #EF4444; border-radius: var(--radius-sm); padding: 1rem 1.25rem; color: #991B1B; font-size: 0.88rem; margin-bottom: 1.75rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem;">
+            <span>
+              <strong>⚠️ PENDING REMOVAL:</strong> This section is marked for removal from the live Academics page. It is <strong>NOT yet removed</strong> until you click <strong>"Confirm Removal & Save"</strong> below.
+            </span>
+            <button type="button" class="btn btn-outline" style="font-size: 0.75rem; padding: 0.35rem 0.85rem; background: #FFFFFF; color: #991B1B; border-color: #EF4444;" onclick="cancelSectionAction()">
+              Cancel Removal
+            </button>
+          </div>
+        </div>
+
+        <?php if (!empty($current_sec['is_removed'])): ?>
+          <div style="background: #FFFBEB; border-left: 4px solid #F59E0B; padding: 0.85rem 1.25rem; border-radius: var(--radius-sm); color: #92400E; font-size: 0.88rem; margin-bottom: 1.75rem;">
+            <strong>Section Status:</strong> This section is currently <strong>REMOVED</strong> from the website. To display it again, click <strong>"Restore Section"</strong> above and then save.
+          </div>
+        <?php endif; ?>
+
+        <!-- SECTION FORM FIELDS -->
+
+        <?php if ($tab === 'technology'): ?>
+          <div class="admin-form-group">
+            <label class="admin-label">Kicker / Eyebrow Subtitle</label>
+            <input type="text" name="hero_subtitle" value="<?php echo h($current_sec['hero_subtitle'] ?? 'Our Digital Learning Ecosystem'); ?>" class="admin-input">
+          </div>
+          <div class="admin-form-group">
+            <label class="admin-label">Section Heading *</label>
+            <input type="text" name="hero_title" value="<?php echo h($current_sec['hero_title'] ?? ''); ?>" required class="admin-input">
+          </div>
+          <div class="admin-form-group">
+            <label class="admin-label">Section Description</label>
+            <textarea name="hero_desc" rows="4" class="admin-input" style="line-height: 1.6;"><?php echo h($current_sec['hero_desc'] ?? ''); ?></textarea>
+          </div>
+          <div class="admin-form-group">
+            <label class="admin-label">LMS Showcase Video / Media URL</label>
+            <input type="text" name="lms_video" value="<?php echo h($current_sec['lms_video'] ?? ''); ?>" class="admin-input">
+          </div>
+          <div style="margin-top: 1.5rem;">
+            <h4 style="color: var(--color-navy); margin-bottom: 1rem;">LMS Architecture Features (<?php echo count($current_sec['lms_features'] ?? []); ?> Total)</h4>
+            <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+              <?php foreach (($current_sec['lms_features'] ?? []) as $feat): ?>
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.85rem 1.25rem; background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: var(--radius-sm); flex-wrap: wrap; gap: 0.5rem;">
+                  <div style="display: flex; align-items: center; gap: 0.75rem;">
+                    <span style="font-size: 1.4rem;"><?php echo h($feat['icon'] ?? '⚡'); ?></span>
+                    <div>
+                      <strong style="color: var(--color-navy);"><?php echo h($feat['title']); ?></strong>
+                      <p style="margin: 0; font-size: 0.8rem; color: var(--color-muted);"><?php echo h($feat['desc']); ?></p>
+                    </div>
+                  </div>
+                  <span style="font-size: 0.7rem; background: #DEF7EC; color: #03543F; padding: 2px 8px; border-radius: 10px; font-weight: 600;">Active</span>
+                </div>
+              <?php endforeach; ?>
+            </div>
+          </div>
+
+        <?php elseif ($tab === 'curriculum'): ?>
+          <div class="admin-form-group">
+            <label class="admin-label">Eyebrow Subtitle</label>
+            <input type="text" name="hero_subtitle" value="<?php echo h($current_sec['hero_subtitle'] ?? 'Curriculum Framework'); ?>" class="admin-input">
+          </div>
+          <div class="admin-form-group">
+            <label class="admin-label">Curriculum Heading *</label>
+            <input type="text" name="hero_title" value="<?php echo h($current_sec['hero_title'] ?? ''); ?>" required class="admin-input">
+          </div>
+          <div class="admin-form-group">
+            <label class="admin-label">Curriculum Description</label>
+            <textarea name="hero_desc" rows="3" class="admin-input"><?php echo h($current_sec['hero_desc'] ?? ''); ?></textarea>
+          </div>
+          <div style="border-top: 1px solid var(--color-border); padding-top: 1.5rem; margin-top: 1.5rem;">
+            <h4 style="color: var(--color-navy); margin-bottom: 1rem;">Four Pedagogical Stages</h4>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+              <div class="admin-form-group">
+                <label class="admin-label">Stage 1: Early Years Title</label>
+                <input type="text" name="early_years_title" value="<?php echo h($current_sec['early_years_title'] ?? ''); ?>" class="admin-input">
+                <label class="admin-label" style="margin-top: 0.5rem;">Stage 1 Description</label>
+                <textarea name="early_years_desc" rows="2" class="admin-input"><?php echo h($current_sec['early_years_desc'] ?? ''); ?></textarea>
+              </div>
+              <div class="admin-form-group">
+                <label class="admin-label">Stage 2: Foundation Stage Title</label>
+                <input type="text" name="foundation_title" value="<?php echo h($current_sec['foundation_title'] ?? ''); ?>" class="admin-input">
+                <label class="admin-label" style="margin-top: 0.5rem;">Stage 2 Description</label>
+                <textarea name="foundation_desc" rows="2" class="admin-input"><?php echo h($current_sec['foundation_desc'] ?? ''); ?></textarea>
+              </div>
+              <div class="admin-form-group">
+                <label class="admin-label">Stage 3: Preparatory Stage Title</label>
+                <input type="text" name="preparatory_title" value="<?php echo h($current_sec['preparatory_title'] ?? ''); ?>" class="admin-input">
+                <label class="admin-label" style="margin-top: 0.5rem;">Stage 3 Description</label>
+                <textarea name="preparatory_desc" rows="2" class="admin-input"><?php echo h($current_sec['preparatory_desc'] ?? ''); ?></textarea>
+              </div>
+              <div class="admin-form-group">
+                <label class="admin-label">Stage 4: Middle School Title</label>
+                <input type="text" name="middle_school_title" value="<?php echo h($current_sec['middle_school_title'] ?? ''); ?>" class="admin-input">
+                <label class="admin-label" style="margin-top: 0.5rem;">Stage 4 Description</label>
+                <textarea name="middle_school_desc" rows="2" class="admin-input"><?php echo h($current_sec['middle_school_desc'] ?? ''); ?></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="admin-form-group" style="margin-top: 1rem;">
+            <label class="admin-label">Oxford Thematic Learning Philosophy</label>
+            <textarea name="oxford_theme" rows="3" class="admin-input"><?php echo h($current_sec['oxford_theme'] ?? ''); ?></textarea>
+          </div>
+          <div class="admin-form-group">
+            <label class="admin-label">Assessment & Evaluation Philosophy</label>
+            <textarea name="assessment_philosophy" rows="3" class="admin-input"><?php echo h($current_sec['assessment_philosophy'] ?? ''); ?></textarea>
+          </div>
+
+        <?php elseif ($tab === 'special_ed'): ?>
+          <div class="admin-form-group">
+            <label class="admin-label">Eyebrow Kicker</label>
+            <input type="text" name="kicker" value="<?php echo h($current_sec['kicker'] ?? 'Every Child Learns. Every Child Belongs.'); ?>" class="admin-input">
+          </div>
+          <div class="admin-form-group">
+            <label class="admin-label">Section Heading *</label>
+            <input type="text" name="title" value="<?php echo h($current_sec['title'] ?? 'Inclusive Learning & Special Education'); ?>" required class="admin-input">
+          </div>
+          <div class="admin-form-group">
+            <label class="admin-label">Inclusive Learning Introduction</label>
+            <textarea name="intro" rows="4" class="admin-input"><?php echo h($current_sec['intro'] ?? ''); ?></textarea>
+          </div>
+          <div style="margin-top: 1.5rem;">
+            <h4 style="color: var(--color-navy); margin-bottom: 1rem;">Inclusivity Pillars</h4>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+              <?php foreach (($current_sec['pillars'] ?? []) as $pil): ?>
+                <div style="padding: 0.85rem; background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: var(--radius-sm);">
+                  <strong style="color: var(--color-navy); font-size: 0.9rem;"><?php echo h($pil['title']); ?></strong>
+                  <p style="margin: 0.25rem 0 0 0; font-size: 0.78rem; color: var(--color-muted); line-height: 1.4;"><?php echo h($pil['desc']); ?></p>
+                </div>
+              <?php endforeach; ?>
+            </div>
+          </div>
+
+        <?php elseif ($tab === 'electives'): ?>
+          <div class="admin-form-group">
+            <label class="admin-label">Section Eyebrow Badge</label>
+            <input type="text" name="badge" value="<?php echo h($current_sec['badge'] ?? 'Beyond Core Academics'); ?>" class="admin-input">
+          </div>
+          <div class="admin-form-group">
+            <label class="admin-label">Section Heading *</label>
+            <input type="text" name="title" value="<?php echo h($current_sec['title'] ?? 'Electives, Languages & Future Skills'); ?>" required class="admin-input">
+          </div>
+          <div class="admin-form-group">
+            <label class="admin-label">Regional Indian Languages (Comma separated)</label>
+            <input type="text" name="regional_languages" value="<?php echo h($current_sec['regional_languages'] ?? ''); ?>" class="admin-input">
+          </div>
+          <div class="admin-form-group">
+            <label class="admin-label">Foreign Languages Offered (Comma separated)</label>
+            <input type="text" name="foreign_languages" value="<?php echo h($current_sec['foreign_languages'] ?? ''); ?>" class="admin-input">
+          </div>
+          <div style="margin-top: 1.5rem;">
+            <h4 style="color: var(--color-navy); margin-bottom: 1rem;">Future Skills Modules</h4>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+              <?php foreach (($current_sec['future_skills'] ?? []) as $sk): ?>
+                <div style="padding: 0.85rem; background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: var(--radius-sm);">
+                  <strong style="color: var(--color-navy); font-size: 0.9rem;"><?php echo h($sk['name']); ?></strong>
+                  <p style="margin: 0.25rem 0 0 0; font-size: 0.78rem; color: var(--color-muted);"><?php echo h($sk['desc']); ?></p>
+                </div>
+              <?php endforeach; ?>
+            </div>
+          </div>
+
+        <?php elseif ($tab === 'nep_2020'): ?>
+          <div class="admin-form-group">
+            <label class="admin-label">Kicker / Eyebrow Subtitle</label>
+            <input type="text" name="subtitle" value="<?php echo h($current_sec['subtitle'] ?? 'National Education Policy 2020 Alignment'); ?>" class="admin-input">
+          </div>
+          <div class="admin-form-group">
+            <label class="admin-label">Section Heading *</label>
+            <input type="text" name="title" value="<?php echo h($current_sec['title'] ?? 'NEP 2020 & NCF Compliance'); ?>" required class="admin-input">
+          </div>
+          <div class="admin-form-group">
+            <label class="admin-label">Policy Narrative Description</label>
+            <textarea name="desc" rows="5" class="admin-input" style="line-height: 1.6;"><?php echo h($current_sec['desc'] ?? ''); ?></textarea>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="admin-form-group">
+              <label class="admin-label">Official Document Title</label>
+              <input type="text" name="pdf_title" value="<?php echo h($current_sec['pdf_title'] ?? ''); ?>" class="admin-input">
+            </div>
+            <div class="admin-form-group">
+              <label class="admin-label">Document Download URL</label>
+              <input type="text" name="pdf_url" value="<?php echo h($current_sec['pdf_url'] ?? ''); ?>" class="admin-input">
+            </div>
+          </div>
+
+        <?php elseif ($tab === 'resources'): ?>
+          <div class="admin-form-group">
+            <label class="admin-label">Academic Calendar Title</label>
+            <input type="text" name="calendar_title" value="<?php echo h($current_sec['calendar_title'] ?? 'Academic Calendar 2026–27'); ?>" class="admin-input">
+          </div>
+          <div class="admin-form-group">
+            <label class="admin-label">Calendar Description</label>
+            <textarea name="calendar_desc" rows="3" class="admin-input"><?php echo h($current_sec['calendar_desc'] ?? ''); ?></textarea>
+          </div>
+          <div class="admin-form-group">
+            <label class="admin-label">Calendar PDF URL</label>
+            <input type="text" name="calendar_pdf" value="<?php echo h($current_sec['calendar_pdf'] ?? ''); ?>" class="admin-input">
+          </div>
+
+        <?php elseif ($tab === 'cta'): ?>
+          <div class="admin-form-group">
+            <label class="admin-label">Section Eyebrow Badge</label>
+            <input type="text" name="badge" value="<?php echo h($current_sec['badge'] ?? 'Begin Your Child’s Journey'); ?>" class="admin-input">
+          </div>
+          <div class="admin-form-group">
+            <label class="admin-label">Section Heading *</label>
+            <input type="text" name="title" value="<?php echo h($current_sec['title'] ?? 'Ready to Explore Zuvio Academics?'); ?>" required class="admin-input">
+          </div>
+          <div class="admin-form-group">
+            <label class="admin-label">Subtitle Text</label>
+            <textarea name="subtitle" rows="3" class="admin-input"><?php echo h($current_sec['subtitle'] ?? ''); ?></textarea>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="admin-form-group">
+              <label class="admin-label">Primary Button Label</label>
+              <input type="text" name="btn_primary_text" value="<?php echo h($current_sec['btn_primary_text'] ?? 'Enrol Now'); ?>" class="admin-input">
+            </div>
+            <div class="admin-form-group">
+              <label class="admin-label">Primary Button URL</label>
+              <input type="text" name="btn_primary_url" value="<?php echo h($current_sec['btn_primary_url'] ?? '/admissions#enrol'); ?>" class="admin-input">
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="admin-form-group">
+              <label class="admin-label">Secondary Button Label</label>
+              <input type="text" name="btn_secondary_text" value="<?php echo h($current_sec['btn_secondary_text'] ?? 'Schedule Counselling'); ?>" class="admin-input">
+            </div>
+            <div class="admin-form-group">
+              <label class="admin-label">Secondary Button URL</label>
+              <input type="text" name="btn_secondary_url" value="<?php echo h($current_sec['btn_secondary_url'] ?? '/contact'); ?>" class="admin-input">
+            </div>
+          </div>
+
+        <?php endif; ?>
+
+        <!-- INDIVIDUAL SECTION SAVE BUTTON -->
+        <div style="display: flex; justify-content: space-between; align-items: center; border-top: 2px solid var(--color-border); padding-top: 1.5rem; margin-top: 2rem; flex-wrap: wrap; gap: 1rem;">
+          <a href="/admin/academics-cms.php?tab=<?php echo urlencode($tab); ?>" class="btn btn-outline" style="font-size: 0.85rem; padding: 0.5rem 1.25rem;">
+            Reset / Reload
+          </a>
+          <button type="submit" id="sectionSubmitBtn" class="btn btn-primary" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 2.25rem; font-size: 0.95rem; font-weight: 600;">
+            💾 Save <?php echo h($sections_nav[$tab]['name']); ?>
+          </button>
+        </div>
+
+      </form>
+
+      <script>
+      function setSectionAction(action) {
+        const input = document.getElementById('pendingActionInput');
+        const alertBox = document.getElementById('pendingRemovalAlert');
+        const submitBtn = document.getElementById('sectionSubmitBtn');
+        if (action === 'remove') {
+          if (confirm('Are you sure you want to mark this section for removal? (Note: Section will NOT be removed from the live website until you click "Confirm Removal & Save")')) {
+            if (input) input.value = 'remove';
+            if (alertBox) alertBox.style.display = 'block';
+            if (submitBtn) {
+              submitBtn.innerText = '⚠️ Confirm Removal & Save';
+              submitBtn.style.background = '#EF4444';
+              submitBtn.style.borderColor = '#EF4444';
+            }
+            alertBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+        } else if (action === 'restore') {
+          if (input) input.value = 'restore';
+          if (alertBox) alertBox.style.display = 'none';
+          if (submitBtn) {
+            submitBtn.innerText = '↩️ Confirm Restore & Save';
+            submitBtn.style.background = '#10B981';
+            submitBtn.style.borderColor = '#10B981';
+          }
+          submitBtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }
+
+      function cancelSectionAction() {
+        const input = document.getElementById('pendingActionInput');
+        const alertBox = document.getElementById('pendingRemovalAlert');
+        const submitBtn = document.getElementById('sectionSubmitBtn');
+        if (input) input.value = 'save';
+        if (alertBox) alertBox.style.display = 'none';
+        if (submitBtn) {
+          submitBtn.innerText = '💾 Save <?php echo h(addslashes($sections_nav[$tab]['name'])); ?>';
+          submitBtn.style.background = 'var(--color-navy)';
+          submitBtn.style.borderColor = 'var(--color-navy)';
+        }
+      }
+      </script>
+
+    </div>
+
   </div>
+
 </div>
-
-<?php if ($msg): ?>
-  <div style="background-color: var(--color-surface-blue); border-left: 4px solid var(--color-success); padding: 0.75rem 1rem; border-radius: var(--radius-sm); color: var(--color-navy); font-size: 0.88rem; margin-bottom: 1.5rem;">
-    <?php 
-      if ($msg === 'saved') echo 'Content changes successfully saved and synchronized.';
-      elseif ($msg === 'added') echo 'New record successfully added.';
-      elseif ($msg === 'updated') echo 'Record successfully updated.';
-      elseif ($msg === 'deleted') echo 'Record successfully deleted.';
-      elseif ($msg === 'status_updated') echo 'Publish/Visibility status toggled.';
-    ?>
-  </div>
-<?php endif; ?>
-
-<?php if ($error): ?>
-  <div style="background:#fde8e8; border-left:4px solid #c81e1e; padding:0.75rem 1rem; margin-bottom:1.5rem; color:#9b1c1c; font-size: 0.88rem;">
-    <?php echo h($error); ?>
-  </div>
-<?php endif; ?>
-
-<!-- Navigation Tabs -->
-<div style="display: flex; gap: 0.5rem; border-bottom: 2px solid var(--color-border); margin-bottom: 2rem; overflow-x: auto; padding-bottom: 0.25rem;">
-  <a href="?tab=technology" style="padding: 0.6rem 1rem; font-weight: 600; font-size: 0.88rem; text-decoration: none; border-radius: var(--radius-sm) var(--radius-sm) 0 0; <?php echo $tab === 'technology' ? 'background: var(--color-navy); color: #fff;' : 'color: var(--color-text); background: #f8fafc;'; ?>">
-    1. Technology & LMS
-  </a>
-  <a href="?tab=special_ed" style="padding: 0.6rem 1rem; font-weight: 600; font-size: 0.88rem; text-decoration: none; border-radius: var(--radius-sm) var(--radius-sm) 0 0; <?php echo $tab === 'special_ed' ? 'background: var(--color-navy); color: #fff;' : 'color: var(--color-text); background: #f8fafc;'; ?>">
-    2. Special Education
-  </a>
-  <a href="?tab=electives" style="padding: 0.6rem 1rem; font-weight: 600; font-size: 0.88rem; text-decoration: none; border-radius: var(--radius-sm) var(--radius-sm) 0 0; <?php echo $tab === 'electives' ? 'background: var(--color-navy); color: #fff;' : 'color: var(--color-text); background: #f8fafc;'; ?>">
-    3. Electives & Languages
-  </a>
-  <a href="?tab=nep_2020" style="padding: 0.6rem 1rem; font-weight: 600; font-size: 0.88rem; text-decoration: none; border-radius: var(--radius-sm) var(--radius-sm) 0 0; <?php echo $tab === 'nep_2020' ? 'background: var(--color-navy); color: #fff;' : 'color: var(--color-text); background: #f8fafc;'; ?>">
-    4. NEP 2020 & Policy PDF
-  </a>
-  <a href="?tab=resources" style="padding: 0.6rem 1rem; font-weight: 600; font-size: 0.88rem; text-decoration: none; border-radius: var(--radius-sm) var(--radius-sm) 0 0; <?php echo $tab === 'resources' ? 'background: var(--color-navy); color: #fff;' : 'color: var(--color-text); background: #f8fafc;'; ?>">
-    5. Resources & Calendar
-  </a>
-  <a href="?tab=curriculum" style="padding: 0.6rem 1rem; font-weight: 600; font-size: 0.88rem; text-decoration: none; border-radius: var(--radius-sm) var(--radius-sm) 0 0; <?php echo $tab === 'curriculum' ? 'background: var(--color-navy); color: #fff;' : 'color: var(--color-text); background: #f8fafc;'; ?>">
-    6. Curriculum Framework
-  </a>
-</div>
-
-<?php if ($tab === 'technology'): ?>
-  <!-- TAB 1: Technology & LMS Features -->
-  <form method="POST" action="/admin/academics-cms.php" enctype="multipart/form-data">
-    <input type="hidden" name="csrf_token" value="<?php echo generate_csrf_token(); ?>">
-    <input type="hidden" name="action" value="save_tech_overview">
-
-    <div class="card" style="padding: 2rem; margin-bottom: 2rem;">
-      <h3 style="color: var(--color-navy); font-size: 1.25rem; margin-bottom: 1.25rem; border-bottom: 1px solid var(--color-border); padding-bottom: 0.5rem;">
-        Technology Overview & Video
-      </h3>
-      <div class="form-group" style="margin-bottom: 1.25rem;">
-        <label style="display: block; font-weight: 600; color: var(--color-navy); margin-bottom: 0.5rem; font-size: 0.85rem;">Hero Title</label>
-        <input type="text" name="hero_title" value="<?php echo h($ac_cms['technology']['hero_title']); ?>" class="form-control" style="width: 100%; padding: 0.6rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm);">
-      </div>
-      <div class="form-group" style="margin-bottom: 1.25rem;">
-        <label style="display: block; font-weight: 600; color: var(--color-navy); margin-bottom: 0.5rem; font-size: 0.85rem;">Subtitle</label>
-        <input type="text" name="hero_subtitle" value="<?php echo h($ac_cms['technology']['hero_subtitle']); ?>" class="form-control" style="width: 100%; padding: 0.6rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm);">
-      </div>
-      <div class="form-group" style="margin-bottom: 1.25rem;">
-        <label style="display: block; font-weight: 600; color: var(--color-navy); margin-bottom: 0.5rem; font-size: 0.85rem;">Description</label>
-        <textarea name="hero_desc" rows="3" class="form-control" style="width: 100%; padding: 0.6rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); font-family: inherit;"><?php echo h($ac_cms['technology']['hero_desc']); ?></textarea>
-      </div>
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-        <div>
-          <label style="display: block; font-weight: 600; color: var(--color-navy); margin-bottom: 0.5rem; font-size: 0.85rem;">LMS Video / Showcase URL</label>
-          <input type="text" name="lms_video_url" value="<?php echo h($ac_cms['technology']['lms_video']); ?>" class="form-control" style="width: 100%; padding: 0.6rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm);">
-        </div>
-        <div>
-          <label style="display: block; font-weight: 600; color: var(--color-navy); margin-bottom: 0.5rem; font-size: 0.85rem;">Upload New Video (.mp4)</label>
-          <input type="file" name="lms_video_file" accept="video/mp4,video/webm" class="form-control" style="width: 100%; padding: 0.4rem;">
-        </div>
-      </div>
-    </div>
-
-    <button type="submit" class="btn btn-primary" style="padding: 0.75rem 2rem; margin-bottom: 2.5rem;">Save Technology Overview</button>
-  </form>
-
-  <!-- LMS Features CRUD -->
-  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-    <h3 style="color: var(--color-navy); font-size: 1.25rem; margin: 0;">LMS Core Features (6 Cards)</h3>
-    <button onclick="document.getElementById('add-lms-form').style.display='block'" class="btn btn-primary" style="font-size: 0.85rem; padding: 0.5rem 1rem;">
-      + Add LMS Feature
-    </button>
-  </div>
-
-  <div id="add-lms-form" class="card" style="display: none; padding: 1.5rem; margin-bottom: 2rem; background: var(--pastel-blue);">
-    <h4 style="color: var(--color-navy); margin-bottom: 1rem;">Add LMS Feature</h4>
-    <form method="POST" action="/admin/academics-cms.php">
-      <input type="hidden" name="csrf_token" value="<?php echo generate_csrf_token(); ?>">
-      <input type="hidden" name="action" value="add_lms_feature">
-      <div style="display: grid; grid-template-columns: 80px 1fr; gap: 1rem; margin-bottom: 1rem;">
-        <div>
-          <label style="font-size: 0.8rem; font-weight: 600; display: block; margin-bottom: 0.25rem;">Icon</label>
-          <input type="text" name="icon" value="💻" style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: 4px;">
-        </div>
-        <div>
-          <label style="font-size: 0.8rem; font-weight: 600; display: block; margin-bottom: 0.25rem;">Title</label>
-          <input type="text" name="title" required placeholder="e.g. Live Interactive Classes" style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: 4px;">
-        </div>
-      </div>
-      <div style="margin-bottom: 1rem;">
-        <label style="font-size: 0.8rem; font-weight: 600; display: block; margin-bottom: 0.25rem;">Description</label>
-        <textarea name="desc" required rows="2" style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: 4px;"></textarea>
-      </div>
-      <div style="display: flex; gap: 0.5rem;">
-        <button type="submit" class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.85rem;">Save Feature</button>
-        <button type="button" onclick="document.getElementById('add-lms-form').style.display='none'" class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.85rem;">Cancel</button>
-      </div>
-    </form>
-  </div>
-
-  <div style="display: flex; flex-direction: column; gap: 1rem;">
-    <?php foreach ($ac_cms['technology']['lms_features'] as $f): ?>
-      <div class="card" style="padding: 1.25rem 1.5rem; display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap;">
-        <div style="display: flex; align-items: center; gap: 1rem; flex: 1; min-width: 260px;">
-          <div style="font-size: 1.5rem; width: 40px; height: 40px; border-radius: 8px; background: var(--pastel-blue); display: flex; align-items: center; justify-content: center;">
-            <?php echo $f['icon'] ?? '💻'; ?>
-          </div>
-          <div>
-            <h4 style="font-size: 1.05rem; color: var(--color-navy); margin: 0 0 0.25rem 0;">
-              <?php echo h($f['title']); ?>
-              <?php if (empty($f['is_published'])): ?>
-                <span style="background: #fee2e2; color: #991b1b; font-size: 0.7rem; padding: 0.15rem 0.5rem; border-radius: 4px; font-weight: 700; margin-left: 0.5rem;">UNPUBLISHED</span>
-              <?php else: ?>
-                <span style="background: #dcfce7; color: #166534; font-size: 0.7rem; padding: 0.15rem 0.5rem; border-radius: 4px; font-weight: 700; margin-left: 0.5rem;">PUBLISHED</span>
-              <?php endif; ?>
-            </h4>
-            <p style="color: var(--color-text); font-size: 0.85rem; margin: 0; line-height: 1.4;">
-              <?php echo h($f['desc']); ?>
-            </p>
-          </div>
-        </div>
-
-        <div style="display: flex; align-items: center; gap: 0.5rem;">
-          <form method="POST" action="/admin/academics-cms.php" style="margin: 0;">
-            <input type="hidden" name="csrf_token" value="<?php echo generate_csrf_token(); ?>">
-            <input type="hidden" name="action" value="toggle_publish_lms_feature">
-            <input type="hidden" name="id" value="<?php echo (int)$f['id']; ?>">
-            <button type="submit" class="btn btn-outline" style="padding: 0.4rem 0.75rem; font-size: 0.8rem;">
-              <?php echo empty($f['is_published']) ? 'Publish' : 'Unpublish'; ?>
-            </button>
-          </form>
-
-          <button onclick="document.getElementById('edit-feat-<?php echo $f['id']; ?>').style.display='block'" class="btn btn-outline" style="padding: 0.4rem 0.75rem; font-size: 0.8rem;">
-            Edit
-          </button>
-
-          <form method="POST" action="/admin/academics-cms.php" style="margin: 0;" onsubmit="return confirm('Delete this LMS feature?');">
-            <input type="hidden" name="csrf_token" value="<?php echo generate_csrf_token(); ?>">
-            <input type="hidden" name="action" value="delete_lms_feature">
-            <input type="hidden" name="id" value="<?php echo (int)$f['id']; ?>">
-            <button type="submit" class="btn btn-outline" style="padding: 0.4rem 0.75rem; font-size: 0.8rem; color: #dc2626; border-color: #dc2626;">
-              Delete
-            </button>
-          </form>
-        </div>
-      </div>
-
-      <!-- Edit Modal Form -->
-      <div id="edit-feat-<?php echo $f['id']; ?>" class="card" style="display: none; padding: 1.5rem; margin-top: -0.5rem; margin-bottom: 1rem; border-top: 3px solid var(--color-gold);">
-        <h4 style="color: var(--color-navy); margin-bottom: 1rem;">Edit LMS Feature #<?php echo $f['id']; ?></h4>
-        <form method="POST" action="/admin/academics-cms.php">
-          <input type="hidden" name="csrf_token" value="<?php echo generate_csrf_token(); ?>">
-          <input type="hidden" name="action" value="edit_lms_feature">
-          <input type="hidden" name="id" value="<?php echo (int)$f['id']; ?>">
-          <div style="display: grid; grid-template-columns: 80px 1fr 100px; gap: 1rem; margin-bottom: 1rem;">
-            <div>
-              <label style="font-size: 0.8rem; font-weight: 600; display: block; margin-bottom: 0.25rem;">Icon</label>
-              <input type="text" name="icon" value="<?php echo h($f['icon'] ?? '💻'); ?>" style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: 4px;">
-            </div>
-            <div>
-              <label style="font-size: 0.8rem; font-weight: 600; display: block; margin-bottom: 0.25rem;">Title</label>
-              <input type="text" name="title" value="<?php echo h($f['title']); ?>" required style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: 4px;">
-            </div>
-            <div>
-              <label style="font-size: 0.8rem; font-weight: 600; display: block; margin-bottom: 0.25rem;">Sort Order</label>
-              <input type="number" name="sort_order" value="<?php echo (int)($f['sort_order'] ?? 1); ?>" style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: 4px;">
-            </div>
-          </div>
-          <div style="margin-bottom: 1rem;">
-            <label style="font-size: 0.8rem; font-weight: 600; display: block; margin-bottom: 0.25rem;">Description</label>
-            <textarea name="desc" required rows="2" style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: 4px;"><?php echo h($f['desc']); ?></textarea>
-          </div>
-          <div style="display: flex; gap: 0.5rem;">
-            <button type="submit" class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.85rem;">Update Feature</button>
-            <button type="button" onclick="document.getElementById('edit-feat-<?php echo $f['id']; ?>').style.display='none'" class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.85rem;">Cancel</button>
-          </div>
-        </form>
-      </div>
-    <?php endforeach; ?>
-  </div>
-
-<?php elseif ($tab === 'special_ed'): ?>
-  <!-- TAB 2: Special Education -->
-  <form method="POST" action="/admin/academics-cms.php">
-    <input type="hidden" name="csrf_token" value="<?php echo generate_csrf_token(); ?>">
-    <input type="hidden" name="action" value="save_special_ed_overview">
-
-    <div class="card" style="padding: 2rem; margin-bottom: 2rem;">
-      <h3 style="color: var(--color-navy); font-size: 1.25rem; margin-bottom: 1.25rem; border-bottom: 1px solid var(--color-border); padding-bottom: 0.5rem;">
-        Special Education Overview
-      </h3>
-      <div class="form-group" style="margin-bottom: 1.25rem;">
-        <label style="display: block; font-weight: 600; color: var(--color-navy); margin-bottom: 0.5rem; font-size: 0.85rem;">Section Title</label>
-        <input type="text" name="title" value="<?php echo h($ac_cms['special_ed']['title']); ?>" class="form-control" style="width: 100%; padding: 0.6rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm);">
-      </div>
-      <div class="form-group" style="margin-bottom: 1.25rem;">
-        <label style="display: block; font-weight: 600; color: var(--color-navy); margin-bottom: 0.5rem; font-size: 0.85rem;">Guiding Motto / Kicker</label>
-        <input type="text" name="kicker" value="<?php echo h($ac_cms['special_ed']['kicker']); ?>" class="form-control" style="width: 100%; padding: 0.6rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm);">
-      </div>
-      <div class="form-group">
-        <label style="display: block; font-weight: 600; color: var(--color-navy); margin-bottom: 0.5rem; font-size: 0.85rem;">Introductory Philosophy</label>
-        <textarea name="intro" rows="3" class="form-control" style="width: 100%; padding: 0.6rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); font-family: inherit;"><?php echo h($ac_cms['special_ed']['intro']); ?></textarea>
-      </div>
-      <button type="submit" class="btn btn-primary" style="margin-top: 1rem; padding: 0.65rem 1.5rem;">Save Philosophy</button>
-    </div>
-  </form>
-
-  <!-- Benefit Pillars List -->
-  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-    <h3 style="color: var(--color-navy); font-size: 1.25rem; margin: 0;">Special Education Pillars (6 Benefits)</h3>
-    <button onclick="document.getElementById('add-pillar-form').style.display='block'" class="btn btn-primary" style="font-size: 0.85rem; padding: 0.5rem 1rem;">
-      + Add Support Pillar
-    </button>
-  </div>
-
-  <div id="add-pillar-form" class="card" style="display: none; padding: 1.5rem; margin-bottom: 2rem; background: var(--pastel-blue);">
-    <h4 style="color: var(--color-navy); margin-bottom: 1rem;">Add Support Pillar</h4>
-    <form method="POST" action="/admin/academics-cms.php">
-      <input type="hidden" name="csrf_token" value="<?php echo generate_csrf_token(); ?>">
-      <input type="hidden" name="action" value="add_special_ed_pillar">
-      <div style="margin-bottom: 1rem;">
-        <label style="font-size: 0.8rem; font-weight: 600; display: block; margin-bottom: 0.25rem;">Title</label>
-        <input type="text" name="title" required placeholder="e.g. Strength-Based Pedagogy" style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: 4px;">
-      </div>
-      <div style="margin-bottom: 1rem;">
-        <label style="font-size: 0.8rem; font-weight: 600; display: block; margin-bottom: 0.25rem;">Description</label>
-        <textarea name="desc" required rows="2" style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: 4px;"></textarea>
-      </div>
-      <div style="display: flex; gap: 0.5rem;">
-        <button type="submit" class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.85rem;">Save Pillar</button>
-        <button type="button" onclick="document.getElementById('add-pillar-form').style.display='none'" class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.85rem;">Cancel</button>
-      </div>
-    </form>
-  </div>
-
-  <div style="display: flex; flex-direction: column; gap: 1rem;">
-    <?php foreach ($ac_cms['special_ed']['pillars'] as $p): ?>
-      <div class="card" style="padding: 1.25rem 1.5rem; display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap;">
-        <div style="flex: 1; min-width: 260px;">
-          <h4 style="font-size: 1.05rem; color: var(--color-navy); margin: 0 0 0.25rem 0;">
-            🌱 <?php echo h($p['title']); ?>
-          </h4>
-          <p style="color: var(--color-text); font-size: 0.85rem; margin: 0; line-height: 1.4;">
-            <?php echo h($p['desc']); ?>
-          </p>
-        </div>
-
-        <div style="display: flex; align-items: center; gap: 0.5rem;">
-          <button onclick="document.getElementById('edit-pil-<?php echo $p['id']; ?>').style.display='block'" class="btn btn-outline" style="padding: 0.4rem 0.75rem; font-size: 0.8rem;">
-            Edit
-          </button>
-          <form method="POST" action="/admin/academics-cms.php" style="margin: 0;" onsubmit="return confirm('Delete this pillar?');">
-            <input type="hidden" name="csrf_token" value="<?php echo generate_csrf_token(); ?>">
-            <input type="hidden" name="action" value="delete_special_ed_pillar">
-            <input type="hidden" name="id" value="<?php echo (int)$p['id']; ?>">
-            <button type="submit" class="btn btn-outline" style="padding: 0.4rem 0.75rem; font-size: 0.8rem; color: #dc2626; border-color: #dc2626;">
-              Delete
-            </button>
-          </form>
-        </div>
-      </div>
-
-      <!-- Edit Modal -->
-      <div id="edit-pil-<?php echo $p['id']; ?>" class="card" style="display: none; padding: 1.5rem; margin-top: -0.5rem; margin-bottom: 1rem; border-top: 3px solid var(--color-gold);">
-        <h4 style="color: var(--color-navy); margin-bottom: 1rem;">Edit Pillar #<?php echo $p['id']; ?></h4>
-        <form method="POST" action="/admin/academics-cms.php">
-          <input type="hidden" name="csrf_token" value="<?php echo generate_csrf_token(); ?>">
-          <input type="hidden" name="action" value="edit_special_ed_pillar">
-          <input type="hidden" name="id" value="<?php echo (int)$p['id']; ?>">
-          <div style="display: grid; grid-template-columns: 1fr 100px; gap: 1rem; margin-bottom: 1rem;">
-            <div>
-              <label style="font-size: 0.8rem; font-weight: 600; display: block; margin-bottom: 0.25rem;">Title</label>
-              <input type="text" name="title" value="<?php echo h($p['title']); ?>" required style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: 4px;">
-            </div>
-            <div>
-              <label style="font-size: 0.8rem; font-weight: 600; display: block; margin-bottom: 0.25rem;">Sort Order</label>
-              <input type="number" name="sort_order" value="<?php echo (int)($p['sort_order'] ?? 1); ?>" style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: 4px;">
-            </div>
-          </div>
-          <div style="margin-bottom: 1rem;">
-            <label style="font-size: 0.8rem; font-weight: 600; display: block; margin-bottom: 0.25rem;">Description</label>
-            <textarea name="desc" required rows="2" style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: 4px;"><?php echo h($p['desc']); ?></textarea>
-          </div>
-          <div style="display: flex; gap: 0.5rem;">
-            <button type="submit" class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.85rem;">Update Pillar</button>
-            <button type="button" onclick="document.getElementById('edit-pil-<?php echo $p['id']; ?>').style.display='none'" class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.85rem;">Cancel</button>
-          </div>
-        </form>
-      </div>
-    <?php endforeach; ?>
-  </div>
-
-<?php elseif ($tab === 'electives'): ?>
-  <!-- TAB 3: Electives & Languages -->
-  <form method="POST" action="/admin/academics-cms.php">
-    <input type="hidden" name="csrf_token" value="<?php echo generate_csrf_token(); ?>">
-    <input type="hidden" name="action" value="save_electives_languages">
-
-    <div class="card" style="padding: 2rem; margin-bottom: 2rem;">
-      <h3 style="color: var(--color-navy); font-size: 1.25rem; margin-bottom: 1.25rem; border-bottom: 1px solid var(--color-border); padding-bottom: 0.5rem;">
-        Language Electives
-      </h3>
-      <div class="form-group" style="margin-bottom: 1.25rem;">
-        <label style="display: block; font-weight: 600; color: var(--color-navy); margin-bottom: 0.5rem; font-size: 0.85rem;">Regional & Classical Languages (comma-separated)</label>
-        <input type="text" name="regional_languages" value="<?php echo h(implode(', ', $ac_cms['electives']['regional_languages'])); ?>" class="form-control" style="width: 100%; padding: 0.6rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm);">
-      </div>
-      <div class="form-group" style="margin-bottom: 1.25rem;">
-        <label style="display: block; font-weight: 600; color: var(--color-navy); margin-bottom: 0.5rem; font-size: 0.85rem;">Modern Foreign Languages (comma-separated)</label>
-        <input type="text" name="foreign_languages" value="<?php echo h(implode(', ', $ac_cms['electives']['foreign_languages'])); ?>" class="form-control" style="width: 100%; padding: 0.6rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm);">
-      </div>
-      <button type="submit" class="btn btn-primary" style="padding: 0.65rem 1.5rem;">Save Languages</button>
-    </div>
-  </form>
-
-  <!-- Future Skills Electives CRUD -->
-  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-    <h3 style="color: var(--color-navy); font-size: 1.25rem; margin: 0;">Co-Curricular & Future Skill Electives</h3>
-    <button onclick="document.getElementById('add-skill-form').style.display='block'" class="btn btn-primary" style="font-size: 0.85rem; padding: 0.5rem 1rem;">
-      + Add Skill Elective
-    </button>
-  </div>
-
-  <div id="add-skill-form" class="card" style="display: none; padding: 1.5rem; margin-bottom: 2rem; background: var(--pastel-blue);">
-    <h4 style="color: var(--color-navy); margin-bottom: 1rem;">Add Skill Elective</h4>
-    <form method="POST" action="/admin/academics-cms.php">
-      <input type="hidden" name="csrf_token" value="<?php echo generate_csrf_token(); ?>">
-      <input type="hidden" name="action" value="add_skill_elective">
-      <div style="margin-bottom: 1rem;">
-        <label style="font-size: 0.8rem; font-weight: 600; display: block; margin-bottom: 0.25rem;">Skill Name</label>
-        <input type="text" name="name" required placeholder="e.g. Coding & Robotics" style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: 4px;">
-      </div>
-      <div style="margin-bottom: 1rem;">
-        <label style="font-size: 0.8rem; font-weight: 600; display: block; margin-bottom: 0.25rem;">Description</label>
-        <textarea name="desc" required rows="2" style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: 4px;"></textarea>
-      </div>
-      <div style="display: flex; gap: 0.5rem;">
-        <button type="submit" class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.85rem;">Save Skill</button>
-        <button type="button" onclick="document.getElementById('add-skill-form').style.display='none'" class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.85rem;">Cancel</button>
-      </div>
-    </form>
-  </div>
-
-  <div style="display: flex; flex-direction: column; gap: 1rem;">
-    <?php foreach ($ac_cms['electives']['future_skills'] as $fs): ?>
-      <div class="card" style="padding: 1.25rem 1.5rem; display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap;">
-        <div style="flex: 1; min-width: 260px;">
-          <h4 style="font-size: 1.05rem; color: var(--color-navy); margin: 0 0 0.25rem 0;">
-            ⭐ <?php echo h($fs['name']); ?>
-          </h4>
-          <p style="color: var(--color-text); font-size: 0.85rem; margin: 0; line-height: 1.4;">
-            <?php echo h($fs['desc']); ?>
-          </p>
-        </div>
-
-        <div style="display: flex; align-items: center; gap: 0.5rem;">
-          <button onclick="document.getElementById('edit-sk-<?php echo $fs['id']; ?>').style.display='block'" class="btn btn-outline" style="padding: 0.4rem 0.75rem; font-size: 0.8rem;">
-            Edit
-          </button>
-          <form method="POST" action="/admin/academics-cms.php" style="margin: 0;" onsubmit="return confirm('Delete this skill elective?');">
-            <input type="hidden" name="csrf_token" value="<?php echo generate_csrf_token(); ?>">
-            <input type="hidden" name="action" value="delete_skill_elective">
-            <input type="hidden" name="id" value="<?php echo (int)$fs['id']; ?>">
-            <button type="submit" class="btn btn-outline" style="padding: 0.4rem 0.75rem; font-size: 0.8rem; color: #dc2626; border-color: #dc2626;">
-              Delete
-            </button>
-          </form>
-        </div>
-      </div>
-
-      <!-- Edit Modal -->
-      <div id="edit-sk-<?php echo $fs['id']; ?>" class="card" style="display: none; padding: 1.5rem; margin-top: -0.5rem; margin-bottom: 1rem; border-top: 3px solid var(--color-gold);">
-        <h4 style="color: var(--color-navy); margin-bottom: 1rem;">Edit Skill Elective #<?php echo $fs['id']; ?></h4>
-        <form method="POST" action="/admin/academics-cms.php">
-          <input type="hidden" name="csrf_token" value="<?php echo generate_csrf_token(); ?>">
-          <input type="hidden" name="action" value="edit_skill_elective">
-          <input type="hidden" name="id" value="<?php echo (int)$fs['id']; ?>">
-          <div style="display: grid; grid-template-columns: 1fr 100px; gap: 1rem; margin-bottom: 1rem;">
-            <div>
-              <label style="font-size: 0.8rem; font-weight: 600; display: block; margin-bottom: 0.25rem;">Skill Name</label>
-              <input type="text" name="name" value="<?php echo h($fs['name']); ?>" required style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: 4px;">
-            </div>
-            <div>
-              <label style="font-size: 0.8rem; font-weight: 600; display: block; margin-bottom: 0.25rem;">Sort Order</label>
-              <input type="number" name="sort_order" value="<?php echo (int)($fs['sort_order'] ?? 1); ?>" style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: 4px;">
-            </div>
-          </div>
-          <div style="margin-bottom: 1rem;">
-            <label style="font-size: 0.8rem; font-weight: 600; display: block; margin-bottom: 0.25rem;">Description</label>
-            <textarea name="desc" required rows="2" style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: 4px;"><?php echo h($fs['desc']); ?></textarea>
-          </div>
-          <div style="display: flex; gap: 0.5rem;">
-            <button type="submit" class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.85rem;">Update Skill</button>
-            <button type="button" onclick="document.getElementById('edit-sk-<?php echo $fs['id']; ?>').style.display='none'" class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.85rem;">Cancel</button>
-          </div>
-        </form>
-      </div>
-    <?php endforeach; ?>
-  </div>
-
-<?php elseif ($tab === 'nep_2020'): ?>
-  <!-- TAB 4: NEP 2020 & Policy PDF Management -->
-  <form method="POST" action="/admin/academics-cms.php" enctype="multipart/form-data">
-    <input type="hidden" name="csrf_token" value="<?php echo generate_csrf_token(); ?>">
-    <input type="hidden" name="action" value="save_nep_2020">
-
-    <div class="card" style="padding: 2rem; margin-bottom: 2rem;">
-      <h3 style="color: var(--color-navy); font-size: 1.25rem; margin-bottom: 1.25rem; border-bottom: 1px solid var(--color-border); padding-bottom: 0.5rem;">
-        NEP 2020 Policy Framework & Document
-      </h3>
-      <div class="form-group" style="margin-bottom: 1.25rem;">
-        <label style="display: block; font-weight: 600; color: var(--color-navy); margin-bottom: 0.5rem; font-size: 0.85rem;">Section Title</label>
-        <input type="text" name="title" value="<?php echo h($ac_cms['nep_2020']['title']); ?>" class="form-control" style="width: 100%; padding: 0.6rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm);">
-      </div>
-      <div class="form-group" style="margin-bottom: 1.25rem;">
-        <label style="display: block; font-weight: 600; color: var(--color-navy); margin-bottom: 0.5rem; font-size: 0.85rem;">Subtitle</label>
-        <input type="text" name="subtitle" value="<?php echo h($ac_cms['nep_2020']['subtitle']); ?>" class="form-control" style="width: 100%; padding: 0.6rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm);">
-      </div>
-      <div class="form-group" style="margin-bottom: 1.25rem;">
-        <label style="display: block; font-weight: 600; color: var(--color-navy); margin-bottom: 0.5rem; font-size: 0.85rem;">Description</label>
-        <textarea name="desc" rows="3" class="form-control" style="width: 100%; padding: 0.6rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); font-family: inherit;"><?php echo h($ac_cms['nep_2020']['desc']); ?></textarea>
-      </div>
-
-      <div style="border-top: 1px solid var(--color-border); padding-top: 1.25rem; margin-top: 1.5rem;">
-        <h4 style="font-size: 1.1rem; color: var(--color-navy); margin-bottom: 1rem;">Policy PDF Resource</h4>
-        <div class="form-group" style="margin-bottom: 1.25rem;">
-          <label style="display: block; font-weight: 600; color: var(--color-navy); margin-bottom: 0.5rem; font-size: 0.85rem;">Document Display Title</label>
-          <input type="text" name="pdf_title" value="<?php echo h($ac_cms['nep_2020']['pdf_title']); ?>" class="form-control" style="width: 100%; padding: 0.6rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm);">
-        </div>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-          <div>
-            <label style="display: block; font-weight: 600; color: var(--color-navy); margin-bottom: 0.5rem; font-size: 0.85rem;">Current PDF URL</label>
-            <input type="text" name="nep_pdf_url" value="<?php echo h($ac_cms['nep_2020']['pdf_url']); ?>" class="form-control" style="width: 100%; padding: 0.6rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm);">
-          </div>
-          <div>
-            <label style="display: block; font-weight: 600; color: var(--color-navy); margin-bottom: 0.5rem; font-size: 0.85rem;">Upload New Policy PDF</label>
-            <input type="file" name="nep_pdf_file" accept="application/pdf" class="form-control" style="width: 100%; padding: 0.4rem;">
-          </div>
-        </div>
-      </div>
-
-      <button type="submit" class="btn btn-primary" style="margin-top: 1.5rem; padding: 0.75rem 2rem;">Save NEP 2020 Settings</button>
-    </div>
-  </form>
-
-<?php elseif ($tab === 'resources'): ?>
-  <!-- TAB 5: Resources & Academic Calendar -->
-  <form method="POST" action="/admin/academics-cms.php" enctype="multipart/form-data">
-    <input type="hidden" name="csrf_token" value="<?php echo generate_csrf_token(); ?>">
-    <input type="hidden" name="action" value="save_resources">
-
-    <div class="card" style="padding: 2rem; margin-bottom: 2rem;">
-      <h3 style="color: var(--color-navy); font-size: 1.25rem; margin-bottom: 1.25rem; border-bottom: 1px solid var(--color-border); padding-bottom: 0.5rem;">
-        Academic Calendar & Downloads
-      </h3>
-      <div class="form-group" style="margin-bottom: 1.25rem;">
-        <label style="display: block; font-weight: 600; color: var(--color-navy); margin-bottom: 0.5rem; font-size: 0.85rem;">Calendar Title</label>
-        <input type="text" name="calendar_title" value="<?php echo h($ac_cms['resources']['calendar_title']); ?>" class="form-control" style="width: 100%; padding: 0.6rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm);">
-      </div>
-      <div class="form-group" style="margin-bottom: 1.25rem;">
-        <label style="display: block; font-weight: 600; color: var(--color-navy); margin-bottom: 0.5rem; font-size: 0.85rem;">Description</label>
-        <textarea name="calendar_desc" rows="2" class="form-control" style="width: 100%; padding: 0.6rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); font-family: inherit;"><?php echo h($ac_cms['resources']['calendar_desc']); ?></textarea>
-      </div>
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-        <div>
-          <label style="display: block; font-weight: 600; color: var(--color-navy); margin-bottom: 0.5rem; font-size: 0.85rem;">Current Calendar PDF URL</label>
-          <input type="text" name="calendar_pdf_url" value="<?php echo h($ac_cms['resources']['calendar_pdf']); ?>" class="form-control" style="width: 100%; padding: 0.6rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm);">
-        </div>
-        <div>
-          <label style="display: block; font-weight: 600; color: var(--color-navy); margin-bottom: 0.5rem; font-size: 0.85rem;">Upload New Calendar PDF</label>
-          <input type="file" name="calendar_pdf_file" accept="application/pdf" class="form-control" style="width: 100%; padding: 0.4rem;">
-        </div>
-      </div>
-      <button type="submit" class="btn btn-primary" style="margin-top: 1.5rem; padding: 0.75rem 2rem;">Save Calendar Settings</button>
-    </div>
-  </form>
-
-<?php elseif ($tab === 'curriculum'): ?>
-  <!-- TAB 6: Curriculum Framework -->
-  <form method="POST" action="/admin/academics-cms.php">
-    <input type="hidden" name="csrf_token" value="<?php echo generate_csrf_token(); ?>">
-    <input type="hidden" name="action" value="save_curriculum">
-
-    <div class="card" style="padding: 2rem; margin-bottom: 2rem;">
-      <h3 style="color: var(--color-navy); font-size: 1.25rem; margin-bottom: 1.25rem; border-bottom: 1px solid var(--color-border); padding-bottom: 0.5rem;">
-        Curriculum Framework & Pedagogical Stages
-      </h3>
-      <div class="form-group" style="margin-bottom: 1.25rem;">
-        <label style="display: block; font-weight: 600; color: var(--color-navy); margin-bottom: 0.5rem; font-size: 0.85rem;">Hero Section Title</label>
-        <input type="text" name="hero_title" value="<?php echo h($ac_cms['curriculum']['hero_title'] ?? ''); ?>" class="form-control" style="width: 100%; padding: 0.6rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm);">
-      </div>
-      <div class="form-group" style="margin-bottom: 1.25rem;">
-        <label style="display: block; font-weight: 600; color: var(--color-navy); margin-bottom: 0.5rem; font-size: 0.85rem;">Hero Subtitle</label>
-        <input type="text" name="hero_subtitle" value="<?php echo h($ac_cms['curriculum']['hero_subtitle'] ?? ''); ?>" class="form-control" style="width: 100%; padding: 0.6rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm);">
-      </div>
-      <div class="form-group" style="margin-bottom: 1.25rem;">
-        <label style="display: block; font-weight: 600; color: var(--color-navy); margin-bottom: 0.5rem; font-size: 0.85rem;">Curriculum Hero Description</label>
-        <textarea name="hero_desc" rows="3" class="form-control" style="width: 100%; padding: 0.6rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); font-family: inherit;"><?php echo h($ac_cms['curriculum']['hero_desc'] ?? ''); ?></textarea>
-      </div>
-
-      <div style="border-top: 1px solid var(--color-border); padding-top: 1.25rem; margin-top: 1.5rem;">
-        <h4 style="font-size: 1.1rem; color: var(--color-navy); margin-bottom: 1rem;">Pedagogical Stages (NEP & CBSE Mapped)</h4>
-        
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1rem;">
-          <div>
-            <label style="display: block; font-weight: 600; color: var(--color-navy); margin-bottom: 0.4rem; font-size: 0.85rem;">Early Years Stage Title (Nursery - UKG)</label>
-            <input type="text" name="early_years_title" value="<?php echo h($ac_cms['curriculum']['early_years_title'] ?? ''); ?>" class="form-control" style="width: 100%; padding: 0.6rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm);">
-            <label style="display: block; font-weight: 600; color: var(--color-navy); margin-top: 0.6rem; margin-bottom: 0.4rem; font-size: 0.85rem;">Early Years Description</label>
-            <textarea name="early_years_desc" rows="3" class="form-control" style="width: 100%; padding: 0.6rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); font-family: inherit;"><?php echo h($ac_cms['curriculum']['early_years_desc'] ?? ''); ?></textarea>
-          </div>
-          <div>
-            <label style="display: block; font-weight: 600; color: var(--color-navy); margin-bottom: 0.4rem; font-size: 0.85rem;">Foundation Stage Title (Grades 1-2)</label>
-            <input type="text" name="foundation_title" value="<?php echo h($ac_cms['curriculum']['foundation_title'] ?? ''); ?>" class="form-control" style="width: 100%; padding: 0.6rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm);">
-            <label style="display: block; font-weight: 600; color: var(--color-navy); margin-top: 0.6rem; margin-bottom: 0.4rem; font-size: 0.85rem;">Foundation Stage Description</label>
-            <textarea name="foundation_desc" rows="3" class="form-control" style="width: 100%; padding: 0.6rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); font-family: inherit;"><?php echo h($ac_cms['curriculum']['foundation_desc'] ?? ''); ?></textarea>
-          </div>
-        </div>
-
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.5rem;">
-          <div>
-            <label style="display: block; font-weight: 600; color: var(--color-navy); margin-bottom: 0.4rem; font-size: 0.85rem;">Preparatory Stage Title (Grades 3-5)</label>
-            <input type="text" name="preparatory_title" value="<?php echo h($ac_cms['curriculum']['preparatory_title'] ?? ''); ?>" class="form-control" style="width: 100%; padding: 0.6rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm);">
-            <label style="display: block; font-weight: 600; color: var(--color-navy); margin-top: 0.6rem; margin-bottom: 0.4rem; font-size: 0.85rem;">Preparatory Stage Description</label>
-            <textarea name="preparatory_desc" rows="3" class="form-control" style="width: 100%; padding: 0.6rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); font-family: inherit;"><?php echo h($ac_cms['curriculum']['preparatory_desc'] ?? ''); ?></textarea>
-          </div>
-          <div>
-            <label style="display: block; font-weight: 600; color: var(--color-navy); margin-bottom: 0.4rem; font-size: 0.85rem;">Middle School Stage Title (Grades 6-8)</label>
-            <input type="text" name="middle_school_title" value="<?php echo h($ac_cms['curriculum']['middle_school_title'] ?? ''); ?>" class="form-control" style="width: 100%; padding: 0.6rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm);">
-            <label style="display: block; font-weight: 600; color: var(--color-navy); margin-top: 0.6rem; margin-bottom: 0.4rem; font-size: 0.85rem;">Middle School Description</label>
-            <textarea name="middle_school_desc" rows="3" class="form-control" style="width: 100%; padding: 0.6rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); font-family: inherit;"><?php echo h($ac_cms['curriculum']['middle_school_desc'] ?? ''); ?></textarea>
-          </div>
-        </div>
-
-        <div class="form-group" style="margin-bottom: 1.25rem;">
-          <label style="display: block; font-weight: 600; color: var(--color-navy); margin-bottom: 0.4rem; font-size: 0.85rem;">Oxford Thematic Inquiry Integration</label>
-          <textarea name="oxford_theme" rows="2" class="form-control" style="width: 100%; padding: 0.6rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); font-family: inherit;"><?php echo h($ac_cms['curriculum']['oxford_theme'] ?? ''); ?></textarea>
-        </div>
-
-        <div class="form-group" style="margin-bottom: 1.25rem;">
-          <label style="display: block; font-weight: 600; color: var(--color-navy); margin-bottom: 0.4rem; font-size: 0.85rem;">Assessment & Progression Philosophy</label>
-          <textarea name="assessment_philosophy" rows="2" class="form-control" style="width: 100%; padding: 0.6rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); font-family: inherit;"><?php echo h($ac_cms['curriculum']['assessment_philosophy'] ?? ''); ?></textarea>
-        </div>
-      </div>
-
-      <button type="submit" class="btn btn-primary" style="margin-top: 1rem; padding: 0.75rem 2rem;">Save Curriculum Framework</button>
-    </div>
-  </form>
-
-<?php endif; ?>
 
 <?php include_once dirname(__FILE__) . '/footer.php'; ?>
