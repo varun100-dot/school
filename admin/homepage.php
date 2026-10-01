@@ -297,9 +297,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_section'])) {
         $error = 'Security validation failed. Please refresh and try again.';
     } else {
         $s_key = trim($_POST['section_key'] ?? '');
+        $pending_action = trim($_POST['pending_action'] ?? 'save');
         if (isset($home_cms[$s_key])) {
-            $is_active = isset($_POST['is_active']) ? 1 : 0;
-            $home_cms[$s_key]['is_active'] = $is_active;
+            if ($pending_action === 'remove') {
+                $home_cms[$s_key]['is_removed'] = 1;
+                $home_cms[$s_key]['is_active'] = 0;
+            } elseif ($pending_action === 'restore') {
+                $home_cms[$s_key]['is_removed'] = 0;
+                $home_cms[$s_key]['is_active'] = 1;
+            } else {
+                $is_active = isset($_POST['is_active']) ? 1 : 0;
+                $home_cms[$s_key]['is_active'] = $is_active;
+                $home_cms[$s_key]['is_removed'] = 0;
+            }
 
             // Process based on section key
             if ($s_key === 'hero_form') {
@@ -514,7 +524,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_section'])) {
                 } catch (Exception $e) {}
             }
 
-            header("Location: /admin/homepage.php?tab=" . urlencode($s_key) . "&msg=saved");
+            $redirect_msg = ($pending_action === 'remove') ? 'removed' : (($pending_action === 'restore') ? 'restored' : 'saved');
+            header("Location: /admin/homepage.php?tab=" . urlencode($s_key) . "&msg=" . $redirect_msg);
             exit;
         }
     }
@@ -572,10 +583,20 @@ include dirname(__FILE__) . '/header.php';
     </div>
   </div>
 
-  <!-- Success / Error Notice -->
+  <!-- Success / Error / Remove Notices -->
   <?php if ($msg === 'saved'): ?>
     <div style="background-color: #ECFDF5; border-left: 4px solid #10B981; padding: 0.85rem 1.25rem; border-radius: var(--radius-sm); color: #065F46; font-size: 0.88rem; margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: space-between;">
       <span><strong>Saved!</strong> Section <strong>"<?php echo h($sections_nav[$tab]['name']); ?>"</strong> has been successfully updated and synced to the website.</span>
+      <span style="font-size: 0.75rem; color: #047857;"><?php echo date('h:i:s A'); ?></span>
+    </div>
+  <?php elseif ($msg === 'removed'): ?>
+    <div style="background-color: #FEF2F2; border-left: 4px solid #EF4444; padding: 0.85rem 1.25rem; border-radius: var(--radius-sm); color: #991B1B; font-size: 0.88rem; margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: space-between;">
+      <span><strong>Section Removed:</strong> <strong>"<?php echo h($sections_nav[$tab]['name']); ?>"</strong> has been removed from the live website. Click "Restore Section" anytime to bring it back.</span>
+      <span style="font-size: 0.75rem; color: #DC2626;"><?php echo date('h:i:s A'); ?></span>
+    </div>
+  <?php elseif ($msg === 'restored'): ?>
+    <div style="background-color: #ECFDF5; border-left: 4px solid #10B981; padding: 0.85rem 1.25rem; border-radius: var(--radius-sm); color: #065F46; font-size: 0.88rem; margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: space-between;">
+      <span><strong>Section Restored:</strong> <strong>"<?php echo h($sections_nav[$tab]['name']); ?>"</strong> has been restored and made available on the live website.</span>
       <span style="font-size: 0.75rem; color: #047857;"><?php echo date('h:i:s A'); ?></span>
     </div>
   <?php endif; ?>
@@ -598,7 +619,8 @@ include dirname(__FILE__) . '/header.php';
       <div style="display: flex; flex-direction: column; gap: 0.25rem; max-height: calc(100vh - 180px); overflow-y: auto;">
         <?php foreach ($sections_nav as $s_k => $s_meta): 
           $is_current = ($tab === $s_k);
-          $s_active = !empty($home_cms[$s_k]['is_active']);
+          $s_removed = !empty($home_cms[$s_k]['is_removed']);
+          $s_active = !empty($home_cms[$s_k]['is_active']) && !$s_removed;
         ?>
           <a href="/admin/homepage.php?tab=<?php echo urlencode($s_k); ?>" style="display: flex; align-items: center; justify-content: space-between; padding: 0.65rem 0.85rem; border-radius: 6px; text-decoration: none; font-size: 0.82rem; transition: all 0.15s ease; <?php echo $is_current ? 'background: var(--color-navy); color: #FFFFFF; font-weight: 600;' : 'color: var(--color-text); background: transparent;'; ?>">
             <div style="display: flex; align-items: center; gap: 0.5rem; min-width: 0;">
@@ -606,9 +628,13 @@ include dirname(__FILE__) . '/header.php';
               <span style="font-size: 0.95rem;"><?php echo $s_meta['icon']; ?></span>
               <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><?php echo h($s_meta['name']); ?></span>
             </div>
-            <span style="font-size: 0.65rem; border-radius: 8px; padding: 1px 6px; <?php echo $s_active ? ($is_current ? 'background: #10B981; color:#fff;' : 'background: #DEF7EC; color: #03543F;') : 'background: #F1F5F9; color: #94A3B8;'; ?>">
-              <?php echo $s_active ? 'ON' : 'OFF'; ?>
-            </span>
+            <?php if ($s_removed): ?>
+              <span style="font-size: 0.65rem; border-radius: 8px; padding: 1px 6px; background: #FEE2E2; color: #DC2626; font-weight: 700;">REMOVED</span>
+            <?php elseif ($s_active): ?>
+              <span style="font-size: 0.65rem; border-radius: 8px; padding: 1px 6px; <?php echo $is_current ? 'background: #10B981; color:#fff;' : 'background: #DEF7EC; color: #03543F;'; ?>">ON</span>
+            <?php else: ?>
+              <span style="font-size: 0.65rem; border-radius: 8px; padding: 1px 6px; background: #F1F5F9; color: #94A3B8;">OFF</span>
+            <?php endif; ?>
           </a>
         <?php endforeach; ?>
       </div>
@@ -617,12 +643,13 @@ include dirname(__FILE__) . '/header.php';
     <!-- RIGHT MAIN: SECTION EDITOR WITH INDIVIDUAL SAVE BUTTON -->
     <div class="card" style="padding: 2.25rem; border: 1.5px solid rgba(6, 43, 99, 0.12); background: #FFFFFF; border-radius: var(--radius-md);">
       
-      <form method="POST" action="/admin/homepage.php" enctype="multipart/form-data">
+      <form method="POST" action="/admin/homepage.php" enctype="multipart/form-data" id="homepageSectionForm">
         <input type="hidden" name="section_key" value="<?php echo h($tab); ?>">
         <input type="hidden" name="save_section" value="1">
+        <input type="hidden" name="pending_action" id="pendingActionInput" value="save">
         <input type="hidden" name="csrf_token" value="<?php echo get_csrf_token(); ?>">
 
-        <!-- Section Header with Active Toggle -->
+        <!-- Section Header with Active Toggle & Remove Action -->
         <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 1.25rem; border-bottom: 2px solid var(--color-border); margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
           <div>
             <span style="font-size: 0.75rem; font-weight: 700; color: var(--color-gold); text-transform: uppercase; letter-spacing: 1px;">
@@ -633,14 +660,44 @@ include dirname(__FILE__) . '/header.php';
             </h2>
           </div>
 
-          <!-- Active Visibility Switch -->
-          <div style="display: flex; align-items: center; gap: 0.75rem; background: #F8FAFC; border: 1px solid #E2E8F0; padding: 0.5rem 1rem; border-radius: var(--radius-sm);">
-            <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; font-weight: 600; color: var(--color-navy); cursor: pointer; margin: 0;">
-              <input type="checkbox" name="is_active" value="1" <?php echo !empty($current_sec['is_active']) ? 'checked' : ''; ?>>
-              <span>Section Visible on Homepage</span>
-            </label>
+          <!-- Controls: Visibility Toggle + Remove/Restore Button -->
+          <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+            <div style="display: flex; align-items: center; gap: 0.5rem; background: #F8FAFC; border: 1px solid #E2E8F0; padding: 0.5rem 0.85rem; border-radius: var(--radius-sm);">
+              <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; font-weight: 600; color: var(--color-navy); cursor: pointer; margin: 0;">
+                <input type="checkbox" name="is_active" value="1" <?php echo (!empty($current_sec['is_active']) && empty($current_sec['is_removed'])) ? 'checked' : ''; ?>>
+                <span>Visible on Homepage</span>
+              </label>
+            </div>
+
+            <?php if (!empty($current_sec['is_removed'])): ?>
+              <button type="button" class="btn" style="background: #10B981; color: #FFFFFF; font-size: 0.82rem; padding: 0.5rem 0.95rem; font-weight: 600;" onclick="setSectionAction('restore')">
+                ↩️ Restore Section
+              </button>
+            <?php else: ?>
+              <button type="button" class="btn btn-outline" style="border-color: #EF4444; color: #EF4444; font-size: 0.82rem; padding: 0.5rem 0.95rem; font-weight: 600;" onclick="setSectionAction('remove')">
+                🗑️ Remove Section
+              </button>
+            <?php endif; ?>
           </div>
         </div>
+
+        <!-- Pending Removal Visual Notification Alert -->
+        <div id="pendingRemovalAlert" style="display: none; background: #FEF2F2; border: 1.5px solid #EF4444; border-radius: var(--radius-sm); padding: 1rem 1.25rem; color: #991B1B; font-size: 0.88rem; margin-bottom: 1.75rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem;">
+            <span>
+              <strong>⚠️ PENDING REMOVAL:</strong> This section is marked for removal from the live homepage. It is <strong>NOT yet removed</strong> until you click <strong>"Confirm Removal & Save"</strong> below.
+            </span>
+            <button type="button" class="btn btn-outline" style="font-size: 0.75rem; padding: 0.35rem 0.85rem; background: #FFFFFF; color: #991B1B; border-color: #EF4444;" onclick="cancelSectionAction()">
+              Cancel Removal
+            </button>
+          </div>
+        </div>
+
+        <?php if (!empty($current_sec['is_removed'])): ?>
+          <div style="background: #FFFBEB; border-left: 4px solid #F59E0B; padding: 0.85rem 1.25rem; border-radius: var(--radius-sm); color: #92400E; font-size: 0.88rem; margin-bottom: 1.75rem;">
+            <strong>Section Status:</strong> This section is currently <strong>REMOVED</strong> from the website. To display it again, click <strong>"Restore Section"</strong> above and then save.
+          </div>
+        <?php endif; ?>
 
         <!-- ===================================================================
              SPECIFIC SECTION FORM FIELDS
@@ -1190,16 +1247,58 @@ include dirname(__FILE__) . '/header.php';
         <?php endif; ?>
 
         <!-- INDIVIDUAL SECTION SAVE BUTTON -->
-        <div style="display: flex; justify-content: space-between; align-items: center; border-top: 2px solid var(--color-border); padding-top: 1.5rem; margin-top: 2rem;">
-          <a href="/admin/homepage.php" class="btn btn-outline" style="font-size: 0.85rem; padding: 0.5rem 1.25rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; border-top: 2px solid var(--color-border); padding-top: 1.5rem; margin-top: 2rem; flex-wrap: wrap; gap: 1rem;">
+          <a href="/admin/homepage.php?tab=<?php echo urlencode($tab); ?>" class="btn btn-outline" style="font-size: 0.85rem; padding: 0.5rem 1.25rem;">
             Reset / Reload
           </a>
-          <button type="submit" class="btn btn-primary" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 2.25rem; font-size: 0.95rem; font-weight: 600;">
+          <button type="submit" id="sectionSubmitBtn" class="btn btn-primary" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 2.25rem; font-size: 0.95rem; font-weight: 600;">
             💾 Save <?php echo h($sections_nav[$tab]['name']); ?>
           </button>
         </div>
 
       </form>
+
+      <script>
+      function setSectionAction(action) {
+        const input = document.getElementById('pendingActionInput');
+        const alertBox = document.getElementById('pendingRemovalAlert');
+        const submitBtn = document.getElementById('sectionSubmitBtn');
+        if (action === 'remove') {
+          if (confirm('Are you sure you want to mark this section for removal? (Note: Section will NOT be removed from the live website until you click "Confirm Removal & Save")')) {
+            if (input) input.value = 'remove';
+            if (alertBox) alertBox.style.display = 'block';
+            if (submitBtn) {
+              submitBtn.innerText = '⚠️ Confirm Removal & Save';
+              submitBtn.style.background = '#EF4444';
+              submitBtn.style.borderColor = '#EF4444';
+            }
+            alertBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+        } else if (action === 'restore') {
+          if (input) input.value = 'restore';
+          if (alertBox) alertBox.style.display = 'none';
+          if (submitBtn) {
+            submitBtn.innerText = '↩️ Confirm Restore & Save';
+            submitBtn.style.background = '#10B981';
+            submitBtn.style.borderColor = '#10B981';
+          }
+          submitBtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }
+
+      function cancelSectionAction() {
+        const input = document.getElementById('pendingActionInput');
+        const alertBox = document.getElementById('pendingRemovalAlert');
+        const submitBtn = document.getElementById('sectionSubmitBtn');
+        if (input) input.value = 'save';
+        if (alertBox) alertBox.style.display = 'none';
+        if (submitBtn) {
+          submitBtn.innerText = '💾 Save <?php echo h(addslashes($sections_nav[$tab]['name'])); ?>';
+          submitBtn.style.background = 'var(--color-navy)';
+          submitBtn.style.borderColor = 'var(--color-navy)';
+        }
+      }
+      </script>
 
     </div>
 

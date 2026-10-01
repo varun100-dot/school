@@ -23,12 +23,12 @@ $parent_name = trim($_POST['parent_name'] ?? '');
 $email = trim($_POST['email'] ?? '');
 $phone = trim($_POST['phone'] ?? '');
 $grade = trim($_POST['grade'] ?? '');
-$preferred_time = trim($_POST['preferred_time'] ?? '');
+$preferred_time = trim($_POST['preferred_time'] ?? '') ?: 'Anytime';
 $user_message = trim($_POST['message'] ?? '');
 
-if (empty($parent_name) || empty($email) || empty($phone) || empty($grade) || empty($preferred_time)) {
+if (empty($parent_name) || empty($email) || empty($phone) || empty($grade)) {
     http_response_code(400);
-    echo json_encode(['status' => 'error', 'message' => 'Parent Name, Email, Phone, Grade, and Preferred Callback Time are required.']);
+    echo json_encode(['status' => 'error', 'message' => 'Parent Name, Email, Phone, and Grade are required.']);
     exit;
 }
 

@@ -105,18 +105,51 @@ if (empty($nav_tree) || count($nav_tree) < 5 || empty($nav_tree[1]['children']))
     ];
 }
 
-$logo_path = get_setting('logo_url', '/assets/images/logo.png');
-$phone_number = get_setting('phone', '7827262956');
+// Load Header & Sliding Strip CMS Configurations
+$cms_header_cfg = get_json_setting('cms_header_settings', []);
+$cms_strip_cfg = get_json_setting('cms_sliding_strip', []);
+
+$logo_path = !empty($cms_header_cfg['logo_url']) ? $cms_header_cfg['logo_url'] : get_setting('logo_url', '/assets/images/logo.png');
+$is_header_visible = !isset($cms_header_cfg['is_header_visible']) || !empty($cms_header_cfg['is_header_visible']);
+$is_topbar_visible = !isset($cms_header_cfg['is_topbar_visible']) || !empty($cms_header_cfg['is_topbar_visible']);
+
+$phone_number = !empty($cms_header_cfg['phone_number']) ? $cms_header_cfg['phone_number'] : get_setting('phone', '7827262956');
 $phone_tel = '+91' . preg_replace('/[^0-9]/', '', $phone_number);
-$email_address = get_setting('general_email', 'info@zuvioglobalschool.com');
-$affiliation_info = 'Affiliation No: IA 4883 • IAO Accredited • ISSO Member';
-$social_fb = get_setting('social_facebook', 'https://www.facebook.com/share/1XsYWDm3rt/');
-$social_insta = get_setting('social_instagram', 'https://www.instagram.com/thezuvio/');
-$social_linkedin = get_setting('social_linkedin', 'https://www.linkedin.com/company/zuvio-global-school/');
+$email_address = !empty($cms_header_cfg['email_address']) ? $cms_header_cfg['email_address'] : get_setting('general_email', 'info@zuvioglobalschool.com');
+$affiliation_info = !empty($cms_header_cfg['affiliation_text']) ? $cms_header_cfg['affiliation_text'] : 'Affiliation No: IA 4883 • IAO Accredited • ISSO Member';
+
+$primary_cta_text = !empty($cms_header_cfg['primary_cta_text']) ? $cms_header_cfg['primary_cta_text'] : 'Enquire Now';
+$primary_cta_url = !empty($cms_header_cfg['primary_cta_url']) ? $cms_header_cfg['primary_cta_url'] : '/contact';
+$secondary_cta_text = !empty($cms_header_cfg['secondary_cta_text']) ? $cms_header_cfg['secondary_cta_text'] : 'Book a Demo';
+$secondary_cta_action = !empty($cms_header_cfg['secondary_cta_action']) ? $cms_header_cfg['secondary_cta_action'] : 'javascript:openCallbackModal()';
+
+$social_fb = !empty($cms_header_cfg['social_facebook']) ? $cms_header_cfg['social_facebook'] : get_setting('social_facebook', 'https://www.facebook.com/share/1XsYWDm3rt/');
+$social_insta = !empty($cms_header_cfg['social_instagram']) ? $cms_header_cfg['social_instagram'] : get_setting('social_instagram', 'https://www.instagram.com/thezuvio/');
+$social_linkedin = !empty($cms_header_cfg['social_linkedin']) ? $cms_header_cfg['social_linkedin'] : get_setting('social_linkedin', 'https://www.linkedin.com/company/zuvio-global-school/');
 if (empty($social_linkedin) || strpos($social_linkedin, 'admin/dashboard') !== false || strpos($social_linkedin, '142914253') !== false) {
     $social_linkedin = 'https://www.linkedin.com/company/zuvio-global-school/';
 }
-$social_youtube = get_setting('social_youtube', 'https://www.youtube.com/@zuvioglobalschool');
+$social_youtube = !empty($cms_header_cfg['social_youtube']) ? $cms_header_cfg['social_youtube'] : get_setting('social_youtube', 'https://www.youtube.com/@zuvioglobalschool');
+
+// Sliding Strip items resolution
+$sliding_strip_enabled = !isset($cms_strip_cfg['enabled']) || !empty($cms_strip_cfg['enabled']);
+$sliding_strip_items = [];
+if (!empty($cms_strip_cfg['items']) && is_array($cms_strip_cfg['items'])) {
+    foreach ($cms_strip_cfg['items'] as $it) {
+        if (!isset($it['is_active']) || !empty($it['is_active'])) {
+            $sliding_strip_items[] = $it;
+        }
+    }
+}
+if (empty($sliding_strip_items)) {
+    $sliding_strip_items = [
+        ['badge' => 'Nursery to Grade 8th', 'title' => '100% Online Schooling', 'link' => ''],
+        ['badge' => '', 'title' => 'CBSE Mapped Curriculum', 'link' => ''],
+        ['badge' => '', 'title' => 'Inclusive Learning & SEN Support', 'link' => ''],
+        ['badge' => '', 'title' => 'Live Small-Group Interactive Classes', 'link' => ''],
+        ['badge' => '', 'title' => 'Oxford Quality Curriculum Partner', 'link' => '']
+    ];
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -276,37 +309,39 @@ $social_youtube = get_setting('social_youtube', 'https://www.youtube.com/@zuviog
 <body>
 
   <!-- 1. Unified Top Utility Bar (Affiliation + Moving USPs + Contact) -->
+  <?php if ($is_topbar_visible): ?>
   <div class="top-announcement-strip">
     <div class="announcement-container unified-top-bar">
       <div class="announcement-left">
         <span class="top-bar-affiliation" title="IAO Accredited & ISSO Member">
-          Affiliation No: IA 4883 • IAO Accredited • ISSO Member
+          <?php echo h($affiliation_info); ?>
         </span>
       </div>
 
+      <?php if ($sliding_strip_enabled): ?>
       <div class="announcement-center ticker-wrap">
         <div class="ticker-track">
-          <div class="ticker-item"><span class="ticker-grade-pill">Nursery to Grade 8th</span> 100% Online Schooling</div>
-          <span class="ticker-dot"></span>
-          <div class="ticker-item">CBSE Mapped Curriculum</div>
-          <span class="ticker-dot"></span>
-          <div class="ticker-item">Inclusive Learning &amp; SEN Support</div>
-          <span class="ticker-dot"></span>
-          <div class="ticker-item">Live Small-Group Interactive Classes</div>
-          <span class="ticker-dot"></span>
-          <div class="ticker-item">Oxford Quality Curriculum Partner</div>
-          <span class="ticker-dot"></span>
-          <div class="ticker-item"><span class="ticker-grade-pill">Nursery to Grade 8th</span> 100% Online Schooling</div>
-          <span class="ticker-dot"></span>
-          <div class="ticker-item">CBSE Mapped Curriculum</div>
-          <span class="ticker-dot"></span>
-          <div class="ticker-item">Inclusive Learning &amp; SEN Support</div>
-          <span class="ticker-dot"></span>
-          <div class="ticker-item">Live Small-Group Interactive Classes</div>
-          <span class="ticker-dot"></span>
-          <div class="ticker-item">Oxford Quality Curriculum Partner</div>
+          <?php 
+          // Repeat track items for smooth CSS animation loop
+          for ($repeat = 0; $repeat < 2; $repeat++):
+            foreach ($sliding_strip_items as $s_item): 
+          ?>
+            <div class="ticker-item">
+              <?php if (!empty($s_item['link'])): ?><a href="<?php echo h($s_item['link']); ?>" style="color: inherit; text-decoration: none; display: inline-flex; align-items: center;"><?php endif; ?>
+              <?php if (!empty($s_item['badge'])): ?>
+                <span class="ticker-grade-pill"><?php echo h($s_item['badge']); ?></span>
+              <?php endif; ?>
+              <?php echo h($s_item['title']); ?>
+              <?php if (!empty($s_item['link'])): ?></a><?php endif; ?>
+            </div>
+            <span class="ticker-dot"></span>
+          <?php 
+            endforeach; 
+          endfor;
+          ?>
         </div>
       </div>
+      <?php endif; ?>
 
       <div class="announcement-right">
         <a href="tel:<?php echo h($phone_tel); ?>" class="announcement-link" title="Call Us: +91 <?php echo h($phone_number); ?>" aria-label="Call +91 <?php echo h($phone_number); ?>">
@@ -320,24 +355,34 @@ $social_youtube = get_setting('social_youtube', 'https://www.youtube.com/@zuviog
         </a>
         <span class="announcement-divider" style="color: rgba(255,255,255,0.4); font-size: 0.8rem;">•</span>
         <div class="announcement-socials">
+          <?php if (!empty($social_fb)): ?>
           <a href="<?php echo h($social_fb); ?>" target="_blank" rel="noopener" class="announcement-social-icon" aria-label="Facebook" title="Facebook">
             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
           </a>
+          <?php endif; ?>
+          <?php if (!empty($social_insta)): ?>
           <a href="<?php echo h($social_insta); ?>" target="_blank" rel="noopener" class="announcement-social-icon" aria-label="Instagram" title="Instagram">
             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
           </a>
+          <?php endif; ?>
+          <?php if (!empty($social_linkedin)): ?>
           <a href="<?php echo h($social_linkedin); ?>" target="_blank" rel="noopener" class="announcement-social-icon" aria-label="LinkedIn" title="LinkedIn">
             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
           </a>
+          <?php endif; ?>
+          <?php if (!empty($social_youtube)): ?>
           <a href="<?php echo h($social_youtube); ?>" target="_blank" rel="noopener" class="announcement-social-icon" aria-label="YouTube" title="YouTube">
             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
           </a>
+          <?php endif; ?>
         </div>
       </div>
     </div>
   </div>
+  <?php endif; ?>
 
   <!-- 2. Primary Header with Multi-Level Dropdown Navigation -->
+  <?php if ($is_header_visible): ?>
   <header class="site-header">
     <div class="header-container">
       <a href="/" title="Zuvio Global School Home">
@@ -375,8 +420,8 @@ $social_youtube = get_setting('social_youtube', 'https://www.youtube.com/@zuviog
           <?php endif; ?>
         <?php endforeach; ?>
 
-        <a href="/contact" class="btn btn-outline nav-cta-outline" style="padding: 0.55rem 1.25rem; font-size: 0.85rem; border-color: var(--color-navy); margin-left: 0.5rem;">Enquire Now</a>
-        <a href="javascript:void(0)" onclick="openCallbackModal()" class="btn btn-primary btn-demo" style="padding: 0.55rem 1.25rem; font-size: 0.85rem; background-color: var(--color-teal); border-color: var(--color-teal); color: #fff;">Book a Demo</a>
+        <a href="<?php echo h($primary_cta_url); ?>" class="btn btn-outline nav-cta-outline" style="padding: 0.55rem 1.25rem; font-size: 0.85rem; border-color: var(--color-navy); margin-left: 0.5rem;"><?php echo h($primary_cta_text); ?></a>
+        <a href="<?php echo h($secondary_cta_action); ?>" class="btn btn-primary btn-demo" style="padding: 0.55rem 1.25rem; font-size: 0.85rem; background-color: var(--color-teal); border-color: var(--color-teal); color: #fff;"><?php echo h($secondary_cta_text); ?></a>
       </nav>
       
       <!-- Mobile hamburger trigger -->
@@ -385,6 +430,7 @@ $social_youtube = get_setting('social_youtube', 'https://www.youtube.com/@zuviog
       </button>
     </div>
   </header>
+  <?php endif; ?>
 
   <!-- Mobile Drawer Overlay -->
   <div class="mobile-drawer-overlay" id="mobileDrawerOverlay" onclick="toggleMobileMenu(false)"></div>
@@ -426,8 +472,8 @@ $social_youtube = get_setting('social_youtube', 'https://www.youtube.com/@zuviog
     </div>
 
     <div style="margin-top: 1.5rem; display: flex; flex-direction: column; gap: 0.75rem;">
-      <a href="/contact" class="btn btn-outline" style="width: 100%; text-align: center; border-color: var(--color-navy); color: var(--color-navy);" onclick="toggleMobileMenu(false)">Enquire Now</a>
-      <a href="javascript:void(0)" onclick="openCallbackModal(); toggleMobileMenu(false);" class="btn btn-primary" style="width: 100%; text-align: center; background-color: var(--color-teal); border-color: var(--color-teal); color: #fff;">Book a Demo</a>
+      <a href="<?php echo h($primary_cta_url); ?>" class="btn btn-outline" style="width: 100%; text-align: center; border-color: var(--color-navy); color: var(--color-navy);" onclick="toggleMobileMenu(false)"><?php echo h($primary_cta_text); ?></a>
+      <a href="<?php echo h($secondary_cta_action); ?>" class="btn btn-primary" style="width: 100%; text-align: center; background-color: var(--color-teal); border-color: var(--color-teal); color: #fff;" onclick="toggleMobileMenu(false)"><?php echo h($secondary_cta_text); ?></a>
     </div>
 
     <div style="margin-top: auto; padding-top: 1.5rem; border-top: 1px solid var(--color-border); font-size: 0.82rem; color: var(--color-muted);">

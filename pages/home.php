@@ -521,7 +521,7 @@ include_once dirname(__FILE__) . '/../includes/header.php';
      SECTIONS 1: HERO CAROUSEL + SIDE ENQUIRY FORM
      ======================================================================== -->
 <?php 
-$show_hero_form = (!isset($sec_hero_form['is_active']) || !empty($sec_hero_form['is_active']));
+$show_hero_form = (!isset($sec_hero_form['is_active']) || !empty($sec_hero_form['is_active'])) && empty($sec_hero_form['is_removed']);
 ?>
 <section class="hero-wrapper">
   <div class="container hero-stage">
@@ -679,7 +679,7 @@ $show_hero_form = (!isset($sec_hero_form['is_active']) || !empty($sec_hero_form[
 <!-- ========================================================================
      SECTION 2: ABOUT ZUVIO (HOMEPAGE SHORT FORM WITH SUPPORTING GRAPHIC)
      ======================================================================== -->
-<?php if (!isset($sec_about['is_active']) || !empty($sec_about['is_active'])): ?>
+<?php if ((!isset($sec_about['is_active']) || !empty($sec_about['is_active'])) && empty($sec_about['is_removed'])): ?>
 <section class="section" style="background-color: #FFFFFF; border-bottom: 1px solid var(--color-border);">
   <div class="container" style="max-width: 1140px;">
     <div class="text-center" style="margin-bottom: 2.5rem;">
@@ -721,7 +721,7 @@ $show_hero_form = (!isset($sec_hero_form['is_active']) || !empty($sec_hero_form[
 <!-- ========================================================================
      SECTION 3: WHO SHOULD CHOOSE ZUVIO
      ======================================================================== -->
-<?php if (!isset($sec_choose['is_active']) || !empty($sec_choose['is_active'])): ?>
+<?php if ((!isset($sec_choose['is_active']) || !empty($sec_choose['is_active'])) && empty($sec_choose['is_removed'])): ?>
 <section class="section" style="background-color: var(--color-surface-blue); border-bottom: 1px solid var(--color-border);">
   <div class="container">
     <div class="text-center" style="margin-bottom: 3.5rem;">
@@ -758,7 +758,7 @@ $show_hero_form = (!isset($sec_hero_form['is_active']) || !empty($sec_hero_form[
 <!-- ========================================================================
      SECTION 4: LEARNING PATH (4-STAGE LEARNING JOURNEY)
      ======================================================================== -->
-<?php if (!isset($sec_curriculum['is_active']) || !empty($sec_curriculum['is_active'])): ?>
+<?php if ((!isset($sec_curriculum['is_active']) || !empty($sec_curriculum['is_active'])) && empty($sec_curriculum['is_removed'])): ?>
 <section class="section curriculum-pathways-section">
   <div class="container">
     <div class="text-center" style="max-width: 800px; margin: 0 auto 3rem auto;">
@@ -805,7 +805,7 @@ $show_hero_form = (!isset($sec_hero_form['is_active']) || !empty($sec_hero_form[
 <!-- ========================================================================
      SECTION 5: THE ZUVIO LEARNING FRAMEWORK (FROM KNOWING TO DOING)
      ======================================================================== -->
-<?php if (!isset($sec_framework['is_active']) || !empty($sec_framework['is_active'])): ?>
+<?php if ((!isset($sec_framework['is_active']) || !empty($sec_framework['is_active'])) && empty($sec_framework['is_removed'])): ?>
 <section class="section" style="background-color: var(--color-surface-warm); border-bottom: 1px solid var(--color-border);">
   <div class="container">
     <div class="text-center" style="margin-bottom: 2rem;">
@@ -835,7 +835,7 @@ $show_hero_form = (!isset($sec_hero_form['is_active']) || !empty($sec_hero_form[
 <!-- ========================================================================
      SECTION 6: LEARNING BEYOND THE TEXTBOOK
      ======================================================================== -->
-<?php if (!isset($sec_beyond['is_active']) || !empty($sec_beyond['is_active'])): ?>
+<?php if ((!isset($sec_beyond['is_active']) || !empty($sec_beyond['is_active'])) && empty($sec_beyond['is_removed'])): ?>
 <section class="section" style="background-color: #FFFFFF; border-bottom: 1px solid var(--color-border);">
   <div class="container">
     <div class="text-center" style="margin-bottom: 2.5rem;">
@@ -862,7 +862,7 @@ $show_hero_form = (!isset($sec_hero_form['is_active']) || !empty($sec_hero_form[
 <!-- ========================================================================
      SECTION 7: WHAT MAKES ZUVIO DIFFERENT & THE ZUVIO GRADUATE
      ======================================================================== -->
-<?php if (!isset($sec_diff['is_active']) || !empty($sec_diff['is_active'])): ?>
+<?php if ((!isset($sec_diff['is_active']) || !empty($sec_diff['is_active'])) && empty($sec_diff['is_removed'])): ?>
 <section class="section" style="background-color: var(--color-surface-blue); border-bottom: 1px solid var(--color-border);">
   <div class="container">
     <div class="text-center" style="margin-bottom: 3.5rem;">
@@ -905,7 +905,7 @@ $show_hero_form = (!isset($sec_hero_form['is_active']) || !empty($sec_hero_form[
 <!-- ========================================================================
      SECTION 8: INCLUSIVITY & BEYOND
      ======================================================================== -->
-<?php if (!isset($sec_inc['is_active']) || !empty($sec_inc['is_active'])): ?>
+<?php if ((!isset($sec_inc['is_active']) || !empty($sec_inc['is_active'])) && empty($sec_inc['is_removed'])): ?>
 <section class="section" style="background-color: #FFFFFF; border-bottom: 1px solid var(--color-border);">
   <div class="container">
     <div class="text-center" style="margin-bottom: 3.5rem;">
@@ -962,7 +962,7 @@ $show_hero_form = (!isset($sec_hero_form['is_active']) || !empty($sec_hero_form[
 <!-- ========================================================================
      SECTION 9: STATISTICS / BENCHMARKS
      ======================================================================== -->
-<?php if (!isset($sec_stats['is_active']) || !empty($sec_stats['is_active'])): ?>
+<?php if ((!isset($sec_stats['is_active']) || !empty($sec_stats['is_active'])) && empty($sec_stats['is_removed'])): ?>
 <section class="section text-center" style="background: linear-gradient(135deg, var(--color-navy-dark) 0%, var(--color-navy) 100%); color: #FFFFFF; padding: 5rem 0;">
   <div class="container">
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1.5rem;">
@@ -980,7 +980,7 @@ $show_hero_form = (!isset($sec_hero_form['is_active']) || !empty($sec_hero_form[
 <!-- ========================================================================
      SECTION 10: AFFILIATIONS & ACCREDITATIONS (WITH CERTIFICATE ACTION)
      ======================================================================== -->
-<?php if (!isset($sec_acc['is_active']) || !empty($sec_acc['is_active'])): ?>
+<?php if ((!isset($sec_acc['is_active']) || !empty($sec_acc['is_active'])) && empty($sec_acc['is_removed'])): ?>
 <section id="accreditations" class="section" style="background-color: var(--pastel-blue); border-bottom: 1px solid var(--color-border); padding: 5.5rem 0;">
   <div class="container">
     <div class="text-center" style="margin-bottom: 3.5rem;">
@@ -1023,7 +1023,7 @@ $show_hero_form = (!isset($sec_hero_form['is_active']) || !empty($sec_hero_form[
 <!-- ========================================================================
      SECTION 11: PARENT TESTIMONIALS / REVIEWS
      ======================================================================== -->
-<?php if (!isset($sec_test['is_active']) || !empty($sec_test['is_active'])): ?>
+<?php if ((!isset($sec_test['is_active']) || !empty($sec_test['is_active'])) && empty($sec_test['is_removed'])): ?>
 <section class="section" style="background-color: #FFFFFF; border-bottom: 1px solid var(--color-border);">
   <div class="container">
     <div class="text-center" style="margin-bottom: 3.5rem;">
@@ -1055,7 +1055,7 @@ $show_hero_form = (!isset($sec_hero_form['is_active']) || !empty($sec_hero_form[
 <!-- ========================================================================
      SECTION 12: NEWS / UPDATES / BLOGS / AWARDS & RECOGNITION
      ======================================================================== -->
-<?php if (!isset($sec_news['is_active']) || !empty($sec_news['is_active'])): ?>
+<?php if ((!isset($sec_news['is_active']) || !empty($sec_news['is_active'])) && empty($sec_news['is_removed'])): ?>
 <section class="section" style="background-color: var(--color-surface-blue); border-bottom: 1px solid var(--color-border);">
   <div class="container">
     <div class="text-center" style="margin-bottom: 3.5rem;">
@@ -1087,7 +1087,7 @@ $show_hero_form = (!isset($sec_hero_form['is_active']) || !empty($sec_hero_form[
 <!-- ========================================================================
      SECTION 13: FEATURED IN (RESPONSIVE SLIDER / CAROUSEL)
      ======================================================================== -->
-<?php if (!isset($sec_feat['is_active']) || !empty($sec_feat['is_active'])): ?>
+<?php if ((!isset($sec_feat['is_active']) || !empty($sec_feat['is_active'])) && empty($sec_feat['is_removed'])): ?>
 <section class="section text-center" style="background-color: #FFFFFF; border-bottom: 1px solid var(--color-border); padding: 4.5rem 0;">
   <div class="container">
     <span style="font-size: 0.85rem; font-weight: 700; color: var(--color-gold); text-transform: uppercase; letter-spacing: 2px;"><?php echo h($sec_feat['badge'] ?? 'Media Recognition'); ?></span>
@@ -1123,7 +1123,7 @@ $show_hero_form = (!isset($sec_hero_form['is_active']) || !empty($sec_hero_form[
 <!-- ========================================================================
      SECTION 14: FOUNDER'S MESSAGE (VERBATIM FROM REFERENCE DOCX)
      ======================================================================== -->
-<?php if (!isset($sec_founder['is_active']) || !empty($sec_founder['is_active'])): ?>
+<?php if ((!isset($sec_founder['is_active']) || !empty($sec_founder['is_active'])) && empty($sec_founder['is_removed'])): ?>
 <section id="founder" class="founder-message-section">
   <div class="container">
     <div class="founder-editorial-card">
@@ -1190,7 +1190,7 @@ $show_hero_form = (!isset($sec_hero_form['is_active']) || !empty($sec_hero_form[
 <!-- ========================================================================
      SECTION 15: FAQ PREVIEW (TWO-COLUMN ACCORDION)
      ======================================================================== -->
-<?php if (!isset($sec_faq['is_active']) || !empty($sec_faq['is_active'])): ?>
+<?php if ((!isset($sec_faq['is_active']) || !empty($sec_faq['is_active'])) && empty($sec_faq['is_removed'])): ?>
 <section id="faq" class="section" style="background-color: var(--color-surface); border-bottom: 1px solid var(--color-border); padding: 5.5rem 0;">
   <div class="container">
     <div class="text-center" style="margin-bottom: 2rem;">
@@ -1267,7 +1267,7 @@ $show_hero_form = (!isset($sec_hero_form['is_active']) || !empty($sec_hero_form[
 <!-- ========================================================================
      SECTION 16: FINAL CONVERSION CTA
      ======================================================================== -->
-<?php if (!isset($sec_cta['is_active']) || !empty($sec_cta['is_active'])): ?>
+<?php if ((!isset($sec_cta['is_active']) || !empty($sec_cta['is_active'])) && empty($sec_cta['is_removed'])): ?>
 <section class="section text-center" style="background: linear-gradient(135deg, var(--pastel-blue) 0%, var(--pastel-yellow) 100%); padding: 6.5rem 0;">
   <div class="container" style="max-width: 760px;">
     <span style="font-size: 0.85rem; font-weight: 700; color: var(--color-gold); text-transform: uppercase; letter-spacing: 2px;"><?php echo h($sec_cta['badge'] ?? 'Start Your Journey'); ?></span>
