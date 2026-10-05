@@ -11,18 +11,9 @@ if (!isset($_SESSION['mock_about_cms'])) {
 }
 $cms = &$_SESSION['mock_about_cms'];
 
-// STRICT RULE: Rashmi Bhasin is 100% excluded
-$default_team = [
-    [
-        'name' => 'Pragya Jain',
-        'slug' => 'pragya-jain',
-        'designation' => 'Co-Founder & Director',
-        'category' => 'Board of Directors',
-        'image' => '/assets/images/Profile_Images/Pragya_Professional_Profile.webp',
-        'short_description' => 'Pragya Jain is an educationist dedicated to child-centric learning that prepares students for life. She conceptualized Zuvio to merge academic rigor with personalization, creativity, confidence, and future-ready skills.',
-        'badges' => ['Co-Founder & Director', 'Child-Centric Pedagogy', 'Creative Mentorship']
-    ],
-    [
+// STRICT RULE: Exactly 3 unique leadership profiles ordered Deepak Jain, Pragya Jain, Sharmin Habib
+$leadership_profiles = [
+    'deepak-jain' => [
         'name' => 'Deepak Jain',
         'slug' => 'deepak-jain',
         'designation' => 'Co-Founder & Director',
@@ -31,7 +22,16 @@ $default_team = [
         'short_description' => 'Deepak Jain is an entrepreneur and business professional who brings a practical, growth-oriented perspective to Zuvio Global School. He oversees Zuvio’s strategic direction, operations, and partnerships.',
         'badges' => ['Co-Founder & Director', 'Strategic Governance', 'FinTech & Scale']
     ],
-    [
+    'pragya-jain' => [
+        'name' => 'Pragya Jain',
+        'slug' => 'pragya-jain',
+        'designation' => 'Co-Founder & Director',
+        'category' => 'Board of Directors',
+        'image' => '/assets/images/Profile_Images/Pragya_Professional_Profile.webp',
+        'short_description' => 'Pragya Jain is an educationist dedicated to child-centric learning that prepares students for life. She conceptualized Zuvio to merge academic rigor with personalization, creativity, confidence, and future-ready skills.',
+        'badges' => ['Co-Founder & Director', 'Child-Centric Pedagogy', 'Creative Mentorship']
+    ],
+    'sharmin-habib' => [
         'name' => 'Sharmin Habib',
         'slug' => 'sharmin-habib',
         'designation' => 'Head of Business and Operations',
@@ -42,30 +42,27 @@ $default_team = [
     ]
 ];
 
-$team = [];
 if ($db) {
     try {
         $stmt = $db->query("SELECT * FROM `leadership` WHERE `is_active` = 1 ORDER BY `sort_order` ASC");
         $db_team = $stmt->fetchAll();
         if (!empty($db_team)) {
             foreach ($db_team as $row) {
-                $badges = [];
-                if (!empty($row['badges'])) {
-                    $decoded = json_decode($row['badges'], true);
-                    $badges = is_array($decoded) ? $decoded : array_map('trim', explode(',', $row['badges']));
-                } elseif (!empty($row['designation'])) {
-                    $badges = [$row['designation']];
+                $slug = $row['slug'] ?? '';
+                if (isset($leadership_profiles[$slug])) {
+                    if (!empty($row['name'])) $leadership_profiles[$slug]['name'] = $row['name'];
+                    if (!empty($row['designation'])) $leadership_profiles[$slug]['designation'] = $row['designation'];
+                    if (!empty($row['image'])) $leadership_profiles[$slug]['image'] = $row['image'];
+                    if (!empty($row['short_description'])) {
+                        $leadership_profiles[$slug]['short_description'] = $row['short_description'];
+                    } elseif (!empty($row['bio'])) {
+                        $leadership_profiles[$slug]['short_description'] = $row['bio'];
+                    }
+                    if (!empty($row['badges'])) {
+                        $decoded = json_decode($row['badges'], true);
+                        $leadership_profiles[$slug]['badges'] = is_array($decoded) ? $decoded : array_map('trim', explode(',', $row['badges']));
+                    }
                 }
-                $team[] = [
-                    'id' => $row['id'],
-                    'name' => $row['name'],
-                    'slug' => $row['slug'],
-                    'designation' => $row['designation'],
-                    'category' => !empty($row['category']) ? $row['category'] : 'Academic Leadership',
-                    'image' => $row['image'] ?: '/assets/images/Profile_Images/Pragya_Professional_Profile.webp',
-                    'short_description' => $row['short_description'] ?: $row['bio'],
-                    'badges' => $badges
-                ];
             }
         }
     } catch (Exception $e) {
@@ -73,24 +70,12 @@ if ($db) {
     }
 }
 
-if (empty($team)) {
-    $cms = get_json_setting('cms_about', []);
-    $team = $cms['team'] ?? $default_team;
-}
-
-// Enforce exclusion of Rashmi Bhasin
-$team = array_values(array_filter($team, function($member) {
-    return stripos($member['name'] ?? '', 'Rashmi') === false && ($member['slug'] ?? '') !== 'rashmi-bhasin';
-}));
-
-// Ensure Sharmin Habib has correct designation and category
-foreach ($team as &$m) {
-    if (($m['slug'] ?? '') === 'sharmin-habib') {
-        $m['designation'] = 'Head of Business and Operations';
-        $m['category'] = 'Academic Leadership';
-    }
-}
-unset($m);
+// Exactly 3 unique profiles in required order: Deepak Jain, Pragya Jain, Sharmin Habib
+$team = [
+    $leadership_profiles['deepak-jain'],
+    $leadership_profiles['pragya-jain'],
+    $leadership_profiles['sharmin-habib']
+];
 
 $page_slug = 'our-team';
 $seo = [
@@ -128,38 +113,63 @@ render_breadcrumbs([
     </div>
   </section>
 
-  <!-- Leadership Grid: Board of Directors & Academic Leadership -->
+  <!-- Leadership Section: Unified 3 Profile Cards -->
   <section class="section" style="background-color: #FFFFFF; padding: 5.5rem 0; border-bottom: 1px solid var(--color-border);">
     <div class="container">
       
-      <!-- 1. Board of Directors -->
       <div class="text-center" style="max-width: 700px; margin: 0 auto 3.5rem auto;">
         <span style="font-size: 0.85rem; font-weight: 700; color: var(--color-gold); text-transform: uppercase; letter-spacing: 2px;">
           Guiding Leadership
         </span>
         <h2 style="font-size: 2.35rem; color: var(--color-navy); margin-top: 0.5rem; font-family: var(--font-primary);">
-          Board of Directors
+          Our Leadership Team
         </h2>
         <p style="color: var(--color-muted); font-size: 1rem; margin-top: 0.5rem;">
           Driving our mission to make world-class, flexible K–8 education accessible everywhere.
         </p>
       </div>
 
-      <?php 
-      $board_members = array_filter($team, function($m) {
-          return ($m['category'] ?? '') === 'Board of Directors' || in_array($m['slug'] ?? '', ['pragya-jain', 'deepak-jain']);
-      });
-      $academic_members = array_filter($team, function($m) {
-          return ($m['category'] ?? '') === 'Academic Leadership' || ($m['slug'] ?? '') === 'sharmin-habib' || stripos($m['designation'] ?? '', 'Business and Operations') !== false;
-      });
-      if (empty($board_members)) {
-          $board_members = $team;
-      }
-      ?>
+      <style>
+        .leadership-team-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 2rem;
+          max-width: 1200px;
+          margin: 0 auto;
+          align-items: stretch;
+        }
+        .leadership-card-item {
+          background: #FFFFFF;
+          border-radius: var(--radius-lg);
+          border: 1.5px solid rgba(6, 43, 99, 0.16);
+          box-shadow: var(--shadow-sm);
+          overflow: hidden;
+          display: flex;
+          flex-direction: column;
+          height: 100%;
+          transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+        .leadership-card-item:hover {
+          transform: translateY(-4px);
+          box-shadow: var(--shadow-md);
+        }
+        @media (max-width: 1024px) {
+          .leadership-team-grid {
+            grid-template-columns: repeat(2, 1fr);
+            max-width: 800px;
+          }
+        }
+        @media (max-width: 768px) {
+          .leadership-team-grid {
+            grid-template-columns: 1fr;
+            max-width: 440px;
+          }
+        }
+      </style>
 
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2.5rem; max-width: 860px; margin: 0 auto 5rem auto;">
-        <?php foreach ($board_members as $member): ?>
-          <div style="background: #FFFFFF; border-radius: var(--radius-lg); border: 1.5px solid rgba(6, 43, 99, 0.16); box-shadow: var(--shadow-sm); overflow: hidden; display: flex; flex-direction: column; transition: transform 0.25s ease, box-shadow 0.25s ease;">
+      <div class="leadership-team-grid">
+        <?php foreach ($team as $member): ?>
+          <div class="leadership-card-item">
             
             <div style="height: 360px; background-color: var(--pastel-blue); position: relative; overflow: hidden;">
               <img src="<?php echo h($member['image']); ?>" alt="<?php echo h($member['name']); ?>" style="width: 100%; height: 100%; object-fit: cover; object-position: center 12%;">
@@ -204,71 +214,6 @@ render_breadcrumbs([
           </div>
         <?php endforeach; ?>
       </div>
-
-      <?php if (!empty($academic_members)): ?>
-        <!-- 2. Academic Leadership -->
-        <div style="border-top: 1px solid var(--color-border); padding-top: 4rem;">
-          <div class="text-center" style="max-width: 700px; margin: 0 auto 3.5rem auto;">
-            <span style="font-size: 0.85rem; font-weight: 700; color: var(--color-gold); text-transform: uppercase; letter-spacing: 2px;">
-              Educational Execution &amp; Operations
-            </span>
-            <h2 style="font-size: 2.35rem; color: var(--color-navy); margin-top: 0.5rem; font-family: var(--font-primary);">
-              Academic Leadership
-            </h2>
-            <p style="color: var(--color-muted); font-size: 1rem; margin-top: 0.5rem;">
-              Spearheading learning operations, digital models, and continuous academic growth.
-            </p>
-          </div>
-
-          <div style="max-width: 440px; margin: 0 auto;">
-            <?php foreach ($academic_members as $member): ?>
-              <div style="background: #FFFFFF; border-radius: var(--radius-lg); border: 1.5px solid rgba(6, 43, 99, 0.16); box-shadow: var(--shadow-sm); overflow: hidden; display: flex; flex-direction: column; transition: transform 0.25s ease, box-shadow 0.25s ease;">
-                
-                <div style="height: 360px; background-color: var(--pastel-blue); position: relative; overflow: hidden;">
-                  <img src="<?php echo h($member['image']); ?>" alt="<?php echo h($member['name']); ?>" style="width: 100%; height: 100%; object-fit: cover; object-position: center 12%;">
-                </div>
-
-                <div style="padding: 2rem; display: flex; flex-direction: column; flex-grow: 1; justify-content: space-between;">
-                  <div>
-                    <h3 style="font-size: 1.5rem; color: var(--color-navy); font-family: var(--font-primary); margin-bottom: 0.25rem;">
-                      <?php echo h($member['name']); ?>
-                    </h3>
-                    <div style="color: var(--color-gold); font-weight: 700; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1.25rem;">
-                      <?php echo h($member['designation']); ?>
-                    </div>
-
-                    <div class="team-member-bio">
-                      <?php 
-                        $raw_bio = $member['short_description'] ?? '';
-                        $paras = array_filter(array_map('trim', explode("\n\n", str_replace(["\r\n", "\r"], "\n", $raw_bio))));
-                        if (empty($paras)) $paras = [$raw_bio];
-                        foreach ($paras as $p): ?>
-                          <p style="color: var(--color-text); font-size: 0.95rem; line-height: 1.65; margin-bottom: 0.65rem;"><?php echo h($p); ?></p>
-                      <?php endforeach; ?>
-                    </div>
-
-                    <?php if (!empty($member['badges'])): ?>
-                      <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.5rem;">
-                        <?php foreach ($member['badges'] as $b): ?>
-                          <span style="background: var(--pastel-blue); color: var(--color-teal); font-size: 0.75rem; font-weight: 600; padding: 0.25rem 0.65rem; border-radius: 4px;">
-                            <?php echo h($b); ?>
-                          </span>
-                        <?php endforeach; ?>
-                      </div>
-                    <?php endif; ?>
-                  </div>
-
-                  <div style="border-top: 1px solid var(--color-border); padding-top: 1.25rem;">
-                    <a href="/about/<?php echo h($member['slug']); ?>" style="color: var(--color-teal); font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.95rem;">
-                      Read Full Bio &amp; Journey &rarr;
-                    </a>
-                  </div>
-                </div>
-              </div>
-            <?php endforeach; ?>
-          </div>
-        </div>
-      <?php endif; ?>
 
     </div>
   </section>
