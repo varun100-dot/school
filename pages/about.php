@@ -301,25 +301,11 @@ $founder_message = $cms['founder_message_data'] ?? [
     'image' => '/assets/images/Profile_Images/Pragya_Professional_Profile.webp'
 ];
 
-// 9. Founder Story & Areas of Specialisation
-$founder_story = $cms['founder_story'] ?? [
-    'name' => 'Dr. Alisha Madhok Walia',
-    'title' => 'Visionary Educator & Founder',
-    'intro' => 'With a clear vision to build a progressive and future-ready learning environment, driven by stellar experience and a passion for holistic online education, she focuses on empowering students to grow with confidence, curiosity, and a global mindset.',
-    'quote' => '“Our vision has always been to provide our students with world-class education that prepares them not just for exams, but for life.”',
-    'credentials' => [
-        'Doctorate in Education',
-        'Director of Education Program (USA — Certified by Florida & California Governments)',
-        'Master of Arts (Milan, Italy)',
-        'BBA — Marketing & Sales',
-        'ADHD, Autism & Inclusion Specialist'
-    ],
-    'stats' => [
-        ['number' => '100K+', 'label' => 'Students Reached'],
-        ['number' => '38', 'label' => 'Countries'],
-        ['number' => '54+', 'label' => 'Years Group Legacy'],
-        ['number' => '15+', 'label' => 'Years Experience']
-    ]
+// 9. Leadership Profile & Areas of Specialisation
+$founder_story = [
+    'name' => 'Pragya Jain',
+    'title' => 'Director – Zuvio Global School',
+    'image' => '/assets/images/Profile_Images/Pragya_Professional_Profile.webp'
 ];
 
 $default_specialisations = [
@@ -355,47 +341,6 @@ $default_specialisations = [
     ]
 ];
 $specialisations = $cms['specialisations'] ?? $default_specialisations;
-
-// 10. Founder Career Timeline
-$default_timeline = [
-    [
-        'year' => '1972',
-        'tag' => 'LEGACY',
-        'title' => 'Sunbeam Group Founded',
-        'desc' => 'The Dalimss Sunbeam Group of Schools, Varanasi — established by Dr. Amrit Lal Madhok — lays the 54-year educational legacy carried forward.'
-    ],
-    [
-        'year' => 'EDUCATION',
-        'tag' => 'TRAINING',
-        'title' => 'International Academic Training',
-        'desc' => 'Completed BBA, then Master of Arts from Milan, Italy, followed by the Director of Education Program in the USA — certified by the Governments of Florida and California.'
-    ],
-    [
-        'year' => '2011',
-        'tag' => 'CAREER',
-        'title' => 'Operations & Leadership',
-        'desc' => 'Began career as Additional Director at Dalimss Sunbeam Group of Schools, building extensive expertise in school operations, curriculum, and student development.'
-    ],
-    [
-        'year' => '2021',
-        'tag' => 'FOUNDED',
-        'title' => 'Launched Global Online Schooling',
-        'desc' => 'Identified the global gap in accessible, flexible K-12 education and launched 100% online schooling with multi-board curriculum for students worldwide.'
-    ],
-    [
-        'year' => '2023–25',
-        'tag' => 'GROWTH',
-        'title' => '100K+ Students, 38 Countries',
-        'desc' => 'Scaled rapidly to 100,000+ students across 38 countries. Honored with Best E-School of 2023, National School Award, and International Icon Awards 2025.'
-    ],
-    [
-        'year' => '2026–Now',
-        'tag' => 'FUTURE',
-        'title' => 'Shaping the Future of Global Education',
-        'desc' => 'Leading the mission to deliver world-class borderless education with Cambridge, CBSE, NIOS, and international curriculum offerings.'
-    ]
-];
-$timeline = $cms['timeline'] ?? $default_timeline;
 
 // 11. Awards & In Media
 $default_awards = [
@@ -753,17 +698,17 @@ render_breadcrumbs([
 <!-- 8. Section: Founder’s Message (Official) -->
 <?php if ((!isset($cms['founder_msg']['is_active']) || !empty($cms['founder_msg']['is_active'])) && empty($cms['founder_msg']['is_removed'])): ?>
 <section id="founders-message" class="founder-message-section" style="background-color: var(--color-surface-warm); border-bottom: 1px solid var(--color-border); padding: 5rem 0;">
-  <div class="container">
-    <div class="founder-editorial-card">
+  <div class="container" style="max-width: 920px;">
+    <div class="founder-editorial-card" style="display: block; max-width: 860px; margin: 0 auto;">
       
-      <div class="founder-portrait-col" style="text-align: center;">
+      <div class="founder-portrait-col" style="text-align: center; margin-bottom: 2.5rem;">
         <div class="founder-portrait-frame" style="width: 220px; height: 280px; border-radius: var(--radius-md); overflow: hidden; margin: 0 auto 1.25rem auto; border: 3px solid var(--color-gold); box-shadow: var(--shadow-sm);">
           <img src="<?php echo h($founder_message['image']); ?>" alt="Founder of Zuvio Global School" loading="lazy" style="width: 100%; height: 100%; object-fit: cover;">
         </div>
         <h3 style="font-size: 1.35rem; color: var(--color-navy); font-family: var(--font-primary); margin-bottom: 0.25rem;">
           <?php echo h($founder_message['signoff_name']); ?>
         </h3>
-        <p style="font-size: 0.85rem; color: var(--color-gold); font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">
+        <p style="font-size: 0.85rem; color: var(--color-gold); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin: 0;">
           <?php echo h($founder_message['signoff_org']); ?>
         </p>
       </div>
@@ -799,8 +744,9 @@ render_breadcrumbs([
     </div>
   </div>
 </section>
+<?php endif; ?>
 
-<!-- 9. Section: Founder Story & Expertise (Visionary Educator Profile) -->
+<!-- 9. Section: Leadership & Expertise (Visionary Educator Profile) -->
 <section id="founder-story" class="section" style="background-color: var(--color-white); border-bottom: 1px solid var(--color-border); padding: 5rem 0;">
   <div class="container">
     <div class="text-center" style="max-width: 750px; margin: 0 auto 3.5rem auto;">
@@ -816,56 +762,52 @@ render_breadcrumbs([
     </div>
 
     <!-- Founder Hero Profile Card -->
-    <div class="founder-profile-banner">
+    <div class="founder-profile-banner" style="align-items: center; margin-bottom: 3.5rem;">
       <div style="text-align: center;">
         <div style="width: 200px; height: 250px; border-radius: var(--radius-md); overflow: hidden; margin: 0 auto 1.25rem auto; border: 3px solid var(--color-gold); box-shadow: var(--shadow-md);">
-          <img src="/assets/images/Profile_Images/Pragya_Professional_Profile.webp" alt="<?php echo h($founder_story['name']); ?>" loading="lazy" style="width: 100%; height: 100%; object-fit: cover;">
+          <img src="/assets/images/Profile_Images/Pragya_Professional_Profile.webp" alt="Pragya Jain" loading="lazy" style="width: 100%; height: 100%; object-fit: cover;">
         </div>
         <h3 style="font-size: 1.4rem; color: #FFFFFF; font-family: var(--font-primary); margin-bottom: 0.25rem;">
-          <?php echo h($founder_story['name']); ?>
+          Pragya Jain
         </h3>
         <p style="font-size: 0.85rem; color: var(--color-gold); font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">
-          <?php echo h($founder_story['title']); ?>
+          Director – Zuvio Global School
         </p>
       </div>
 
       <div>
-        <p style="font-size: 1.05rem; line-height: 1.75; color: #E2E8F0; margin-bottom: 1.25rem;">
-          <?php echo h($founder_story['intro']); ?>
+        <p style="font-size: 1.15rem; font-weight: 700; color: #FFFFFF; margin: 0 0 1rem 0; font-family: var(--font-primary);">
+          Hello &amp; Welcome to Zuvio Global School! 🌍✨
         </p>
-        <blockquote style="border-left: 3px solid var(--color-gold); padding-left: 1.25rem; font-style: italic; color: #FFFFFF; margin: 0 0 1.5rem 0; font-size: 1rem; line-height: 1.6;">
-          <?php echo h($founder_story['quote']); ?>
-        </blockquote>
-
-        <h4 style="font-size: 0.9rem; color: var(--color-gold); text-transform: uppercase; letter-spacing: 1px; font-weight: 700; margin-bottom: 0.75rem;">
-          Academic Credentials & Accreditations
-        </h4>
-        <ul style="list-style: none; padding: 0; margin: 0 0 2rem 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 0.6rem;">
-          <?php foreach ($founder_story['credentials'] as $cred): ?>
-            <li style="display: flex; align-items: flex-start; gap: 0.5rem; font-size: 0.9rem; color: #CBD5E1;">
-              <span style="color: var(--color-gold); font-weight: 700;">✓</span>
-              <span><?php echo h($cred); ?></span>
-            </li>
-          <?php endforeach; ?>
-        </ul>
-
-        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; border-top: 1px solid rgba(255,255,255,0.15); padding-top: 1.25rem;">
-          <?php foreach ($founder_story['stats'] as $stat): ?>
-            <div>
-              <div style="font-size: 1.75rem; font-weight: 700; color: var(--color-gold); font-family: var(--font-primary);">
-                <?php echo h($stat['number']); ?>
-              </div>
-              <div style="font-size: 0.78rem; color: #CBD5E1; text-transform: uppercase; letter-spacing: 0.5px;">
-                <?php echo h($stat['label']); ?>
-              </div>
-            </div>
-          <?php endforeach; ?>
+        <p style="font-size: 0.95rem; line-height: 1.7; color: #E2E8F0; margin: 0 0 0.85rem 0;">
+          I’m Pragya Jain, Director – Zuvio Global School. It’s a pleasure to connect with you personally.
+        </p>
+        <p style="font-size: 0.95rem; line-height: 1.7; color: #E2E8F0; margin: 0 0 0.85rem 0;">
+          At Zuvio, we believe every child learns differently. Our 100% online learning environment is designed to make education engaging, flexible and personalised—helping children learn with confidence and curiosity, beyond boundaries.
+        </p>
+        <p style="font-size: 0.95rem; line-height: 1.7; color: #E2E8F0; margin: 0 0 1.25rem 0;">
+          Whether you’re exploring Zuvio for your child or simply have questions about online schooling, our team and I will be happy to guide you.
+        </p>
+        
+        <div style="border-top: 1px solid rgba(255, 255, 255, 0.15); padding-top: 1rem;">
+          <p style="font-style: italic; color: #E2E8F0; margin: 0 0 0.25rem 0; font-size: 0.92rem;">
+            Warm regards,
+          </p>
+          <p style="font-weight: 700; color: #FFFFFF; font-size: 1.05rem; margin: 0 0 0.15rem 0; font-family: var(--font-primary);">
+            Pragya Jain
+          </p>
+          <p style="color: var(--color-gold); font-size: 0.82rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin: 0 0 0.4rem 0;">
+            Director | Zuvio Global School
+          </p>
+          <p style="color: #93C5FD; font-size: 0.92rem; font-weight: 600; margin: 0;">
+            Learning Beyond Boundaries 🌏
+          </p>
         </div>
       </div>
     </div>
 
     <!-- Areas of Specialisation -->
-    <div style="margin-bottom: 4.5rem;">
+    <div>
       <div class="text-center" style="margin-bottom: 2.5rem;">
         <span style="font-size: 0.85rem; font-weight: 700; color: var(--color-gold); text-transform: uppercase; letter-spacing: 2px;">
           Core Competencies
@@ -892,41 +834,8 @@ render_breadcrumbs([
       </div>
     </div>
 
-    <!-- Career Timeline / Journey -->
-    <div>
-      <div class="text-center" style="margin-bottom: 3rem;">
-        <span style="font-size: 0.85rem; font-weight: 700; color: var(--color-gold); text-transform: uppercase; letter-spacing: 2px;">
-          Milestones
-        </span>
-        <h3 style="font-size: 2rem; color: var(--color-navy); margin-top: 0.35rem; font-family: var(--font-primary);">
-          Her Story & Journey
-        </h3>
-      </div>
-
-      <div class="career-timeline">
-        <?php foreach ($timeline as $index => $item): 
-          $side = ($index % 2 === 0) ? 'left' : 'right';
-        ?>
-          <div class="timeline-milestone <?php echo $side; ?>">
-            <div class="timeline-card">
-              <span style="display: inline-block; background: var(--pastel-blue); color: var(--color-navy); font-weight: 700; font-size: 0.75rem; padding: 0.2rem 0.6rem; border-radius: 4px; text-transform: uppercase; margin-bottom: 0.5rem;">
-                <?php echo h($item['year']); ?> • <?php echo h($item['tag']); ?>
-              </span>
-              <h4 style="font-size: 1.15rem; color: var(--color-navy); margin-bottom: 0.5rem; font-family: var(--font-primary);">
-                <?php echo h($item['title']); ?>
-              </h4>
-              <p style="color: var(--color-text); font-size: 0.88rem; line-height: 1.6; margin: 0;">
-                <?php echo h($item['desc']); ?>
-              </p>
-            </div>
-          </div>
-        <?php endforeach; ?>
-      </div>
-    </div>
-
   </div>
 </section>
-<?php endif; ?>
 
 <!-- 10. Section: Awards / In Media -->
 <?php if ((!isset($cms['awards']['is_active']) || !empty($cms['awards']['is_active'])) && empty($cms['awards']['is_removed'])): ?>
