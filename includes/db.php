@@ -100,6 +100,20 @@ try {
         }
         exit;
     }
+    
+    if (!$is_production_env) {
+        $sqlite_file = dirname(__FILE__) . '/../database/local.sqlite';
+        if (file_exists($sqlite_file)) {
+            try {
+                $db = new PDO('sqlite:' . $sqlite_file);
+                $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                $db->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+                $db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+            } catch (Exception $sqle) {
+                error_log("[Local SQLite Error] " . $sqle->getMessage());
+            }
+        }
+    }
 }
 
 function testConnection() {

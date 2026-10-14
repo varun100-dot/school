@@ -34,11 +34,11 @@ $leadership_profiles = [
     'sharmin-habib' => [
         'name' => 'Sharmin Habib',
         'slug' => 'sharmin-habib',
-        'designation' => 'Head of Business and Operations',
+        'designation' => 'Chief Operating Officer (COO)',
         'category' => 'Academic Leadership',
-        'image' => '/assets/images/Profile_Images/Sharmin_Professional_Profile.webp',
-        'short_description' => 'Sharmin Habib is the Head of Business and Operations at Zuvio Global School with over 18 years of experience across online schooling, EdTech growth, operations, and scalable digital learning models.',
-        'badges' => ['Academic Leadership', 'Head of Business & Operations', '18+ Years EdTech', 'Operations & Scale']
+        'image' => '/assets/images/team/Sharmin%20Habib%20Chief%20Operating%20Officer.jpg',
+        'short_description' => 'Sharmin Habib is the Chief Operating Officer (COO) at Zuvio Global School with over 18 years of experience across online schooling, EdTech growth, operations, and scalable digital learning models.',
+        'badges' => ['Academic Leadership', 'Chief Operating Officer (COO)', '18+ Years EdTech', 'Operations & Scale']
     ]
 ];
 
@@ -70,11 +70,69 @@ if ($db) {
     }
 }
 
+// Explicitly enforce Sharmin Habib's updated designation & image
+$leadership_profiles['sharmin-habib']['designation'] = 'Chief Operating Officer (COO)';
+$leadership_profiles['sharmin-habib']['image'] = '/assets/images/team/Sharmin%20Habib%20Chief%20Operating%20Officer.jpg';
+
 // Exactly 3 unique profiles in required order: Deepak Jain, Pragya Jain, Sharmin Habib
 $team = [
     $leadership_profiles['deepak-jain'],
     $leadership_profiles['pragya-jain'],
     $leadership_profiles['sharmin-habib']
+];
+
+// Identifiable Team Members from assets/images/team (displaying only Name and Designation)
+$additional_team = [
+    [
+        'name' => 'Shatakshi Sharma',
+        'designation' => 'Academic Co ordinator',
+        'image' => '/assets/images/team/Shatakshi%20Sharma%20-%20Academic%20Co%20ordinator.jpg'
+    ],
+    [
+        'name' => 'Khushi Bansal',
+        'designation' => 'School Co ordinator',
+        'image' => '/assets/images/team/Khushi%20Bansal%20-%20School%20Co%20ordinator.jpg'
+    ],
+    [
+        'name' => 'Savita Widge',
+        'designation' => 'Parent Relationship Manager',
+        'image' => '/assets/images/team/%20Savita%20Widge%20-%20Parent%20Relationship%20Manager.jpg'
+    ],
+    [
+        'name' => 'Prachi Sharma',
+        'designation' => 'Business development Manager',
+        'image' => '/assets/images/team/Prachi%20Sharma%20-%20Business%20development%20Manager.jpg'
+    ],
+    [
+        'name' => 'Meenakshi Sharma',
+        'designation' => 'Kindergarten Learning Specialist',
+        'image' => '/assets/images/team/Meenakshi%20Sharma%20-%20Kindergarten%20Learning%20Specialist.jpg'
+    ],
+    [
+        'name' => 'Toshiba Khullar',
+        'designation' => 'French Educator',
+        'image' => '/assets/images/team/Toshiba%20Khullar-%20French%20Educator.jpg'
+    ],
+    [
+        'name' => 'Nikita Rathi',
+        'designation' => 'Spanish Educator',
+        'image' => '/assets/images/team/Nikita%20Rathi-%20Spanish%20Educator.jpg'
+    ],
+    [
+        'name' => 'Gargi Sharma',
+        'designation' => 'Facilitator',
+        'image' => '/assets/images/team/Gargi%20Sharma%20-%20Facilitator.jpg'
+    ],
+    [
+        'name' => 'Shilpa Bella',
+        'designation' => 'Facilitator',
+        'image' => '/assets/images/team/Shilpa%20Bella%20-Facilitator.jpg'
+    ],
+    [
+        'name' => 'Umangi Navin Thakkar',
+        'designation' => 'Facilitator',
+        'image' => '/assets/images/team/Umangi%20Navin%20Thakkar%20-%20Facilitator.jpg'
+    ]
 ];
 
 $page_slug = 'our-team';
@@ -165,6 +223,93 @@ render_breadcrumbs([
             max-width: 440px;
           }
         }
+
+        /* Additional Team Members Grid */
+        .team-members-grid {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 1.75rem;
+          max-width: 1200px;
+          margin: 0 auto;
+          align-items: stretch;
+        }
+        .team-member-card {
+          background: #FFFFFF;
+          border-radius: var(--radius-lg);
+          border: 1.5px solid rgba(6, 43, 99, 0.16);
+          box-shadow: var(--shadow-sm);
+          overflow: hidden;
+          display: flex;
+          flex-direction: column;
+          height: 100%;
+          transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+        .team-member-card:hover {
+          transform: translateY(-4px);
+          box-shadow: var(--shadow-md);
+        }
+        .team-member-img-wrap {
+          height: 300px;
+          background-color: var(--pastel-blue);
+          position: relative;
+          overflow: hidden;
+        }
+        .team-member-img-wrap img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          object-position: center 15%;
+          display: block;
+        }
+        .team-member-info {
+          padding: 1.25rem 1rem 1.35rem 1rem;
+          text-align: center;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          flex-grow: 1;
+        }
+        .team-member-name {
+          font-size: 1.15rem;
+          color: var(--color-navy);
+          font-family: var(--font-primary);
+          margin-bottom: 0.35rem;
+          font-weight: 700;
+          line-height: 1.3;
+        }
+        .team-member-designation {
+          color: var(--color-gold);
+          font-weight: 700;
+          font-size: 0.82rem;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+          line-height: 1.35;
+        }
+        @media (max-width: 1100px) {
+          .team-members-grid {
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+          }
+        }
+        @media (max-width: 768px) {
+          .team-members-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.25rem;
+          }
+          .team-member-img-wrap {
+            height: 250px;
+          }
+        }
+        @media (max-width: 480px) {
+          .team-members-grid {
+            grid-template-columns: 1fr;
+            max-width: 320px;
+          }
+          .team-member-img-wrap {
+            height: 300px;
+          }
+        }
       </style>
 
       <div class="leadership-team-grid">
@@ -214,6 +359,35 @@ render_breadcrumbs([
           </div>
         <?php endforeach; ?>
       </div>
+
+      <!-- Additional Team Members Section -->
+      <?php if (!empty($additional_team)): ?>
+        <div class="text-center" style="max-width: 700px; margin: 5rem auto 3rem auto;">
+          <span style="font-size: 0.85rem; font-weight: 700; color: var(--color-gold); text-transform: uppercase; letter-spacing: 2px;">
+            Academic &amp; Operations Team
+          </span>
+          <h2 style="font-size: 2.35rem; color: var(--color-navy); margin-top: 0.5rem; font-family: var(--font-primary);">
+            Our Educators &amp; Staff
+          </h2>
+          <p style="color: var(--color-muted); font-size: 1rem; margin-top: 0.5rem;">
+            Empathetic, qualified educators and dedicated professionals shaping child-centric learning every single day.
+          </p>
+        </div>
+
+        <div class="team-members-grid">
+          <?php foreach ($additional_team as $member): ?>
+            <div class="team-member-card">
+              <div class="team-member-img-wrap">
+                <img src="<?php echo h($member['image']); ?>" alt="<?php echo h($member['name']); ?>" loading="lazy">
+              </div>
+              <div class="team-member-info">
+                <h3 class="team-member-name"><?php echo h($member['name']); ?></h3>
+                <div class="team-member-designation"><?php echo h($member['designation']); ?></div>
+              </div>
+            </div>
+          <?php endforeach; ?>
+        </div>
+      <?php endif; ?>
 
     </div>
   </section>

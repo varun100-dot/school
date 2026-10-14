@@ -258,10 +258,10 @@ $default_team = [
     [
         'name' => 'Sharmin Habib',
         'slug' => 'sharmin-habib',
-        'designation' => 'Head of Business and Operations',
+        'designation' => 'Chief Operating Officer (COO)',
         'category' => 'Academic Leadership',
-        'image' => '/assets/images/Profile_Images/Sharmin_Professional_Profile.webp',
-        'short_description' => 'Sharmin Habib is the Head of Business and Operations at Zuvio Global School with over 18 years of experience across online schooling, EdTech growth, operations, and scalable digital learning models.',
+        'image' => '/assets/images/team/Sharmin%20Habib%20Chief%20Operating%20Officer.jpg',
+        'short_description' => 'Sharmin Habib is the Chief Operating Officer (COO) at Zuvio Global School with over 18 years of experience across online schooling, EdTech growth, operations, and scalable digital learning models.',
         'sort_order' => 3,
         'is_published' => 1
     ]
@@ -275,7 +275,8 @@ $team = array_values(array_filter($team, function($member) {
 // Ensure Sharmin Habib has correct designation and category if coming from session
 foreach ($team as &$m) {
     if (($m['slug'] ?? '') === 'sharmin-habib') {
-        $m['designation'] = 'Head of Business and Operations';
+        $m['designation'] = 'Chief Operating Officer (COO)';
+        $m['image'] = '/assets/images/team/Sharmin%20Habib%20Chief%20Operating%20Officer.jpg';
         $m['category'] = 'Academic Leadership';
     }
 }

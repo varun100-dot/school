@@ -421,52 +421,31 @@ render_breadcrumbs([
         Curriculum Foundations
       </span>
       <h2 style="font-size: 2.35rem; color: var(--color-navy); margin-top: 0.5rem; font-family: var(--font-primary);">
-        Globally Benchmarked Educational Pathways
+        Curriculum Foundations
       </h2>
       <p style="color: var(--color-muted); font-size: 1rem; margin-top: 0.5rem;">
-        Rigorous academic curriculum mapped to international and national boards.
+        Rigorous academic curriculum mapped to the National Curriculum Framework and CBSE standards.
       </p>
     </div>
 
-    <!-- Curriculum Pathways Grid (3 Cards) -->
-    <div class="grid-3" style="gap: 2rem; margin-bottom: 3.5rem;">
-      <div class="card" style="padding: 2.25rem; background: #FFFFFF; border-top: 4px solid var(--color-teal); border-radius: var(--radius-md);">
-        <span style="display: inline-block; background: var(--pastel-blue); color: var(--color-teal); font-weight: 700; font-size: 0.75rem; padding: 0.2rem 0.6rem; border-radius: 4px; text-transform: uppercase; margin-bottom: 0.75rem;">
-          Cambridge Pathway
-        </span>
-        <h3 style="font-size: 1.35rem; color: var(--color-navy); font-family: var(--font-primary); font-weight: 700; margin-bottom: 0.75rem;">
-          British-Cambridge
-        </h3>
-        <p style="color: var(--color-text); font-size: 0.9rem; line-height: 1.65; margin-bottom: 1rem;">
-          Offering five stages from age 5 to 19, leading seamlessly from early years to pre-university. Emphasizes global perspectives, deep conceptual mastery, and world-recognized examinations.
-        </p>
-        <span style="font-size: 0.82rem; font-weight: 600; color: var(--color-navy);">Stages: Cambridge Early Years, Primary, Lower & Upper Secondary</span>
-      </div>
-
-      <div class="card" style="padding: 2.25rem; background: #FFFFFF; border-top: 4px solid var(--color-gold); border-radius: var(--radius-md);">
-        <span style="display: inline-block; background: var(--pastel-yellow); color: #B98721; font-weight: 700; font-size: 0.75rem; padding: 0.2rem 0.6rem; border-radius: 4px; text-transform: uppercase; margin-bottom: 0.75rem;">
-          American Curriculum
-        </span>
-        <h3 style="font-size: 1.35rem; color: var(--color-navy); font-family: var(--font-primary); font-weight: 700; margin-bottom: 0.75rem;">
-          American High School Diploma
-        </h3>
-        <p style="color: var(--color-text); font-size: 0.9rem; line-height: 1.65; margin-bottom: 1rem;">
-          Aligned with US standards to develop critical academic thinking, creative problem-solving, and continuous credit accumulation recognized by leading global universities.
-        </p>
-        <span style="font-size: 0.82rem; font-weight: 600; color: var(--color-navy);">Focus: WASC-aligned standards, GPA credits & college readiness</span>
-      </div>
-
-      <div class="card" style="padding: 2.25rem; background: #FFFFFF; border-top: 4px solid var(--color-teal); border-radius: var(--radius-md);">
-        <span style="display: inline-block; background: var(--pastel-green); color: #047857; font-weight: 700; font-size: 0.75rem; padding: 0.2rem 0.6rem; border-radius: 4px; text-transform: uppercase; margin-bottom: 0.75rem;">
-          Indian Curriculum
-        </span>
-        <h3 style="font-size: 1.35rem; color: var(--color-navy); font-family: var(--font-primary); font-weight: 700; margin-bottom: 0.75rem;">
+    <!-- Curriculum Pathway Card -->
+    <div style="max-width: 800px; margin: 0 auto 3.5rem auto;">
+      <div class="card" style="padding: 2.25rem; background: #FFFFFF; border-top: 4px solid var(--color-teal); border-radius: var(--radius-md); box-shadow: var(--shadow-sm);">
+        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 0.75rem;">
+          <span style="display: inline-block; background: var(--pastel-green); color: #047857; font-weight: 700; font-size: 0.75rem; padding: 0.2rem 0.6rem; border-radius: 4px; text-transform: uppercase;">
+            Indian Curriculum
+          </span>
+          <span style="font-size: 0.82rem; font-weight: 600; color: var(--color-navy); background: var(--pastel-blue); padding: 0.2rem 0.6rem; border-radius: 4px;">
+            NEP 2020 &amp; NCF Compliance
+          </span>
+        </div>
+        <h3 style="font-size: 1.45rem; color: var(--color-navy); font-family: var(--font-primary); font-weight: 700; margin-bottom: 0.75rem;">
           CBSE Mapped &amp; NIOS Framework
         </h3>
-        <p style="color: var(--color-text); font-size: 0.9rem; line-height: 1.65; margin-bottom: 1rem;">
+        <p style="color: var(--color-text); font-size: 0.95rem; line-height: 1.65; margin-bottom: 0.75rem;">
           Structured according to the National Curriculum Framework of India under NEP 2020. Combines NCERT syllabus rigor with experiential, interactive live classrooms.
         </p>
-        <span style="font-size: 0.82rem; font-weight: 600; color: var(--color-navy);">Stages: Foundation, Preparatory, Middle & Secondary levels</span>
+        <span style="font-size: 0.85rem; font-weight: 600; color: var(--color-muted);">Stages: Foundation, Preparatory, Middle &amp; Secondary levels</span>
       </div>
     </div>
 

@@ -45,3 +45,7 @@ config.php
 # Zuvio Media uploads
 uploads/*
 !uploads/.gitkeep
+
+# Local SQLite databases
+*.sqlite
+database/*.sqlite

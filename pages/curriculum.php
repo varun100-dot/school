@@ -69,41 +69,28 @@ render_breadcrumbs([
           Strong Foundations. Future Skills. Learning Without Boundaries.
         </p>
       </div>
-  <!-- CURRICULUM FOUNDATIONS (Indian, British-Cambridge, American) -->
+    </div>
+  </section>
+
+  <!-- CURRICULUM FOUNDATIONS (Indian Curriculum - CBSE Mapped & NIOS Framework) -->
   <section class="curriculum-section" style="background-color: var(--color-surface-warm); border-top: 1px solid var(--color-border); border-bottom: 1px solid var(--color-border);">
     <div class="curriculum-container">
       <div class="curriculum-section-header" style="text-align: center;">
         <span style="font-size: 13px; font-weight: 700; color: var(--color-gold); text-transform: uppercase; letter-spacing: 2px; display: block; margin-bottom: 8px;">Accredited Standards</span>
         <h2 class="curriculum-section-title">Curriculum Foundations</h2>
-        <p class="curriculum-section-subtitle">Multi-Board Frameworks Preparing Learners for Global Success</p>
+        <p class="curriculum-section-subtitle">National Curriculum Framework (NCF) &amp; CBSE Aligned Pathways</p>
       </div>
 
-      <div class="curriculum-grid curriculum-grid-3" style="gap: 24px; margin-bottom: 36px;">
-        <div class="curriculum-grid-cell" style="background: #FFFFFF; border-top: 4px solid var(--color-teal);">
-          <span style="display: inline-block; background: var(--pastel-blue); color: var(--color-teal); font-weight: 700; font-size: 12px; padding: 3px 8px; border-radius: 4px; text-transform: uppercase; margin-bottom: 10px;">Cambridge Pathway</span>
-          <h3 style="font-size: 20px; color: var(--color-navy); font-family: var(--font-primary); font-weight: 700; margin-bottom: 10px;">British-Cambridge</h3>
-          <p class="curriculum-grid-desc" style="line-height: 1.65; margin-bottom: 12px;">
-            The Cambridge Pathway helps learners be ready for the world, offering five stages from age 5 to 19 (Early Years, Primary, Lower Secondary, Upper Secondary, and Advanced). Schools select stages that meet their needs, fostering global perspective, critical thinking, and international university progression.
-          </p>
-          <span style="font-size: 12px; font-weight: 600; color: var(--color-navy);">Affiliated Online School Partner</span>
-        </div>
-
-        <div class="curriculum-grid-cell" style="background: #FFFFFF; border-top: 4px solid var(--color-gold);">
-          <span style="display: inline-block; background: var(--pastel-yellow); color: #B98721; font-weight: 700; font-size: 12px; padding: 3px 8px; border-radius: 4px; text-transform: uppercase; margin-bottom: 10px;">American Curriculum</span>
-          <h3 style="font-size: 20px; color: var(--color-navy); font-family: var(--font-primary); font-weight: 700; margin-bottom: 10px;">American High School</h3>
-          <p class="curriculum-grid-desc" style="line-height: 1.65; margin-bottom: 12px;">
-            A comprehensive American curriculum developing critical academic skills, creative thinking, and a global perspective. Aligned with WASC standards, providing a clear path for students to earn a recognized High School Diploma valued by leading universities worldwide.
-          </p>
-          <span style="font-size: 12px; font-weight: 600; color: var(--color-navy);">WASC Benchmark Aligned Standards</span>
-        </div>
-
-        <div class="curriculum-grid-cell" style="background: #FFFFFF; border-top: 4px solid var(--color-teal);">
-          <span style="display: inline-block; background: var(--pastel-green); color: #047857; font-weight: 700; font-size: 12px; padding: 3px 8px; border-radius: 4px; text-transform: uppercase; margin-bottom: 10px;">Indian Curriculum</span>
-          <h3 style="font-size: 20px; color: var(--color-navy); font-family: var(--font-primary); font-weight: 700; margin-bottom: 10px;">CBSE Mapped &amp; NIOS Framework</h3>
-          <p class="curriculum-grid-desc" style="line-height: 1.65; margin-bottom: 12px;">
+      <div style="max-width: 820px; margin: 0 auto 36px auto;">
+        <div class="curriculum-grid-cell" style="background: #FFFFFF; border-top: 4px solid var(--color-teal); border-radius: var(--radius-md); padding: 28px 32px; box-shadow: var(--shadow-sm);">
+          <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 12px;">
+            <span style="display: inline-block; background: var(--pastel-green); color: #047857; font-weight: 700; font-size: 12px; padding: 4px 10px; border-radius: 4px; text-transform: uppercase;">Indian Curriculum</span>
+            <span style="font-size: 12px; font-weight: 600; color: var(--color-navy); background: var(--pastel-blue); padding: 4px 10px; border-radius: 4px;">NEP 2020 &amp; NCF Compliance</span>
+          </div>
+          <h3 style="font-size: 22px; color: var(--color-navy); font-family: var(--font-primary); font-weight: 700; margin-bottom: 10px;">CBSE Mapped &amp; NIOS Framework</h3>
+          <p class="curriculum-grid-desc" style="line-height: 1.7; margin-bottom: 0; font-size: 15px; color: var(--color-text);">
             In alignment with NEP 2020, Zuvio adheres to the National Curriculum Framework of India up to middle school. For senior grades, we support the recognized NIOS and CBSE streams, ensuring equivalency for premier higher education admissions.
           </p>
-          <span style="font-size: 12px; font-weight: 600; color: var(--color-navy);">NEP 2020 & NCF Compliance</span>
         </div>
       </div>
 

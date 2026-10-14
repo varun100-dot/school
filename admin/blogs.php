@@ -151,6 +151,58 @@ if ($action === 'delete_category' && $id > 0) {
     }
 }
 
+// AJAX Image Upload from Rich Text Editor
+if ($action === 'upload_editor_image' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+    require_permission('blogs.edit');
+    header('Content-Type: application/json');
+    
+    if (!validate_csrf_token($_POST['csrf_token'] ?? '')) {
+        echo json_encode(['success' => false, 'error' => 'Security check failed. Please refresh and try again.']);
+        exit;
+    }
+    
+    try {
+        $uploaded_url = handle_file_upload('image');
+        if (!$uploaded_url) {
+            echo json_encode(['success' => false, 'error' => 'No image uploaded or upload failed.']);
+            exit;
+        }
+        echo json_encode(['success' => true, 'url' => $uploaded_url]);
+        exit;
+    } catch (Exception $e) {
+        echo json_encode(['success' => false, 'error' => $e->getMessage()]);
+        exit;
+    }
+}
+
+// AJAX Media Library List for Editor
+if ($action === 'get_media_library') {
+    require_permission('blogs.view');
+    header('Content-Type: application/json');
+    $media_list = [];
+    if ($db) {
+        try {
+            $stmt = $db->query("
+                SELECT `id`, `file_name`, `public_url`, `created_at` 
+                FROM `media` 
+                WHERE `mime_type` LIKE 'image/%' 
+                ORDER BY `id` DESC 
+                LIMIT 24
+            ");
+            $media_list = $stmt->fetchAll();
+        } catch (Exception $e) {
+            // Ignore error
+        }
+    }
+    $static_images = [
+        ['public_url' => '/assets/images/logo.png', 'file_name' => 'logo.png'],
+        ['public_url' => '/assets/images/zuvio-logo.png', 'file_name' => 'zuvio-logo.png'],
+        ['public_url' => '/assets/images/Hero image 1.png', 'file_name' => 'Hero image 1.png'],
+    ];
+    echo json_encode(['success' => true, 'media' => $media_list, 'static' => $static_images]);
+    exit;
+}
+
 // 2. Action Handler: Save (Create/Update)
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($action === 'add' || $action === 'edit')) {
     if ($action === 'add') {
@@ -171,7 +223,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($action === 'add' || $action === '
         $title = trim($_POST['title'] ?? '');
         $slug = trim($_POST['slug'] ?? '');
         $excerpt = trim($_POST['excerpt'] ?? '');
-        $content = trim($_POST['content'] ?? '');
+        $content = sanitize_blog_html(trim($_POST['content'] ?? ''));
         $category_id = !empty($_POST['category_id']) ? (int)$_POST['category_id'] : null;
         $author = trim($_POST['author'] ?? '');
         $author_designation = trim($_POST['author_designation'] ?? '');
@@ -432,6 +484,7 @@ include_once dirname(__FILE__) . '/header.php';
 
 <!-- Action View: ADD / EDIT -->
 <?php elseif ($action === 'add' || $action === 'edit'): ?>
+  <link rel="stylesheet" href="/css/rich-editor.css">
   <div class="card" style="border-left: none; padding: 2.5rem;">
     <form method="POST" action="" enctype="multipart/form-data">
       <input type="hidden" name="csrf_token" value="<?php echo get_csrf_token(); ?>">
@@ -506,8 +559,8 @@ include_once dirname(__FILE__) . '/header.php';
       </div>
 
       <div class="admin-form-group">
-        <label class="admin-label">Content (HTML or plain copy)</label>
-        <textarea name="content" class="admin-input" rows="8" placeholder="Write the main copy here..."><?php echo h($item['content'] ?? ''); ?></textarea>
+        <label class="admin-label">Article Content *</label>
+        <textarea name="content" id="blog-content-field" class="admin-input" rows="8" placeholder="Write the main copy here..."><?php echo h($item['content'] ?? ''); ?></textarea>
       </div>
 
       <!-- SEO section -->
@@ -534,6 +587,7 @@ include_once dirname(__FILE__) . '/header.php';
       <a href="/admin/blogs" class="btn btn-outline" style="padding: 0.8rem 2rem; margin-left: 0.75rem;">Cancel</a>
     </form>
   </div>
+  <script src="/js/rich-editor.js"></script>
 <?php endif; ?>
 
 <?php
