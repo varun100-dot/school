@@ -690,7 +690,7 @@ $show_hero_form = (!isset($sec_hero_form['is_active']) || !empty($sec_hero_form[
 
     <div class="about-zuvio-grid" style="display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 2.5rem; align-items: center;">
       <!-- Content Box -->
-      <div style="background-color: var(--pastel-blue); border-radius: var(--radius-lg); padding: 2.75rem 2.25rem; border: 1.5px solid rgba(10, 137, 152, 0.2); box-shadow: var(--shadow-sm);">
+      <div class="about-zuvio-card" style="background-color: var(--pastel-blue); border-radius: var(--radius-lg); padding: 2.75rem 2.25rem; border: 1.5px solid rgba(10, 137, 152, 0.2); box-shadow: var(--shadow-sm);">
         <p style="font-size: 1.22rem; font-weight: 600; color: var(--color-navy); line-height: 1.7; margin-bottom: 1.5rem; font-family: var(--font-secondary);">
           <?php echo nl2br(h($sec_about['lead_text'] ?? 'Zuvio Global School is an online school built on one belief: education should adapt to the child, not the child to the system.')); ?>
         </p>

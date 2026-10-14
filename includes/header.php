@@ -307,21 +307,26 @@ if (empty($sliding_strip_items)) {
     .mobile-nav-drawer {
       position: fixed;
       top: 0;
-      right: -100%;
-      width: 320px;
+      right: 0;
+      width: min(320px, 85vw);
       height: 100vh;
       background-color: var(--color-white);
       box-shadow: -5px 0 25px rgba(6, 43, 99, 0.15);
       z-index: 1100;
-      padding: 2rem 1.5rem;
+      padding: 1.75rem 1.5rem;
       display: flex;
       flex-direction: column;
       gap: 1rem;
       overflow-y: auto;
-      transition: right 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      transform: translateX(100%);
+      visibility: hidden;
+      pointer-events: none;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.3s ease;
     }
     .mobile-nav-drawer.open {
-      right: 0;
+      transform: translateX(0);
+      visibility: visible;
+      pointer-events: auto;
     }
     .mobile-drawer-overlay {
       position: fixed;
@@ -338,12 +343,19 @@ if (empty($sliding_strip_items)) {
     }
     .mobile-close-btn {
       align-self: flex-end;
+      min-width: 44px;
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       background: none;
       border: none;
-      font-size: 1.75rem;
+      font-size: 2rem;
       cursor: pointer;
       color: var(--color-navy);
       line-height: 1;
+      padding: 0;
+      border-radius: 6px;
     }
 
     @media (max-width: 1024px) {
@@ -536,21 +548,21 @@ if (empty($sliding_strip_items)) {
       <a href="<?php echo h($secondary_cta_action); ?>" class="btn btn-primary" style="width: 100%; text-align: center; background-color: var(--color-teal); border-color: var(--color-teal); color: #fff;" onclick="toggleMobileMenu(false)"><?php echo h($secondary_cta_text); ?></a>
     </div>
 
-    <div style="margin-top: auto; padding-top: 1.5rem; border-top: 1px solid var(--color-border); font-size: 0.82rem; color: var(--color-muted);">
-      <p style="margin-bottom: 0.25rem;"><strong>Phone:</strong> <a href="tel:<?php echo h($phone_tel); ?>" style="color: var(--color-navy);">+91 <?php echo h($phone_number); ?></a></p>
-      <p style="margin-bottom: 0.75rem;"><strong>Email:</strong> <a href="mailto:<?php echo h($email_address); ?>" style="color: var(--color-navy);"><?php echo h($email_address); ?></a></p>
+    <div style="margin-top: auto; padding-top: 1.5rem; border-top: 1px solid var(--color-border); font-size: 0.85rem; color: var(--color-muted);">
+      <p style="margin-bottom: 0.35rem;"><strong>Phone:</strong> <a href="tel:<?php echo h($phone_tel); ?>" style="color: var(--color-navy); display: inline-block; padding: 4px 0; min-height: 36px;">+91 <?php echo h($phone_number); ?></a></p>
+      <p style="margin-bottom: 0.85rem;"><strong>Email:</strong> <a href="mailto:<?php echo h($email_address); ?>" style="color: var(--color-navy); display: inline-block; padding: 4px 0; min-height: 36px;"><?php echo h($email_address); ?></a></p>
       <div style="display: flex; gap: 0.85rem; align-items: center; padding-top: 0.5rem;">
-        <a href="<?php echo h($social_fb); ?>" target="_blank" rel="noopener" style="color: #1877F2; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background: #EFF6FF;" aria-label="Facebook" title="Facebook">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+        <a href="<?php echo h($social_fb); ?>" target="_blank" rel="noopener" style="color: #1877F2; display: flex; align-items: center; justify-content: center; width: 42px; height: 42px; border-radius: 50%; background: #EFF6FF;" aria-label="Facebook" title="Facebook">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
         </a>
-        <a href="<?php echo h($social_insta); ?>" target="_blank" rel="noopener" style="color: #E1306C; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background: #FDF2F8;" aria-label="Instagram" title="Instagram">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+        <a href="<?php echo h($social_insta); ?>" target="_blank" rel="noopener" style="color: #E1306C; display: flex; align-items: center; justify-content: center; width: 42px; height: 42px; border-radius: 50%; background: #FDF2F8;" aria-label="Instagram" title="Instagram">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
         </a>
-        <a href="<?php echo h($social_linkedin); ?>" target="_blank" rel="noopener" style="color: #0A66C2; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background: #EFF6FF;" aria-label="LinkedIn" title="LinkedIn">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+        <a href="<?php echo h($social_linkedin); ?>" target="_blank" rel="noopener" style="color: #0A66C2; display: flex; align-items: center; justify-content: center; width: 42px; height: 42px; border-radius: 50%; background: #EFF6FF;" aria-label="LinkedIn" title="LinkedIn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
         </a>
-        <a href="<?php echo h($social_youtube); ?>" target="_blank" rel="noopener" style="color: #FF0000; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background: #FEF2F2;" aria-label="YouTube" title="YouTube">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+        <a href="<?php echo h($social_youtube); ?>" target="_blank" rel="noopener" style="color: #FF0000; display: flex; align-items: center; justify-content: center; width: 42px; height: 42px; border-radius: 50%; background: #FEF2F2;" aria-label="YouTube" title="YouTube">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
         </a>
       </div>
     </div>
@@ -563,10 +575,12 @@ if (empty($sliding_strip_items)) {
       if (open) {
         drawer.classList.add('open');
         overlay.classList.add('show');
+        document.body.classList.add('mobile-menu-open');
         document.body.style.overflow = 'hidden';
       } else {
         drawer.classList.remove('open');
         overlay.classList.remove('show');
+        document.body.classList.remove('mobile-menu-open');
         document.body.style.overflow = '';
       }
     }

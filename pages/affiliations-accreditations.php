@@ -27,12 +27,12 @@ render_breadcrumbs([
 
 <main class="affiliations-accreditations-page">
   <!-- Hero Section -->
-  <section class="section-hero" style="background-color: var(--pastel-blue); padding: 5rem 1.5rem; text-align: center; border-bottom: 1px solid var(--color-border);">
+  <section class="section-hero" style="background-color: var(--pastel-blue); padding: 4.5rem 0; text-align: center; border-bottom: 1px solid var(--color-border);">
     <div class="container" style="max-width: 850px;">
       <span style="font-size: 0.85rem; font-weight: 700; color: var(--color-gold); text-transform: uppercase; letter-spacing: 2px; display: block; margin-bottom: 0.75rem;">
         Global Trust &amp; Standards
       </span>
-      <h1 style="font-size: 2.85rem; font-family: var(--font-primary); margin-bottom: 1rem; color: var(--color-navy-dark); font-weight: 700; line-height: 1.2;">
+      <h1 style="font-size: clamp(1.85rem, 5vw + 0.5rem, 2.85rem); font-family: var(--font-primary); margin-bottom: 1rem; color: var(--color-navy-dark); font-weight: 700; line-height: 1.2; word-break: break-word;">
         Affiliations &amp; Accreditations
       </h1>
       <p style="font-size: 1.15rem; font-weight: 500; line-height: 1.6; color: var(--color-text); margin: 0 auto; max-width: 720px;">

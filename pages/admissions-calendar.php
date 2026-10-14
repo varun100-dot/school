@@ -125,7 +125,7 @@ render_breadcrumbs([
 
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 2.5rem; max-width: 1080px; margin: 0 auto;">
         <?php foreach ($calendar_data['terms'] as $tIndex => $t): ?>
-          <div style="background: #FFFFFF; border-radius: var(--radius-lg); border: 1.5px solid rgba(6, 43, 99, 0.16); box-shadow: var(--shadow-sm); padding: 2.5rem; border-top: 5px solid <?php echo $tIndex === 0 ? 'var(--color-teal)' : 'var(--color-gold)'; ?>; display: flex; flex-direction: column; justify-content: space-between;">
+          <div class="calendar-term-card" style="background: #FFFFFF; border-radius: var(--radius-lg); border: 1.5px solid rgba(6, 43, 99, 0.16); box-shadow: var(--shadow-sm); padding: 2.5rem; border-top: 5px solid <?php echo $tIndex === 0 ? 'var(--color-teal)' : 'var(--color-gold)'; ?>; display: flex; flex-direction: column; justify-content: space-between;">
             <div>
               <div style="display: inline-block; background: var(--pastel-blue); color: var(--color-navy); font-weight: 700; font-size: 0.8rem; padding: 0.3rem 0.75rem; border-radius: 4px; margin-bottom: 1rem; text-transform: uppercase;">
                 Term <?php echo $tIndex + 1; ?>

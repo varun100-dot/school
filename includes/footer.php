@@ -359,11 +359,18 @@ $social_youtube = get_setting('social_youtube', 'https://www.youtube.com/@zuviog
     }
 
     /* Sub-Footer Bottom Bar */
+    /* Space reserved under the last footer row so fixed floating buttons
+       (call/WhatsApp stack, demo pill) never sit on top of copyright/links
+       once the user has scrolled to the end of the page. */
+    :root { --footer-float-clearance: 84px; }
+    @media (max-width: 1200px) { :root { --footer-float-clearance: 140px; } }
+    @media (max-width: 768px)  { :root { --footer-float-clearance: 130px; } }
     .footer-bottom-wrap {
       margin-top: 3.5rem;
       border-top: 1px solid var(--color-border);
       background-color: rgba(6, 43, 99, 0.02);
       padding: 1.25rem 0;
+      padding-bottom: calc(1.25rem + var(--footer-float-clearance));
     }
     .footer-bottom-container {
       max-width: var(--max-width);
@@ -382,7 +389,9 @@ $social_youtube = get_setting('social_youtube', 'https://www.youtube.com/@zuviog
     }
     .footer-bottom-links {
       display: flex;
-      gap: 0.65rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.4rem 0.65rem;
       align-items: center;
       font-size: 0.82rem;
     }
@@ -684,6 +693,7 @@ $social_youtube = get_setting('social_youtube', 'https://www.youtube.com/@zuviog
       justify-content: space-between;
       align-items: center;
       padding: 0.65rem 1.5rem;
+      padding-bottom: calc(0.65rem + env(safe-area-inset-bottom, 0px));
       box-shadow: 0 -4px 20px rgba(6, 43, 99, 0.15);
       font-family: var(--font-secondary);
       transition: transform 0.3s ease;
@@ -760,12 +770,22 @@ $social_youtube = get_setting('social_youtube', 'https://www.youtube.com/@zuviog
       opacity: 1;
       background: rgba(255, 255, 255, 0.1);
     }
+    /* --announcement-bar-h is set from the bar's real rendered height by JS below;
+       the fallbacks are only used before JS runs / if ResizeObserver is unavailable. */
     body:not(.announcement-bar-closed) {
-      padding-bottom: 60px;
+      padding-bottom: var(--announcement-bar-h, 65px);
+    }
+    /* Keep the bar and floating buttons from covering the open mobile drawer */
+    body.mobile-menu-open .admissions-announcement-bar,
+    body.mobile-menu-open .floating-contact-actions,
+    body.mobile-menu-open .callback-floating-widget {
+      visibility: hidden;
+      pointer-events: none;
     }
     @media (max-width: 850px) {
       .admissions-announcement-bar {
         padding: 0.45rem 0.75rem;
+        padding-bottom: calc(0.45rem + env(safe-area-inset-bottom, 0px));
       }
       .announcement-content {
         gap: 0.4rem;
@@ -789,7 +809,12 @@ $social_youtube = get_setting('social_youtube', 'https://www.youtube.com/@zuviog
     }
     @media (max-width: 768px) {
       body:not(.announcement-bar-closed) {
-        padding-bottom: 75px;
+        padding-bottom: var(--announcement-bar-h, 100px);
+      }
+    }
+    @media (max-width: 480px) {
+      body:not(.announcement-bar-closed) {
+        padding-bottom: var(--announcement-bar-h, 120px);
       }
     }
   </style>
@@ -804,6 +829,25 @@ $social_youtube = get_setting('social_youtube', 'https://www.youtube.com/@zuviog
           document.body.classList.add('announcement-bar-closed');
         }
       } catch(e) {}
+    })();
+
+    // Publish the announcement bar's real rendered height as --announcement-bar-h
+    // so body padding and floating-button offsets match it (text wraps to 1-3 lines
+    // depending on viewport and which announcement slide is showing).
+    (function() {
+      const bar = document.getElementById('admissionsAnnouncementBar');
+      const root = document.documentElement;
+      function sync() {
+        const visible = bar && !document.body.classList.contains('announcement-bar-closed') && bar.style.display !== 'none';
+        root.style.setProperty('--announcement-bar-h', visible ? Math.ceil(bar.getBoundingClientRect().height) + 'px' : '0px');
+      }
+      sync();
+      if (bar && 'ResizeObserver' in window) {
+        new ResizeObserver(sync).observe(bar);
+      } else {
+        window.addEventListener('resize', sync);
+      }
+      window.syncAnnouncementBarHeight = sync;
     })();
 
     // Global FAQ accordion toggle handler
@@ -837,6 +881,7 @@ $social_youtube = get_setting('social_youtube', 'https://www.youtube.com/@zuviog
         setTimeout(() => {
           bar.style.display = 'none';
           document.body.classList.add('announcement-bar-closed');
+          if (window.syncAnnouncementBarHeight) window.syncAnnouncementBarHeight();
           try {
             localStorage.setItem('zuvio_announcement_dismissed', '1');
           } catch(e) {}

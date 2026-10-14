@@ -7,6 +7,12 @@
   padding: 0;
 }
 
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
 body {
   font-family: var(--font-secondary);
   background-color: var(--color-bg);
@@ -20,6 +26,21 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--color-navy);
   font-weight: 700;
   line-height: 1.3;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+.contact-direct-item {
+  min-width: 0;
+  max-width: 100%;
+}
+.contact-direct-item > div {
+  min-width: 0;
+  overflow: hidden;
+}
+.contact-direct-item span {
+  word-break: break-word;
+  overflow-wrap: anywhere;
 }
 
 a {
@@ -36,6 +57,13 @@ button, input, select, textarea {
   max-width: var(--max-width);
   margin: 0 auto;
   padding: 0 1.5rem;
+  box-sizing: border-box;
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0 1rem;
+  }
 }
 
 .section {
@@ -64,6 +92,54 @@ button, input, select, textarea {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .grid-2,
+  .grid-3,
+  .grid-4,
+  [style*="grid-template-columns: repeat"] {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Homepage About Zuvio Section Responsive Layout */
+@media (max-width: 900px) {
+  .about-zuvio-grid {
+    grid-template-columns: 1fr !important;
+    gap: 2rem !important;
+  }
+  .about-zuvio-card {
+    padding: 2rem 1.5rem !important;
+  }
+  .about-zuvio-visual img {
+    height: 300px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .about-zuvio-card {
+    padding: 1.75rem 1.25rem !important;
+  }
+  .about-zuvio-card p:first-child {
+    font-size: 1.12rem !important;
+    line-height: 1.6 !important;
+  }
+  .about-zuvio-visual img {
+    height: 240px !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .calendar-term-card {
+    padding: 1.5rem !important;
+  }
+}
+
+@media (max-width: 360px) {
+  .calendar-term-card {
+    padding: 1.25rem 1rem !important;
+  }
 }
 
 /* Card Foundations (No Fixed Heights) */
@@ -365,6 +441,20 @@ button, input, select, textarea {
   .curriculum-process-strip {
     grid-template-columns: 1fr !important;
   }
+  .curriculum-grid-cell,
+  .curriculum-grid > *,
+  .curriculum-process-strip > *,
+  [style*="grid-column: span"] {
+    grid-column: 1 / -1 !important;
+  }
+}
+
+/* Touch-optimized horizontal scrolling for tables and data containers */
+[style*="overflow-x: auto"],
+.table-responsive,
+.spec-table-wrap,
+.table-wrap {
+  -webkit-overflow-scrolling: touch;
 }
 
 /* Flat rectangular cells matching Spec #3 & #17 */
@@ -541,7 +631,7 @@ button, input, select, textarea {
 
 body.announcement-bar-closed .callback-floating-widget,
 body.announcement-bar-closed .floating-contact-actions {
-  bottom: 24px !important;
+  bottom: calc(24px + env(safe-area-inset-bottom, 0px)) !important;
 }
 
 .callback-widget-pill {
@@ -893,6 +983,20 @@ body.announcement-bar-closed .floating-contact-actions {
   }
   .floating-action-tooltip {
     display: none;
+  }
+  /* Sit 16px above the announcement bar's real height (set by footer.php JS) */
+  body:not(.announcement-bar-closed) .floating-contact-actions,
+  body:not(.announcement-bar-closed) .callback-floating-widget {
+    bottom: calc(var(--announcement-bar-h, 100px) + 16px);
+  }
+}
+
+/* Small phones: keep only the primary call/WhatsApp actions floating.
+   "Book a Free Demo" opens the same modal from the header drawer and footer. */
+@media (max-width: 640px) {
+  .callback-floating-widget,
+  .callback-floating-widget.is-sticky {
+    display: none !important;
   }
 }
 
