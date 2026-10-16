@@ -156,7 +156,10 @@ $social_youtube = get_setting('social_youtube', 'https://www.youtube.com/@zuviog
     <!-- Sub-Footer Bottom Bar -->
     <div class="footer-bottom-wrap">
       <div class="footer-bottom-container">
-        <p class="copyright-text"><?php echo h($copyright); ?></p>
+        <div class="footer-bottom-left">
+          <p class="copyright-text"><?php echo h($copyright); ?></p>
+          <p class="developer-credit">Designed, Developed &amp; Maintained by <a href="https://digitonsdevelopment.com/" target="_blank" rel="noopener noreferrer">Digitons Development</a></p>
+        </div>
         <div class="footer-bottom-links">
           <a href="/contact">Admissions Enquiry</a>
           <span class="sep">&bull;</span>
@@ -382,10 +385,32 @@ $social_youtube = get_setting('social_youtube', 'https://www.youtube.com/@zuviog
       flex-wrap: wrap;
       gap: 1rem;
     }
+    .footer-bottom-left {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
     .copyright-text {
       font-size: 0.82rem;
       color: var(--color-muted);
       margin: 0;
+      line-height: 1.4;
+    }
+    .developer-credit {
+      font-size: 0.78rem;
+      color: var(--color-muted);
+      margin: 0;
+      line-height: 1.4;
+    }
+    .developer-credit a {
+      color: var(--color-navy);
+      text-decoration: none;
+      font-weight: 600;
+      transition: color var(--transition-fast), text-decoration var(--transition-fast);
+    }
+    .developer-credit a:hover {
+      color: var(--color-gold);
+      text-decoration: underline;
     }
     .footer-bottom-links {
       display: flex;
@@ -432,6 +457,11 @@ $social_youtube = get_setting('social_youtube', 'https://www.youtube.com/@zuviog
         flex-direction: column;
         text-align: center;
         gap: 0.75rem;
+      }
+      .footer-bottom-left {
+        align-items: center;
+        text-align: center;
+        gap: 0.35rem;
       }
     }
     @media (max-width: 520px) {
