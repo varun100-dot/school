@@ -891,16 +891,19 @@ body.announcement-bar-closed .floating-contact-actions {
   }
 }
 
-/* Global Floating WhatsApp & Call CTA */
+/* Global Floating Call CTA */
 .floating-contact-actions {
   position: fixed;
   left: 24px;
-  bottom: 75px;
+  bottom: calc(var(--announcement-bar-h, 0px) + 78px);
   z-index: 9992;
   display: flex;
   flex-direction: column;
   gap: 12px;
   align-items: center;
+}
+body.announcement-bar-closed .floating-contact-actions {
+  bottom: 78px;
 }
 
 .floating-action-btn {
@@ -920,11 +923,6 @@ body.announcement-bar-closed .floating-contact-actions {
 .floating-action-btn:hover {
   transform: scale(1.1) translateY(-2px);
   box-shadow: 0 8px 22px rgba(6, 43, 99, 0.3);
-}
-
-.floating-action-btn.floating-wa-btn {
-  background-color: #25D366;
-  color: #FFFFFF;
 }
 
 .floating-action-btn.floating-call-btn {
@@ -974,8 +972,11 @@ body.announcement-bar-closed .floating-contact-actions {
 @media (max-width: 768px) {
   .floating-contact-actions {
     left: 16px;
-    bottom: 80px;
+    bottom: calc(var(--announcement-bar-h, 100px) + 74px);
     gap: 10px;
+  }
+  body.announcement-bar-closed .floating-contact-actions {
+    bottom: 74px;
   }
   .floating-action-btn {
     width: 44px;
@@ -985,7 +986,6 @@ body.announcement-bar-closed .floating-contact-actions {
     display: none;
   }
   /* Sit 16px above the announcement bar's real height (set by footer.php JS) */
-  body:not(.announcement-bar-closed) .floating-contact-actions,
   body:not(.announcement-bar-closed) .callback-floating-widget {
     bottom: calc(var(--announcement-bar-h, 100px) + 16px);
   }
