@@ -983,6 +983,26 @@ $social_youtube = get_setting('social_youtube', 'https://www.youtube.com/@zuviog
         left: 16px !important;
       }
     }
+
+    /* Keep Call button elevated directly above BotPenguin widget to prevent any overlap */
+    .floating-contact-actions,
+    body:not(.announcement-bar-closed) .floating-contact-actions,
+    body.announcement-bar-closed .floating-contact-actions {
+      bottom: calc(var(--announcement-bar-h, 0px) + 85px) !important;
+    }
+    body.announcement-bar-closed .floating-contact-actions {
+      bottom: calc(85px + env(safe-area-inset-bottom, 0px)) !important;
+    }
+    @media (max-width: 768px) {
+      .floating-contact-actions,
+      body:not(.announcement-bar-closed) .floating-contact-actions,
+      body.announcement-bar-closed .floating-contact-actions {
+        bottom: calc(var(--announcement-bar-h, 100px) + 80px) !important;
+      }
+      body.announcement-bar-closed .floating-contact-actions {
+        bottom: calc(80px + env(safe-area-inset-bottom, 0px)) !important;
+      }
+    }
   </style>
   <script id="bp-wa-script" src="https://cdn.botpenguin.com/whatsapp-widget.js">19071980-ca0b-4e77-b150-82fb4f79e964</script>
 </body>
