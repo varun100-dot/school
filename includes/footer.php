@@ -956,5 +956,9 @@ $social_youtube = get_setting('social_youtube', 'https://www.youtube.com/@zuviog
       handleScroll();
     })();
   </script>
+
+  <!-- BotPenguin WhatsApp Chatbot Widget -->
+  <script id="bp-wa-script" src="https://cdn.botpenguin.com/whatsapp-widget.js">19071980-ca0b-4e77-b150-82fb4f79e964</script>
 </body>
 </html>
+
