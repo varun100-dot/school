@@ -36,44 +36,80 @@ function handle_file_upload($file_post_key) {
     $allowed_types = ['image/jpeg', 'image/png', 'image/webp'];
     $allowed_exts = ['jpg', 'jpeg', 'png', 'webp'];
     
-    // Check extension
+    // 1. Check extension
     $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
     if (!in_array($ext, $allowed_exts)) {
         throw new Exception("Invalid file extension (." . $ext . "). Only JPG, PNG, and WEBP images are allowed.");
     }
     
-    // Detect MIME type with robust fallbacks
+    // 2. Limit to 4MB
+    if ($file['size'] > 4 * 1024 * 1024) {
+        throw new Exception("File is too large. Maximum allowed size is 4MB.");
+    }
+
+    // 3. Ensure temporary file exists and is readable
+    if (!file_exists($file['tmp_name']) || !is_readable($file['tmp_name']) || filesize($file['tmp_name']) === 0) {
+        throw new Exception("Uploaded file could not be read or is empty.");
+    }
+
+    // 4. Verify server has reliable image inspection capabilities
+    $has_finfo = function_exists('finfo_open');
+    $has_mime_content_type = function_exists('mime_content_type');
+    $has_getimagesize = function_exists('getimagesize');
+
+    if (!$has_finfo && !$has_mime_content_type && !$has_getimagesize) {
+        throw new Exception("Image upload rejected: reliable image validation capabilities are unavailable on this server.");
+    }
+
+    // 5. Inspect image content using getimagesize
+    $img_info = false;
+    if ($has_getimagesize) {
+        $img_info = @getimagesize($file['tmp_name']);
+        if ($img_info === false) {
+            throw new Exception("The uploaded file does not contain valid image data.");
+        }
+    }
+
+    // 6. Detect MIME type directly from file content (never trust extension alone)
     $mime = null;
-    if (function_exists('finfo_open')) {
+    if ($has_finfo) {
         $finfo = @finfo_open(FILEINFO_MIME_TYPE);
         if ($finfo) {
             $mime = @finfo_file($finfo, $file['tmp_name']);
             @finfo_close($finfo);
         }
     }
-    if (!$mime && function_exists('mime_content_type')) {
+    if (!$mime && $has_mime_content_type) {
         $mime = @mime_content_type($file['tmp_name']);
     }
-    if (!$mime && function_exists('getimagesize')) {
-        $img_info = @getimagesize($file['tmp_name']);
-        if ($img_info && !empty($img_info['mime'])) {
-            $mime = $img_info['mime'];
-        }
+    if (!$mime && $img_info && !empty($img_info['mime'])) {
+        $mime = $img_info['mime'];
     }
-    
+
+    if (!$mime) {
+        throw new Exception("Unable to verify the image content type. Please ensure the file is a genuine JPG, PNG, or WEBP image.");
+    }
+
     // Normalize variant mime types
     if ($mime === 'image/pjpeg') $mime = 'image/jpeg';
     if ($mime === 'image/x-png') $mime = 'image/png';
-    
-    if ($mime && !in_array($mime, $allowed_types)) {
-        throw new Exception("Invalid file type ({$mime}). Only JPG, PNG, and WEBP images are allowed.");
+
+    if (!in_array($mime, $allowed_types)) {
+        throw new Exception("Invalid file content type ({$mime}). Only genuine JPG, PNG, and WEBP images are allowed.");
     }
-    
-    // Limit to 4MB
-    if ($file['size'] > 4 * 1024 * 1024) {
-        throw new Exception("File is too large. Maximum allowed size is 4MB.");
+
+    // Double-check image signature matches supported types if getimagesize is available
+    if ($img_info && isset($img_info[2])) {
+        $img_type = $img_info[2];
+        $valid_types = [IMAGETYPE_JPEG, IMAGETYPE_PNG];
+        if (defined('IMAGETYPE_WEBP')) {
+            $valid_types[] = IMAGETYPE_WEBP;
+        }
+        if (!in_array($img_type, $valid_types)) {
+            throw new Exception("The uploaded file content does not match a supported image format.");
+        }
     }
-    
+
     // Generate unique name and target path
     $new_name = bin2hex(random_bytes(8)) . '_' . time() . '.' . $ext;
     
@@ -299,6 +335,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($action === 'add' || $action === '
         $item = [
             'title' => trim($_POST['title'] ?? ''),
             'slug' => trim($_POST['slug'] ?? ''),
+            'slug_mode' => trim($_POST['slug_mode'] ?? ($action === 'edit' ? 'manual' : 'auto')),
             'category_id' => !empty($_POST['category_id']) ? (int)$_POST['category_id'] : null,
             'author' => trim($_POST['author'] ?? ''),
             'author_designation' => trim($_POST['author_designation'] ?? ''),
@@ -317,6 +354,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($action === 'add' || $action === '
         $item = [
             'title' => trim($_POST['title'] ?? ''),
             'slug' => trim($_POST['slug'] ?? ''),
+            'slug_mode' => trim($_POST['slug_mode'] ?? ($action === 'edit' ? 'manual' : 'auto')),
             'category_id' => !empty($_POST['category_id']) ? (int)$_POST['category_id'] : null,
             'author' => trim($_POST['author'] ?? ''),
             'author_designation' => trim($_POST['author_designation'] ?? ''),
@@ -332,6 +370,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($action === 'add' || $action === '
     } else {
         $title = trim($_POST['title'] ?? '');
         $raw_slug = trim($_POST['slug'] ?? '');
+        $submitted_slug_mode = trim($_POST['slug_mode'] ?? '');
+        
+        // Distinguish automatic and manual slug intent reliably:
+        // Automatic mode is active if explicitly submitted as 'auto' or if raw_slug is empty.
+        // Otherwise (including explicit 'manual', or non-empty slug with default mode), it is treated as manual intent.
+        $is_auto_slug = (empty($raw_slug) || $submitted_slug_mode === 'auto');
+        $slug_mode = $is_auto_slug ? 'auto' : 'manual';
+        
         $excerpt = trim($_POST['excerpt'] ?? '');
         $content = sanitize_blog_html(trim($_POST['content'] ?? ''));
         $category_id = !empty($_POST['category_id']) ? (int)$_POST['category_id'] : null;
@@ -360,6 +406,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($action === 'add' || $action === '
         $item = [
             'title' => $title,
             'slug' => $raw_slug,
+            'slug_mode' => $slug_mode,
             'category_id' => $category_id,
             'author' => $author,
             'author_designation' => $author_designation,
@@ -395,10 +442,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($action === 'add' || $action === '
                     $existing_slug_record = $slug_check_stmt->fetch();
 
                     if ($existing_slug_record) {
-                        // If slug was auto-derived from title or empty, resolve deterministically with unique suffix
-                        $is_derived_from_title = empty($raw_slug) || ($slug === generate_blog_slug($title));
-                        if ($is_derived_from_title && $action === 'add') {
-                            $slug = resolve_unique_blog_slug($db, $slug);
+                        // Automatically resolve collisions only for genuinely automatic slugs;
+                        // show a clear validation error for duplicate manually entered slugs.
+                        if ($is_auto_slug) {
+                            $slug = resolve_unique_blog_slug($db, $slug, ($action === 'edit' && $id > 0) ? $id : 0);
                             $item['slug'] = $slug;
                         } else {
                             $error = "The slug '" . h($slug) . "' is already in use by another article. Please enter a unique slug.";
@@ -689,6 +736,7 @@ include_once dirname(__FILE__) . '/header.php';
   <div class="card" style="border-left: none; padding: 2.5rem;">
     <form method="POST" action="" enctype="multipart/form-data">
       <input type="hidden" name="csrf_token" value="<?php echo get_csrf_token(); ?>">
+      <input type="hidden" name="slug_mode" id="blog-slug-mode" value="<?php echo h($item['slug_mode'] ?? ($action === 'edit' ? 'manual' : 'auto')); ?>">
       <?php if ($action === 'edit'): ?>
         <input type="hidden" name="existing_featured_image" value="<?php echo h($item['featured_image']); ?>">
       <?php endif; ?>
@@ -801,6 +849,7 @@ include_once dirname(__FILE__) . '/header.php';
     'use strict';
     var titleInput = document.getElementById('blog-title-input');
     var slugInput = document.getElementById('blog-slug-input');
+    var slugModeInput = document.getElementById('blog-slug-mode');
     var previewText = document.getElementById('slug-preview-text');
     var statusHint = document.getElementById('slug-status-hint');
     var resyncBtn = document.getElementById('slug-resync-btn');
@@ -822,11 +871,24 @@ include_once dirname(__FILE__) . '/header.php';
         .replace(/^-+|-+$/g, '');        // Remove hyphens from start and end
     }
 
-    // In edit mode: existing slug is preserved by default to protect live URLs
-    // In add mode: if field has a value differing from the title's derived slug (e.g. from error redisplay), mark customized
-    var isCustomized = isEditMode ? true : (slugInput.value.trim() !== '' && slugInput.value.trim() !== generateSlug(titleInput.value));
+    // Determine initial mode:
+    // 1. If hidden input has an explicit mode ('auto' or 'manual'), use it
+    // 2. Otherwise in edit mode, default to 'manual' (preserve saved slug)
+    // 3. In add mode, default to 'auto' unless a custom slug was already entered
+    var currentMode = 'auto';
+    if (slugModeInput && (slugModeInput.value === 'auto' || slugModeInput.value === 'manual')) {
+      currentMode = slugModeInput.value;
+    } else if (isEditMode) {
+      currentMode = 'manual';
+    } else if (slugInput.value.trim() !== '') {
+      currentMode = 'manual';
+    }
 
     function updateUiState() {
+      if (slugModeInput) {
+        slugModeInput.value = currentMode;
+      }
+
       var currentSlug = slugInput.value.trim();
       var derivedSlug = generateSlug(titleInput.value);
 
@@ -835,7 +897,7 @@ include_once dirname(__FILE__) . '/header.php';
       }
 
       if (statusHint) {
-        if (isCustomized) {
+        if (currentMode === 'manual') {
           statusHint.textContent = '(manually edited)';
           statusHint.style.color = '#B45309';
         } else {
@@ -845,43 +907,42 @@ include_once dirname(__FILE__) . '/header.php';
       }
 
       if (resyncBtn) {
-        var canResync = isCustomized && (titleInput.value.trim() !== '');
+        // Show re-sync button when in manual mode and title is present
+        var canResync = (currentMode === 'manual') && (titleInput.value.trim() !== '');
         resyncBtn.style.display = canResync ? 'inline-block' : 'none';
       }
     }
 
-    // Dynamic auto-generation while typing title
+    // Dynamic auto-generation while typing title in automatic mode
     titleInput.addEventListener('input', function() {
-      if (!isCustomized) {
+      if (currentMode === 'auto') {
         slugInput.value = generateSlug(titleInput.value);
       }
       updateUiState();
     });
 
-    // Detect manual customization or clearing of slug field
+    // Detect manual editing or clearing of slug field
     slugInput.addEventListener('input', function() {
-      var currentVal = slugInput.value;
-      var derived = generateSlug(titleInput.value);
-
-      // If admin clears the slug field, immediately resume automatic generation from title
-      if (currentVal.trim() === '') {
-        isCustomized = false;
+      // If admin completely clears the slug field, restore automatic mode
+      if (slugInput.value.trim() === '') {
+        currentMode = 'auto';
+        var derived = generateSlug(titleInput.value);
         if (derived !== '') {
           slugInput.value = derived;
         }
-      } else if (currentVal.trim() === derived) {
-        isCustomized = false;
       } else {
-        isCustomized = true;
+        // Any explicit typing marks it as manual intent,
+        // even if the text matches the title-derived slug
+        currentMode = 'manual';
       }
       updateUiState();
     });
 
-    // One-click re-sync with title
+    // One-click re-sync with title: restores automatic mode
     if (resyncBtn) {
       resyncBtn.addEventListener('click', function(e) {
         e.preventDefault();
-        isCustomized = false;
+        currentMode = 'auto';
         slugInput.value = generateSlug(titleInput.value);
         updateUiState();
         slugInput.focus();
@@ -889,6 +950,10 @@ include_once dirname(__FILE__) . '/header.php';
     }
 
     // Initial state setup on load
+    // In add mode, if slug is empty but title exists, auto-populate
+    if (!isEditMode && currentMode === 'auto' && slugInput.value.trim() === '' && titleInput.value.trim() !== '') {
+      slugInput.value = generateSlug(titleInput.value);
+    }
     updateUiState();
   })();
   </script>
