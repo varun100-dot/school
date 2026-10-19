@@ -307,6 +307,12 @@ switch ($route) {
         include dirname(__FILE__) . '/pages/blogs.php';
         break;
         
+    case 'landing-page':
+    case 'landing-page.php':
+        $page_slug = 'landing-page';
+        include dirname(__FILE__) . '/pages/landing-page.php';
+        break;
+        
     default:
         // Handle potential nested routing like blogs/{slug}, about/{sub}, academics/{sub}, or admissions/{sub}
         $parts = explode('/', $route);

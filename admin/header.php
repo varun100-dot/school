@@ -398,6 +398,12 @@ $current_page = $page_slug ?? 'admin-dashboard';
               <span class="badge" style="background:#059669; color:#fff; font-size:0.65rem; padding:1px 6px; border-radius:10px;">Contact</span>
             </span>
           </a>
+          <a href="/admin/enquiries.php?source=landing_page" class="sidebar-item <?php echo ($is_leads_active && ($curr_lead_src === 'landing_page' || $curr_lead_src === 'landing')) ? 'active' : ''; ?>" style="padding-left: 1.5rem;">
+            <span style="display:flex; justify-content:space-between; width:100%; align-items:center;">
+              <span>&#128196; Landing Page Leads</span>
+              <span class="badge" style="background:#7C3AED; color:#fff; font-size:0.65rem; padding:1px 6px; border-radius:10px;">Landing</span>
+            </span>
+          </a>
           <a href="/admin/enquiries.php" class="sidebar-item <?php echo ($is_leads_active && empty($curr_lead_src)) ? 'active' : ''; ?>" style="padding-left: 1.5rem;">
             <span>&#10003; All Enquiries CRM</span>
           </a>

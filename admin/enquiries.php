@@ -75,12 +75,14 @@ $source_tab = trim($_GET['source'] ?? ''); // 'homepage', 'contact', or ''
 $count_all = 0;
 $count_homepage = 0;
 $count_contact = 0;
+$count_landing = 0;
 
 if ($db) {
     try {
         $count_all = (int)$db->query("SELECT COUNT(*) FROM `enquiries`")->fetchColumn();
         $count_homepage = (int)$db->query("SELECT COUNT(*) FROM `enquiries` WHERE `source` LIKE '%Home%' OR `source` LIKE '%Counselor%' OR `source` LIKE '%Banner%'")->fetchColumn();
         $count_contact = (int)$db->query("SELECT COUNT(*) FROM `enquiries` WHERE `source` LIKE '%Contact%'")->fetchColumn();
+        $count_landing = (int)$db->query("SELECT COUNT(*) FROM `enquiries` WHERE `source` LIKE '%Landing%'")->fetchColumn();
     } catch (Exception $e) {}
 }
 
@@ -92,6 +94,8 @@ if (!empty($_SESSION['mock_enquiries'])) {
             $count_homepage++;
         } elseif (stripos($m_src, 'Contact') !== false) {
             $count_contact++;
+        } elseif (stripos($m_src, 'Landing') !== false) {
+            $count_landing++;
         }
     }
 }
@@ -145,6 +149,7 @@ if ($action === 'export_csv') {
     $filename_prefix = 'zuvio_enquiries_';
     if ($source_tab === 'homepage') $filename_prefix = 'zuvio_homepage_leads_';
     if ($source_tab === 'contact') $filename_prefix = 'zuvio_contact_leads_';
+    if ($source_tab === 'landing_page' || $source_tab === 'landing') $filename_prefix = 'zuvio_landing_page_leads_';
 
     header('Content-Type: text/csv; charset=utf-8');
     header('Content-Disposition: attachment; filename=' . $filename_prefix . date('Y-m-d_His') . '.csv');
@@ -187,6 +192,8 @@ if ($action === 'list') {
                 $sql .= " AND (e.source LIKE '%Home%' OR e.source LIKE '%Counselor%' OR e.source LIKE '%Banner%')";
             } elseif ($source_tab === 'contact') {
                 $sql .= " AND e.source LIKE '%Contact%'";
+            } elseif ($source_tab === 'landing_page' || $source_tab === 'landing') {
+                $sql .= " AND e.source LIKE '%Landing%'";
             }
             if ($status_filter > 0) {
                 $sql .= " AND e.status_id = ?";
@@ -212,6 +219,7 @@ if ($action === 'list') {
             $m_src = $mock_lead['source'] ?? '';
             if ($source_tab === 'homepage' && !(stripos($m_src, 'Home') !== false || stripos($m_src, 'Counselor') !== false || stripos($m_src, 'Banner') !== false)) continue;
             if ($source_tab === 'contact' && stripos($m_src, 'Contact') === false) continue;
+            if (($source_tab === 'landing_page' || $source_tab === 'landing') && stripos($m_src, 'Landing') === false) continue;
             if ($status_filter > 0 && ($mock_lead['status_id'] ?? 1) !== $status_filter) continue;
             if ($search_q !== '' && stripos($mock_lead['parent_name'] . ' ' . $mock_lead['email'] . ' ' . $mock_lead['phone'], $search_q) === false) continue;
             $mock_lead['status_name'] = 'New';
@@ -232,6 +240,9 @@ if ($source_tab === 'homepage') {
 } elseif ($source_tab === 'contact') {
     $page_title = 'Contact Us Leads CRM';
     $page_sub = 'Inquiries and parent messages received from the Contact Us form.';
+} elseif ($source_tab === 'landing_page' || $source_tab === 'landing') {
+    $page_title = 'Landing Page Leads CRM';
+    $page_sub = 'Prospective student leads received directly from the Landing Page enquiry form.';
 }
 ?>
 
@@ -265,6 +276,10 @@ if ($source_tab === 'homepage') {
     <a href="/admin/enquiries?source=contact" style="padding: 0.5rem 1rem; border-radius: var(--radius-sm); font-size: 0.85rem; font-weight: 600; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; <?php echo $source_tab === 'contact' ? 'background: var(--color-navy); color: #fff;' : 'background: #fff; color: var(--color-navy); border: 1px solid var(--color-border);'; ?>">
       <span>✉️ Contact Us Leads</span>
       <span style="background: <?php echo $source_tab === 'contact' ? 'var(--color-gold)' : 'var(--color-surface-blue)'; ?>; color: <?php echo $source_tab === 'contact' ? 'var(--color-navy-dark)' : 'var(--color-navy)'; ?>; padding: 0.15rem 0.45rem; border-radius: 12px; font-size: 0.75rem; font-weight: 700;"><?php echo $count_contact; ?></span>
+    </a>
+    <a href="/admin/enquiries?source=landing_page" style="padding: 0.5rem 1rem; border-radius: var(--radius-sm); font-size: 0.85rem; font-weight: 600; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; <?php echo ($source_tab === 'landing_page' || $source_tab === 'landing') ? 'background: var(--color-navy); color: #fff;' : 'background: #fff; color: var(--color-navy); border: 1px solid var(--color-border);'; ?>">
+      <span>📄 Landing Page Leads</span>
+      <span style="background: <?php echo ($source_tab === 'landing_page' || $source_tab === 'landing') ? 'var(--color-gold)' : 'var(--color-surface-blue)'; ?>; color: <?php echo ($source_tab === 'landing_page' || $source_tab === 'landing') ? 'var(--color-navy-dark)' : 'var(--color-navy)'; ?>; padding: 0.15rem 0.45rem; border-radius: 12px; font-size: 0.75rem; font-weight: 700;"><?php echo $count_landing; ?></span>
     </a>
   </div>
 
