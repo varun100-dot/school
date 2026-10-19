@@ -206,18 +206,29 @@ function sanitize_blog_html($html) {
         'float', 'display', 'vertical-align', 'list-style-type'
     ];
 
-    $dom = new DOMDocument();
-    $prev_errors = libxml_use_internal_errors(true);
+    // Gracefully handle environments missing DOMDocument/libxml extensions
+    if (!class_exists('DOMDocument') || !function_exists('libxml_use_internal_errors')) {
+        error_log("[Blog Sanitizer Warning] DOMDocument or libxml extension not available. Falling back to regex sanitization.");
+        $fallback = strip_tags($html, '<p><br><hr><h1><h2><h3><h4><h5><h6><strong><b><em><i><u><s><del><strike><span><sub><sup><mark><ul><ol><li><blockquote><pre><code><kbd><a><img><figure><figcaption><div><table><thead><tbody><tfoot><tr><th><td><caption>');
+        $fallback = preg_replace('/<([a-z][a-z0-9]*)[^>]*?(\bon\w+\s*=\s*[\'"][^\'"]*[\'"][^>]*?)>/i', '<$1>', $fallback);
+        $fallback = preg_replace('/href\s*=\s*[\'"]\s*(javascript|vbscript|data):[^\'"]*[\'"]/i', 'href="#"', $fallback);
+        $fallback = preg_replace('/src\s*=\s*[\'"]\s*(javascript|vbscript):[^\'"]*[\'"]/i', 'src=""', $fallback);
+        return $fallback;
+    }
 
-    // Encode as UTF-8 properly for DOMDocument
-    $wrapped = '<?xml encoding="utf-8" ?><div>' . $html . '</div>';
-    $dom->loadHTML($wrapped, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-    libxml_clear_errors();
-    libxml_use_internal_errors($prev_errors);
+    try {
+        $dom = new DOMDocument();
+        $prev_errors = libxml_use_internal_errors(true);
 
-    // Helper to sanitize CSS inline styles
-    $clean_style = function($style_string) use ($allowed_styles) {
-        if (empty($style_string)) return '';
+        // Encode as UTF-8 properly for DOMDocument
+        $wrapped = '<?xml encoding="utf-8" ?><div>' . $html . '</div>';
+        $dom->loadHTML($wrapped, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+        libxml_clear_errors();
+        libxml_use_internal_errors($prev_errors);
+
+        // Helper to sanitize CSS inline styles
+        $clean_style = function($style_string) use ($allowed_styles) {
+            if (empty($style_string)) return '';
         if (preg_match('/(expression|javascript|behavior|url\s*\(|@import|-moz-binding|<|>)/i', $style_string)) {
             return '';
         }
@@ -337,7 +348,11 @@ function sanitize_blog_html($html) {
         return trim($output);
     }
 
-    return '';
+        return '';
+    } catch (Throwable $e) {
+        error_log("[Blog Sanitizer Error] " . $e->getMessage());
+        return strip_tags($html, '<p><br><hr><h1><h2><h3><h4><h5><h6><strong><b><em><i><u><s><del><strike><span><sub><sup><mark><ul><ol><li><blockquote><pre><code><kbd><a><img><figure><figcaption><div><table><thead><tbody><tfoot><tr><th><td><caption>');
+    }
 }
 
 /**
@@ -357,3 +372,34 @@ function render_blog_content($content) {
         return nl2br(h($content));
     }
 }
+
+/**
+ * Generate a clean, URL-friendly slug from a title or text string.
+ * Converts to lowercase, strips apostrophes, transforms spaces/punctuation to hyphens,
+ * collapses repeated hyphens, and trims leading/trailing hyphens.
+ */
+function generate_blog_slug($text) {
+    if ($text === null) {
+        return '';
+    }
+    // Remove apostrophes so e.g. "Parent's" -> "Parents"
+    $text = preg_replace("/['’]/u", '', (string)$text);
+    // Convert en-dashes, em-dashes and underscores to hyphens
+    $text = preg_replace('/[–—_]/u', '-', $text);
+    // Convert to lowercase (multibyte-safe if mbstring extension loaded)
+    $text = function_exists('mb_strtolower') ? mb_strtolower($text, 'UTF-8') : strtolower($text);
+    // Replace non-alphanumeric characters with hyphens
+    $text = preg_replace('/[^a-z0-9\-]+/u', '-', $text);
+    // Collapse consecutive hyphens
+    $text = preg_replace('/-+/', '-', $text);
+    // Trim leading/trailing hyphens
+    return trim($text, '-');
+}
+
+/**
+ * Alias for generate_blog_slug for backward compatibility
+ */
+function slugify($text) {
+    return generate_blog_slug($text);
+}
+

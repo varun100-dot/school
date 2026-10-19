@@ -15,20 +15,58 @@ $error = '';
 // Helper function to process uploads and write to media table
 function handle_file_upload($file_post_key) {
     global $db;
-    if (!isset($_FILES[$file_post_key]) || $_FILES[$file_post_key]['error'] !== UPLOAD_ERR_OK) {
+    if (!isset($_FILES[$file_post_key])) {
         return null;
+    }
+    
+    $file_error = $_FILES[$file_post_key]['error'];
+    if ($file_error === UPLOAD_ERR_NO_FILE) {
+        return null;
+    }
+    
+    if ($file_error === UPLOAD_ERR_INI_SIZE || $file_error === UPLOAD_ERR_FORM_SIZE) {
+        throw new Exception("The uploaded image exceeds the maximum allowed file size (4MB).");
+    } elseif ($file_error === UPLOAD_ERR_PARTIAL) {
+        throw new Exception("The image file was only partially uploaded. Please try again.");
+    } elseif ($file_error !== UPLOAD_ERR_OK) {
+        throw new Exception("File upload failed (error code: " . (int)$file_error . ").");
     }
     
     $file = $_FILES[$file_post_key];
     $allowed_types = ['image/jpeg', 'image/png', 'image/webp'];
+    $allowed_exts = ['jpg', 'jpeg', 'png', 'webp'];
     
-    // Check MIME Type
-    $finfo = finfo_open(FILEINFO_MIME_TYPE);
-    $mime = finfo_file($finfo, $file['tmp_name']);
-    finfo_close($finfo);
+    // Check extension
+    $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+    if (!in_array($ext, $allowed_exts)) {
+        throw new Exception("Invalid file extension (." . $ext . "). Only JPG, PNG, and WEBP images are allowed.");
+    }
     
-    if (!in_value_array($mime, $allowed_types)) {
-        throw new Exception("Invalid file type. Only JPG, PNG, and WEBP images are allowed.");
+    // Detect MIME type with robust fallbacks
+    $mime = null;
+    if (function_exists('finfo_open')) {
+        $finfo = @finfo_open(FILEINFO_MIME_TYPE);
+        if ($finfo) {
+            $mime = @finfo_file($finfo, $file['tmp_name']);
+            @finfo_close($finfo);
+        }
+    }
+    if (!$mime && function_exists('mime_content_type')) {
+        $mime = @mime_content_type($file['tmp_name']);
+    }
+    if (!$mime && function_exists('getimagesize')) {
+        $img_info = @getimagesize($file['tmp_name']);
+        if ($img_info && !empty($img_info['mime'])) {
+            $mime = $img_info['mime'];
+        }
+    }
+    
+    // Normalize variant mime types
+    if ($mime === 'image/pjpeg') $mime = 'image/jpeg';
+    if ($mime === 'image/x-png') $mime = 'image/png';
+    
+    if ($mime && !in_array($mime, $allowed_types)) {
+        throw new Exception("Invalid file type ({$mime}). Only JPG, PNG, and WEBP images are allowed.");
     }
     
     // Limit to 4MB
@@ -37,12 +75,13 @@ function handle_file_upload($file_post_key) {
     }
     
     // Generate unique name and target path
-    $ext = pathinfo($file['name'], PATHINFO_EXTENSION);
     $new_name = bin2hex(random_bytes(8)) . '_' . time() . '.' . $ext;
     
     $upload_dir = dirname(__FILE__) . '/../uploads/';
     if (!is_dir($upload_dir)) {
-        mkdir($upload_dir, 0755, true);
+        if (!@mkdir($upload_dir, 0755, true) && !is_dir($upload_dir)) {
+            throw new Exception("Upload directory could not be created. Please verify server permissions on uploads/.");
+        }
     }
     
     $storage_path = 'uploads/' . $new_name;
@@ -51,29 +90,58 @@ function handle_file_upload($file_post_key) {
     if (move_uploaded_file($file['tmp_name'], $target_path)) {
         $public_url = '/' . $storage_path;
         
-        // Get dimensions
+        // Get dimensions safely
         $width = null;
         $height = null;
-        $sizes = getimagesize($target_path);
-        if ($sizes) {
-            $width = $sizes[0];
-            $height = $sizes[1];
+        if (function_exists('getimagesize')) {
+            $sizes = @getimagesize($target_path);
+            if ($sizes) {
+                $width = $sizes[0];
+                $height = $sizes[1];
+            }
         }
         
-        // Insert media registry
-        $stmt = $db->prepare("
-            INSERT INTO `media` (`file_name`, `storage_path`, `public_url`, `mime_type`, `file_size`, `width`, `height`)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
-        ");
-        $stmt->execute([$file['name'], $storage_path, $public_url, $mime, $file['size'], $width, $height]);
+        // Insert media registry safely (wrapped so media table failure doesn't abort blog creation)
+        if ($db) {
+            try {
+                $stmt = $db->prepare("
+                    INSERT INTO `media` (`file_name`, `storage_path`, `public_url`, `mime_type`, `file_size`, `width`, `height`)
+                    VALUES (?, ?, ?, ?, ?, ?, ?)
+                ");
+                $stmt->execute([$file['name'], $storage_path, $public_url, $mime ?: ('image/' . $ext), $file['size'], $width, $height]);
+            } catch (Throwable $me) {
+                error_log("[Media Registry Warning] " . $me->getMessage());
+            }
+        }
         
         return $public_url;
     }
-    return null;
+    
+    throw new Exception("Failed to move uploaded file. Please verify directory permissions for uploads/.");
 }
 
-function in_value_array($val, $arr) {
-    return in_array($val, $arr);
+// Helper function to resolve deterministic unique slug
+function resolve_unique_blog_slug($db, $base_slug, $exclude_id = 0) {
+    if (!$db || empty($base_slug)) {
+        return $base_slug ?: 'article';
+    }
+    $slug = $base_slug;
+    $counter = 1;
+    while (true) {
+        if ($exclude_id > 0) {
+            $stmt = $db->prepare("SELECT COUNT(*) FROM `blogs` WHERE `slug` = ? AND `id` != ?");
+            $stmt->execute([$slug, $exclude_id]);
+        } else {
+            $stmt = $db->prepare("SELECT COUNT(*) FROM `blogs` WHERE `slug` = ?");
+            $stmt->execute([$slug]);
+        }
+        $count = (int)$stmt->fetchColumn();
+        if ($count === 0) {
+            return $slug;
+        }
+        $counter++;
+        $slug = $base_slug . '-' . $counter;
+    }
 }
 
 // 1. Action Handler: Delete
@@ -90,10 +158,16 @@ if ($action === 'delete' && $id > 0) {
             $stmt = $db->prepare("DELETE FROM `blogs` WHERE `id` = ?");
             $stmt->execute([$id]);
             
-            log_audit('BLOG_DELETED', 'blogs', 'blogs', $id, $old_blog, null, "Deleted blog article '{$old_blog['title']}'");
+            try {
+                log_audit('BLOG_DELETED', 'blogs', 'blogs', $id, $old_blog, null, "Deleted blog article '" . ($old_blog['title'] ?? '') . "'");
+            } catch (Throwable $ae) {
+                error_log("[Blog Delete Audit Warning] " . $ae->getMessage());
+            }
+            
             header('Location: /admin/blogs?msg=deleted');
             exit;
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
+            error_log("[Blog Delete Error] " . $e->getMessage());
             $error = "Could not delete article: " . $e->getMessage();
         }
     }
@@ -104,7 +178,7 @@ $categories = [];
 if ($db) {
     try {
         $categories = $db->query("SELECT * FROM `blog_categories` ORDER BY `name` ASC")->fetchAll();
-    } catch (Exception $e) {
+    } catch (Throwable $e) {
         error_log("[CRUD Category Fetch Error] " . $e->getMessage());
     }
 }
@@ -116,7 +190,7 @@ if ($action === 'add_category' && $_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = 'Security check failed.';
     } else {
         $cat_name = trim($_POST['cat_name'] ?? '');
-        $cat_slug = trim($_POST['cat_slug'] ?? '') ?: slugify($cat_name);
+        $cat_slug = trim($_POST['cat_slug'] ?? '') ?: generate_blog_slug($cat_name);
         $cat_desc = trim($_POST['cat_desc'] ?? '');
         if ($cat_name && $db) {
             try {
@@ -130,7 +204,8 @@ if ($action === 'add_category' && $_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
                 header('Location: /admin/blogs?tab=categories&msg=cat_added');
                 exit;
-            } catch (Exception $e) {
+            } catch (Throwable $e) {
+                error_log("[Category Add Error] " . $e->getMessage());
                 $error = 'Category error: ' . $e->getMessage();
             }
         }
@@ -145,7 +220,8 @@ if ($action === 'delete_category' && $id > 0) {
             $stmt->execute([$id]);
             header('Location: /admin/blogs?tab=categories&msg=cat_deleted');
             exit;
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
+            error_log("[Category Delete Error] " . $e->getMessage());
             $error = 'Category delete error: ' . $e->getMessage();
         }
     }
@@ -169,7 +245,8 @@ if ($action === 'upload_editor_image' && $_SERVER['REQUEST_METHOD'] === 'POST') 
         }
         echo json_encode(['success' => true, 'url' => $uploaded_url]);
         exit;
-    } catch (Exception $e) {
+    } catch (Throwable $e) {
+        error_log("[Editor Upload Error] " . $e->getMessage());
         echo json_encode(['success' => false, 'error' => $e->getMessage()]);
         exit;
     }
@@ -190,8 +267,8 @@ if ($action === 'get_media_library') {
                 LIMIT 24
             ");
             $media_list = $stmt->fetchAll();
-        } catch (Exception $e) {
-            // Ignore error
+        } catch (Throwable $e) {
+            error_log("[Media Library Fetch Error] " . $e->getMessage());
         }
     }
     $static_images = [
@@ -212,115 +289,239 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($action === 'add' || $action === '
     }
     
     // If attempting to publish, enforce blogs.publish permission
-    $status = $_POST['status'] === 'published' ? 'published' : 'draft';
+    $status = (isset($_POST['status']) && $_POST['status'] === 'published') ? 'published' : 'draft';
     if ($status === 'published') {
         require_permission('blogs.publish');
     }
 
     if (!validate_csrf_token($_POST['csrf_token'] ?? '')) {
         $error = 'Security check failed. Please submit again.';
+        $item = [
+            'title' => trim($_POST['title'] ?? ''),
+            'slug' => trim($_POST['slug'] ?? ''),
+            'category_id' => !empty($_POST['category_id']) ? (int)$_POST['category_id'] : null,
+            'author' => trim($_POST['author'] ?? ''),
+            'author_designation' => trim($_POST['author_designation'] ?? ''),
+            'publish_date' => !empty($_POST['publish_date']) ? $_POST['publish_date'] : date('Y-m-d'),
+            'status' => $status,
+            'featured_image' => $_POST['existing_featured_image'] ?? '',
+            'excerpt' => trim($_POST['excerpt'] ?? ''),
+            'content' => $_POST['content'] ?? '',
+            'seo_title' => trim($_POST['seo_title'] ?? ''),
+            'meta_description' => trim($_POST['meta_description'] ?? ''),
+            'canonical_url' => trim($_POST['canonical_url'] ?? ''),
+        ];
+    } elseif (!$db) {
+        $error = 'Database service is currently unavailable. Please try again.';
+        error_log("[Blog CMS Error] DB connection is null during save POST.");
+        $item = [
+            'title' => trim($_POST['title'] ?? ''),
+            'slug' => trim($_POST['slug'] ?? ''),
+            'category_id' => !empty($_POST['category_id']) ? (int)$_POST['category_id'] : null,
+            'author' => trim($_POST['author'] ?? ''),
+            'author_designation' => trim($_POST['author_designation'] ?? ''),
+            'publish_date' => !empty($_POST['publish_date']) ? $_POST['publish_date'] : date('Y-m-d'),
+            'status' => $status,
+            'featured_image' => $_POST['existing_featured_image'] ?? '',
+            'excerpt' => trim($_POST['excerpt'] ?? ''),
+            'content' => $_POST['content'] ?? '',
+            'seo_title' => trim($_POST['seo_title'] ?? ''),
+            'meta_description' => trim($_POST['meta_description'] ?? ''),
+            'canonical_url' => trim($_POST['canonical_url'] ?? ''),
+        ];
     } else {
         $title = trim($_POST['title'] ?? '');
-        $slug = trim($_POST['slug'] ?? '');
+        $raw_slug = trim($_POST['slug'] ?? '');
         $excerpt = trim($_POST['excerpt'] ?? '');
         $content = sanitize_blog_html(trim($_POST['content'] ?? ''));
         $category_id = !empty($_POST['category_id']) ? (int)$_POST['category_id'] : null;
         $author = trim($_POST['author'] ?? '');
         $author_designation = trim($_POST['author_designation'] ?? '');
-        $status = $_POST['status'] === 'published' ? 'published' : 'draft';
         $publish_date = !empty($_POST['publish_date']) ? $_POST['publish_date'] : date('Y-m-d');
         
         $seo_title = trim($_POST['seo_title'] ?? '');
         $meta_description = trim($_POST['meta_description'] ?? '');
         $canonical_url = trim($_POST['canonical_url'] ?? '');
+
+        // Validate category FK against database to prevent FK constraint failures
+        if ($category_id !== null) {
+            try {
+                $c_check = $db->prepare("SELECT `id` FROM `blog_categories` WHERE `id` = ? LIMIT 1");
+                $c_check->execute([$category_id]);
+                if (!$c_check->fetch()) {
+                    $category_id = null;
+                }
+            } catch (Throwable $cte) {
+                $category_id = null;
+            }
+        }
         
+        // Populate $item so user never loses their form inputs if any error occurs
+        $item = [
+            'title' => $title,
+            'slug' => $raw_slug,
+            'category_id' => $category_id,
+            'author' => $author,
+            'author_designation' => $author_designation,
+            'publish_date' => $publish_date,
+            'status' => $status,
+            'featured_image' => $_POST['existing_featured_image'] ?? '',
+            'excerpt' => $excerpt,
+            'content' => $_POST['content'] ?? '',
+            'seo_title' => $seo_title,
+            'meta_description' => $meta_description,
+            'canonical_url' => $canonical_url,
+        ];
+
         if (empty($title)) {
             $error = 'Title is required.';
         } else {
+            // Slug derivation and normalization
+            $slug = !empty($raw_slug) ? generate_blog_slug($raw_slug) : generate_blog_slug($title);
             if (empty($slug)) {
-                $slug = strtolower(preg_replace('/[^a-zA-Z0-9\-]+/', '-', $title));
+                $slug = generate_blog_slug($title);
             }
-            
-            try {
-                // Handle optional image upload
-                $uploaded_url = handle_file_upload('featured_image_file');
+            if (empty($slug)) {
+                $error = 'A valid URL-friendly slug or title is required.';
+            } else {
+                $item['slug'] = $slug;
                 
-                if ($action === 'add') {
-                    $featured_image = $uploaded_url ?: '';
-                    
-                    $stmt = $db->prepare("
-                        INSERT INTO `blogs` 
-                        (`title`, `slug`, `excerpt`, `content`, `featured_image`, `author`, `author_designation`, `category_id`, `publish_date`, `status`, `seo_title`, `meta_description`, `canonical_url`)
-                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                    ");
-                    $stmt->execute([
-                        $title, $slug, $excerpt, $content, $featured_image, $author, $author_designation, $category_id, $publish_date, $status, $seo_title, $meta_description, $canonical_url
-                    ]);
-                    $new_id = $db->lastInsertId();
-                    
-                    log_audit('BLOG_CREATED', 'blogs', 'blogs', $new_id, null, ['title' => $title], "Created blog article '{$title}'");
-                    header('Location: /admin/blogs?msg=added');
-                    exit;
-                } else {
-                    // Update flow
-                    // Keep existing image if no new upload is selected
-                    $featured_image = $_POST['existing_featured_image'] ?? '';
-                    if ($uploaded_url) {
-                        $featured_image = $uploaded_url;
+                try {
+                    // Check for slug collisions in database
+                    $slug_check_query = "SELECT `id` FROM `blogs` WHERE `slug` = ?" . ($action === 'edit' && $id > 0 ? " AND `id` != ?" : "") . " LIMIT 1";
+                    $slug_check_stmt = $db->prepare($slug_check_query);
+                    $slug_check_params = ($action === 'edit' && $id > 0) ? [$slug, $id] : [$slug];
+                    $slug_check_stmt->execute($slug_check_params);
+                    $existing_slug_record = $slug_check_stmt->fetch();
+
+                    if ($existing_slug_record) {
+                        // If slug was auto-derived from title or empty, resolve deterministically with unique suffix
+                        $is_derived_from_title = empty($raw_slug) || ($slug === generate_blog_slug($title));
+                        if ($is_derived_from_title && $action === 'add') {
+                            $slug = resolve_unique_blog_slug($db, $slug);
+                            $item['slug'] = $slug;
+                        } else {
+                            $error = "The slug '" . h($slug) . "' is already in use by another article. Please enter a unique slug.";
+                        }
                     }
-                    
-                    $old_stmt = $db->prepare("SELECT * FROM `blogs` WHERE `id` = ? LIMIT 1");
-                    $old_stmt->execute([$id]);
-                    $old_blog = $old_stmt->fetch();
-                    
-                    $stmt = $db->prepare("
-                        UPDATE `blogs` 
-                        SET `title` = ?, `slug` = ?, `excerpt` = ?, `content` = ?, `featured_image` = ?, `author` = ?, `author_designation` = ?, `category_id` = ?, `publish_date` = ?, `status` = ?, `seo_title` = ?, `meta_description` = ?, `canonical_url` = ?
-                        WHERE `id` = ?
-                    ");
-                    $stmt->execute([
-                        $title, $slug, $excerpt, $content, $featured_image, $author, $author_designation, $category_id, $publish_date, $status, $seo_title, $meta_description, $canonical_url, $id
-                    ]);
-                    
-                    log_audit('BLOG_UPDATED', 'blogs', 'blogs', $id, $old_blog, ['title' => $title], "Updated blog article '{$title}'");
-                    header('Location: /admin/blogs?msg=updated');
-                    exit;
+
+                    if (empty($error)) {
+                        // Handle optional image upload
+                        $uploaded_url = handle_file_upload('featured_image_file');
+                        
+                        if ($action === 'add') {
+                            $featured_image = $uploaded_url ?: '';
+                            $item['featured_image'] = $featured_image;
+                            
+                            $stmt = $db->prepare("
+                                INSERT INTO `blogs` 
+                                (`title`, `slug`, `excerpt`, `content`, `featured_image`, `author`, `author_designation`, `category_id`, `publish_date`, `status`, `seo_title`, `meta_description`, `canonical_url`)
+                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                            ");
+                            $stmt->execute([
+                                $title, $slug, $excerpt, $content, $featured_image, $author, $author_designation, $category_id, $publish_date, $status, $seo_title, $meta_description, $canonical_url
+                            ]);
+                            $new_id = (int)$db->lastInsertId();
+                            
+                            // Safe audit logging (post-insert failure will not break redirect or retry)
+                            try {
+                                log_audit('BLOG_CREATED', 'blogs', 'blogs', $new_id, null, ['title' => $title, 'slug' => $slug], "Created blog article '{$title}'");
+                            } catch (Throwable $ae) {
+                                error_log("[Blog Audit Log Warning] " . $ae->getMessage());
+                            }
+                            
+                            header('Location: /admin/blogs?msg=added');
+                            exit;
+                        } else {
+                            // Update flow
+                            $featured_image = $_POST['existing_featured_image'] ?? '';
+                            if ($uploaded_url) {
+                                $featured_image = $uploaded_url;
+                            }
+                            $item['featured_image'] = $featured_image;
+                            
+                            $old_blog = null;
+                            try {
+                                $old_stmt = $db->prepare("SELECT * FROM `blogs` WHERE `id` = ? LIMIT 1");
+                                $old_stmt->execute([$id]);
+                                $old_blog = $old_stmt->fetch();
+                            } catch (Throwable $fe) {
+                                // Ignore error reading old blog state
+                            }
+                            
+                            $stmt = $db->prepare("
+                                UPDATE `blogs` 
+                                SET `title` = ?, `slug` = ?, `excerpt` = ?, `content` = ?, `featured_image` = ?, `author` = ?, `author_designation` = ?, `category_id` = ?, `publish_date` = ?, `status` = ?, `seo_title` = ?, `meta_description` = ?, `canonical_url` = ?
+                                WHERE `id` = ?
+                            ");
+                            $stmt->execute([
+                                $title, $slug, $excerpt, $content, $featured_image, $author, $author_designation, $category_id, $publish_date, $status, $seo_title, $meta_description, $canonical_url, $id
+                            ]);
+                            
+                            try {
+                                log_audit('BLOG_UPDATED', 'blogs', 'blogs', $id, $old_blog, ['title' => $title, 'slug' => $slug], "Updated blog article '{$title}'");
+                            } catch (Throwable $ae) {
+                                error_log("[Blog Audit Log Warning] " . $ae->getMessage());
+                            }
+                            
+                            header('Location: /admin/blogs?msg=updated');
+                            exit;
+                        }
+                    }
+                } catch (PDOException $pe) {
+                    error_log("[Blog CMS DB Error] " . $pe->getMessage());
+                    if ($pe->getCode() == 23000 || strpos($pe->getMessage(), 'Duplicate entry') !== false || strpos($pe->getMessage(), 'UNIQUE') !== false) {
+                        $error = "An article with the slug '" . h($slug) . "' already exists. Please choose a different slug.";
+                    } else {
+                        $error = "A database error occurred while saving the article. Please check your inputs and try again.";
+                    }
+                } catch (Throwable $e) {
+                    error_log("[Blog CMS Error] " . $e->getMessage() . "\n" . $e->getTraceAsString());
+                    $error = $e->getMessage();
                 }
-            } catch (Exception $e) {
-                $error = 'Transaction Error: ' . $e->getMessage();
             }
         }
     }
 }
 
-// 3. Action Handler: Fetch active item for edit form
-$item = null;
-if ($action === 'edit' && $id > 0) {
-    try {
-        $stmt = $db->prepare("SELECT * FROM `blogs` WHERE `id` = ? LIMIT 1");
-        $stmt->execute([$id]);
-        $item = $stmt->fetch();
-        if (!$item) {
-            header('Location: /admin/blogs?error=notfound');
-            exit;
+// 3. Action Handler: Fetch active item for edit form (only if not already loaded from POST)
+$item = $item ?? null;
+if ($action === 'edit' && $id > 0 && $item === null) {
+    if (!$db) {
+        $error = "Database offline.";
+    } else {
+        try {
+            $stmt = $db->prepare("SELECT * FROM `blogs` WHERE `id` = ? LIMIT 1");
+            $stmt->execute([$id]);
+            $item = $stmt->fetch();
+            if (!$item) {
+                header('Location: /admin/blogs?error=notfound');
+                exit;
+            }
+        } catch (Throwable $e) {
+            error_log("[Blog Edit Load Error] " . $e->getMessage());
+            $error = "Error loading article details.";
         }
-    } catch (Exception $e) {
-        $error = "Error loading article details.";
     }
 }
 
 // 4. Action Handler: Listing
 $posts = [];
 if ($action === 'list') {
-    try {
-        $posts = $db->query("
-            SELECT b.*, c.name as category_name 
-            FROM `blogs` b 
-            LEFT JOIN `blog_categories` c ON c.id = b.category_id 
-            ORDER BY b.created_at DESC
-        ")->fetchAll();
-    } catch (Exception $e) {
-        $error = "Database queries failed.";
+    if ($db) {
+        try {
+            $posts = $db->query("
+                SELECT b.*, c.name as category_name 
+                FROM `blogs` b 
+                LEFT JOIN `blog_categories` c ON c.id = b.category_id 
+                ORDER BY b.created_at DESC
+            ")->fetchAll();
+        } catch (Throwable $e) {
+            error_log("[Blog Listing Error] " . $e->getMessage());
+            $error = "Database queries failed.";
+        }
+    } else {
+        $error = "Database service offline.";
     }
 }
 
@@ -493,14 +694,21 @@ include_once dirname(__FILE__) . '/header.php';
       <?php endif; ?>
 
       <div class="admin-form-group">
-        <label class="admin-label">Title *</label>
-        <input type="text" name="title" required class="admin-input" value="<?php echo h($item['title'] ?? ''); ?>" placeholder="Enter blog title">
+        <label class="admin-label" for="blog-title-input">Title *</label>
+        <input type="text" name="title" id="blog-title-input" required class="admin-input" value="<?php echo h($item['title'] ?? ''); ?>" placeholder="Enter blog title" autocomplete="off">
       </div>
 
       <div class="grid-2">
         <div class="admin-form-group">
-          <label class="admin-label">Slug (Optional - auto-generated if left blank)</label>
-          <input type="text" name="slug" class="admin-input" value="<?php echo h($item['slug'] ?? ''); ?>" placeholder="e.g. academic-pathways-roadmap">
+          <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.35rem;">
+            <label class="admin-label" for="blog-slug-input" style="margin-bottom: 0;">Slug (URL identifier)</label>
+            <span id="slug-status-hint" style="font-size: 0.75rem; color: var(--color-muted); font-weight: 500;"></span>
+          </div>
+          <input type="text" name="slug" id="blog-slug-input" class="admin-input" value="<?php echo h($item['slug'] ?? ''); ?>" placeholder="e.g. why-online-learning-is-transforming-education">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.35rem; font-size: 0.78rem; color: var(--color-muted); flex-wrap: wrap; gap: 0.25rem;">
+            <span>URL: <code style="color: var(--color-navy); font-weight: 600;">/blogs/<span id="slug-preview-text"><?php echo h($item['slug'] ?? 'url-slug'); ?></span></code></span>
+            <button type="button" id="slug-resync-btn" style="background: none; border: none; color: var(--color-teal); cursor: pointer; padding: 0; font-size: 0.78rem; text-decoration: underline; display: none;">Re-sync with Title</button>
+          </div>
         </div>
         
         <div class="admin-form-group">
@@ -588,6 +796,102 @@ include_once dirname(__FILE__) . '/header.php';
     </form>
   </div>
   <script src="/js/rich-editor.js"></script>
+  <script>
+  (function() {
+    'use strict';
+    var titleInput = document.getElementById('blog-title-input');
+    var slugInput = document.getElementById('blog-slug-input');
+    var previewText = document.getElementById('slug-preview-text');
+    var statusHint = document.getElementById('slug-status-hint');
+    var resyncBtn = document.getElementById('slug-resync-btn');
+    var isEditMode = <?php echo ($action === 'edit' && !empty($item['id'])) ? 'true' : 'false'; ?>;
+
+    if (!titleInput || !slugInput) return;
+
+    // Clean reusable slug generator matching server rules
+    function generateSlug(text) {
+      if (!text) return '';
+      return text
+        .toString()
+        .replace(/['’]/g, '')            // Remove apostrophes: e.g. Parent's -> Parents
+        .replace(/[–—_]/g, '-')          // Convert en/em-dashes and underscores to hyphen
+        .toLowerCase()                   // Convert to lowercase
+        .trim()                          // Trim whitespace
+        .replace(/[^a-z0-9\-]+/g, '-')   // Replace punctuation and spaces with single hyphen
+        .replace(/-+/g, '-')             // Remove repeated hyphens
+        .replace(/^-+|-+$/g, '');        // Remove hyphens from start and end
+    }
+
+    // In edit mode: existing slug is preserved by default to protect live URLs
+    // In add mode: if field has a value differing from the title's derived slug (e.g. from error redisplay), mark customized
+    var isCustomized = isEditMode ? true : (slugInput.value.trim() !== '' && slugInput.value.trim() !== generateSlug(titleInput.value));
+
+    function updateUiState() {
+      var currentSlug = slugInput.value.trim();
+      var derivedSlug = generateSlug(titleInput.value);
+
+      if (previewText) {
+        previewText.textContent = currentSlug || derivedSlug || 'url-slug';
+      }
+
+      if (statusHint) {
+        if (isCustomized) {
+          statusHint.textContent = '(manually edited)';
+          statusHint.style.color = '#B45309';
+        } else {
+          statusHint.textContent = '(auto-generated)';
+          statusHint.style.color = 'var(--color-muted)';
+        }
+      }
+
+      if (resyncBtn) {
+        var canResync = isCustomized && (titleInput.value.trim() !== '');
+        resyncBtn.style.display = canResync ? 'inline-block' : 'none';
+      }
+    }
+
+    // Dynamic auto-generation while typing title
+    titleInput.addEventListener('input', function() {
+      if (!isCustomized) {
+        slugInput.value = generateSlug(titleInput.value);
+      }
+      updateUiState();
+    });
+
+    // Detect manual customization or clearing of slug field
+    slugInput.addEventListener('input', function() {
+      var currentVal = slugInput.value;
+      var derived = generateSlug(titleInput.value);
+
+      // If admin clears the slug field, immediately resume automatic generation from title
+      if (currentVal.trim() === '') {
+        isCustomized = false;
+        if (derived !== '') {
+          slugInput.value = derived;
+        }
+      } else if (currentVal.trim() === derived) {
+        isCustomized = false;
+      } else {
+        isCustomized = true;
+      }
+      updateUiState();
+    });
+
+    // One-click re-sync with title
+    if (resyncBtn) {
+      resyncBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        isCustomized = false;
+        slugInput.value = generateSlug(titleInput.value);
+        updateUiState();
+        slugInput.focus();
+      });
+    }
+
+    // Initial state setup on load
+    updateUiState();
+  })();
+  </script>
 <?php endif; ?>
 
 <?php

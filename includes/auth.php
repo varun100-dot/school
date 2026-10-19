@@ -66,7 +66,7 @@ function log_audit($action, $module, $entity_type, $entity_id, $old_data = null,
     
     try {
         safe_session_start();
-        $user_id = $_SESSION['user_id'] ?? null;
+        $user_id = (!empty($_SESSION['user_id']) && is_numeric($_SESSION['user_id'])) ? (int)$_SESSION['user_id'] : null;
         $ip_address = $_SERVER['REMOTE_ADDR'] ?? '';
         $user_agent = $_SERVER['HTTP_USER_AGENT'] ?? '';
         
@@ -78,7 +78,7 @@ function log_audit($action, $module, $entity_type, $entity_id, $old_data = null,
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ");
         return $stmt->execute([$user_id, $action, $module, $entity_type, $entity_id, $old_str, $new_str, $description, $ip_address, $user_agent]);
-    } catch (Exception $e) {
+    } catch (Throwable $e) {
         error_log("[Audit Log Error] " . $e->getMessage());
         return false;
     }
