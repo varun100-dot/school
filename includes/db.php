@@ -1,6 +1,9 @@
 <?php
 // Zuvio Global School - PDO Database Connection Handler
 
+// Explicitly configure PHP timezone to Asia/Kolkata (IST, UTC+05:30)
+date_default_timezone_set('Asia/Kolkata');
+
 // 1. Check environment variable override
 $config_path = getenv('ZUVIO_CONFIG_PATH');
 
@@ -82,7 +85,15 @@ try {
         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
         PDO::ATTR_EMULATE_PREPARES   => false,
     ];
+    if (defined('PDO::MYSQL_ATTR_INIT_COMMAND')) {
+        $options[PDO::MYSQL_ATTR_INIT_COMMAND] = "SET time_zone = '+05:30'";
+    }
     $db = new PDO($dsn, DB_USER, DB_PASS, $options);
+    try {
+        $db->exec("SET time_zone = '+05:30'");
+    } catch (Exception $tz_e) {
+        error_log("[DB Timezone Warning] " . $tz_e->getMessage());
+    }
 } catch (PDOException $e) {
     $GLOBALS['db_connection_error'] = $e->getMessage();
     // Log error securely, prevent credential exposure, display a 500 page

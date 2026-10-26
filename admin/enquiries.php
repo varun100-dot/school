@@ -7,6 +7,69 @@ require_once dirname(__FILE__) . '/../includes/auth.php';
 safe_session_start();
 require_permission('enquiries.view');
 
+// Explicitly enforce PHP timezone to Asia/Kolkata
+if (date_default_timezone_get() !== 'Asia/Kolkata') {
+    date_default_timezone_set('Asia/Kolkata');
+}
+
+// Detect database session timezone and ensure MySQL connection is in IST (+05:30)
+$db_is_ist = false;
+if (isset($db) && $db) {
+    try {
+        if ($db->getAttribute(PDO::ATTR_DRIVER_NAME) === 'mysql') {
+            $db->exec("SET time_zone = '+05:30'");
+            $sess_tz = $db->query("SELECT @@session.time_zone")->fetchColumn();
+            
+            // In MySQL, only TIMESTAMP columns auto-convert based on @@session.time_zone.
+            // DATETIME columns are literal and do not convert.
+            $col_type = 'timestamp';
+            try {
+                $col_type_stmt = $db->query("SELECT DATA_TYPE FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'enquiries' AND COLUMN_NAME = 'created_at'");
+                $col_type = strtolower($col_type_stmt->fetchColumn() ?: 'timestamp');
+            } catch (Exception $e) {}
+            
+            $db_is_ist = ($sess_tz === '+05:30' && $col_type === 'timestamp');
+        }
+    } catch (Exception $tz_ex) {
+        $db_is_ist = false;
+    }
+}
+
+if (!function_exists('format_enquiry_datetime')) {
+    /**
+     * Consistently format enquiry timestamps in Asia/Kolkata (IST, UTC+05:30).
+     * Handles:
+     * 1. MySQL TIMESTAMP when @@session.time_zone = '+05:30' (already converted by MySQL driver)
+     * 2. MySQL TIMESTAMP / DATETIME when returned in UTC (converts from UTC to Asia/Kolkata)
+     * 3. Session mock leads (already created with PHP date() in Asia/Kolkata)
+     * Prevents double conversion under all scenarios.
+     */
+    function format_enquiry_datetime($date_str, $already_ist = false) {
+        if (empty($date_str)) return '—';
+        if ($already_ist) {
+            $ts = strtotime($date_str);
+            return $ts ? date('Y-m-d H:i', $ts) : $date_str;
+        }
+        try {
+            // Driver returned UTC (e.g. SQLite or unconverted DATETIME) -> convert to Asia/Kolkata
+            $dt = new DateTime($date_str, new DateTimeZone('UTC'));
+            $dt->setTimezone(new DateTimeZone('Asia/Kolkata'));
+            return $dt->format('Y-m-d H:i');
+        } catch (Exception $e) {
+            $ts = strtotime($date_str);
+            return $ts ? date('Y-m-d H:i', $ts) : $date_str;
+        }
+    }
+}
+
+// Purge any stale homeschooling mock leads from session
+if (!empty($_SESSION['mock_enquiries'])) {
+    $_SESSION['mock_enquiries'] = array_values(array_filter($_SESSION['mock_enquiries'], function($m) {
+        $src = $m['source'] ?? '';
+        return stripos($src, 'Homeschool') === false;
+    }));
+}
+
 $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 $action = $_GET['action'] ?? 'list';
 $msg = '';
@@ -60,6 +123,27 @@ if ($action === 'view' && $id > 0) {
         ");
         $stmt->execute([$id]);
         $enq = $stmt->fetch();
+        if (!$enq && !empty($_SESSION['mock_enquiries'])) {
+            foreach ($_SESSION['mock_enquiries'] as $m) {
+                if ((int)($m['id'] ?? 0) === $id && stripos($m['source'] ?? '', 'Homeschool') === false) {
+                    $enq = [
+                        'id'          => $m['id'],
+                        'parent_name' => $m['parent_name'] ?? '',
+                        'student_name'=> $m['student_name'] ?? '',
+                        'grade'       => $m['grade'] ?? '',
+                        'phone'       => $m['phone'] ?? '',
+                        'email'       => $m['email'] ?? '',
+                        'message'     => $m['message'] ?? '',
+                        'source'      => $m['source'] ?? '',
+                        'status_id'   => $m['status_id'] ?? 1,
+                        'status_name' => 'New',
+                        'created_at'  => $m['created_at'] ?? date('Y-m-d H:i:s'),
+                        'is_mock'     => true
+                    ];
+                    break;
+                }
+            }
+        }
         if (!$enq) {
             header('Location: /admin/enquiries?error=notfound');
             exit;
@@ -80,7 +164,7 @@ $count_landing = 0;
 if ($db) {
     try {
         $count_all = (int)$db->query("SELECT COUNT(*) FROM `enquiries`")->fetchColumn();
-        $count_homepage = (int)$db->query("SELECT COUNT(*) FROM `enquiries` WHERE `source` LIKE '%Home%' OR `source` LIKE '%Counselor%' OR `source` LIKE '%Banner%'")->fetchColumn();
+        $count_homepage = (int)$db->query("SELECT COUNT(*) FROM `enquiries` WHERE `source` NOT LIKE '%Landing%' AND (`source` LIKE '%Home%' OR `source` LIKE '%Counselor%' OR `source` LIKE '%Banner%')")->fetchColumn();
         $count_contact = (int)$db->query("SELECT COUNT(*) FROM `enquiries` WHERE `source` LIKE '%Contact%'")->fetchColumn();
         $count_landing = (int)$db->query("SELECT COUNT(*) FROM `enquiries` WHERE `source` LIKE '%Landing%'")->fetchColumn();
     } catch (Exception $e) {}
@@ -88,9 +172,12 @@ if ($db) {
 
 if (!empty($_SESSION['mock_enquiries'])) {
     foreach ($_SESSION['mock_enquiries'] as $m) {
-        $count_all++;
         $m_src = $m['source'] ?? '';
-        if (stripos($m_src, 'Home') !== false || stripos($m_src, 'Counselor') !== false || stripos($m_src, 'Banner') !== false) {
+        if (stripos($m_src, 'Homeschool') !== false) {
+            continue;
+        }
+        $count_all++;
+        if (stripos($m_src, 'Landing') === false && (stripos($m_src, 'Home') !== false || stripos($m_src, 'Counselor') !== false || stripos($m_src, 'Banner') !== false)) {
             $count_homepage++;
         } elseif (stripos($m_src, 'Contact') !== false) {
             $count_contact++;
@@ -114,9 +201,11 @@ if ($action === 'export_csv') {
             ";
             $export_params = [];
             if ($source_tab === 'homepage') {
-                $export_sql .= " AND (e.source LIKE '%Home%' OR e.source LIKE '%Counselor%' OR e.source LIKE '%Banner%')";
+                $export_sql .= " AND e.source NOT LIKE '%Landing%' AND (e.source LIKE '%Home%' OR e.source LIKE '%Counselor%' OR e.source LIKE '%Banner%')";
             } elseif ($source_tab === 'contact') {
                 $export_sql .= " AND e.source LIKE '%Contact%'";
+            } elseif ($source_tab === 'landing_page' || $source_tab === 'landing') {
+                $export_sql .= " AND e.source LIKE '%Landing%'";
             }
             $export_sql .= " ORDER BY e.created_at DESC";
             $exp_stmt = $db->prepare($export_sql);
@@ -129,8 +218,10 @@ if ($action === 'export_csv') {
     if (!empty($_SESSION['mock_enquiries'])) {
         foreach ($_SESSION['mock_enquiries'] as $mock_lead) {
             $m_src = $mock_lead['source'] ?? '';
-            if ($source_tab === 'homepage' && !(stripos($m_src, 'Home') !== false || stripos($m_src, 'Counselor') !== false || stripos($m_src, 'Banner') !== false)) continue;
+            if (stripos($m_src, 'Homeschool') !== false) continue;
+            if ($source_tab === 'homepage' && !(stripos($m_src, 'Landing') === false && (stripos($m_src, 'Home') !== false || stripos($m_src, 'Counselor') !== false || stripos($m_src, 'Banner') !== false))) continue;
             if ($source_tab === 'contact' && stripos($m_src, 'Contact') === false) continue;
+            if (($source_tab === 'landing_page' || $source_tab === 'landing') && stripos($m_src, 'Landing') === false) continue;
             $export_rows[] = [
                 'id' => $mock_lead['id'] ?? time(),
                 'parent_name' => $mock_lead['parent_name'] ?? '',
@@ -141,7 +232,8 @@ if ($action === 'export_csv') {
                 'source' => $mock_lead['source'] ?? 'Website Form',
                 'status_name' => 'New',
                 'message' => $mock_lead['message'] ?? '',
-                'created_at' => $mock_lead['created_at'] ?? date('Y-m-d H:i:s')
+                'created_at' => $mock_lead['created_at'] ?? date('Y-m-d H:i:s'),
+                'is_mock' => true
             ];
         }
     }
@@ -159,14 +251,14 @@ if ($action === 'export_csv') {
         fputcsv($output, [
             $r['id'] ?? '',
             $r['parent_name'] ?? '',
-            $r['student_name'] ?? '',
+            $r['student_name'] ?: (($r['parent_name'] ?? '') . ' (Student)'),
             $r['email'] ?? '',
             $r['phone'] ?? '',
             $r['grade'] ?? '',
             $r['source'] ?? '',
             $r['status_name'] ?? 'NEW',
             $r['message'] ?? '',
-            $r['created_at'] ?? ''
+            format_enquiry_datetime($r['created_at'] ?? '', !empty($r['is_mock']) || $db_is_ist)
         ]);
     }
     fclose($output);
@@ -189,7 +281,7 @@ if ($action === 'list') {
             ";
             $params = [];
             if ($source_tab === 'homepage') {
-                $sql .= " AND (e.source LIKE '%Home%' OR e.source LIKE '%Counselor%' OR e.source LIKE '%Banner%')";
+                $sql .= " AND e.source NOT LIKE '%Landing%' AND (e.source LIKE '%Home%' OR e.source LIKE '%Counselor%' OR e.source LIKE '%Banner%')";
             } elseif ($source_tab === 'contact') {
                 $sql .= " AND e.source LIKE '%Contact%'";
             } elseif ($source_tab === 'landing_page' || $source_tab === 'landing') {
@@ -217,12 +309,14 @@ if ($action === 'list') {
     if (!empty($_SESSION['mock_enquiries'])) {
         foreach ($_SESSION['mock_enquiries'] as $mock_lead) {
             $m_src = $mock_lead['source'] ?? '';
-            if ($source_tab === 'homepage' && !(stripos($m_src, 'Home') !== false || stripos($m_src, 'Counselor') !== false || stripos($m_src, 'Banner') !== false)) continue;
+            if (stripos($m_src, 'Homeschool') !== false) continue;
+            if ($source_tab === 'homepage' && !(stripos($m_src, 'Landing') === false && (stripos($m_src, 'Home') !== false || stripos($m_src, 'Counselor') !== false || stripos($m_src, 'Banner') !== false))) continue;
             if ($source_tab === 'contact' && stripos($m_src, 'Contact') === false) continue;
             if (($source_tab === 'landing_page' || $source_tab === 'landing') && stripos($m_src, 'Landing') === false) continue;
             if ($status_filter > 0 && ($mock_lead['status_id'] ?? 1) !== $status_filter) continue;
-            if ($search_q !== '' && stripos($mock_lead['parent_name'] . ' ' . $mock_lead['email'] . ' ' . $mock_lead['phone'], $search_q) === false) continue;
+            if ($search_q !== '' && stripos(($mock_lead['parent_name'] ?? '') . ' ' . ($mock_lead['email'] ?? '') . ' ' . ($mock_lead['phone'] ?? ''), $search_q) === false) continue;
             $mock_lead['status_name'] = 'New';
+            $mock_lead['is_mock'] = true;
             array_unshift($enquiries, $mock_lead);
         }
     }
@@ -339,7 +433,7 @@ if ($source_tab === 'homepage') {
             <?php foreach ($enquiries as $row): ?>
               <tr style="border-bottom: 1px solid var(--color-border); color: var(--color-text);">
                 <td style="padding: 0.75rem 1rem; font-weight: 600;"><?php echo h($row['parent_name']); ?></td>
-                <td style="padding: 0.75rem 1rem;"><?php echo h($row['student_name']); ?></td>
+                <td style="padding: 0.75rem 1rem;"><?php echo h($row['student_name'] ?: ($row['parent_name'] . ' (Student)')); ?></td>
                 <td style="padding: 0.75rem 1rem;"><?php echo h($row['email']); ?></td>
                 <td style="padding: 0.75rem 1rem;"><?php echo h($row['phone']); ?></td>
                 <td style="padding: 0.75rem 1rem;"><?php echo h($row['grade']); ?></td>
@@ -353,7 +447,7 @@ if ($source_tab === 'homepage') {
                     <?php echo h($row['status_name'] ?: 'NEW'); ?>
                   </span>
                 </td>
-                <td style="padding: 0.75rem 1rem; color: var(--color-muted);"><?php echo date('Y-m-d H:i', strtotime($row['created_at'])); ?></td>
+                <td style="padding: 0.75rem 1rem; color: var(--color-muted);"><?php echo format_enquiry_datetime($row['created_at'], !empty($row['is_mock']) || $db_is_ist); ?></td>
                 <td style="padding: 0.75rem 1rem; text-align: right;">
                   <a href="/admin/enquiries?action=view&id=<?php echo $row['id']; ?><?php echo $source_tab ? '&source=' . urlencode($source_tab) : ''; ?>" style="color: var(--color-gold); font-weight: 600;">View Details</a>
                 </td>
@@ -382,7 +476,7 @@ if ($source_tab === 'homepage') {
         </div>
         <div>
           <strong style="color: var(--color-navy); display: block; margin-bottom: 0.25rem;">Student Name:</strong>
-          <span><?php echo h($enq['student_name']); ?></span>
+          <span><?php echo h($enq['student_name'] ?: ($enq['parent_name'] . ' (Student)')); ?></span>
         </div>
         <div>
           <strong style="color: var(--color-navy); display: block; margin-bottom: 0.25rem;">Email Address:</strong>
@@ -399,6 +493,14 @@ if ($source_tab === 'homepage') {
         <div>
           <strong style="color: var(--color-navy); display: block; margin-bottom: 0.25rem;">Form Source Location:</strong>
           <span><?php echo h($enq['source']); ?></span>
+        </div>
+        <div>
+          <strong style="color: var(--color-navy); display: block; margin-bottom: 0.25rem;">Date Submitted:</strong>
+          <span><?php echo !empty($enq['created_at']) ? format_enquiry_datetime($enq['created_at'], !empty($enq['is_mock']) || $db_is_ist) : '—'; ?></span>
+        </div>
+        <div>
+          <strong style="color: var(--color-navy); display: block; margin-bottom: 0.25rem;">Current Status:</strong>
+          <span><?php echo h($enq['status_name'] ?: 'New'); ?></span>
         </div>
       </div>
 

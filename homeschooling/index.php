@@ -326,11 +326,17 @@ unset($_SESSION['lead_feedback']);
 <script>
 document.getElementById('year').textContent = new Date().getFullYear();
 
+let isSubmitting = false;
+
 document.getElementById('demo').addEventListener('submit', async function(e) {
   e.preventDefault();
+  if (isSubmitting) return;
+
   const form = this;
   const btn = document.getElementById('submit-btn');
   const feedback = document.getElementById('form-feedback');
+  
+  if (btn && btn.disabled) return;
   
   feedback.style.display = 'none';
   feedback.className = 'form-feedback';
@@ -348,6 +354,7 @@ document.getElementById('demo').addEventListener('submit', async function(e) {
     return;
   }
   
+  isSubmitting = true;
   const originalText = btn.innerHTML;
   btn.disabled = true;
   btn.textContent = 'Submitting...';
@@ -371,6 +378,7 @@ document.getElementById('demo').addEventListener('submit', async function(e) {
       form.reset();
       btn.textContent = 'Demo Requested ✓';
     } else {
+      isSubmitting = false;
       btn.disabled = false;
       btn.innerHTML = originalText;
       feedback.className = 'form-feedback error';
@@ -378,6 +386,7 @@ document.getElementById('demo').addEventListener('submit', async function(e) {
       feedback.style.display = 'block';
     }
   } catch (err) {
+    isSubmitting = false;
     btn.disabled = false;
     btn.innerHTML = originalText;
     feedback.className = 'form-feedback error';

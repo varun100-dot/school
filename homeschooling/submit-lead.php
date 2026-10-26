@@ -123,6 +123,25 @@ $email        = mb_substr($email, 0, 150);
 $phone        = mb_substr($phone, 0, 30);
 $grade        = mb_substr($grade, 0, 50);
 
+// Prevent accidental duplicate rapid submission (10-second debounce)
+$submission_hash = md5($parent_name . '|' . $email . '|' . $phone . '|' . $grade);
+$now = time();
+if (isset($_SESSION['last_lead_sub_hash'], $_SESSION['last_lead_sub_time'])) {
+    if ($_SESSION['last_lead_sub_hash'] === $submission_hash && ($now - $_SESSION['last_lead_sub_time']) < 10) {
+        $success_msg = 'Thank you! Your request for a free demo has been submitted successfully. Our admissions team will get in touch with you shortly.';
+        if ($is_ajax) {
+            echo json_encode([
+                'status'  => 'success',
+                'message' => $success_msg
+            ]);
+        } else {
+            $_SESSION['lead_feedback'] = ['type' => 'success', 'message' => $success_msg];
+            header('Location: /homeschooling/');
+        }
+        exit;
+    }
+}
+
 // 9. Execute Prepared SQL Insertion
 $saved = false;
 if (isset($db) && $db) {
@@ -147,25 +166,11 @@ if (isset($db) && $db) {
     }
 }
 
-// Session mock storage fallback for local testing & resilience
-if (!isset($_SESSION['mock_enquiries'])) {
-    $_SESSION['mock_enquiries'] = [];
-}
-$_SESSION['mock_enquiries'][] = [
-    'id'          => count($_SESSION['mock_enquiries']) + 1001,
-    'parent_name' => $parent_name,
-    'student_name'=> $student_name,
-    'grade'       => $grade,
-    'phone'       => $phone,
-    'email'       => $email,
-    'message'     => $message,
-    'source'      => $source,
-    'status_id'   => $status_id,
-    'created_at'  => date('Y-m-d H:i:s')
-];
-
 // 10. Return Response
 if ($saved) {
+    $_SESSION['last_lead_sub_hash'] = $submission_hash;
+    $_SESSION['last_lead_sub_time'] = $now;
+
     $success_msg = 'Thank you! Your request for a free demo has been submitted successfully. Our admissions team will get in touch with you shortly.';
     if ($is_ajax) {
         echo json_encode([
