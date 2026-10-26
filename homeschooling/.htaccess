@@ -1,0 +1,11 @@
+# Zuvio Global School - Homeschooling Directory Configuration
+DirectoryIndex index.php index.html
+
+# Prevent directory browsing
+Options -Indexes
+
+# Allow access to index.php, submit-lead.php, and static web assets
+<FilesMatch "\.(php|webp|png|jpg|jpeg|svg|css|js|ico)$">
+    Order allow,deny
+    Allow from all
+</FilesMatch>

@@ -5,6 +5,9 @@ if (php_sapi_name() === 'cli-server') {
     if (is_file($filePath)) {
         return false;
     }
+    if (is_dir($filePath) && is_file(rtrim($filePath, '/') . '/index.php')) {
+        return false;
+    }
 }
 
 require_once dirname(__FILE__) . '/includes/db.php';
@@ -311,6 +314,14 @@ switch ($route) {
     case 'landing-page.php':
         $page_slug = 'landing-page';
         include dirname(__FILE__) . '/pages/landing-page.php';
+        break;
+
+    case 'homeschooling':
+        header('Location: /homeschooling/', true, 301);
+        exit;
+
+    case 'homeschooling/':
+        include dirname(__FILE__) . '/homeschooling/index.php';
         break;
         
     default:
