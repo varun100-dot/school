@@ -44,21 +44,86 @@ function validate_csrf_token($token) {
     return hash_equals($_SESSION['csrf_token'], $token);
 }
 
+/**
+ * Automatically migrate and sanitize school-wide grade range references from Grade 8 to Grade 12.
+ * Ensures database-backed settings and CMS JSON blobs seamlessly reflect the Grade 12 offering.
+ */
+function sanitize_grade_range_strings($data) {
+    if (is_string($data)) {
+        $replacements = [
+            'Kindergarten to Grade 8th' => 'Kindergarten to Grade 12',
+            'Kindergarten to Grade 8' => 'Kindergarten to Grade 12',
+            'Kindergarten through Grade 8' => 'Kindergarten through Grade 12',
+            'KG to 8th' => 'KG to 12th',
+            'KG to Grade 8' => 'KG to Grade 12',
+            'KG–8' => 'KG–12',
+            'KG-8' => 'KG-12',
+            'K–8' => 'K–12',
+            'K-8' => 'K-12',
+            'Nursery to Grade 8th' => 'KG to 12th',
+            'Nursery to Grade 8' => 'Nursery to Grade 12',
+            'NURSERY – GRADE 8' => 'NURSERY – GRADE 12',
+            'NURSERY - GRADE 8' => 'NURSERY - GRADE 12',
+            'Nursery–Grade 8' => 'Nursery–Grade 12',
+            'Nursery - Grade 8' => 'Nursery - Grade 12',
+            'grades K to 8.' => 'grades K to 12.',
+            'Grades K to 8.' => 'Grades K to 12.',
+            'grades K to 8' => 'grades K to 12',
+            'Grades K to 8' => 'Grades K to 12',
+            'Accredited K–8 Global School' => 'Accredited K–12 Global School',
+            'Accredited K-8 Global School' => 'Accredited K-12 Global School',
+            'Online K–8 Homeschooling' => 'Online K–12 Homeschooling',
+            'Online K-8 Homeschooling' => 'Online K-12 Homeschooling',
+            'flexible K–8 education' => 'flexible K–12 education',
+            'flexible K-8 education' => 'flexible K-12 education',
+            'our K–8 curriculum' => 'our K–12 curriculum',
+            'our K-8 curriculum' => 'our K-12 curriculum',
+            'K–8 online schooling' => 'K–12 online schooling',
+            'K-8 online schooling' => 'K-12 online schooling',
+            'application form for K–8.' => 'application form for K–12.',
+            'application form for K-8.' => 'application form for K-12.',
+            'Early Years to Grade 8 live class timings' => 'Early Years to Grade 12 live class timings',
+            'Early Years to Grade 8' => 'Early Years to Grade 12',
+            'All Stages (KG to Grade 8)' => 'All Stages (KG to Grade 12)',
+            'The Zuvio Graduate — by the end of Grade 8' => 'The Zuvio Graduate — by the end of Grade 12',
+            'by the end of Grade 8' => 'by the end of Grade 12',
+            'Pre-Primary to Grade 8 Fee Matrix' => 'Pre-Primary to Grade 12 Fee Matrix',
+            'Pre-Primary to Grade 8 quarterly tuition' => 'Pre-Primary to Grade 12 quarterly tuition',
+            'matrix for Pre-Primary to Grade 8' => 'matrix for Pre-Primary to Grade 12',
+            'Pre-Primary to Grade 8' => 'Pre-Primary to Grade 12',
+            'CBSE Aligned K–8' => 'CBSE Aligned K–12',
+            'CBSE Aligned K-8' => 'CBSE Aligned K-12',
+        ];
+        foreach ($replacements as $search => $replace) {
+            $data = str_ireplace($search, $replace, $data);
+        }
+        return $data;
+    }
+    if (is_array($data)) {
+        foreach ($data as $k => $v) {
+            $data[$k] = sanitize_grade_range_strings($v);
+        }
+    }
+    return $data;
+}
+
 // Get site settings key-value pair from database
 function get_setting($key, $default = '') {
     global $db;
     if (!$db) {
         safe_session_start();
-        return $_SESSION['mock_settings'][$key] ?? $default;
+        $val = $_SESSION['mock_settings'][$key] ?? $default;
+        return sanitize_grade_range_strings($val);
     }
     try {
         $stmt = $db->prepare("SELECT `setting_value` FROM `site_settings` WHERE `setting_key` = ? LIMIT 1");
         $stmt->execute([$key]);
         $row = $stmt->fetch();
-        return $row ? $row['setting_value'] : $default;
+        $val = $row ? $row['setting_value'] : $default;
+        return sanitize_grade_range_strings($val);
     } catch (Exception $e) {
         error_log("[Settings Error] " . $e->getMessage());
-        return $default;
+        return sanitize_grade_range_strings($default);
     }
 }
 
@@ -95,10 +160,12 @@ function get_json_setting($key, $default = []) {
     $raw = get_setting($key, null);
     if ($raw === null || $raw === '') {
         safe_session_start();
-        return $_SESSION['mock_' . $key] ?? $default;
+        $val = $_SESSION['mock_' . $key] ?? $default;
+        return sanitize_grade_range_strings($val);
     }
     $decoded = json_decode($raw, true);
-    return is_array($decoded) ? $decoded : $default;
+    $val = is_array($decoded) ? $decoded : $default;
+    return sanitize_grade_range_strings($val);
 }
 
 // Persist structured JSON setting directly into database
@@ -122,7 +189,7 @@ function get_page_seo($page_slug) {
         'index_status' => 'index, follow'
     ];
     
-    if (!$db) return $default;
+    if (!$db) return sanitize_grade_range_strings($default);
     
     try {
         $stmt = $db->prepare("
@@ -133,12 +200,12 @@ function get_page_seo($page_slug) {
         $stmt->execute([$page_slug]);
         $row = $stmt->fetch();
         if ($row) {
-            return array_merge($default, array_filter($row));
+            return sanitize_grade_range_strings(array_merge($default, array_filter($row)));
         }
     } catch (Exception $e) {
         error_log("[SEO Error] " . $e->getMessage());
     }
-    return $default;
+    return sanitize_grade_range_strings($default);
 }
 
 // Render standardized breadcrumbs navigation
