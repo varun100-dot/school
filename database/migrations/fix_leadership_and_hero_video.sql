@@ -55,7 +55,7 @@ INSERT IGNORE INTO `leadership` (`name`, `slug`, `designation`, `image`, `short_
  '', 1, 1),
 
 ('Rashmi Bhasin', 'rashmi-bhasin', 'Academic Head', '/assets/images/Profile_Images/Rashmi_Professional_Profile.webp',
- 'Rashmi Bhasin is the Academic Head of Zuvio Global School, a visionary curriculum thinker committed to designing personalised, child-centered online homeschooling experiences for Nursery to Grade 8.',
+ 'Rashmi Bhasin is the Academic Head of Zuvio Global School, a visionary curriculum thinker committed to designing personalised, child-centered online homeschooling experiences for Nursery to Grade 12.',
  'As an educationist, my role as Academic Head is to shape the academic vision, learning culture, and educational philosophy of an online homeschooling programme.',
  'My vision as Academic Head is to build a future-ready, child-centred, and globally relevant learning ecosystem.', 4, 1);
 

@@ -96,11 +96,15 @@ $permitted_grades = [
     'Grade 5',
     'Grade 6',
     'Grade 7',
-    'Grade 8'
+    'Grade 8',
+    'Grade 9',
+    'Grade 10',
+    'Grade 11',
+    'Grade 12'
 ];
 if (!in_array($grade, $permitted_grades, true)) {
     http_response_code(400);
-    $error_msg = 'Please select a valid grade option from Nursery to Grade 8.';
+    $error_msg = 'Please select a valid grade option from Nursery to Grade 12.';
     if ($is_ajax) {
         echo json_encode(['status' => 'error', 'message' => $error_msg]);
     } else {

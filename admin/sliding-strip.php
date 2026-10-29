@@ -329,7 +329,7 @@ include_once dirname(__FILE__) . '/header.php';
             <div style="flex: 1; min-width: 300px; display: grid; grid-template-columns: 140px 1.5fr 1fr 90px; gap: 1rem;">
               <div>
                 <label class="admin-label" style="font-size: 0.75rem;">Badge / Pill (Opt)</label>
-                <input type="text" name="badge" value="<?php echo h($it['badge'] ?? ''); ?>" class="admin-input" placeholder="e.g. Nursery–8th">
+                <input type="text" name="badge" value="<?php echo h($it['badge'] ?? ''); ?>" class="admin-input" placeholder="e.g. Nursery–12th">
               </div>
 
               <div>

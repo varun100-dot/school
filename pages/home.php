@@ -273,7 +273,7 @@ $sec_diff = $home_cms['why_different'] ?? [
         ['title' => 'Zuvio Beyond', 'desc' => 'Rich co-curricular clubs, AI/coding modules, sports association, enrichment electives, and extra academic support matched to your child’s passions.']
     ],
     'graduate_badge' => 'Graduate Profile',
-    'graduate_title' => 'The Zuvio Graduate — by the end of Grade 8',
+    'graduate_title' => 'The Zuvio Graduate — by the end of Grade 12',
     'graduate_pills' => 'Academically Strong, Curious, Confident & Articulate, Creative, Digitally Fluent, Collaborative, Independent, Globally Aware, Future-Ready',
     'graduate_quote' => 'Not just ready for the next grade — ready to learn, adapt and grow in a changing world.'
 ];
@@ -646,6 +646,7 @@ $show_hero_form = (!isset($sec_hero_form['is_active']) || !empty($sec_hero_form[
                 <option value="Foundation Stage (Grades 1-2)">Foundation Stage (Grades 1–2)</option>
                 <option value="Preparatory Stage (Grades 3-5)">Preparatory Stage (Grades 3–5)</option>
                 <option value="Middle School (Grades 6-8)">Middle School (Grades 6–8)</option>
+                <option value="Secondary School (Grades 9-12)">Secondary School (Grades 9–12)</option>
               </select>
             </div>
 
@@ -884,7 +885,7 @@ $show_hero_form = (!isset($sec_hero_form['is_active']) || !empty($sec_hero_form[
     <!-- The Zuvio Graduate Banner -->
     <div class="graduate-outcomes-box">
       <span style="font-size: 0.85rem; font-weight: 700; color: var(--color-gold); text-transform: uppercase; letter-spacing: 2px;"><?php echo h($sec_diff['graduate_badge'] ?? 'Graduate Profile'); ?></span>
-      <h3 style="font-size: 2rem; color: var(--color-navy-dark); font-family: var(--font-primary); margin: 0.5rem 0 1rem 0;"><?php echo h($sec_diff['graduate_title'] ?? 'The Zuvio Graduate — by the end of Grade 8'); ?></h3>
+      <h3 style="font-size: 2rem; color: var(--color-navy-dark); font-family: var(--font-primary); margin: 0.5rem 0 1rem 0;"><?php echo h($sec_diff['graduate_title'] ?? 'The Zuvio Graduate — by the end of Grade 12'); ?></h3>
       <div class="graduate-outcomes-pills">
         <?php 
           $pills_raw = $sec_diff['graduate_pills'] ?? 'Academically Strong, Curious, Confident & Articulate, Creative, Digitally Fluent, Collaborative, Independent, Globally Aware, Future-Ready';

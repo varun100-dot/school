@@ -450,7 +450,7 @@ render_breadcrumbs([
                   Are you looking for Online or Hybrid School? <span style="color: #EF4444;">*</span>
                 </label>
                 <select id="contact_school_type" name="school_type" class="contact-input" required style="width: 100%; padding: 0.75rem 0.95rem; border: 1px solid var(--color-border, #CBD5E1); border-radius: var(--radius-sm, 6px); outline: none; background-color: #FFFFFF; font-size: 0.9rem; color: var(--color-navy, #062B63); height: 44px;">
-                  <option value="Online Schooling" <?php echo (($submitted_data['school_type'] ?? '') === 'Online Schooling') ? 'selected' : ''; ?>>Online Schooling (CBSE Aligned K–8)</option>
+                  <option value="Online Schooling" <?php echo (($submitted_data['school_type'] ?? '') === 'Online Schooling') ? 'selected' : ''; ?>>Online Schooling (CBSE Aligned K–12)</option>
                   <option value="Hybrid Experiential Campus" <?php echo (($submitted_data['school_type'] ?? '') === 'Hybrid Experiential Campus') ? 'selected' : ''; ?>>Hybrid Experiential Learning Campus</option>
                   <option value="Exploring Both Options" <?php echo (($submitted_data['school_type'] ?? '') === 'Exploring Both Options') ? 'selected' : ''; ?>>Exploring Both Options</option>
                 </select>
@@ -518,6 +518,10 @@ render_breadcrumbs([
                     <option value="Grade 6" <?php echo (($submitted_data['grade'] ?? '') === 'Grade 6') ? 'selected' : ''; ?>>Grade 6</option>
                     <option value="Grade 7" <?php echo (($submitted_data['grade'] ?? '') === 'Grade 7') ? 'selected' : ''; ?>>Grade 7</option>
                     <option value="Grade 8" <?php echo (($submitted_data['grade'] ?? '') === 'Grade 8') ? 'selected' : ''; ?>>Grade 8</option>
+                    <option value="Grade 9" <?php echo (($submitted_data['grade'] ?? '') === 'Grade 9') ? 'selected' : ''; ?>>Grade 9</option>
+                    <option value="Grade 10" <?php echo (($submitted_data['grade'] ?? '') === 'Grade 10') ? 'selected' : ''; ?>>Grade 10</option>
+                    <option value="Grade 11" <?php echo (($submitted_data['grade'] ?? '') === 'Grade 11') ? 'selected' : ''; ?>>Grade 11</option>
+                    <option value="Grade 12" <?php echo (($submitted_data['grade'] ?? '') === 'Grade 12') ? 'selected' : ''; ?>>Grade 12</option>
                   </select>
                 </div>
                 <div>

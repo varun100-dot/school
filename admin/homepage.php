@@ -164,7 +164,7 @@ if (!isset($home_cms['why_different'])) {
             ['title' => 'Zuvio Beyond', 'desc' => 'Rich co-curricular clubs, AI/coding modules, sports association, enrichment electives, and extra academic support matched to your child’s passions.']
         ],
         'graduate_badge' => 'Graduate Profile',
-        'graduate_title' => 'The Zuvio Graduate — by the end of Grade 8',
+        'graduate_title' => 'The Zuvio Graduate — by the end of Grade 12',
         'graduate_pills' => 'Academically Strong, Curious, Confident & Articulate, Creative, Digitally Fluent, Collaborative, Independent, Globally Aware, Future-Ready',
         'graduate_quote' => 'Not just ready for the next grade — ready to learn, adapt and grow in a changing world.'
     ];

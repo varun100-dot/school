@@ -30,10 +30,10 @@ $fees_data = $adm_cms['fees'] ?? [
 $page_slug = 'admissions-fees';
 $seo = [
     'seo_title' => 'Fee Structure 2026–2027 — Transparent Tuition | Zuvio Global School',
-    'meta_description' => 'Official fee structure for Academic Year 2026–2027 at Zuvio Global School. Pre-Primary to Grade 8 quarterly tuition, registration, and complimentary books & LMS.',
+    'meta_description' => 'Official fee structure for Academic Year 2026–2027 at Zuvio Global School. Pre-Primary to Grade 12 quarterly tuition, registration, and complimentary books & LMS.',
     'canonical_url' => BASE_URL . '/admissions/fees',
     'og_title' => 'Fee Structure 2026–2027 — Zuvio Global School',
-    'og_description' => 'Transparent, all-inclusive tuition without hidden overheads. Official fee matrix for Pre-Primary to Grade 8.',
+    'og_description' => 'Transparent, all-inclusive tuition without hidden overheads. Official fee matrix for Pre-Primary to Grade 12.',
     'og_image' => '/assets/images/about_us_hero.jpg',
     'index_status' => 'index, follow'
 ];
@@ -71,7 +71,7 @@ render_breadcrumbs([
           Approved Tuition Schedule
         </span>
         <h2 style="font-size: 2.35rem; color: var(--color-navy); margin-top: 0.5rem; font-family: var(--font-primary);">
-          Pre-Primary to Grade 8 Fee Matrix
+          Pre-Primary to Grade 12 Fee Matrix
         </h2>
         <p style="color: var(--color-muted); font-size: 1rem; margin-top: 0.5rem;">
           In partnership with Oxford University Press • Learning Beyond Boundaries

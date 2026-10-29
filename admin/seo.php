@@ -241,7 +241,7 @@ include_once dirname(__FILE__) . '/header.php';
           </div>
           <div class="admin-form-group">
             <label class="admin-label">Secondary Keywords (comma separated)</label>
-            <input type="text" name="secondary_keywords" value="<?php echo h($edit_page['secondary_keywords'] ?? ''); ?>" placeholder="e.g. online schooling, K-8 homeschooling" class="admin-input">
+            <input type="text" name="secondary_keywords" value="<?php echo h($edit_page['secondary_keywords'] ?? ''); ?>" placeholder="e.g. online schooling, K-12 homeschooling" class="admin-input">
           </div>
         </div>
 

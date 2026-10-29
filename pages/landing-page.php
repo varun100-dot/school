@@ -269,7 +269,7 @@ $csrf_token = generate_csrf_token();
               <select name="grade" id="grade" class="lp-input-control lp-select-control" required>
                 <option value="">Child’s Grade</option>
                 <?php
-                $grade_options = ['Nursery', 'LKG', 'UKG', 'Grade 1', 'Grade 2', 'Grade 3', 'Grade 4', 'Grade 5', 'Grade 6', 'Grade 7', 'Grade 8'];
+                $grade_options = ['Nursery', 'LKG', 'UKG', 'Grade 1', 'Grade 2', 'Grade 3', 'Grade 4', 'Grade 5', 'Grade 6', 'Grade 7', 'Grade 8', 'Grade 9', 'Grade 10', 'Grade 11', 'Grade 12'];
                 $sel = $submitted_data['grade'] ?? '';
                 foreach ($grade_options as $opt) {
                     $isSelected = ($sel === $opt) ? 'selected' : '';

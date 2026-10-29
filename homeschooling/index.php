@@ -86,6 +86,10 @@ unset($_SESSION['lead_feedback']);
           <option value="Grade 6">Grade 6</option>
           <option value="Grade 7">Grade 7</option>
           <option value="Grade 8">Grade 8</option>
+          <option value="Grade 9">Grade 9</option>
+          <option value="Grade 10">Grade 10</option>
+          <option value="Grade 11">Grade 11</option>
+          <option value="Grade 12">Grade 12</option>
         </select>
         
         <button class="btn" type="submit" id="submit-btn">Book a Free Demo →</button>

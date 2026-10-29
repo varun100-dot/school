@@ -532,6 +532,7 @@ $social_youtube = get_setting('social_youtube', 'https://www.youtube.com/@zuviog
               <option value="Early Years">Early Years</option>
               <option value="Primary (1-5)">Grades 1-5</option>
               <option value="Middle School (6-8)">Grades 6-8</option>
+              <option value="Secondary School (9-12)">Grades 9-12</option>
             </select>
           </div>
           

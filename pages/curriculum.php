@@ -676,7 +676,7 @@ render_breadcrumbs([
 
       <div class="curriculum-body">
         <p style="margin: 0;">
-          By the end of Grade 8, our goal is not simply to prepare students for the next academic grade. We aim to develop capable, confident learners who can understand, communicate, create, collaborate and adapt.
+          By the end of Grade 12, our goal is not simply to prepare students for the next academic grade. We aim to develop capable, confident learners who can understand, communicate, create, collaborate and adapt.
         </p>
       </div>
 
