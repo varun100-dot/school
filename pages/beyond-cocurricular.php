@@ -27,7 +27,7 @@ $default_clubs = [
     [
         'id' => 2,
         'title' => 'Drawing & Painting',
-        'stage' => 'All Stages (KG to Grade 8)',
+        'stage' => 'All Stages (KG to Grade 12)',
         'stage_key' => 'all',
         'desc' => 'Sketching, watercolour, acrylic and digital art guided by certified visual artists. Encourages self-expression, color theory, and spatial creativity.',
         'icon' => '🎨',
@@ -57,7 +57,7 @@ $default_clubs = [
     [
         'id' => 5,
         'title' => 'Western Dance',
-        'stage' => 'All Stages (KG to Grade 8)',
+        'stage' => 'All Stages (KG to Grade 12)',
         'stage_key' => 'all',
         'desc' => 'Hip-hop, contemporary and freestyle dance for all age groups. Enhances stamina, coordination, musicality, and stage confidence.',
         'icon' => '🕺',
@@ -67,7 +67,7 @@ $default_clubs = [
     [
         'id' => 6,
         'title' => 'Yoga & Mindfulness',
-        'stage' => 'All Stages (KG to Grade 8)',
+        'stage' => 'All Stages (KG to Grade 12)',
         'stage_key' => 'all',
         'desc' => 'Daily guided asanas, pranayama breathing exercises, and mindfulness techniques for physical flexibility, posture, and emotional wellness.',
         'icon' => '🧘',
@@ -87,7 +87,7 @@ $default_clubs = [
     [
         'id' => 8,
         'title' => 'Vocal Music',
-        'stage' => 'All Stages (KG to Grade 8)',
+        'stage' => 'All Stages (KG to Grade 12)',
         'stage_key' => 'all',
         'desc' => 'Hindustani classical and Western vocal training from beginner pitch matching to advanced melodic improvisation and performance.',
         'icon' => '🎵',

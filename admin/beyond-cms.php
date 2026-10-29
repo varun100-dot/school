@@ -26,7 +26,7 @@ if (!isset($beyond_cms['hero'])) {
         'subtitle' => 'LEARNING BEYOND CLASSROOMS',
         'title' => 'Discover. Create. Grow Beyond.',
         'desc' => 'A vibrant enrichment space for future-ready skills, creative expression and meaningful interests.',
-        'grades' => 'NURSERY – GRADE 8'
+        'grades' => 'NURSERY – GRADE 12'
     ];
 }
 
@@ -54,7 +54,7 @@ if (!isset($beyond_cms['cocurricular_clubs'])) {
         [
             'id' => 2,
             'title' => 'Drawing & Painting',
-            'stage' => 'All Stages (KG to Grade 8)',
+            'stage' => 'All Stages (KG to Grade 12)',
             'stage_key' => 'all',
             'desc' => 'Sketching, watercolour, acrylic and digital art guided by certified visual artists. Encourages self-expression, color theory, and spatial creativity.',
             'icon' => '🎨',
@@ -87,7 +87,7 @@ if (!isset($beyond_cms['cocurricular_clubs'])) {
         [
             'id' => 5,
             'title' => 'Western Dance',
-            'stage' => 'All Stages (KG to Grade 8)',
+            'stage' => 'All Stages (KG to Grade 12)',
             'stage_key' => 'all',
             'desc' => 'Hip-hop, contemporary and freestyle dance for all age groups. Enhances stamina, coordination, musicality, and stage confidence.',
             'icon' => '🕺',
@@ -98,7 +98,7 @@ if (!isset($beyond_cms['cocurricular_clubs'])) {
         [
             'id' => 6,
             'title' => 'Yoga & Mindfulness',
-            'stage' => 'All Stages (KG to Grade 8)',
+            'stage' => 'All Stages (KG to Grade 12)',
             'stage_key' => 'all',
             'desc' => 'Daily guided asanas, pranayama breathing exercises, and mindfulness techniques for physical flexibility, posture, and emotional wellness.',
             'icon' => '🧘',
@@ -120,7 +120,7 @@ if (!isset($beyond_cms['cocurricular_clubs'])) {
         [
             'id' => 8,
             'title' => 'Vocal Music',
-            'stage' => 'All Stages (KG to Grade 8)',
+            'stage' => 'All Stages (KG to Grade 12)',
             'stage_key' => 'all',
             'desc' => 'Hindustani classical and Western vocal training from beginner pitch matching to advanced melodic improvisation and performance.',
             'icon' => '🎵',
@@ -422,7 +422,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $beyond_cms['hero']['subtitle'] = trim($_POST['subtitle'] ?? 'LEARNING BEYOND CLASSROOMS');
             $beyond_cms['hero']['title'] = trim($_POST['title'] ?? 'Discover. Create. Grow Beyond.');
             $beyond_cms['hero']['desc'] = trim($_POST['desc'] ?? '');
-            $beyond_cms['hero']['grades'] = trim($_POST['grades'] ?? 'NURSERY – GRADE 8');
+            $beyond_cms['hero']['grades'] = trim($_POST['grades'] ?? 'NURSERY – GRADE 12');
             redirect_and_save_beyond('hero', 'saved');
         }
 
@@ -748,7 +748,7 @@ include_once dirname(__FILE__) . '/header.php';
               <label class="form-label" style="font-weight: 700; font-size: 0.85rem; color: var(--color-navy); margin-bottom: 0.35rem; display: block;">
                 Grades Banner
               </label>
-              <input type="text" name="grades" value="<?php echo h($h['grades'] ?? 'NURSERY – GRADE 8'); ?>" class="form-control" style="width: 100%; padding: 0.65rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm);">
+              <input type="text" name="grades" value="<?php echo h($h['grades'] ?? 'NURSERY – GRADE 12'); ?>" class="form-control" style="width: 100%; padding: 0.65rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm);">
             </div>
           </div>
 

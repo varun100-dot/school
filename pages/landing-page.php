@@ -99,8 +99,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_landing_lead']
 }
 
 // SEO Metadata
-$seo_title = "Zuvio Global School — 100% Online School for Nursery to Grade 8";
-$meta_desc = "Flexible. Personalised. Future-Ready 100% online schooling for Nursery to Grade 8. Live interactive classes, CBSE & Oxford curriculum, and holistic global learning.";
+$seo_title = "Zuvio Global School — 100% Online School for Nursery to Grade 12";
+$meta_desc = "Flexible. Personalised. Future-Ready 100% online schooling for Nursery to Grade 12. Live interactive classes, CBSE & Oxford curriculum, and holistic global learning.";
 $canonical_url = (defined('BASE_URL') ? BASE_URL : '') . "/landing-page/";
 $csrf_token = generate_csrf_token();
 ?>
@@ -176,7 +176,7 @@ $csrf_token = generate_csrf_token();
         </h1>
         
         <p class="lp-hero-tagline">Flexible. Personalised. Future-Ready.</p>
-        <p class="lp-hero-grades">100% Online School for Nursery to Grade 8</p>
+        <p class="lp-hero-grades">100% Online School for Nursery to Grade 12</p>
 
         <!-- 3 Benefit Bullets (Horizontal) -->
         <div class="lp-hero-benefits-row">

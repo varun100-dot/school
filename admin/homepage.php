@@ -48,7 +48,7 @@ if (!isset($home_cms['about_zuvio'])) {
         'cta_url' => '/about',
         'image' => '/assets/images/Teacher interacting with students.webp',
         'image_title' => 'Learning Beyond Boundaries',
-        'image_subtitle' => 'Personalised, 100% Live Online Schooling • Kindergarten to Grade 8th'
+        'image_subtitle' => 'Personalised, 100% Live Online Schooling • Kindergarten to Grade 12'
     ];
 }
 
@@ -78,7 +78,7 @@ if (!isset($home_cms['curriculum_pathways'])) {
     $home_cms['curriculum_pathways'] = [
         'is_active' => 1,
         'badge' => 'Curriculum Pathways',
-        'title' => 'A Future-Ready Learning Journey — Kindergarten to Grade 8th',
+        'title' => 'A Future-Ready Learning Journey — Kindergarten to Grade 12',
         'subtitle' => 'Mapped to CBSE, NEP 2020 and NCF — strong academic foundations blended with creativity, communication, digital fluency and real-world learning.',
         'stages' => [
             [
@@ -197,7 +197,7 @@ if (!isset($home_cms['statistics'])) {
     $home_cms['statistics'] = [
         'is_active' => 1,
         'stats' => [
-            ['val' => 'KG to 8th', 'label' => 'Grade Spectrum'],
+            ['val' => 'KG to 12th', 'label' => 'Grade Spectrum'],
             ['val' => '15:1', 'label' => 'Max Cohort Ratio'],
             ['val' => '100%', 'label' => 'Live Online Schooling'],
             ['val' => 'CBSE', 'label' => '& NEP 2020 Aligned'],

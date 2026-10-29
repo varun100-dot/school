@@ -24,7 +24,7 @@ $seo = [
     'meta_description' => 'Admissions Open 2026–2027. Explore dedicated pages for Enrol Now, Eligibility criteria, Academic Calendar, Transparent Fees, and Parent FAQs.',
     'canonical_url' => BASE_URL . '/admissions',
     'og_title' => 'Admissions & Enrolment — Zuvio Global School',
-    'og_description' => 'A seamless, supportive onboarding journey for K–8 online schooling. Explore enrolment steps, eligibility matrix, term dates, and fees.',
+    'og_description' => 'A seamless, supportive onboarding journey for K–12 online schooling. Explore enrolment steps, eligibility matrix, term dates, and fees.',
     'og_image' => '/assets/images/about_us_hero.jpg',
     'index_status' => 'index, follow'
 ];

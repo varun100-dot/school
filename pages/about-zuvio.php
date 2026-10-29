@@ -132,7 +132,7 @@ render_breadcrumbs([
           </div>
           <div style="position: absolute; bottom: -20px; right: 20px; background: var(--color-navy-dark); color: #FFFFFF; padding: 1.25rem 1.75rem; border-radius: var(--radius-md); box-shadow: var(--shadow-lg); border-left: 4px solid var(--color-gold);">
             <div style="font-size: 1.6rem; font-weight: 700; color: var(--color-gold); font-family: var(--font-primary);">100% Online</div>
-            <div style="font-size: 0.85rem; opacity: 0.9;">Accredited K–8 Global School</div>
+            <div style="font-size: 0.85rem; opacity: 0.9;">Accredited K–12 Global School</div>
           </div>
         </div>
       </div>

@@ -31,7 +31,7 @@ $seo = [
     'meta_description' => 'Explore Zuvio’s rich elective offerings: 8 Indian regional languages, 5 world languages, Coding & Robotics, Public Speaking, and Financial Literacy.',
     'canonical_url' => BASE_URL . '/electives',
     'og_title' => 'Electives, Languages & Future Skills — Zuvio Global School',
-    'og_description' => 'Discover regional languages, foreign languages, and 21st-century future skill electives integrated into our K–8 curriculum.',
+    'og_description' => 'Discover regional languages, foreign languages, and 21st-century future skill electives integrated into our K–12 curriculum.',
     'og_image' => '/assets/images/about_us_hero.jpg',
     'index_status' => 'index, follow'
 ];

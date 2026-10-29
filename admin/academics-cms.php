@@ -41,7 +41,7 @@ if (!isset($ac_cms['technology'])) {
 if (!isset($ac_cms['curriculum'])) {
     $ac_cms['curriculum'] = [
         'is_active' => 1,
-        'hero_title' => 'A Future-Ready Learning Journey — Kindergarten to Grade 8th',
+        'hero_title' => 'A Future-Ready Learning Journey — Kindergarten to Grade 12',
         'hero_subtitle' => 'Curriculum Framework',
         'hero_desc' => 'Mapped to CBSE learning outcomes, NEP 2020 pedagogical structure, and Oxford thematic inquiry — building strong academic foundations with creativity, communication, digital fluency, and real-world mastery.',
         'early_years_title' => 'Early Years · Nursery to UKG',

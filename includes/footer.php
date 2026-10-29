@@ -39,7 +39,7 @@ $social_youtube = get_setting('social_youtube', 'https://www.youtube.com/@zuviog
         <p class="brand-tagline">Learning Beyond Boundaries</p>
         <p class="footer-accreditation-text">
           <strong>Affiliation No: IA 4883 &bull; IAO Accredited &bull; ISSO Member</strong><br>
-          Empowering learners worldwide through interactive, personalized, and globally accredited online education from Kindergarten to Grade 8th.
+          Empowering learners worldwide through interactive, personalized, and globally accredited online education from Kindergarten to Grade 12.
         </p>
         
         <div class="footer-social-wrapper">

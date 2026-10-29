@@ -48,7 +48,7 @@ $seo = [
     'meta_description' => 'View the official Zuvio Global School Academic Calendar 2026–2027. Term 1 & Term 2 dates, examination windows, holidays, and downloadable PDF schedule.',
     'canonical_url' => BASE_URL . '/admissions/calendar',
     'og_title' => 'Academic Calendar 2026–2027 — Zuvio Global School',
-    'og_description' => 'Download official session calendar, term schedules, holiday lists, and assessment milestones for K–8 online schooling.',
+    'og_description' => 'Download official session calendar, term schedules, holiday lists, and assessment milestones for K–12 online schooling.',
     'og_image' => '/assets/images/about_us_hero.jpg',
     'index_status' => 'index, follow'
 ];

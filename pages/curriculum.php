@@ -25,7 +25,7 @@ render_breadcrumbs([
     <div class="curriculum-container">
       <div class="curriculum-section-header" style="text-align: center;">
         <h1 class="curriculum-hero-title"><?php echo h(!empty($curr['hero_title']) ? $curr['hero_title'] : 'CURRICULUM INSIGHTS'); ?></h1>
-        <p class="curriculum-section-subtitle"><?php echo h(!empty($curr['hero_subtitle']) ? $curr['hero_subtitle'] : 'A Future-Ready Learning Journey | Kindergarten to Grade 8th'); ?></p>
+        <p class="curriculum-section-subtitle"><?php echo h(!empty($curr['hero_subtitle']) ? $curr['hero_subtitle'] : 'A Future-Ready Learning Journey | Kindergarten to Grade 12'); ?></p>
       </div>
 
       <div class="curriculum-body">

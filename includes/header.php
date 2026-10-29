@@ -153,7 +153,7 @@ if (!empty($cms_strip_cfg['items']) && is_array($cms_strip_cfg['items'])) {
 }
 if (empty($sliding_strip_items)) {
     $sliding_strip_items = [
-        ['badge' => 'Nursery to Grade 8th', 'title' => '100% Online Schooling', 'link' => ''],
+        ['badge' => 'KG to 12th', 'title' => '100% Online Schooling', 'link' => ''],
         ['badge' => '', 'title' => 'CBSE Mapped Curriculum', 'link' => ''],
         ['badge' => '', 'title' => 'Inclusive Learning & SEN Support', 'link' => ''],
         ['badge' => '', 'title' => 'Live Small-Group Interactive Classes', 'link' => ''],

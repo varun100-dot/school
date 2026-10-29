@@ -269,7 +269,7 @@ if ($action === 'sync_defaults') {
         1 => [
             'title' => 'Global Standard Learning',
             'subtitle' => 'ZUVIO GLOBAL SCHOOL',
-            'description' => 'Academic excellence meets personalised online learning for Grades K to 8.',
+            'description' => 'Academic excellence meets personalised online learning for Grades K to 12.',
             'image' => '/assets/images/zuvio_hero_banner_1.png',
             'primary_cta_text' => 'Enrol Now',
             'primary_cta_url' => '/admissions/enrol-now',
@@ -388,7 +388,7 @@ if (empty($slides)) {
                 'id' => 1,
                 'title' => 'Global Standard Learning',
                 'subtitle' => 'ZUVIO GLOBAL SCHOOL',
-                'description' => 'Academic excellence meets personalised online learning for Grades K to 8.',
+                'description' => 'Academic excellence meets personalised online learning for Grades K to 12.',
                 'image' => '/assets/images/zuvio_hero_banner_1.png',
                 'primary_cta_text' => 'Enrol Now',
                 'primary_cta_url' => '/admissions/enrol-now',

@@ -91,7 +91,7 @@ if (empty($slides)) {
         [
             'title' => 'A Future-Ready Online School',
             'subtitle' => 'ZUVIO GLOBAL SCHOOL',
-            'description' => 'Academic excellence meets personalised online learning. We bring together CBSE alignment, Oxford thematic learning, and AI fluency for grades K to 8.',
+            'description' => 'Academic excellence meets personalised online learning. We bring together CBSE alignment, Oxford thematic learning, and AI fluency for grades K to 12.',
             'primary_cta_text' => 'Enrol Now',
             'primary_cta_url' => '/admissions#enrol',
             'secondary_cta_text' => 'Download Brochure',
@@ -151,7 +151,7 @@ $sec_about = $home_cms['about_zuvio'] ?? [
     'cta_url' => '/about',
     'image' => '/assets/images/Teacher interacting with students.webp',
     'image_title' => 'Learning Beyond Boundaries',
-    'image_subtitle' => 'Personalised, 100% Live Online Schooling • Kindergarten to Grade 8th'
+    'image_subtitle' => 'Personalised, 100% Live Online Schooling • Kindergarten to Grade 12'
 ];
 
 $sec_choose = $home_cms['who_should_choose'] ?? [
@@ -219,7 +219,7 @@ $learning_journey_cards = $sec_curriculum['stages'] ?? [
 $sec_curriculum = $home_cms['curriculum_pathways'] ?? [
     'is_active' => 1,
     'badge' => 'Curriculum Pathways',
-    'title' => 'A Future-Ready Learning Journey — Kindergarten to Grade 8th',
+    'title' => 'A Future-Ready Learning Journey — Kindergarten to Grade 12',
     'subtitle' => 'Mapped to CBSE, NEP 2020 and NCF — strong academic foundations blended with creativity, communication, digital fluency and real-world learning.',
     'stages' => $learning_journey_cards,
     'footer_tagline' => 'Strong Foundations. Future Skills. Learning Without Boundaries.',
@@ -303,7 +303,7 @@ $sec_inc = $home_cms['inclusivity'] ?? [
 $sec_stats = $home_cms['statistics'] ?? [
     'is_active' => 1,
     'stats' => [
-        ['val' => 'KG to 8th', 'label' => 'Grade Spectrum'],
+        ['val' => 'KG to 12th', 'label' => 'Grade Spectrum'],
         ['val' => '15:1', 'label' => 'Max Cohort Ratio'],
         ['val' => '100%', 'label' => 'Live Online Schooling'],
         ['val' => 'CBSE', 'label' => '& NEP 2020 Aligned'],
@@ -710,7 +710,7 @@ $show_hero_form = (!isset($sec_hero_form['is_active']) || !empty($sec_hero_form[
         <img src="<?php echo h($sec_about['image'] ?? '/assets/images/Teacher interacting with students.webp'); ?>" alt="<?php echo h($sec_about['image_title'] ?? 'Teacher interacting with students at Zuvio Global School'); ?>" loading="lazy" style="width: 100%; height: 380px; object-fit: cover; display: block;">
         <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(0deg, rgba(3,27,66,0.92) 0%, rgba(3,27,66,0) 100%); padding: 1.5rem 1.25rem 1rem 1.25rem; color: #FFFFFF;">
           <p style="font-weight: 700; font-size: 1rem; margin: 0; color: var(--color-gold);"><?php echo h($sec_about['image_title'] ?? 'Learning Beyond Boundaries'); ?></p>
-          <p style="font-size: 0.82rem; margin: 0; color: #E2E8F0;"><?php echo h($sec_about['image_subtitle'] ?? 'Personalised, 100% Live Online Schooling • Kindergarten to Grade 8th'); ?></p>
+          <p style="font-size: 0.82rem; margin: 0; color: #E2E8F0;"><?php echo h($sec_about['image_subtitle'] ?? 'Personalised, 100% Live Online Schooling • Kindergarten to Grade 12'); ?></p>
         </div>
       </div>
     </div>
@@ -763,7 +763,7 @@ $show_hero_form = (!isset($sec_hero_form['is_active']) || !empty($sec_hero_form[
   <div class="container">
     <div class="text-center" style="max-width: 800px; margin: 0 auto 3rem auto;">
       <span style="font-size: 0.85rem; font-weight: 700; color: var(--color-gold); text-transform: uppercase; letter-spacing: 2px;"><?php echo h($sec_curriculum['badge'] ?? 'Curriculum Pathways'); ?></span>
-      <h2 style="font-size: 2.5rem; color: var(--color-navy); margin-top: 0.5rem; font-family: var(--font-primary);"><?php echo h($sec_curriculum['title'] ?? 'A Future-Ready Learning Journey — Kindergarten to Grade 8th'); ?></h2>
+      <h2 style="font-size: 2.5rem; color: var(--color-navy); margin-top: 0.5rem; font-family: var(--font-primary);"><?php echo h($sec_curriculum['title'] ?? 'A Future-Ready Learning Journey — Kindergarten to Grade 12'); ?></h2>
       <p style="color: var(--color-muted); font-size: 1.05rem; line-height: 1.7; margin-top: 1rem;">
         <?php echo h($sec_curriculum['subtitle'] ?? 'Mapped to CBSE, NEP 2020 and NCF — strong academic foundations blended with creativity, communication, digital fluency and real-world learning.'); ?>
       </p>

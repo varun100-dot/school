@@ -21,7 +21,7 @@ $strip_cms = &$_SESSION['mock_sliding_strip'];
 $default_items = [
     [
         'id' => 1,
-        'badge' => 'Nursery to Grade 8th',
+        'badge' => 'KG to 12th',
         'title' => '100% Online Schooling',
         'link' => '/curriculum',
         'sort_order' => 1,

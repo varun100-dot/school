@@ -182,7 +182,7 @@ INSERT INTO `homepage_sections` (`section_key`, `title`, `subtitle`, `content`, 
 
 ('who_should_choose', 'Who Should Choose Zuvio', 'Tailored for Modern Learners', 'Zuvio is for families who want learning to fit their life — not their life to revolve around a timetable.\n\nIf you believe education should adapt to the child, Zuvio may be the right choice.', NULL, NULL, 'Check Eligibility', '/admissions#eligibility', 1, 2, 1),
 
-('curriculum_intro', 'A Future-Ready Learning Journey — K to Grade 8', 'Our Academic Pathway', 'Aligned with CBSE, NEP 2020 and NCF — strong academic foundations blended with creativity, communication, digital fluency and real-world learning.\n\nEvery stage builds on the last: from stories, sounds and play in the Early Years to research, innovation and independent thinking in Middle School.', NULL, NULL, 'Explore the Full Curriculum →', '/curriculum', 1, 3, 1),
+('curriculum_intro', 'A Future-Ready Learning Journey — Kindergarten to Grade 12', 'Our Academic Pathway', 'Aligned with CBSE, NEP 2020 and NCF — strong academic foundations blended with creativity, communication, digital fluency and real-world learning.\n\nEvery stage builds on the last: from stories, sounds and play in the Early Years to research, innovation and independent thinking in Middle School.', NULL, NULL, 'Explore the Full Curriculum →', '/curriculum', 1, 3, 1),
 
 ('learning_framework', 'The Zuvio Learning Framework', 'From Knowing to Doing', 'Knowledge → Understanding → Application → Innovation\n\nOur five-pillar framework bridges conceptual foundation with real-world application.', NULL, NULL, 'Learn About Our Methodology', '/academics', 1, 4, 1),
 

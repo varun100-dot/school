@@ -497,7 +497,7 @@ render_breadcrumbs([
     <!-- CTA to Deep Curriculum Page -->
     <div style="text-align: center;">
       <a href="/curriculum" class="btn btn-primary" style="background-color: var(--color-navy); border-color: var(--color-navy); color: #FFFFFF; font-weight: 700; padding: 0.85rem 2.5rem;">
-        Explore Full Stage-Wise Curriculum Guide (Kindergarten to Grade 8th) &rarr;
+        Explore Full Stage-Wise Curriculum Guide (Kindergarten to Grade 12) &rarr;
       </a>
     </div>
 

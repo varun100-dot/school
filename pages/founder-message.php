@@ -69,7 +69,7 @@ $founder_data = $cms['founder_message_data'] ?? [
         <div>
           <h2 style="font-size: 1.8rem; color: var(--color-navy); font-family: var(--font-primary); margin: 0 0 0.25rem 0;"><?php echo h($founder_data['signoff_name'] ?? 'Founder'); ?></h2>
           <p style="color: var(--color-gold); font-weight: 700; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 0.5rem 0;"><?php echo h($founder_data['signoff_org'] ?? 'Zuvio Global School'); ?></p>
-          <span style="font-size: 0.85rem; color: var(--color-muted);">Online K–8 Homeschooling & Global Education Pioneer</span>
+          <span style="font-size: 0.85rem; color: var(--color-muted);">Online K–12 Homeschooling & Global Education Pioneer</span>
         </div>
       </div>
 

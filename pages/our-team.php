@@ -183,7 +183,7 @@ render_breadcrumbs([
           Our Leadership Team
         </h2>
         <p style="color: var(--color-muted); font-size: 1rem; margin-top: 0.5rem;">
-          Driving our mission to make world-class, flexible K–8 education accessible everywhere.
+          Driving our mission to make world-class, flexible K–12 education accessible everywhere.
         </p>
       </div>
 
