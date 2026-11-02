@@ -1654,16 +1654,29 @@ body.announcement-bar-closed .floating-contact-actions {
   background: linear-gradient(180deg, #F8FAFC 0%, #EFF4FA 100%);
   border-bottom: 1px solid var(--color-border);
 }
-.stage-grid-4 {
+.curriculum-pathways-section .container,
+.curriculum-pathways-container {
+  max-width: 1280px;
+}
+.curriculum-pathways-title {
+  font-size: 2.5rem;
+  color: var(--color-navy);
+  margin-top: 0.5rem;
+  font-family: var(--font-primary);
+  line-height: 1.25;
+}
+.stage-grid-4,
+.stage-grid-6 {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 1.75rem;
   margin-top: 3rem;
+  align-items: stretch;
 }
 .stage-card {
   background-color: #FFFFFF;
   border-radius: var(--radius-md);
-  padding: 2.25rem 1.6rem;
+  padding: 2.25rem 1.85rem;
   box-shadow: 0 4px 16px rgba(6, 43, 99, 0.08);
   border: 1.5px solid rgba(6, 43, 99, 0.24) !important;
   display: flex;
@@ -1671,11 +1684,18 @@ body.announcement-bar-closed .floating-contact-actions {
   justify-content: space-between;
   transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
   position: relative;
+  height: 100%;
+  box-sizing: border-box;
 }
 .stage-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 12px 28px rgba(6, 43, 99, 0.14);
   border-color: var(--color-navy) !important;
+}
+.stage-card-body {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
 }
 .stage-badge-pill {
   display: inline-block;
@@ -1696,6 +1716,10 @@ body.announcement-bar-closed .floating-contact-actions {
   font-family: var(--font-primary);
   font-weight: 700;
   margin-bottom: 0.5rem;
+  line-height: 1.35;
+}
+.stage-title-grades {
+  white-space: nowrap;
 }
 .stage-card-keywords {
   font-size: 0.85rem;
@@ -1713,11 +1737,13 @@ body.announcement-bar-closed .floating-contact-actions {
 .stage-card-outcome {
   background-color: var(--pastel-yellow);
   border: 1px solid rgba(217, 164, 65, 0.4);
-  padding: 0.6rem 0.85rem;
+  padding: 0.65rem 0.85rem;
   border-radius: 4px;
   font-size: 0.82rem;
   font-weight: 600;
   color: var(--color-navy);
+  margin-top: auto;
+  line-height: 1.45;
 }
 
 /* Zuvio Learning Framework Flow */
@@ -2174,8 +2200,19 @@ body.announcement-bar-closed .floating-contact-actions {
 
 /* Responsive Overrides for Phase 5 Layouts */
 @media (max-width: 1100px) {
-  .stage-grid-4 {
+  .curriculum-pathways-title {
+    font-size: 2.2rem;
+  }
+  .stage-grid-4,
+  .stage-grid-6 {
     grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+  .stage-card {
+    padding: 2rem 1.6rem;
+  }
+  .stage-card-title {
+    font-size: 1.18rem;
   }
   .framework-flow-container {
     grid-template-columns: repeat(3, 1fr);
@@ -2202,9 +2239,6 @@ body.announcement-bar-closed .floating-contact-actions {
   .hero-title-main {
     font-size: 2.25rem;
   }
-  .stage-grid-4 {
-    grid-template-columns: 1fr;
-  }
   .framework-flow-container {
     grid-template-columns: 1fr;
   }
@@ -2219,6 +2253,24 @@ body.announcement-bar-closed .floating-contact-actions {
   }
   .founder-editorial-card {
     padding: 1.5rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .curriculum-pathways-section {
+    padding: 3.5rem 0;
+  }
+  .curriculum-pathways-title {
+    font-size: 1.75rem;
+  }
+  .stage-grid-4,
+  .stage-grid-6 {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+    margin-top: 2rem;
+  }
+  .stage-card {
+    padding: 1.75rem 1.4rem;
   }
 }
 

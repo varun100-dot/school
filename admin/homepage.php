@@ -74,8 +74,9 @@ if (!isset($home_cms['who_should_choose'])) {
 }
 
 // 4. Curriculum Pathways
-if (!isset($home_cms['curriculum_pathways'])) {
-    $home_cms['curriculum_pathways'] = [
+if (!isset($home_cms['curriculum_pathways']) || empty($home_cms['curriculum_pathways']['stages']) || count($home_cms['curriculum_pathways']['stages']) < 6) {
+    $existing_cp = $home_cms['curriculum_pathways'] ?? [];
+    $home_cms['curriculum_pathways'] = array_merge([
         'is_active' => 1,
         'badge' => 'Curriculum Pathways',
         'title' => 'A Future-Ready Learning Journey — Kindergarten to Grade 12',
@@ -108,12 +109,72 @@ if (!isset($home_cms['curriculum_pathways'])) {
                 'keywords' => 'Think • Apply • Innovate',
                 'bullets' => "Deeper analysis, research and discussion\n• Coding & AI awareness, entrepreneurship, design thinking\n• Leadership, global citizenship and career exploration",
                 'outcome' => 'Critical thinking, independence and real-world readiness'
+            ],
+            [
+                'badge' => 'GRADES 9–10',
+                'title' => 'Secondary Stage · Grades 9–10',
+                'keywords' => 'Analyse • Apply • Prepare',
+                'bullets' => "Build deeper subject understanding and a strong foundation for senior secondary learning.\n• Concept clarity, analytical thinking and practical application\n• Guided revision, structured practice and assessment readiness\n• Independent study habits, problem-solving and career exploration",
+                'outcome' => 'Confident learners prepared for academic progression and board-level study.'
+            ],
+            [
+                'badge' => 'GRADES 11–12',
+                'title' => 'Senior Secondary · Grades 11–12',
+                'keywords' => 'Specialise • Aspire • Achieve',
+                'bullets' => "Deepen subject knowledge and prepare for the transition from school to higher education.\n• Subject-focused learning, research and critical thinking\n• Academic writing, practical application and examination readiness\n• Informed study choices, self-directed learning and career awareness",
+                'outcome' => 'Independent learners ready to pursue higher education and future ambitions.'
             ]
         ],
         'footer_tagline' => 'Strong Foundations. Future Skills. Learning Without Boundaries.',
         'cta_text' => 'Explore the Full Curriculum →',
         'cta_url' => '/curriculum'
-    ];
+    ], $existing_cp);
+    if (empty($existing_cp['stages']) || count($existing_cp['stages']) < 6) {
+        $home_cms['curriculum_pathways']['stages'] = [
+            [
+                'badge' => 'K–KG',
+                'title' => 'Early Years · K–KG',
+                'keywords' => 'Explore • Play • Discover',
+                'bullets' => "Learning through stories, play, music and hands-on activities\n• Early literacy, phonics and numeracy\n• Communication, creativity and social-emotional growth",
+                'outcome' => 'Confidence, curiosity and strong foundations'
+            ],
+            [
+                'badge' => 'Grades 1–2',
+                'title' => 'Foundation Stage · Grades 1–2',
+                'keywords' => 'Build • Question • Create',
+                'bullets' => "Strengthening reading, writing and maths\n• Connecting classroom concepts to everyday life\n• Art, life skills and digital literacy",
+                'outcome' => 'Numeracy, communication and independent thinking'
+            ],
+            [
+                'badge' => 'Grades 3–5',
+                'title' => 'Preparatory Stage · Grades 3–5',
+                'keywords' => 'Understand • Apply • Collaborate',
+                'bullets' => "Interdisciplinary, application-led learning\n• Science, coding and computational thinking\n• Communication, financial awareness and creativity",
+                'outcome' => 'Conceptual understanding, research and digital fluency'
+            ],
+            [
+                'badge' => 'Grades 6–8',
+                'title' => 'Middle School · Grades 6–8',
+                'keywords' => 'Think • Apply • Innovate',
+                'bullets' => "Deeper analysis, research and discussion\n• Coding & AI awareness, entrepreneurship, design thinking\n• Leadership, global citizenship and career exploration",
+                'outcome' => 'Critical thinking, independence and real-world readiness'
+            ],
+            [
+                'badge' => 'GRADES 9–10',
+                'title' => 'Secondary Stage · Grades 9–10',
+                'keywords' => 'Analyse • Apply • Prepare',
+                'bullets' => "Build deeper subject understanding and a strong foundation for senior secondary learning.\n• Concept clarity, analytical thinking and practical application\n• Guided revision, structured practice and assessment readiness\n• Independent study habits, problem-solving and career exploration",
+                'outcome' => 'Confident learners prepared for academic progression and board-level study.'
+            ],
+            [
+                'badge' => 'GRADES 11–12',
+                'title' => 'Senior Secondary · Grades 11–12',
+                'keywords' => 'Specialise • Aspire • Achieve',
+                'bullets' => "Deepen subject knowledge and prepare for the transition from school to higher education.\n• Subject-focused learning, research and critical thinking\n• Academic writing, practical application and examination readiness\n• Informed study choices, self-directed learning and career awareness",
+                'outcome' => 'Independent learners ready to pursue higher education and future ambitions.'
+            ]
+        ];
+    }
 }
 
 // 5. The Zuvio Learning Framework
@@ -536,7 +597,7 @@ $sections_nav = [
     'hero_form' => ['num' => 1, 'name' => 'Hero Counselor Form', 'icon' => '📝'],
     'about_zuvio' => ['num' => 2, 'name' => 'About Zuvio Story', 'icon' => '📖'],
     'who_should_choose' => ['num' => 3, 'name' => 'Who Should Choose Zuvio', 'icon' => '🎯'],
-    'curriculum_pathways' => ['num' => 4, 'name' => 'Curriculum Pathways (4 Stages)', 'icon' => '🎓'],
+    'curriculum_pathways' => ['num' => 4, 'name' => 'Curriculum Pathways (6 Stages)', 'icon' => '🎓'],
     'learning_framework' => ['num' => 5, 'name' => 'Learning Framework (5 Steps)', 'icon' => '⚙️'],
     'beyond_textbook' => ['num' => 6, 'name' => 'Beyond Textbook (6 Domains)', 'icon' => '🌍'],
     'why_different' => ['num' => 7, 'name' => 'What Makes Us Different', 'icon' => '✨'],
@@ -835,7 +896,7 @@ include dirname(__FILE__) . '/header.php';
             <textarea name="subtitle" rows="2" class="admin-input"><?php echo h($current_sec['subtitle'] ?? ''); ?></textarea>
           </div>
 
-          <h4 style="color: var(--color-navy); font-size: 1rem; margin: 1.5rem 0 1rem 0;">Curriculum Stages (4 Stages)</h4>
+          <h4 style="color: var(--color-navy); font-size: 1rem; margin: 1.5rem 0 1rem 0;">Curriculum Stages (6 Stages)</h4>
           <div style="display: flex; flex-direction: column; gap: 1.25rem; margin-bottom: 1.5rem;">
             <?php foreach (($current_sec['stages'] ?? []) as $st_idx => $stg): ?>
               <div style="background: #F8FAFC; border: 1px solid #E2E8F0; padding: 1.25rem; border-radius: var(--radius-sm);">

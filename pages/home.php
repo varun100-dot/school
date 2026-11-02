@@ -172,14 +172,17 @@ $sec_choose = $home_cms['who_should_choose'] ?? [
     'cta_url' => '/admissions#eligibility'
 ];
 
-// Fallback Learning Journey Cards (Section 4)
-$learning_journey_cards = $sec_curriculum['stages'] ?? [
+$sec_curriculum = $home_cms['curriculum_pathways'] ?? [];
+
+// Fallback Learning Journey Cards (Section 4 - 6 Stages)
+$learning_journey_cards = (!empty($sec_curriculum['stages']) && is_array($sec_curriculum['stages']) && count($sec_curriculum['stages']) >= 6) ? $sec_curriculum['stages'] : [
     [
         'badge' => 'K–KG',
         'badge_text' => 'K–KG',
         'title' => 'Early Years · K–KG',
         'subtitle' => 'Explore • Play • Discover',
         'keywords' => 'Explore • Play • Discover',
+        'tagline' => 'Explore • Play • Discover',
         'content' => "Learning through stories, play, music and hands-on activities\n• Early literacy, phonics and numeracy\n• Communication, creativity and social-emotional growth",
         'bullets' => "Learning through stories, play, music and hands-on activities\n• Early literacy, phonics and numeracy\n• Communication, creativity and social-emotional growth",
         'outcome' => 'Confidence, curiosity and strong foundations'
@@ -190,6 +193,7 @@ $learning_journey_cards = $sec_curriculum['stages'] ?? [
         'title' => 'Foundation Stage · Grades 1–2',
         'subtitle' => 'Build • Question • Create',
         'keywords' => 'Build • Question • Create',
+        'tagline' => 'Build • Question • Create',
         'content' => "Strengthening reading, writing and maths\n• Connecting classroom concepts to everyday life\n• Art, life skills and digital literacy",
         'bullets' => "Strengthening reading, writing and maths\n• Connecting classroom concepts to everyday life\n• Art, life skills and digital literacy",
         'outcome' => 'Numeracy, communication and independent thinking'
@@ -200,6 +204,7 @@ $learning_journey_cards = $sec_curriculum['stages'] ?? [
         'title' => 'Preparatory Stage · Grades 3–5',
         'subtitle' => 'Understand • Apply • Collaborate',
         'keywords' => 'Understand • Apply • Collaborate',
+        'tagline' => 'Understand • Apply • Collaborate',
         'content' => "Interdisciplinary, application-led learning\n• Science, coding and computational thinking\n• Communication, financial awareness and creativity",
         'bullets' => "Interdisciplinary, application-led learning\n• Science, coding and computational thinking\n• Communication, financial awareness and creativity",
         'outcome' => 'Conceptual understanding, research and digital fluency'
@@ -210,13 +215,38 @@ $learning_journey_cards = $sec_curriculum['stages'] ?? [
         'title' => 'Middle School · Grades 6–8',
         'subtitle' => 'Think • Apply • Innovate',
         'keywords' => 'Think • Apply • Innovate',
+        'tagline' => 'Think • Apply • Innovate',
         'content' => "Deeper analysis, research and discussion\n• Coding & AI awareness, entrepreneurship, design thinking\n• Leadership, global citizenship and career exploration",
         'bullets' => "Deeper analysis, research and discussion\n• Coding & AI awareness, entrepreneurship, design thinking\n• Leadership, global citizenship and career exploration",
         'outcome' => 'Critical thinking, independence and real-world readiness'
+    ],
+    [
+        'badge' => 'Grades 9–10',
+        'badge_text' => 'GRADES 9–10',
+        'title' => 'Secondary Stage · Grades 9–10',
+        'subtitle' => 'Analyse • Apply • Prepare',
+        'keywords' => 'Analyse • Apply • Prepare',
+        'tagline' => 'Analyse • Apply • Prepare',
+        'description' => 'Build deeper subject understanding and a strong foundation for senior secondary learning.',
+        'content' => "Build deeper subject understanding and a strong foundation for senior secondary learning.\n• Concept clarity, analytical thinking and practical application\n• Guided revision, structured practice and assessment readiness\n• Independent study habits, problem-solving and career exploration",
+        'bullets' => "Build deeper subject understanding and a strong foundation for senior secondary learning.\n• Concept clarity, analytical thinking and practical application\n• Guided revision, structured practice and assessment readiness\n• Independent study habits, problem-solving and career exploration",
+        'outcome' => 'Confident learners prepared for academic progression and board-level study.'
+    ],
+    [
+        'badge' => 'Grades 11–12',
+        'badge_text' => 'GRADES 11–12',
+        'title' => 'Senior Secondary · Grades 11–12',
+        'subtitle' => 'Specialise • Aspire • Achieve',
+        'keywords' => 'Specialise • Aspire • Achieve',
+        'tagline' => 'Specialise • Aspire • Achieve',
+        'description' => 'Deepen subject knowledge and prepare for the transition from school to higher education.',
+        'content' => "Deepen subject knowledge and prepare for the transition from school to higher education.\n• Subject-focused learning, research and critical thinking\n• Academic writing, practical application and examination readiness\n• Informed study choices, self-directed learning and career awareness",
+        'bullets' => "Deepen subject knowledge and prepare for the transition from school to higher education.\n• Subject-focused learning, research and critical thinking\n• Academic writing, practical application and examination readiness\n• Informed study choices, self-directed learning and career awareness",
+        'outcome' => 'Independent learners ready to pursue higher education and future ambitions.'
     ]
 ];
 
-$sec_curriculum = $home_cms['curriculum_pathways'] ?? [
+$sec_curriculum = array_merge([
     'is_active' => 1,
     'badge' => 'Curriculum Pathways',
     'title' => 'A Future-Ready Learning Journey — Kindergarten to Grade 12',
@@ -225,7 +255,8 @@ $sec_curriculum = $home_cms['curriculum_pathways'] ?? [
     'footer_tagline' => 'Strong Foundations. Future Skills. Learning Without Boundaries.',
     'cta_text' => 'Explore the Full Curriculum →',
     'cta_url' => '/curriculum'
-];
+], $sec_curriculum);
+$sec_curriculum['stages'] = $learning_journey_cards;
 
 // Fallback Learning Framework Items (Section 5)
 $framework_items = [
@@ -757,34 +788,41 @@ $show_hero_form = (!isset($sec_hero_form['is_active']) || !empty($sec_hero_form[
 <?php endif; ?>
 
 <!-- ========================================================================
-     SECTION 4: LEARNING PATH (4-STAGE LEARNING JOURNEY)
+     SECTION 4: LEARNING PATH (6-STAGE LEARNING JOURNEY)
      ======================================================================== -->
 <?php if ((!isset($sec_curriculum['is_active']) || !empty($sec_curriculum['is_active'])) && empty($sec_curriculum['is_removed'])): ?>
-<section class="section curriculum-pathways-section">
-  <div class="container">
+<section class="section curriculum-pathways-section" id="curriculum-pathways">
+  <div class="container curriculum-pathways-container">
     <div class="text-center" style="max-width: 800px; margin: 0 auto 3rem auto;">
       <span style="font-size: 0.85rem; font-weight: 700; color: var(--color-gold); text-transform: uppercase; letter-spacing: 2px;"><?php echo h($sec_curriculum['badge'] ?? 'Curriculum Pathways'); ?></span>
-      <h2 style="font-size: 2.5rem; color: var(--color-navy); margin-top: 0.5rem; font-family: var(--font-primary);"><?php echo h($sec_curriculum['title'] ?? 'A Future-Ready Learning Journey — Kindergarten to Grade 12'); ?></h2>
+      <h2 class="curriculum-pathways-title"><?php echo h($sec_curriculum['title'] ?? 'A Future-Ready Learning Journey — Kindergarten to Grade 12'); ?></h2>
       <p style="color: var(--color-muted); font-size: 1.05rem; line-height: 1.7; margin-top: 1rem;">
         <?php echo h($sec_curriculum['subtitle'] ?? 'Mapped to CBSE, NEP 2020 and NCF — strong academic foundations blended with creativity, communication, digital fluency and real-world learning.'); ?>
       </p>
     </div>
 
-    <!-- 4 Stage Cards Grid -->
-    <div class="stage-grid-4">
+    <!-- 6 Stage Cards Grid (3 cols x 2 rows on desktop) -->
+    <div class="stage-grid-6 stage-grid-4">
       <?php foreach ($learning_journey_cards as $card): ?>
         <div class="stage-card">
-          <div>
+          <div class="stage-card-body">
             <span class="stage-badge-pill"><?php echo h($card['badge_text'] ?? ($card['badge'] ?? 'Stage')); ?></span>
-            <h3 class="stage-card-title"><?php echo h($card['title']); ?></h3>
-            <p class="stage-card-keywords"><?php echo h($card['subtitle'] ?? ($card['keywords'] ?? '')); ?></p>
+            <?php
+              $t_parts = explode(' · ', $card['title'], 2);
+              if (count($t_parts) === 2):
+            ?>
+              <h3 class="stage-card-title"><?php echo h($t_parts[0]); ?> &middot; <span class="stage-title-grades"><?php echo h($t_parts[1]); ?></span></h3>
+            <?php else: ?>
+              <h3 class="stage-card-title"><?php echo h($card['title']); ?></h3>
+            <?php endif; ?>
+            <p class="stage-card-keywords"><?php echo h($card['subtitle'] ?? ($card['keywords'] ?? ($card['tagline'] ?? ''))); ?></p>
             <div class="stage-card-points">
               <?php echo nl2br(h($card['content'] ?? ($card['bullets'] ?? ''))); ?>
             </div>
           </div>
           <?php if (!empty($card['outcome'])): ?>
             <div class="stage-card-outcome">
-              <strong>Outcome:</strong> <?php echo h($card['outcome']); ?>
+              <strong>Outcome:</strong> <?php echo h(preg_replace('/^Outcome:\s*/i', '', $card['outcome'])); ?>
             </div>
           <?php endif; ?>
         </div>

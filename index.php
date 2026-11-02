@@ -1,12 +1,15 @@
 <?php
 // Zuvio Global School - PHP Front Controller / Router
 if (php_sapi_name() === 'cli-server') {
-    $filePath = dirname(__FILE__) . urldecode(parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH));
-    if (is_file($filePath)) {
-        return false;
-    }
-    if (is_dir($filePath) && is_file(rtrim($filePath, '/') . '/index.php')) {
-        return false;
+    $urlPath = parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH);
+    $filePath = dirname(__FILE__) . urldecode($urlPath);
+    if ($urlPath !== '/' && $urlPath !== '/index.php') {
+        if (is_file($filePath) && realpath($filePath) !== __FILE__) {
+            return false;
+        }
+        if (is_dir($filePath) && is_file(rtrim($filePath, '/') . '/index.php')) {
+            return false;
+        }
     }
 }
 
