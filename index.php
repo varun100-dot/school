@@ -319,6 +319,12 @@ switch ($route) {
         include dirname(__FILE__) . '/pages/landing-page.php';
         break;
 
+    case 'nursery-to-grade-12':
+    case 'nursery-to-grade-12.php':
+        $page_slug = 'nursery-to-grade-12';
+        include dirname(__FILE__) . '/pages/nursery-to-grade-12.php';
+        break;
+
     case 'homeschooling':
         header('Location: /homeschooling/', true, 301);
         exit;
