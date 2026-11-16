@@ -19,12 +19,15 @@ Options -Indexes
 # 3. Prevent access to the private database/ documentation directory
 RewriteRule ^database/ - [F,L]
 
-# 4. If requested file or directory exists, serve it directly
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
+# 4. If requested physical file or directory exists, STOP REWRITING and serve it directly
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
 
 # 5. Permanent 301 redirect from old landing-page to online-school
 RewriteRule ^landing-page/?$ /online-school/ [R=301,L,QSA]
 
-# Otherwise route to index.php front controller
+# 6. Otherwise route all remaining non-existent requests to index.php front controller
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ index.php?route=$1 [QSA,L]

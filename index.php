@@ -1,15 +1,34 @@
 <?php
 // Zuvio Global School - PHP Front Controller / Router
-if (php_sapi_name() === 'cli-server') {
-    $urlPath = parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH);
-    $filePath = dirname(__FILE__) . urldecode($urlPath);
-    if ($urlPath !== '/' && $urlPath !== '/index.php') {
-        if (is_file($filePath) && realpath($filePath) !== __FILE__) {
-            return false;
-        }
-        if (is_dir($filePath) && is_file(rtrim($filePath, '/') . '/index.php')) {
-            return false;
-        }
+// Universal static file fallback (Serves static assets if routed through index.php)
+$urlPath = parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH);
+$filePath = dirname(__FILE__) . urldecode($urlPath);
+if ($urlPath !== '/' && $urlPath !== '/index.php' && is_file($filePath) && realpath($filePath) !== __FILE__) {
+    if (php_sapi_name() === 'cli-server') {
+        return false;
+    }
+    $ext = strtolower(pathinfo($filePath, PATHINFO_EXTENSION));
+    $mimes = [
+        'css'   => 'text/css; charset=utf-8',
+        'js'    => 'application/javascript; charset=utf-8',
+        'png'   => 'image/png',
+        'jpg'   => 'image/jpeg',
+        'jpeg'  => 'image/jpeg',
+        'gif'   => 'image/gif',
+        'svg'   => 'image/svg+xml',
+        'webp'  => 'image/webp',
+        'ico'   => 'image/x-icon',
+        'woff'  => 'font/woff',
+        'woff2' => 'font/woff2',
+        'ttf'   => 'font/ttf',
+        'pdf'   => 'application/pdf'
+    ];
+    if (isset($mimes[$ext])) {
+        header('Content-Type: ' . $mimes[$ext]);
+        header('Content-Length: ' . filesize($filePath));
+        header('Cache-Control: public, max-age=86400');
+        readfile($filePath);
+        exit;
     }
 }
 
@@ -339,10 +358,13 @@ switch ($route) {
         break;
 
     case 'homeschooling':
-        header('Location: /homeschooling/', true, 301);
-        exit;
-
     case 'homeschooling/':
+        $request_path = parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH);
+        if (substr($request_path, -1) !== '/' && !preg_match('/\.php$/i', $request_path)) {
+            $qs = !empty($_SERVER['QUERY_STRING']) ? '?' . $_SERVER['QUERY_STRING'] : '';
+            header('Location: /homeschooling/' . $qs, true, 301);
+            exit;
+        }
         include dirname(__FILE__) . '/homeschooling/index.php';
         break;
         
