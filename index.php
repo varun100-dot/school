@@ -178,6 +178,16 @@ if (strpos($route, 'admin') === 0) {
             $page_slug = 'admin-profiles';
             include dirname(__FILE__) . '/admin/profiles.php';
             break;
+        case 'header-settings':
+        case 'header-settings.php':
+            $page_slug = 'admin-header-settings';
+            include dirname(__FILE__) . '/admin/header-settings.php';
+            break;
+        case 'sliding-strip':
+        case 'sliding-strip.php':
+            $page_slug = 'admin-sliding-strip';
+            include dirname(__FILE__) . '/admin/sliding-strip.php';
+            break;
         default:
             header('HTTP/1.1 404 Not Found');
             include dirname(__FILE__) . '/pages/404.php';
