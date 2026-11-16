@@ -167,46 +167,82 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_enquiry'])) {
                 $full_message = 'Submitted via Contact Us page';
             }
 
-            // Save to database enquiries table if available
-            $persisted = false;
-            if ($db) {
-                try {
-                    $stmt = $db->prepare("
-                        INSERT INTO `enquiries` (`parent_name`, `student_name`, `grade`, `phone`, `email`, `message`, `source`, `status_id`)
-                        VALUES (?, ?, ?, ?, ?, ?, 'Contact Page', 1)
-                    ");
-                    $stmt->execute([
-                        $parent_name,
-                        $student_name ?: ($parent_name . ' (Student)'),
-                        $grade,
-                        $phone,
-                        $email,
-                        $full_message
-                    ]);
-                    $persisted = true;
-                } catch (Exception $e) {
-                    error_log("[Enquiry DB Error] " . $e->getMessage());
+            // Extract sanitized marketing attribution
+            $attr = extract_marketing_attribution_from_request();
+
+            // Server-side duplicate debounce check (15 seconds)
+            if (check_duplicate_enquiry_submission($email, $phone, 'Contact Page', 15)) {
+                $form_status = 'success';
+            } else {
+                $persisted = false;
+                if ($db) {
+                    try {
+                        $stmt = $db->prepare("
+                            INSERT INTO `enquiries` (
+                                `parent_name`, `student_name`, `grade`, `phone`, `email`, `message`, `source`, `status_id`,
+                                `marketing_source`, `utm_source`, `utm_medium`, `utm_campaign`, `utm_content`, `utm_term`,
+                                `gclid`, `fbclid`, `landing_page`, `referrer`, `first_touch`, `last_touch`
+                            )
+                            VALUES (?, ?, ?, ?, ?, ?, 'Contact Page', 1, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                        ");
+                        $stmt->execute([
+                            $parent_name,
+                            $student_name ?: ($parent_name . ' (Student)'),
+                            $grade,
+                            $phone,
+                            $email,
+                            $full_message,
+                            $attr['marketing_source'],
+                            $attr['utm_source'],
+                            $attr['utm_medium'],
+                            $attr['utm_campaign'],
+                            $attr['utm_content'],
+                            $attr['utm_term'],
+                            $attr['gclid'],
+                            $attr['fbclid'],
+                            $attr['landing_page'],
+                            $attr['referrer'],
+                            $attr['first_touch'],
+                            $attr['last_touch']
+                        ]);
+                        $persisted = true;
+                        record_enquiry_submission($email, $phone, 'Contact Page');
+                    } catch (Exception $e) {
+                        // Dual-schema compatibility: if unmigrated database schema, fallback to legacy schema
+                        if (strpos($e->getMessage(), 'Unknown column') !== false || strpos($e->getMessage(), 'has no column named') !== false) {
+                            try {
+                                $stmt = $db->prepare("
+                                    INSERT INTO `enquiries` (`parent_name`, `student_name`, `grade`, `phone`, `email`, `message`, `source`, `status_id`)
+                                    VALUES (?, ?, ?, ?, ?, ?, 'Contact Page', 1)
+                                ");
+                                $stmt->execute([
+                                    $parent_name,
+                                    $student_name ?: ($parent_name . ' (Student)'),
+                                    $grade,
+                                    $phone,
+                                    $email,
+                                    $full_message
+                                ]);
+                                $persisted = true;
+                                record_enquiry_submission($email, $phone, 'Contact Page');
+                            } catch (Exception $fallback_e) {
+                                error_log("[Contact Legacy Fallback Error] " . $fallback_e->getMessage());
+                                $persisted = false;
+                            }
+                        } else {
+                            error_log("[Enquiry DB Error] " . $e->getMessage());
+                            $persisted = false;
+                        }
+                    }
+                }
+
+                if ($persisted) {
+                    $form_status = 'success';
+                } else {
+                    $form_status = 'error';
+                    $error_message = 'Unable to save your enquiry at this time. Please try again later or contact us directly.';
                 }
             }
-
-            // Always persist into mock enquiries session so lead is never lost in local/offline test environments
-            if (!isset($_SESSION['mock_enquiries'])) {
-                $_SESSION['mock_enquiries'] = [];
-            }
-            $_SESSION['mock_enquiries'][] = [
-                'id' => count($_SESSION['mock_enquiries']) + 1001,
-                'parent_name' => $parent_name,
-                'student_name' => $student_name ?: ($parent_name . ' (Student)'),
-                'grade' => $grade,
-                'phone' => $phone,
-                'email' => $email,
-                'message' => $full_message,
-                'source' => 'Contact Page',
-                'status_id' => 1,
-                'created_at' => date('Y-m-d H:i:s')
-            ];
-
-            $form_status = 'success';
         }
     }
 }

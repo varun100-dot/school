@@ -114,11 +114,14 @@ if (!in_array($grade, $permitted_grades, true)) {
     exit;
 }
 
-// 8. CRM Field Mapping
+// 8. CRM Field Mapping & Marketing Attribution Extraction
 $student_name = $parent_name . ' (Student)';
 $source       = 'Homeschooling Landing Page';
 $status_id    = 1; // New initial enquiry status
 $message      = 'Submitted via Homeschooling Landing Page';
+
+// Extract sanitized marketing attribution
+$attr = extract_marketing_attribution_from_request();
 
 // Enforce max field lengths matching schema
 $parent_name  = mb_substr($parent_name, 0, 150);
@@ -151,8 +154,12 @@ $saved = false;
 if (isset($db) && $db) {
     try {
         $stmt = $db->prepare("
-            INSERT INTO `enquiries` (`parent_name`, `student_name`, `grade`, `phone`, `email`, `message`, `source`, `status_id`)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO `enquiries` (
+                `parent_name`, `student_name`, `grade`, `phone`, `email`, `message`, `source`, `status_id`,
+                `marketing_source`, `utm_source`, `utm_medium`, `utm_campaign`, `utm_content`, `utm_term`,
+                `gclid`, `fbclid`, `landing_page`, `referrer`, `first_touch`, `last_touch`
+            )
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ");
         $stmt->execute([
             $parent_name,
@@ -162,11 +169,48 @@ if (isset($db) && $db) {
             $email,
             $message,
             $source,
-            $status_id
+            $status_id,
+            $attr['marketing_source'],
+            $attr['utm_source'],
+            $attr['utm_medium'],
+            $attr['utm_campaign'],
+            $attr['utm_content'],
+            $attr['utm_term'],
+            $attr['gclid'],
+            $attr['fbclid'],
+            $attr['landing_page'],
+            $attr['referrer'],
+            $attr['first_touch'],
+            $attr['last_touch']
         ]);
         $saved = true;
     } catch (Exception $e) {
-        error_log("[Homeschooling Enquiry DB Error] " . $e->getMessage());
+        // Dual-schema compatibility: if unmigrated database schema, fallback to legacy schema
+        if (strpos($e->getMessage(), 'Unknown column') !== false || strpos($e->getMessage(), 'has no column named') !== false) {
+            try {
+                $stmt = $db->prepare("
+                    INSERT INTO `enquiries` (`parent_name`, `student_name`, `grade`, `phone`, `email`, `message`, `source`, `status_id`)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                ");
+                $stmt->execute([
+                    $parent_name,
+                    $student_name,
+                    $grade,
+                    $phone,
+                    $email,
+                    $message,
+                    $source,
+                    $status_id
+                ]);
+                $saved = true;
+            } catch (Exception $fallback_e) {
+                error_log("[Homeschooling Legacy Fallback Error] " . $fallback_e->getMessage());
+                $saved = false;
+            }
+        } else {
+            error_log("[Homeschooling Enquiry DB Error] " . $e->getMessage());
+            $saved = false;
+        }
     }
 }
 

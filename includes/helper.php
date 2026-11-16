@@ -470,3 +470,267 @@ function slugify($text) {
     return generate_blog_slug($text);
 }
 
+/**
+ * Normalizes and classifies incoming marketing traffic into standard CRM categories.
+ * Supported categories:
+ * - Google Ads
+ * - Facebook Ads
+ * - Instagram Ads
+ * - Organic Search
+ * - Direct
+ * - Referral
+ * - Other / Unknown
+ */
+function classify_marketing_source($utm_source = '', $utm_medium = '', $gclid = '', $fbclid = '', $referrer = '') {
+    $src = strtolower(trim((string)$utm_source));
+    $med = strtolower(trim((string)$utm_medium));
+    $gcl = trim((string)$gclid);
+    $fbc = trim((string)$fbclid);
+    $ref = trim((string)$referrer);
+
+    // 1. Google Ads Detection (gclid click ID or explicit google cpc/paid/ad params)
+    if (!empty($gcl) || (strpos($src, 'google') !== false && preg_match('/^(cpc|ppc|paid|ad|ads|search_ad|display|smart|gdn|search)$/i', $med))) {
+        return 'Google Ads';
+    }
+
+    // 2. Meta Ads Detection (Instagram vs Facebook Ads)
+    if (!empty($fbc)) {
+        if (strpos($src, 'instagram') !== false || strpos($src, 'ig') !== false) {
+            return 'Instagram Ads';
+        }
+        return 'Facebook Ads';
+    }
+
+    if (strpos($src, 'instagram') !== false || strpos($src, 'ig') !== false) {
+        if (preg_match('/^(cpc|ppc|paid|ad|ads|paidsocial|paid-social|sponsored|story|reel)$/i', $med) || !empty($fbc)) {
+            return 'Instagram Ads';
+        }
+    }
+
+    if (strpos($src, 'facebook') !== false || strpos($src, 'fb') !== false || strpos($src, 'meta') !== false) {
+        if (preg_match('/^(cpc|ppc|paid|ad|ads|paidsocial|paid-social|sponsored)$/i', $med) || !empty($fbc)) {
+            return 'Facebook Ads';
+        }
+    }
+
+    // 3. Organic Search Detection
+    if ($med === 'organic' || $med === 'organic-search') {
+        return 'Organic Search';
+    }
+
+    $ref_host = parse_url($ref, PHP_URL_HOST) ?: '';
+    if (!empty($ref_host)) {
+        $search_engines = ['google.', 'bing.', 'yahoo.', 'duckduckgo.', 'baidu.', 'yandex.', 'ask.', 'ecosia.', 'brave.'];
+        foreach ($search_engines as $se) {
+            if (strpos($ref_host, $se) !== false) {
+                // If paid medium was specified, it would have been caught above. Remaining search engine referrals are Organic.
+                return 'Organic Search';
+            }
+        }
+    }
+
+    // 4. Referral Traffic Detection
+    if ($med === 'referral') {
+        return 'Referral';
+    }
+
+    if (!empty($ref_host)) {
+        $current_host = parse_url($_SERVER['HTTP_HOST'] ?? '', PHP_URL_HOST) ?: ($_SERVER['HTTP_HOST'] ?? '');
+        $current_host = preg_replace('/:\d+$/', '', strtolower($current_host));
+        $clean_ref_host = preg_replace('/:\d+$/', '', strtolower($ref_host));
+
+        $internal_domains = ['zuvioglobalschool.com', 'www.zuvioglobalschool.com', 'localhost', '127.0.0.1'];
+        if (!in_array($clean_ref_host, $internal_domains, true) && $clean_ref_host !== $current_host) {
+            return 'Referral';
+        }
+    }
+
+    // 5. Direct Traffic Detection
+    if (empty($src) && empty($med) && empty($gcl) && empty($fbc)) {
+        return 'Direct';
+    }
+
+    // 6. Any other tagged campaigns (e.g. email, sms, affiliate, offline)
+    if (!empty($src) || !empty($med)) {
+        return 'Other / Unknown';
+    }
+
+    return 'Direct';
+}
+
+/**
+ * Extracts and sanitizes marketing attribution data from POST/GET/Cookies/Server.
+ * Preserves first-touch and last-touch JSON payloads.
+ *
+ * @return array Associative array of 12 attribution fields
+ */
+function extract_marketing_attribution_from_request() {
+    safe_session_start();
+
+    // Helper to read and sanitize string
+    $get_val = function($key, $max_len = 255) {
+        $val = $_POST[$key] ?? $_GET[$key] ?? null;
+        if ($val === null || $val === '') {
+            return null;
+        }
+        $val = trim((string)$val);
+        $val = strip_tags($val);
+        return mb_substr($val, 0, $max_len);
+    };
+
+    $utm_source   = $get_val('utm_source', 150);
+    $utm_medium   = $get_val('utm_medium', 150);
+    $utm_campaign = $get_val('utm_campaign', 255);
+    $utm_content  = $get_val('utm_content', 255);
+    $utm_term     = $get_val('utm_term', 255);
+    $gclid        = $get_val('gclid', 255);
+    $fbclid       = $get_val('fbclid', 255);
+    $landing_page = $get_val('landing_page', 255);
+    $referrer     = $get_val('referrer', 500);
+
+    // Fallbacks from environment if not sent via POST fields
+    if (empty($landing_page) && isset($_SERVER['REQUEST_URI'])) {
+        $scheme = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? 'https' : 'http';
+        $host = $_SERVER['HTTP_HOST'] ?? 'zuvioglobalschool.com';
+        $landing_page = mb_substr($scheme . '://' . $host . $_SERVER['REQUEST_URI'], 0, 255);
+    }
+    if (empty($referrer) && isset($_SERVER['HTTP_REFERER'])) {
+        $referrer = mb_substr(strip_tags(trim($_SERVER['HTTP_REFERER'])), 0, 500);
+    }
+
+    // Read first_touch and last_touch JSON objects
+    $first_touch_raw = $_POST['first_touch'] ?? $_COOKIE['zuvio_first_touch'] ?? null;
+    $last_touch_raw  = $_POST['last_touch']  ?? $_COOKIE['zuvio_last_touch']  ?? null;
+
+    $clean_touch_json = function($raw) {
+        if (empty($raw)) return null;
+        if (is_array($raw)) {
+            return json_encode($raw, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+        }
+        $decoded = json_decode((string)$raw, true);
+        if (is_array($decoded)) {
+            // Re-encode sanitized
+            $clean = [];
+            foreach ($decoded as $k => $v) {
+                if (is_scalar($v)) {
+                    $clean[strip_tags($k)] = mb_substr(strip_tags((string)$v), 0, 500);
+                }
+            }
+            return json_encode($clean, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+        }
+        return null;
+    };
+
+    $first_touch = $clean_touch_json($first_touch_raw);
+    $last_touch  = $clean_touch_json($last_touch_raw);
+
+    // If utm parameters were empty in direct POST but available in last_touch / first_touch, hydrate them
+    if (empty($utm_source) && empty($gclid) && empty($fbclid)) {
+        $touch_data = json_decode($last_touch ?: ($first_touch ?: '{}'), true);
+        if (is_array($touch_data) && !empty($touch_data)) {
+            $utm_source   = !empty($touch_data['utm_source'])   ? mb_substr($touch_data['utm_source'], 0, 150) : $utm_source;
+            $utm_medium   = !empty($touch_data['utm_medium'])   ? mb_substr($touch_data['utm_medium'], 0, 150) : $utm_medium;
+            $utm_campaign = !empty($touch_data['utm_campaign']) ? mb_substr($touch_data['utm_campaign'], 0, 255) : $utm_campaign;
+            $utm_content  = !empty($touch_data['utm_content'])  ? mb_substr($touch_data['utm_content'], 0, 255) : $utm_content;
+            $utm_term     = !empty($touch_data['utm_term'])     ? mb_substr($touch_data['utm_term'], 0, 255) : $utm_term;
+            $gclid        = !empty($touch_data['gclid'])        ? mb_substr($touch_data['gclid'], 0, 255) : $gclid;
+            $fbclid       = !empty($touch_data['fbclid'])       ? mb_substr($touch_data['fbclid'], 0, 255) : $fbclid;
+            if (empty($landing_page) && !empty($touch_data['landing_page'])) {
+                $landing_page = mb_substr($touch_data['landing_page'], 0, 255);
+            }
+            if (empty($referrer) && !empty($touch_data['referrer'])) {
+                $referrer = mb_substr($touch_data['referrer'], 0, 500);
+            }
+        }
+    }
+
+    // Determine marketing_source classification
+    $provided_mktg_source = $get_val('marketing_source', 100);
+    $marketing_source = classify_marketing_source($utm_source, $utm_medium, $gclid, $fbclid, $referrer);
+    if (!empty($provided_mktg_source) && in_array($provided_mktg_source, ['Google Ads', 'Facebook Ads', 'Instagram Ads', 'Organic Search', 'Direct', 'Referral', 'Other / Unknown'], true)) {
+        $marketing_source = $provided_mktg_source;
+    }
+
+    return [
+        'marketing_source' => $marketing_source,
+        'utm_source'       => $utm_source,
+        'utm_medium'       => $utm_medium,
+        'utm_campaign'     => $utm_campaign,
+        'utm_content'      => $utm_content,
+        'utm_term'         => $utm_term,
+        'gclid'            => $gclid,
+        'fbclid'           => $fbclid,
+        'landing_page'     => $landing_page,
+        'referrer'         => $referrer,
+        'first_touch'      => $first_touch,
+        'last_touch'       => $last_touch
+    ];
+}
+
+/**
+ * Server-side duplicate lead submission prevention.
+ * Uses 15-second debounce window across session and active database.
+ *
+ * @param string $email User email
+ * @param string $phone User phone
+ * @param string $source Form source
+ * @param int $window_seconds Debounce window (default 15)
+ * @return bool True if duplicate submission detected, false otherwise
+ */
+function check_duplicate_enquiry_submission($email, $phone, $source, $window_seconds = 15) {
+    safe_session_start();
+    global $db;
+
+    $clean_email = strtolower(trim((string)$email));
+    $clean_phone = preg_replace('/[^0-9]/', '', (string)$phone);
+    $sub_hash = md5($clean_email . '|' . $clean_phone . '|' . trim((string)$source));
+    $now = time();
+
+    // 1. Session-level check
+    if (isset($_SESSION['last_enquiry_hash'], $_SESSION['last_enquiry_time'])) {
+        if ($_SESSION['last_enquiry_hash'] === $sub_hash && ($now - (int)$_SESSION['last_enquiry_time']) < $window_seconds) {
+            return true;
+        }
+    }
+
+    // 2. Database-level check
+    if (isset($db) && $db) {
+        try {
+            $driver = $db->getAttribute(PDO::ATTR_DRIVER_NAME);
+            if ($driver === 'sqlite') {
+                $check_sql = "SELECT id FROM `enquiries` 
+                              WHERE (`email` = ? OR `phone` LIKE ?) 
+                                AND `source` = ? 
+                                AND `created_at` >= datetime('now', '-' || ? || ' seconds') 
+                              LIMIT 1";
+            } else {
+                $check_sql = "SELECT id FROM `enquiries` 
+                              WHERE (`email` = ? OR `phone` LIKE ?) 
+                                AND `source` = ? 
+                                AND `created_at` >= (NOW() - INTERVAL ? SECOND) 
+                              LIMIT 1";
+            }
+            $stmt = $db->prepare($check_sql);
+            $stmt->execute([$clean_email, '%' . $clean_phone, $source, $window_seconds]);
+            if ($stmt->fetch()) {
+                return true;
+            }
+        } catch (Exception $e) {
+            error_log("[Duplicate Check Warning] " . $e->getMessage());
+        }
+    }
+
+    return false;
+}
+
+/**
+ * Records successful enquiry submission in session for debounce tracking.
+ */
+function record_enquiry_submission($email, $phone, $source) {
+    safe_session_start();
+    $clean_email = strtolower(trim((string)$email));
+    $clean_phone = preg_replace('/[^0-9]/', '', (string)$phone);
+    $_SESSION['last_enquiry_hash'] = md5($clean_email . '|' . $clean_phone . '|' . trim((string)$source));
+    $_SESSION['last_enquiry_time'] = time();
+}
+

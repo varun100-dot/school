@@ -23,5 +23,8 @@ RewriteRule ^database/ - [F,L]
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 
+# 5. Permanent 301 redirect from old landing-page to online-school
+RewriteRule ^landing-page/?$ /online-school/ [R=301,L,QSA]
+
 # Otherwise route to index.php front controller
 RewriteRule ^(.*)$ index.php?route=$1 [QSA,L]

@@ -50,50 +50,94 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_n12_lead'])) {
                 $form_status = 'error';
                 $form_message = 'Please provide a valid phone number.';
             } else {
-                $lead_source = 'Nursery to Grade 12 LP';
+                $lead_source = 'Nursery to Grade 12 Landing Page';
                 $message_text = "Nursery to Grade 12 Demo Booking — Child: {$student_name}, Grade: {$grade}";
 
-                // 1. Insert into persistent database if connection active
-                if (isset($db) && $db) {
-                    try {
-                        $stmt = $db->prepare("
-                            INSERT INTO `enquiries` (`parent_name`, `student_name`, `grade`, `phone`, `email`, `message`, `source`, `status_id`)
-                            VALUES (?, ?, ?, ?, ?, ?, ?, 1)
-                        ");
-                        $stmt->execute([
-                            $parent_name,
-                            $student_name,
-                            $grade,
-                            $phone,
-                            $email,
-                            $message_text,
-                            $lead_source
-                        ]);
-                    } catch (Exception $e) {
-                        error_log("[N12 LP DB Error] " . $e->getMessage());
+                // Extract sanitized marketing attribution
+                $attr = extract_marketing_attribution_from_request();
+
+                // Server-side duplicate debounce check (15 seconds)
+                if (check_duplicate_enquiry_submission($email, $phone, $lead_source, 15)) {
+                    $form_status = 'success';
+                    $form_message = 'Thank you! Your free demo class has already been booked. Our academic counsellor will connect with you within 24 hours.';
+                    $submitted_data = [];
+                } else {
+                    $saved = false;
+                    if (isset($db) && $db) {
+                        try {
+                            $stmt = $db->prepare("
+                                INSERT INTO `enquiries` (
+                                    `parent_name`, `student_name`, `grade`, `phone`, `email`, `message`, `source`, `status_id`,
+                                    `marketing_source`, `utm_source`, `utm_medium`, `utm_campaign`, `utm_content`, `utm_term`,
+                                    `gclid`, `fbclid`, `landing_page`, `referrer`, `first_touch`, `last_touch`
+                                )
+                                VALUES (?, ?, ?, ?, ?, ?, ?, 1, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                            ");
+                            $stmt->execute([
+                                $parent_name,
+                                $student_name,
+                                $grade,
+                                $phone,
+                                $email,
+                                $message_text,
+                                $lead_source,
+                                $attr['marketing_source'],
+                                $attr['utm_source'],
+                                $attr['utm_medium'],
+                                $attr['utm_campaign'],
+                                $attr['utm_content'],
+                                $attr['utm_term'],
+                                $attr['gclid'],
+                                $attr['fbclid'],
+                                $attr['landing_page'],
+                                $attr['referrer'],
+                                $attr['first_touch'],
+                                $attr['last_touch']
+                            ]);
+                            $saved = true;
+                            record_enquiry_submission($email, $phone, $lead_source);
+                        } catch (Exception $e) {
+                            // Dual-schema compatibility: if unmigrated database schema, fallback to legacy schema
+                            if (strpos($e->getMessage(), 'Unknown column') !== false || strpos($e->getMessage(), 'has no column named') !== false) {
+                                try {
+                                    $stmt = $db->prepare("
+                                        INSERT INTO `enquiries` (`parent_name`, `student_name`, `grade`, `phone`, `email`, `message`, `source`, `status_id`)
+                                        VALUES (?, ?, ?, ?, ?, ?, ?, 1)
+                                    ");
+                                    $stmt->execute([
+                                        $parent_name,
+                                        $student_name,
+                                        $grade,
+                                        $phone,
+                                        $email,
+                                        $message_text,
+                                        $lead_source
+                                    ]);
+                                    $saved = true;
+                                    record_enquiry_submission($email, $phone, $lead_source);
+                                } catch (Exception $fallback_e) {
+                                    error_log("[N12 LP Legacy Fallback Error] " . $fallback_e->getMessage());
+                                    $saved = false;
+                                }
+                            } else {
+                                error_log("[N12 LP DB Error] " . $e->getMessage());
+                                $saved = false;
+                            }
+                        }
+                    }
+
+                    if ($saved) {
+                        $form_status = 'success';
+                        $form_message = 'Thank you! Your free demo class has been booked. Our academic counsellor will connect with you within 24 hours.';
+                        $submitted_data = []; // Clear inputs on success
+                    } else {
+                        $form_status = 'error';
+                        $form_message = 'Unable to book your demo class right now. Please try again later or contact us directly at info@zuvioglobalschool.com.';
+                        if ($is_ajax) {
+                            http_response_code(500);
+                        }
                     }
                 }
-
-                // 2. Fallback mock session store for preview resiliency
-                if (!isset($_SESSION['mock_enquiries'])) {
-                    $_SESSION['mock_enquiries'] = [];
-                }
-                $_SESSION['mock_enquiries'][] = [
-                    'id'           => time(),
-                    'parent_name'  => $parent_name,
-                    'student_name' => $student_name,
-                    'grade'        => $grade,
-                    'phone'        => $phone,
-                    'email'        => $email,
-                    'message'      => $message_text,
-                    'source'       => $lead_source,
-                    'created_at'   => date('Y-m-d H:i:s'),
-                    'status'       => 'new'
-                ];
-
-                $form_status = 'success';
-                $form_message = 'Thank you! Your free demo class has been booked. Our academic counsellor will connect with you within 24 hours.';
-                $submitted_data = []; // Clear inputs on success
             }
         }
 
@@ -1008,6 +1052,10 @@ $csrf_token = generate_csrf_token();
           formData.append('submit_n12_lead', '1');
           formData.append('is_ajax', '1');
 
+          if (window.ZuvioAttribution && typeof window.ZuvioAttribution.appendFormData === 'function') {
+            window.ZuvioAttribution.appendFormData(formData);
+          }
+
           fetch('/nursery-to-grade-12/#hero-form', {
             method: 'POST',
             body: formData,
@@ -1034,13 +1082,17 @@ $csrf_token = generate_csrf_token();
           .catch(err => {
             submitBtn.disabled = false;
             submitBtn.innerHTML = originalBtnHtml;
-            // Fallback to standard form submission
-            form.submit();
+            notice.className = 'n12-form-message error';
+            notice.textContent = 'A network error occurred. Please try again or contact us directly.';
+            notice.style.display = 'block';
           });
         });
       }
     });
   </script>
+
+  <!-- Marketing Attribution Engine -->
+  <script src="/js/attribution.js"></script>
 
 </body>
 </html>

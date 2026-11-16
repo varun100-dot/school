@@ -315,8 +315,21 @@ switch ($route) {
         
     case 'landing-page':
     case 'landing-page.php':
-        $page_slug = 'landing-page';
-        include dirname(__FILE__) . '/pages/landing-page.php';
+        $qs = !empty($_SERVER['QUERY_STRING']) ? '?' . $_SERVER['QUERY_STRING'] : '';
+        header('Location: /online-school/' . $qs, true, 301);
+        exit;
+
+    case 'online-school':
+    case 'online-school/':
+    case 'online-school.php':
+        $request_path = parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH);
+        if ($route === 'online-school' && substr($request_path, -1) !== '/' && !preg_match('/\.php$/i', $request_path)) {
+            $qs = !empty($_SERVER['QUERY_STRING']) ? '?' . $_SERVER['QUERY_STRING'] : '';
+            header('Location: /online-school/' . $qs, true, 301);
+            exit;
+        }
+        $page_slug = 'online-school';
+        include dirname(__FILE__) . '/pages/online-school.php';
         break;
 
     case 'nursery-to-grade-12':

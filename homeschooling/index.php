@@ -327,6 +327,7 @@ unset($_SESSION['lead_feedback']);
   </div>
 </footer>
 
+<script src="/js/attribution.js"></script>
 <script>
 document.getElementById('year').textContent = new Date().getFullYear();
 
@@ -365,6 +366,9 @@ document.getElementById('demo').addEventListener('submit', async function(e) {
   
   try {
     const formData = new FormData(form);
+    if (window.ZuvioAttribution && typeof window.ZuvioAttribution.appendFormData === 'function') {
+      window.ZuvioAttribution.appendFormData(formData);
+    }
     const response = await fetch(form.action || 'submit-lead.php', {
       method: 'POST',
       body: formData,

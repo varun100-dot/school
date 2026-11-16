@@ -1006,6 +1006,8 @@ $social_youtube = get_setting('social_youtube', 'https://www.youtube.com/@zuviog
     }
   </style>
   <script id="bp-wa-script" src="https://cdn.botpenguin.com/whatsapp-widget.js">19071980-ca0b-4e77-b150-82fb4f79e964</script>
+  <!-- Marketing Attribution & Source Tracking Engine -->
+  <script src="/js/attribution.js?v=<?php echo filemtime(dirname(__FILE__) . '/../js/attribution.js'); ?>"></script>
 </body>
 </html>
 

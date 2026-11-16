@@ -48,4 +48,10 @@ uploads/*
 
 # Local SQLite databases
 *.sqlite
+
+# Backups & Archives
+backups/
+*.sql.gz
+*.tar.gz
+*.bak
 database/*.sqlite
