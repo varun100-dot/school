@@ -28,8 +28,10 @@ unset($_SESSION['lead_feedback']);
 .form-feedback.error{background:rgba(239,68,68,0.2);border:1px solid #ef4444;color:#fca5a5}
 .form .btn:disabled{opacity:0.65;cursor:not-allowed}
 </style>
+<?php include dirname(__FILE__) . '/../includes/meta-pixel-head.php'; ?>
 </head>
 <body>
+<?php include dirname(__FILE__) . '/../includes/meta-pixel-body.php'; ?>
 <header>
   <nav class="wrap">
     <a href="/" aria-label="Zuvio Global School home"><img src="assets/logo.webp" alt="Zuvio Global School — Learning beyond boundaries"></a>

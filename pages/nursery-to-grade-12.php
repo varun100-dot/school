@@ -173,8 +173,10 @@ $csrf_token = generate_csrf_token();
 
   <!-- Dedicated Isolated Stylesheet -->
   <link rel="stylesheet" href="/css/nursery-to-grade-12.css">
+  <?php include dirname(__FILE__) . '/../includes/meta-pixel-head.php'; ?>
 </head>
 <body class="n12-page">
+<?php include dirname(__FILE__) . '/../includes/meta-pixel-body.php'; ?>
 
   <!-- ========================================================================
        00. CUSTOM HEADER

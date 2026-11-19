@@ -198,26 +198,19 @@ if (empty($sliding_strip_items)) {
   <?php endif; ?>
 
   <!-- Meta / Facebook Pixel -->
-  <?php 
+  <?php include dirname(__FILE__) . '/meta-pixel-head.php'; ?>
+  <?php
+  // Optional secondary Meta Pixel from Admin Settings (skip if same as primary ID to avoid duplicate init)
   $fb_pixel_id = trim(get_setting('facebook_pixel_id', ''));
   $fb_enabled = ((string)get_setting('facebook_pixel_enabled', '0') === '1');
-  if ($fb_enabled && !empty($fb_pixel_id)): 
+  if ($fb_enabled && !empty($fb_pixel_id) && $fb_pixel_id !== '1671385628104457'):
   ?>
   <script>
-    !function(f,b,e,v,n,t,s)
-    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-    n.queue=[];t=b.createElement(e);t.async=!0;
-    t.src=v;s=b.getElementsByTagName(e)[0];
-    s.parentNode.insertBefore(t,s)}(window, document,'script',
-    'https://connect.facebook.net/en_US/fbevents.js');
-    fbq('init', '<?php echo h($fb_pixel_id); ?>');
-    fbq('track', 'PageView');
+    if (typeof fbq === 'function') {
+      fbq('init', '<?php echo h($fb_pixel_id); ?>');
+      fbq('trackSingle', '<?php echo h($fb_pixel_id); ?>', 'PageView');
+    }
   </script>
-  <noscript><img height="1" width="1" style="display:none"
-  src="https://www.facebook.com/tr?id=<?php echo h($fb_pixel_id); ?>&ev=PageView&noscript=1"
-  /></noscript>
   <?php endif; ?>
 
   <?php 
@@ -372,6 +365,7 @@ if (empty($sliding_strip_items)) {
   </style>
 </head>
 <body>
+<?php include dirname(__FILE__) . '/meta-pixel-body.php'; ?>
 
   <?php if (!empty($is_maintenance_mode)): ?>
   <div style="background: #FFF7ED; border-bottom: 2px solid #D97706; color: #9A3412; padding: 0.65rem 1.5rem; text-align: center; font-size: 0.86rem; font-weight: 600; position: sticky; top: 0; z-index: 10000; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">

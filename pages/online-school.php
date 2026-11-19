@@ -163,8 +163,10 @@ $csrf_token = generate_csrf_token();
   
   <link rel="icon" type="image/png" href="/assets/images/logo.png">
   <link rel="stylesheet" href="/css/landing-page.css?v=<?php echo time(); ?>">
+  <?php include dirname(__FILE__) . '/../includes/meta-pixel-head.php'; ?>
 </head>
 <body class="zuvio-landing-page">
+<?php include dirname(__FILE__) . '/../includes/meta-pixel-body.php'; ?>
 
   <!-- ==========================================================================
        A. HEADER
