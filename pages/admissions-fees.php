@@ -20,12 +20,40 @@ $fees_data = $adm_cms['fees'] ?? [
         ['grade' => 'Kindergarten', 'reg_fee' => '500', 'adm_fee' => '2,500', 'tuition_q' => '16,000', 'total_annual' => '70,950'],
         ['grade' => 'Grade 1–2', 'reg_fee' => '500', 'adm_fee' => '2,500', 'tuition_q' => '19,000', 'total_annual' => '85,250'],
         ['grade' => 'Grade 3–5', 'reg_fee' => '500', 'adm_fee' => '2,500', 'tuition_q' => '21,000', 'total_annual' => '95,150'],
-        ['grade' => 'Grade 6–8', 'reg_fee' => '500', 'adm_fee' => '2,500', 'tuition_q' => '21,000', 'total_annual' => '95,150']
+        ['grade' => 'Grade 6–8', 'reg_fee' => '500', 'adm_fee' => '2,500', 'tuition_q' => '21,000', 'total_annual' => '95,150'],
+        ['grade' => 'Grade 9–10', 'reg_fee' => '500', 'adm_fee' => '2,500', 'tuition_q' => '24,625', 'total_annual' => '98,500'],
+        ['grade' => 'Grade 11–12', 'reg_fee' => '500', 'adm_fee' => '2,500', 'tuition_q' => '26,250', 'total_annual' => '1,05,000']
     ],
     'payment_notes' => 'Fees to be paid on a quarterly basis between 1st to 10th of the quarter. First Quarter has to be paid at the time of admission. Q1: April–June | Q2: July–September | Q3: October–December | Q4: January–March.',
     'complimentary_note' => 'BOOKS / LMS / ERP — COMPLIMENTARY | High-quality physical books, advanced LMS access, and ERP support are included in the annual fees.',
     'pdf_url' => '/assets/docs/Zuvio_Academic_Calendar_2026_27.pdf'
 ];
+
+// Ensure Grade 9–10 and Grade 11–12 appear even when older saved CMS fee data is loaded from DB
+if (!isset($fees_data['tiers']) || !is_array($fees_data['tiers'])) {
+    $fees_data['tiers'] = [];
+}
+$normalize_fee_grade = static function ($label) {
+    $s = strtolower(trim((string)$label));
+    $s = str_replace(["\xe2\x80\x93", "\xe2\x80\x94", 'to'], '-', $s);
+    $s = preg_replace('/[^a-z0-9]+/', '', $s);
+    return preg_replace('/^grades/', 'grade', $s);
+};
+$existing_fee_grades = [];
+foreach ($fees_data['tiers'] as $existing_tier) {
+    $existing_fee_grades[$normalize_fee_grade($existing_tier['grade'] ?? '')] = true;
+}
+$default_upper_tiers = [
+    ['grade' => 'Grade 9–10', 'reg_fee' => '500', 'adm_fee' => '2,500', 'tuition_q' => '24,625', 'total_annual' => '98,500'],
+    ['grade' => 'Grade 11–12', 'reg_fee' => '500', 'adm_fee' => '2,500', 'tuition_q' => '26,250', 'total_annual' => '1,05,000']
+];
+foreach ($default_upper_tiers as $upper_tier) {
+    $norm_key = $normalize_fee_grade($upper_tier['grade']);
+    if (!isset($existing_fee_grades[$norm_key])) {
+        $fees_data['tiers'][] = $upper_tier;
+        $existing_fee_grades[$norm_key] = true;
+    }
+}
 
 $page_slug = 'admissions-fees';
 $seo = [
